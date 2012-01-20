@@ -8,10 +8,10 @@ Basic Usage
 ```php
 <?php
 
-use CalendR\Factory;
+use CalendR\Calendar;
 
 // Use the factory to get your period
-$factory = new Factory;
+$factory = new Calendar;
 $month = $factory->getMonth(2012, 01);
 
 ?>

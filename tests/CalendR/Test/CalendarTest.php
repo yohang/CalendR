@@ -2,13 +2,13 @@
 
 namespace CalendR\Test;
 
-use CalendR\Factory;
+use CalendR\Calendar;
 
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class CalendarTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetMonth()
     {
-        $factory = new Factory;
+        $factory = new Calendar;
 
         $month = $factory->getMonth(new \DateTime('2012-01-01'));
         $this->assertInstanceOf('CalendR\\Period\\Month', $month);
@@ -19,7 +19,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetWeek()
     {
-        $factory = new Factory;
+        $factory = new Calendar;
 
         $week = $factory->getWeek(new \DateTime('2012-W01'));
         $this->assertInstanceOf('CalendR\\Period\\Week', $week);

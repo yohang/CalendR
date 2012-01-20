@@ -2,8 +2,15 @@
 
 namespace CalendR;
 
-class Factory
+/**
+ * Factory class for calendar handling
+ */
+class Calendar
 {
+    /**
+     * @param \DateTime|int $yearOrStart
+     * @return Period\Year
+     */
     public function getYear($yearOrStart)
     {
         if (!$yearOrStart instanceof \DateTime) {
