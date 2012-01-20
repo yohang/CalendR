@@ -2,6 +2,9 @@
 
 namespace CalendR\Period;
 
+/**
+ * A calendar Month
+ */
 class Month implements \Iterator, PeriodInterface
 {
     /**
@@ -24,20 +27,47 @@ class Month implements \Iterator, PeriodInterface
      */
     private $end;
 
-    public function __construct($year, $month)
+    /**
+     * @param \DateTime $start
+     */
+    public function __construct(\DateTime $start)
     {
-        $this->begin = new \DateTime(sprintf('%s-%s-01', $year, $month));
+        if (!self::isValid($start)) {
+            throw new Exception\NotAMonth;
+        }
+
+        $this->begin = clone $start;
         $this->end = clone $this->begin;
         $this->end->add(new \DateInterval('P1M'));
-
         $this->period = new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
+    /**
+     * @param \DateTime $date
+     * @return bool
+     */
     public function contains(\DateTime $date)
     {
         return $date->format('m') == $this->begin->format('m');
     }
 
+    public static function isValid(\DateTime $start)
+    {
+        if (1 != $start->format('d')) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /*
+    * Iterator implementation
+    */
+
+    /**
+     * @return Week
+     */
     public function current()
     {
         return $this->current;
@@ -51,12 +81,8 @@ class Month implements \Iterator, PeriodInterface
             $delta--;
 
             $start = clone $this->begin;
-            $end = clone $this->begin;
 
-            $this->current = new Week(
-                $start->sub(new \DateInterval(sprintf('P%sD', $delta))),
-                $end->add(new \DateInterval(sprintf('P%sD', 7 - $delta)))
-            );
+            $this->current = new Week($start->sub(new \DateInterval(sprintf('P%sD', $delta))));
         } else {
             $start = clone $this->current->getEnd();
 

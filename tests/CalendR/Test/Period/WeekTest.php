@@ -9,36 +9,35 @@ class WeekTest extends \PHPUnit_Framework_TestCase
     public static function providerConstructInvalid()
     {
         return array(
-            array(new \DateTime('2012-01-03'), new \DateTime('2012-01-09')),
-            array(new \DateTime('2012-01-07'), new \DateTime('2012-01-16')),
-            array(new \DateTime('2012-01-02'), new \DateTime('2012-01-16')),
+            array(new \DateTime('2012-01-03')),
+            array(new \DateTime('2012-01-07')),
         );
     }
 
     public static function providerConstructValid()
     {
         return array(
-            array(new \DateTime('2012-01-02'), new \DateTime('2012-01-09')),
-            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-16')),
-            array(new \DateTime('2012-01-23'), new \DateTime('2012-01-30')),
+            array(new \DateTime('2012-01-02')),
+            array(new \DateTime('2012-01-09')),
+            array(new \DateTime('2012-01-23')),
         );
     }
 
     public static function providerContains()
     {
         return array(
-            array(new \DateTime('2012-01-02'), new \DateTime('2012-01-09'), new \DateTime('2012-01-04'), new \DateTime('2012-01-09')),
-            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-16'), new \DateTime('2012-01-09'), new \DateTime('2012-01-19')),
-            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-16'), new \DateTime('2012-01-09'), new \DateTime('2011-01-09')),
+            array(new \DateTime('2012-01-02'), new \DateTime('2012-01-04'), new \DateTime('2012-01-09')),
+            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2012-01-19')),
+            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2011-01-09')),
         );
     }
 
     public static function providerNumber()
     {
         return array(
-            array(new \DateTime('2012-01-02'), new \DateTime('2012-01-09'), 1),
-            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-16'), 2),
-            array(new \DateTime('2011-12-26'), new \DateTime('2012-01-02'), 52),
+            array(new \DateTime('2012-01-02'), 1),
+            array(new \DateTime('2012-01-09'), 2),
+            array(new \DateTime('2011-12-26'), 52),
         );
     }
 
@@ -46,9 +45,9 @@ class WeekTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $end, $contain, $notContain)
+    public function testContains($start, $contain, $notContain)
     {
-        $week = new Week($start, $end);
+        $week = new Week($start);
 
         $this->assertTrue($week->contains($contain));
         $this->assertFalse($week->contains($notContain));
@@ -57,9 +56,9 @@ class WeekTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerNumber
      */
-    public function testNumber($start, $end, $number)
+    public function testNumber($start, $number)
     {
-        $week = new Week($start, $end);
+        $week = new Week($start);
 
         $this->assertEquals($week->getNumber(), $number);
     }
@@ -68,16 +67,32 @@ class WeekTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAWeek
      */
-    public function testConstructInvalid($start, $end)
+    public function testConstructInvalid($start)
     {
-        new Week($start, $end);
+        new Week($start);
     }
 
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start, $end)
+    public function testConstructValid($start)
     {
-        $week = new Week($start, $end);
+        new Week($start);
+    }
+
+    public function testIteration()
+    {
+        $start = new \DateTime('2012-W01');
+        $week = new Week($start);
+
+        $i = 0;
+
+        foreach ($week as $day) {
+            $this->assertSame($start->getTimestamp(), $day->getTimestamp());
+            $start->add(new \DateInterval('P1D'));
+            $i++;
+        }
+
+        $this->assertEquals($i, 7);
     }
 }

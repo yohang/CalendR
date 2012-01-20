@@ -2,6 +2,9 @@
 
 namespace CalendR\Period;
 
+/**
+ * A calendar week
+ */
 class Week implements \IteratorAggregate, PeriodInterface
 {
     /**
@@ -24,14 +27,17 @@ class Week implements \IteratorAggregate, PeriodInterface
      */
     private $end;
 
-    public function __construct(\DateTime $start, \DateTime $end)
+    public function __construct(\DateTime $start)
     {
+        $end = clone $start;
+        $end->add(new \DateInterval('P7D'));
+
         if (!self::isValid($start, $end)) {
             throw new Exception\NotAWeek;
         }
 
         $this->start = clone $start;
-        $this->end = clone $end;
+        $this->end = $end;
 
         $this->period = new \DatePeriod($this->start, new \DateInterval('P1D'), $this->end);
         $this->number = $start->format('W');
@@ -72,14 +78,9 @@ class Week implements \IteratorAggregate, PeriodInterface
         return $this->start;
     }
 
-    public static function isValid(\DateTime $start, \DateTime $end)
+    public static function isValid(\DateTime $start)
     {
-        if (1 != $start->format('w') || 1 != $end->format('w')) {
-            return false;
-        }
-
-        $diff = $start->diff($end);
-        if ($diff->invert == 1 || $diff->days != 7) {
+        if (1 != $start->format('w')) {
             return false;
         }
 
