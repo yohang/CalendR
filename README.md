@@ -24,8 +24,8 @@ $month = $factory->getMonth(2012, 01);
             <?php foreach ($week as $day): ?>
 
                 <?php //Check days that are out of your month ?>
-                <td<?php $month->contains($day->getDate()) or print ' style="color: grey;"' ?>>
-                    <?php echo $day->getDate()->format('d') ?>
+                <td<?php $month->contains($day->getBegin()) or print ' style="color: grey;"' ?>>
+                    <?php echo $day->getBegin()->format('d') ?>
                 </td>
 
             <?php endforeach ?>

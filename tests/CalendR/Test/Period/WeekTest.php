@@ -88,7 +88,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         $i = 0;
 
         foreach ($week as $day) {
-            $this->assertSame($start->format('d-m-Y'), $day->getDate()->format('d-m-Y'));
+            $this->assertSame($start->format('d-m-Y'), $day->getBegin()->format('d-m-Y'));
             $start->add(new \DateInterval('P1D'));
             $i++;
         }

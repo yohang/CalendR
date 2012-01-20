@@ -8,11 +8,6 @@ namespace CalendR\Period;
 class Week implements \Iterator, PeriodInterface
 {
     /**
-     * @var \DatePeriod
-     */
-    private $period;
-
-    /**
      * @var int
      */
     private $number;
@@ -20,7 +15,7 @@ class Week implements \Iterator, PeriodInterface
     /**
      * @var \DateTime
      */
-    private $start;
+    private $begin;
 
     /**
      * @var \DateTime
@@ -31,17 +26,13 @@ class Week implements \Iterator, PeriodInterface
 
     public function __construct(\DateTime $start)
     {
-        $end = clone $start;
-        $end->add(new \DateInterval('P7D'));
-
-        if (!self::isValid($start, $end)) {
+        if (!self::isValid($start)) {
             throw new Exception\NotAWeek;
         }
 
-        $this->start = clone $start;
-        $this->end = $end;
-
-        $this->period = new \DatePeriod($this->start, new \DateInterval('P1D'), $this->end);
+        $this->begin = clone $start;
+        $this->end = clone $start;
+        $this->end->add(new \DateInterval('P7D'));
         $this->number = $start->format('W');
     }
 
@@ -62,6 +53,14 @@ class Week implements \Iterator, PeriodInterface
     /**
      * @return \DateTime
      */
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
+    /**
+     * @return \DateTime
+     */
     public function getEnd()
     {
         return $this->end;
@@ -72,7 +71,7 @@ class Week implements \Iterator, PeriodInterface
      */
     public function getStart()
     {
-        return $this->start;
+        return $this->begin;
     }
 
     public static function isValid(\DateTime $start)
@@ -97,7 +96,7 @@ class Week implements \Iterator, PeriodInterface
      */
     function getPrevious()
     {
-        $start = clone $this->start;
+        $start = clone $this->begin;
         $start->sub(new \DateInterval('1W'));
 
         return new self($start);
@@ -126,10 +125,10 @@ class Week implements \Iterator, PeriodInterface
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Day($this->start);
+            $this->current = new Day($this->begin);
         } else {
             $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getDate())) {
+            if (!$this->contains($this->current->getBegin())) {
                 $this->current = null;
             }
         }
@@ -144,7 +143,7 @@ class Week implements \Iterator, PeriodInterface
      */
     public function key()
     {
-        return $this->current->getDate()->format('d-m-Y');
+        return $this->current->getBegin()->format('d-m-Y');
     }
 
     /**

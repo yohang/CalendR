@@ -71,8 +71,8 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         foreach ($month as $week) {
             $this->assertInstanceOf('CalendR\\Period\\Week', $week);
             foreach ($week as $day) {
-                if ($month->contains($day->getDate())) {
-                    $this->assertSame($start->format('d-m-Y'), $day->getDate()->format('d-m-Y'));
+                if ($month->contains($day->getBegin())) {
+                    $this->assertSame($start->format('d-m-Y'), $day->getBegin()->format('d-m-Y'));
                     $start->add(new \DateInterval('P1D'));
                     $i++;
                 }

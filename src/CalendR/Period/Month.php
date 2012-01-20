@@ -88,6 +88,14 @@ class Month implements \Iterator, PeriodInterface
         return $this->begin;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
     /*
     * Iterator implementation
     */
