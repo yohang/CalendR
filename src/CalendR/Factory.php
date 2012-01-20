@@ -31,4 +31,18 @@ class Factory
 
         return new Period\Week($yearOrStart);
     }
+
+    /**
+     * @param \DateTime|int $yearOrStart
+     * @param null|int $month
+     * @param null|int $day
+     */
+    public function getDay($yearOrStart, $month = null, $day = null)
+    {
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
+        }
+
+        return new Period\Day($yearOrStart);
+    }
 }

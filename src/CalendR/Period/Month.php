@@ -60,6 +60,24 @@ class Month implements \Iterator, PeriodInterface
         return true;
     }
 
+    /**
+     * @return Month
+     */
+    public function getNext()
+    {
+        return new self($this->end);
+    }
+
+    /**
+     * @return Month
+     */
+    public function getPrevious()
+    {
+        $start = clone $this->begin;
+        $start->sub(new \DateInterval('P1M'));
+
+        return new self($start);
+    }
 
     /*
     * Iterator implementation

@@ -29,4 +29,27 @@ class Day implements PeriodInterface
     {
         return $this->date;
     }
+
+    /**
+     * @return Day
+     */
+    public function getNext()
+    {
+        $next = clone $this;
+        $next->date->add(new \DateInterval('P1D'));
+
+        return $next;
+    }
+
+    /**
+     * @return Day
+     */
+    public function getPrevious()
+    {
+        $previous = clone $this;
+        $previous->date->sub(new \DateInterval('P1D'));
+
+        return $previous;
+    }
+
 }

@@ -11,5 +11,17 @@ interface PeriodInterface
      */
     function contains(\DateTime $date);
 
+    /**
+     * @abstract
+     * @return PeriodInterface
+     */
+    function getNext();
+
+    /**
+     * @abstract
+     * @return PeriodInterface
+     */
+    function getPrevious();
+
     static function isValid(\DateTime $start);
 }
