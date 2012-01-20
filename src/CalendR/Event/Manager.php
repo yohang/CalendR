@@ -13,6 +13,11 @@ class Manager implements \IteratorAggregate, \Countable
     private $events = array();
 
     /**
+     * @var ProviderInterface
+     */
+    private $provider;
+
+    /**
      * @param array|EventInterface $event
      * @return Manager
      */
@@ -84,6 +89,10 @@ class Manager implements \IteratorAggregate, \Countable
      */
     public function find(PeriodInterface $period)
     {
+        if (null !== $this->provider) {
+            $this->add($this->provider->getEvents($period->getBegin(), $period->getEnd()));
+        }
+
         $events = array();
 
         foreach ($this->all() as $event) {
