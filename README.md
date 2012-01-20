@@ -61,4 +61,4 @@ php composer.phar install
 
 ```php
 require 'vendor/.composer/autoload.php';
-``
+```

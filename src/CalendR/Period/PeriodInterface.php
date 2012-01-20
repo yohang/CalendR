@@ -13,6 +13,18 @@ interface PeriodInterface
 
     /**
      * @abstract
+     * @return \DateTime
+     */
+    function getBegin();
+
+    /**
+     * @abstract
+     * @return \DateTime
+     */
+    function getEnd();
+
+    /**
+     * @abstract
      * @return PeriodInterface
      */
     function getNext();
