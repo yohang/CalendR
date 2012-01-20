@@ -4,6 +4,15 @@ namespace CalendR;
 
 class Factory
 {
+    public function getYear($yearOrStart)
+    {
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
+        }
+
+        return new Period\Year($yearOrStart);
+    }
+
     /**
      * @param \DateTime|int $yearOrStart year if month is filled, month begin datetime otherwise
      * @param null|int $month number (1~12)
