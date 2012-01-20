@@ -26,6 +26,10 @@ class Week implements \IteratorAggregate, PeriodInterface
 
     public function __construct(\DateTime $start, \DateTime $end)
     {
+        if (!self::isValid($start, $end)) {
+            throw new Exception\NotAWeek;
+        }
+
         $this->start = clone $start;
         $this->end = clone $end;
 
@@ -68,4 +72,17 @@ class Week implements \IteratorAggregate, PeriodInterface
         return $this->start;
     }
 
+    public static function isValid(\DateTime $start, \DateTime $end)
+    {
+        if (1 != $start->format('w') || 1 != $end->format('w')) {
+            return false;
+        }
+
+        $diff = $start->diff($end);
+        if ($diff->invert == 1 || $diff->days != 7) {
+            return false;
+        }
+
+        return true;
+    }
 }
