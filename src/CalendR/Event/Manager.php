@@ -108,6 +108,8 @@ class Manager implements \IteratorAggregate, \Countable
         return $events;
     }
 
+
+
     /**
      * \IteratorAggregate implementation
      * @return \ArrayIterator
@@ -123,5 +125,21 @@ class Manager implements \IteratorAggregate, \Countable
     public function count()
     {
         return count($this->events);
+    }
+
+    /**
+     * @param \CalendR\Event\ProviderInterface $provider
+     */
+    public function setProvider(ProviderInterface $provider)
+    {
+        $this->provider = $provider;
+    }
+
+    /**
+     * @return \CalendR\Event\ProviderInterface
+     */
+    public function getProvider()
+    {
+        return $this->provider;
     }
 }
