@@ -5,7 +5,7 @@ namespace CalendR\Event;
 use CalendR\Event\EventInterface;
 use CalendR\Period\PeriodInterface;
 
-class Manager implements \IteratorAggregate
+class Manager implements \IteratorAggregate, \Countable
 {
     /**
      * @var array|EventInterface
@@ -18,7 +18,7 @@ class Manager implements \IteratorAggregate
      */
     public function add($events)
     {
-        $events = (array)$events;
+        $events = is_array($events) ? $events : array($events);
         foreach ($events as $event) {
             if (!$event instanceof EventInterface) {
                 throw new \InvalidArgumentException('Events must implement \\CalendR\\Event\\EventInterface.');
@@ -87,7 +87,11 @@ class Manager implements \IteratorAggregate
         $events = array();
 
         foreach ($this->all() as $event) {
-            if ($event->containsPeriod($period) || $event->isDuring($period)) {
+            if ($event->containsPeriod($period)
+                || $event->isDuring($period)
+                || $period->contains($event->getBegin())
+                || $period->contains($event->getEnd())
+            ) {
                 $events[] = $event;
             }
         }
@@ -102,5 +106,13 @@ class Manager implements \IteratorAggregate
     public function getIterator()
     {
        return new \ArrayIterator($this->events);
+    }
+
+    /**
+     * @return int The custom count as an integer.
+     */
+    public function count()
+    {
+        return count($this->events);
     }
 }

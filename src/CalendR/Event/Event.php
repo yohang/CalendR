@@ -42,7 +42,7 @@ class Event extends AbstractEvent
      *
      * @return string an unique event identifier
      */
-    public function getUid()
+    function getUid()
     {
         return $this->uid;
     }
