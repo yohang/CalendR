@@ -79,6 +79,15 @@ class Month implements \Iterator, PeriodInterface
         return new self($start);
     }
 
+
+    /**
+     * @return \DateTime
+     */
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
     /*
     * Iterator implementation
     */
@@ -128,5 +137,6 @@ class Month implements \Iterator, PeriodInterface
         $this->current = null;
         $this->next();
     }
+
 
 }
