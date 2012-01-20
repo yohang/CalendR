@@ -40,6 +40,22 @@ class Year implements PeriodInterface, \Iterator
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
      * @return PeriodInterface
      */
     public function getNext()
@@ -60,7 +76,7 @@ class Year implements PeriodInterface, \Iterator
 
     public static function isValid(\DateTime $start)
     {
-        return $start->format('d-m') == '1-1';
+        return $start->format('d-m') == '01-01';
     }
 
     /*
@@ -116,7 +132,7 @@ class Year implements PeriodInterface, \Iterator
      */
     public function valid()
     {
-        return null === $this->current;
+        return null !== $this->current;
     }
 
     /**
@@ -130,6 +146,5 @@ class Year implements PeriodInterface, \Iterator
         $this->current = null;
         $this->next();
     }
-
 
 }
