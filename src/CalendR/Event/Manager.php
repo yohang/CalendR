@@ -4,6 +4,7 @@ namespace CalendR\Event;
 
 use CalendR\Event\EventInterface;
 use CalendR\Period\PeriodInterface;
+use CalendR\Event\Provider\ProviderInterface;
 
 class Manager implements \IteratorAggregate, \Countable
 {

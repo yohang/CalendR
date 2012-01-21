@@ -1,6 +1,6 @@
 <?php
 
-namespace CalendR\Event;
+namespace CalendR\Event\Provider;
 
 interface ProviderInterface
 {

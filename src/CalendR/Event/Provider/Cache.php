@@ -1,0 +1,38 @@
+<?php
+
+namespace CalendR\Event\Provider;
+
+/**
+ * Wraps a provider and don't provide already provided events
+ */
+class Cache implements ProviderInterface
+{
+    private $provider;
+
+    private $periods = array();
+
+    public function __construct(ProviderInterface $provider)
+    {
+        $this->provider = $provider;
+    }
+
+    /**
+     * Return events that matches to $begin && $end
+     * $end date should be exclude
+     *
+     * @param \DateTime $begin
+     * @param \DateTime $end
+     */
+    public function getEvents(\DateTime $begin, \DateTime $end)
+    {
+        foreach ($this->periods as $period) {
+            if ($period[0]->diff($begin)->invert == 0 && $period[1]->diff($end)->invert == 1) {
+                return array();
+            }
+        }
+
+        $this->periods[] = array(clone $begin, clone $end);
+
+        return $this->provider->getEvents($begin, $end);
+    }
+}

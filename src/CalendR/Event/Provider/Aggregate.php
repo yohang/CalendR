@@ -1,11 +1,11 @@
 <?php
 
-namespace CalendR\Event;
+namespace CalendR\Event\Provider;
 
 /**
  * This class provide multiple event providers support
  */
-class ProviderAggregate implements ProviderInterface
+class Aggregate implements ProviderInterface
 {
     /**
      * @var array|ProviderInterface
