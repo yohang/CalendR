@@ -62,3 +62,8 @@ php composer.phar install
 ```php
 require 'vendor/.composer/autoload.php';
 ```
+
+Doc
+---
+
+[Events and Providers](docs/en/events.md)
