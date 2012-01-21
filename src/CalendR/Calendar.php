@@ -2,11 +2,35 @@
 
 namespace CalendR;
 
+use CalendR\Event\Manager;
+use CalendR\Period\PeriodInterface;
+
 /**
  * Factory class for calendar handling
  */
 class Calendar
 {
+    /**
+     * @var \CalendR\Event\Manager
+     */
+    private $eventManager;
+
+    /**
+     * @param Manager $eventManager
+     */
+    public function setEventManager(Manager $eventManager)
+    {
+        $this->eventManager = $eventManager;
+    }
+
+    /**
+     * @return Manager
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
     /**
      * @param \DateTime|int $yearOrStart
      * @return Period\Year
@@ -61,4 +85,10 @@ class Calendar
 
         return new Period\Day($yearOrStart);
     }
+
+    public function getEvents(PeriodInterface $period)
+    {
+        return $this->eventManager->find($period);
+    }
+
 }
