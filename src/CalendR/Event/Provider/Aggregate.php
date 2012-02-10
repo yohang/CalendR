@@ -23,6 +23,19 @@ class Aggregate implements ProviderInterface
     }
 
     /**
+     * Adds a provider
+     *
+     * @param ProviderInterface $provider
+     * @return Aggregate
+     */
+    public function add(ProviderInterface $provider)
+    {
+        $this->providers[] = $provider;
+
+        return $this;
+    }
+
+    /**
      * Return events that matches to $begin && $end
      * $end date should be exclude
      *

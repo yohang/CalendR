@@ -16,7 +16,7 @@ class Manager implements \IteratorAggregate, \Countable
     /**
      * @var ProviderInterface
      */
-    private $provider;
+    protected $provider;
 
     /**
      * @param array|EventInterface $event

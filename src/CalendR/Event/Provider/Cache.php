@@ -35,4 +35,9 @@ class Cache implements ProviderInterface
 
         return $this->provider->getEvents($begin, $end);
     }
+
+    public function getProvider()
+    {
+        return $this->provider;
+    }
 }
