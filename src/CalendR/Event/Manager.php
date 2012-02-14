@@ -11,7 +11,8 @@
 
 namespace CalendR\Event;
 
-use CalendR\Period\PeriodInterface;
+use CalendR\Period\PeriodInterface,
+    CalendR\Event\Provider\ProviderInterface;
 
 /**
  * Manage events and providers

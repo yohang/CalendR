@@ -37,7 +37,9 @@ class Cache implements ProviderInterface
     public function getEvents(\DateTime $begin, \DateTime $end)
     {
         foreach ($this->periods as $period) {
-            if ($period[0]->diff($begin)->invert == 0 && $period[1]->diff($end)->invert == 1) {
+            if ($period[0]->diff($begin)->invert == 0 &&
+               ($period[1]->diff($end)->invert == 1 ||
+                $period[1]->diff($end)->format('s') == 0)) {
                 return array();
             }
         }
