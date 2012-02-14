@@ -34,7 +34,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function contains(\DateTime $date)
     {
-        return $date->format('m') == $this->begin->format('m');
+        return $date->format('Y-m') == $this->begin->format('Y-m');
     }
 
     public static function isValid(\DateTime $start)
@@ -113,12 +113,9 @@ class Month extends PeriodAbstract implements \Iterator
 
             $this->current = new Week($start->sub(new \DateInterval(sprintf('P%sD', $delta))));
         } else {
-            $start = clone $this->current->getEnd();
+            $this->current = $this->current->getNext();
 
-            if ($start->format('m') == $this->begin->format('m')) {
-                $end = clone $start;
-                $this->current = new Week($start, $end->add(new \DateInterval('P7D')));
-            } else {
+            if ($this->current->getBegin()->format('m') != $this->begin->format('m')) {
                 $this->current = null;
             }
         }

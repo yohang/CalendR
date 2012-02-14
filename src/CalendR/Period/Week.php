@@ -32,7 +32,9 @@ class Week extends PeriodAbstract implements \Iterator
      */
     public function contains(\DateTime $date)
     {
-        return $date->format('W') == $this->getNumber();
+        return
+            $this->begin->diff($date)->invert == 0 &&
+            $this->end->diff($date)->invert == 1;
     }
 
     /**

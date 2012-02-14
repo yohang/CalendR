@@ -40,7 +40,7 @@ class Year extends PeriodAbstract implements \Iterator
      */
     public function getNext()
     {
-        return new self($this->begin);
+        return new self($this->end);
     }
 
     /**

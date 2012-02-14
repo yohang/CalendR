@@ -77,4 +77,26 @@ class YearTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($i, 12);
     }
+
+    public function testGetNext()
+    {
+        $year = new Year(new \DateTime('2012-01-01'));
+        $this->assertEquals('2013-01-01', $year->getNext()->getBegin()->format('Y-m-d'));
+    }
+
+    public function testGetPrevious()
+    {
+        $year = new Year(new \DateTime('2012-01-01'));
+        $this->assertEquals('2011-01-01', $year->getPrevious()->getBegin()->format('Y-m-d'));
+    }
+
+    public function testGetDatePeriod()
+    {
+        $date = new \DateTime('2012-01-01');
+        $year = new Year($date);
+        foreach ($year->getDatePeriod() as $dateTime) {
+            $this->assertEquals($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
+            $date->add(new \DateInterval('P1D'));
+        }
+    }
 }

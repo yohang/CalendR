@@ -20,9 +20,35 @@ class DayTest extends \PHPUnit_Framework_TestCase
      */
     public function testContains($start, $contain, $notContain)
     {
-        $week = new Day($start);
+        $day = new Day($start);
 
-        $this->assertTrue($week->contains($contain));
-        $this->assertFalse($week->contains($notContain));
+        $this->assertTrue($day->contains($contain));
+        $this->assertFalse($day->contains($notContain));
+    }
+
+    public function testGetNext()
+    {
+        $day = new Day(new \DateTime('2012-01-01'));
+        $this->assertEquals('2012-01-02', $day->getNext()->getBegin()->format('Y-m-d'));
+
+        $day = new Day(new \DateTime('2012-01-31'));
+        $this->assertEquals('2012-02-01', $day->getNext()->getBegin()->format('Y-m-d'));
+    }
+
+    public function testGetPrevious()
+    {
+        $day = new Day(new \DateTime('2012-01-01'));
+        $this->assertEquals('2011-12-31', $day->getPrevious()->getBegin()->format('Y-m-d'));
+
+        $day = new Day(new \DateTime('2012-01-31'));
+        $this->assertEquals('2012-01-30', $day->getPrevious()->getBegin()->format('Y-m-d'));
+    }
+
+    public function testGetDatePeriod()
+    {
+        $day = new Day(new \DateTime('2012-01-31'));
+        foreach ($day->getDatePeriod() as $dateTime) {
+            $this->assertEquals('2012-01-31', $dateTime->format('Y-m-d'));
+        }
     }
 }
