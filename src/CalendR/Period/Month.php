@@ -3,29 +3,16 @@
 namespace CalendR\Period;
 
 /**
- * A calendar Month
+ * Represents a Month
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Month implements \Iterator, PeriodInterface
+class Month extends PeriodAbstract implements \Iterator
 {
-    /**
-     * @var \DatePeriod
-     */
-    private $period;
-
     /**
      * @var Week
      */
     private $current;
-
-    /**
-     * @var \DateTime
-     */
-    private $begin;
-
-    /**
-     * @var \DateTime
-     */
-    private $end;
 
     /**
      * @param \DateTime $start
@@ -39,7 +26,6 @@ class Month implements \Iterator, PeriodInterface
         $this->begin = clone $start;
         $this->end = clone $this->begin;
         $this->end->add(new \DateInterval('P1M'));
-        $this->period = new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
     /**
@@ -79,21 +65,29 @@ class Month implements \Iterator, PeriodInterface
         return new self($start);
     }
 
-
     /**
-     * @return \DateTime
+     * Returns the period as a DatePeriod
+     *
+     * @return \DatePeriod
      */
-    public function getBegin()
+    public function getDatePeriod()
     {
-        return $this->begin;
+        return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
     /**
-     * @return \DateTime
+     * Returns a Day array
+     *
+     * @return array|Day
      */
-    public function getEnd()
+    public function getDays()
     {
-        return $this->end;
+        $days = array();
+        foreach ($this->getDatePeriod() as $date) {
+            $days[] = new Day($date);
+        }
+
+        return $days;
     }
 
     /*
@@ -145,6 +139,5 @@ class Month implements \Iterator, PeriodInterface
         $this->current = null;
         $this->next();
     }
-
 
 }

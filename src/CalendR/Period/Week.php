@@ -3,27 +3,18 @@
 namespace CalendR\Period;
 
 /**
- * A calendar week
+ * Represents a week
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Week implements \Iterator, PeriodInterface
+class Week extends PeriodAbstract implements \Iterator
 {
-    /**
-     * @var int
-     */
-    private $number;
-
-    /**
-     * @var \DateTime
-     */
-    private $begin;
-
-    /**
-     * @var \DateTime
-     */
-    private $end;
-
     private $current = null;
 
+    /**
+     * @param \DateTime $start
+     * @throw Exception\NotAWeek
+     */
     public function __construct(\DateTime $start)
     {
         if (!self::isValid($start)) {
@@ -33,7 +24,6 @@ class Week implements \Iterator, PeriodInterface
         $this->begin = clone $start;
         $this->end = clone $start;
         $this->end->add(new \DateInterval('P7D'));
-        $this->number = $start->format('W');
     }
 
     /**
@@ -42,45 +32,15 @@ class Week implements \Iterator, PeriodInterface
      */
     public function contains(\DateTime $date)
     {
-        return $date->format('W') == $this->number;
+        return $date->format('W') == $this->getNumber();
     }
 
+    /**
+     * @return int
+     */
     public function getNumber()
     {
-        return $this->number;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getBegin()
-    {
-        return $this->begin;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getStart()
-    {
-        return $this->begin;
-    }
-
-    public static function isValid(\DateTime $start)
-    {
-        if (1 != $start->format('w')) {
-            return false;
-        }
-
-        return true;
+        return $this->begin->format('W');
     }
 
     /**
@@ -100,6 +60,30 @@ class Week implements \Iterator, PeriodInterface
         $start->sub(new \DateInterval('1W'));
 
         return new self($start);
+    }
+
+    /**
+     * Returns the period as a DatePeriod
+     *
+     * @return \DatePeriod
+     */
+    public function getDatePeriod()
+    {
+        return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
+    }
+
+    /**
+     * @static
+     * @param \DateTime $start
+     * @return bool
+     */
+    public static function isValid(\DateTime $start)
+    {
+        if (1 != $start->format('w')) {
+            return false;
+        }
+
+        return true;
     }
 
     /*

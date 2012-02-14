@@ -81,4 +81,18 @@ class MonthTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($i, 31);
     }
+
+    public function testGetDays()
+    {
+        $month = new Month(new \DateTime('2012-01-01'));
+        $days = $month->getDays();
+
+        $this->assertEquals(31, count($days));
+
+        $first = $days[0];
+        foreach ($days as $day) {
+            $this->assertTrue($first->equals($day));
+            $first = $first->getNext();
+        }
+    }
 }

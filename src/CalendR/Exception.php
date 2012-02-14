@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace CalendR\Period\Exception;
+namespace CalendR;
 
-use CalendR\Exception;
-
-class NotAYear extends Exception
+/**
+ * The base CalendR exception class
+ */
+class Exception extends \Exception
 {
 }

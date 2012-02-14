@@ -2,17 +2,13 @@
 
 namespace CalendR\Period;
 
-class Day implements PeriodInterface
+/**
+ * Represents a Day
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
+ */
+class Day extends PeriodAbstract
 {
-    /**
-     * @var \DateTime
-     */
-    private $begin;
-
-    /**
-     * @var \DateTime
-     */
-    private $end;
 
     public function __construct(\DateTime $begin)
     {
@@ -55,20 +51,13 @@ class Day implements PeriodInterface
     }
 
     /**
-     * @return \DateTime
+     * Returns the period as a DatePeriod
+     *
+     * @return \DatePeriod
      */
-    public function getBegin()
+    public function getDatePeriod()
     {
-        return $this->begin;
+        return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
-
-    /**
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
-    }
-
 
 }

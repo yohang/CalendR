@@ -1,11 +1,23 @@
 <?php
 
+/*
+ * This file is part of CalendR, a Fréquence web project.
+ *
+ * (c) 2012 Fréquence web
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CalendR\Event;
 
-use CalendR\Event\EventInterface;
 use CalendR\Period\PeriodInterface;
-use CalendR\Event\Provider\ProviderInterface;
 
+/**
+ * Manage events and providers
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
+ */
 class Manager implements \IteratorAggregate, \Countable
 {
     /**

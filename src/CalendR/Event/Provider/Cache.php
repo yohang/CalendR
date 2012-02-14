@@ -1,9 +1,20 @@
 <?php
 
+/*
+ * This file is part of CalendR, a Fréquence web project.
+ *
+ * (c) 2012 Fréquence web
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CalendR\Event\Provider;
 
 /**
- * Wraps a provider and don't provide already provided events
+ * Wraps a provider and don't provides already provided events
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
 class Cache implements ProviderInterface
 {

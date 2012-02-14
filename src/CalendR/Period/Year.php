@@ -2,17 +2,13 @@
 
 namespace CalendR\Period;
 
-class Year implements PeriodInterface, \Iterator
+/**
+ * Represents a year
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
+ */
+class Year extends PeriodAbstract implements \Iterator
 {
-    /**
-     * @var \DateTime
-     */
-    private $begin;
-
-    /**
-     * @var \DateTime
-     */
-    private $end;
 
     /**
      * @var Month
@@ -40,22 +36,6 @@ class Year implements PeriodInterface, \Iterator
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getBegin()
-    {
-        return $this->begin;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
-    }
-
-    /**
      * @return PeriodInterface
      */
     public function getNext()
@@ -74,6 +54,21 @@ class Year implements PeriodInterface, \Iterator
         return new self($start);
     }
 
+    /**
+     * Returns the period as a DatePeriod
+     *
+     * @return \DatePeriod
+     */
+    public function getDatePeriod()
+    {
+        return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
+    }
+
+    /**
+     * @static
+     * @param \DateTime $start
+     * @return bool
+     */
     public static function isValid(\DateTime $start)
     {
         return $start->format('d-m') == '01-01';

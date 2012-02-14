@@ -1,11 +1,22 @@
 <?php
 
+/*
+ * This file is part of CalendR, a Fréquence web project.
+ *
+ * (c) 2012 Fréquence web
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CalendR\Event;
 
 use CalendR\Period\PeriodInterface;
 
 /**
  * Base interface for events implementation
+ *
+ * @author Yohan Giarelli <yohan@giare.li>
  */
 interface EventInterface
 {
@@ -21,6 +32,7 @@ interface EventInterface
 
     /**
      * Returns the event begin
+     *
      * @abstract
      * @return \DateTime event begin
      */
@@ -28,6 +40,7 @@ interface EventInterface
 
     /**
      * Returns the event end
+     *
      * @abstract
      * @return \DateTime event end
      */
