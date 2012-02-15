@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0-beta",
+    "version": "1.0.0-beta2",
     "name": "yohang/calendr",
     "description": "Object Oriented calendar management",
     "keywords": ["date", "calendar", "events"],
