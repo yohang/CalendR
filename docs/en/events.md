@@ -1,15 +1,15 @@
 Using events and providers
 ==========================
 
-CalendR can manage your events.
+CalendR can manage your events by adding them to the event manager, or by defining an event provider.
 
 ## Events
 
 ### How it works
 
-You have to create an Event class and implement the CalendR\Event\EventInterface to use the event management.
-(You can use the built-in CalendR\Event\Event class, but in most of case you'd better to implement your own class.,
-You can also extend the CalendR\Event\Abstract event that provide a base event management)
+You have to create an Event class that implements the CalendR\Event\EventInterface to use the event management.
+You can use the built-in CalendR\Event\Event class, but in most of case you'd better to implement your own class.
+You can also extend the CalendR\Event\Abstract event that provide base methods for your event class.
 
 #### Define your event class
 
@@ -74,7 +74,7 @@ Events can come from providers, like a Doctrine Entity Repository
 
 ### How it works
 
-You have to implements the CalendR\Event\Provider\ProviderInterface to make your class a provider.
+You have to implements the CalendR\Event\Provider\ProviderInterface to make your class become provider.
 
 #### Define your provider
 
@@ -88,6 +88,7 @@ class Provider implements ProviderInterface
     {
         /*
             Your stuff, you have to return an event array here.
+            In most of cases, it will be a database query.
         */
     }
 }
