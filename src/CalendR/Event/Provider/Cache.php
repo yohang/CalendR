@@ -34,7 +34,7 @@ class Cache implements ProviderInterface
      * @param \DateTime $begin
      * @param \DateTime $end
      */
-    public function getEvents(\DateTime $begin, \DateTime $end)
+    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
         foreach ($this->periods as $period) {
             if ($period[0]->diff($begin)->invert == 0 &&
@@ -46,7 +46,7 @@ class Cache implements ProviderInterface
 
         $this->periods[] = array(clone $begin, clone $end);
 
-        return $this->provider->getEvents($begin, $end);
+        return $this->provider->getEvents($begin, $end, $options);
     }
 
     public function getProvider()

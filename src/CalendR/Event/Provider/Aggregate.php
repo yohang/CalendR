@@ -54,12 +54,12 @@ class Aggregate implements ProviderInterface
      * @param \DateTime $end
      * @return array|EventInterface
      */
-    public function getEvents(\DateTime $begin, \DateTime $end)
+    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
         $events = array();
 
         foreach ($this->providers as $provider) {
-            $events = array_merge($events, $provider->getEvents($begin, $end));
+            $events = array_merge($events, $provider->getEvents($begin, $end, $options));
         }
 
         return $events;

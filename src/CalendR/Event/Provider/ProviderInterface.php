@@ -26,5 +26,5 @@ interface ProviderInterface
      * @param \DateTime $begin
      * @param \DateTime $end
      */
-    public function getEvents(\DateTime $begin, \DateTime $end);
+    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array());
 }

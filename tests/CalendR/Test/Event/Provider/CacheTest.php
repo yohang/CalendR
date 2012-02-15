@@ -63,7 +63,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase implements ProviderInterface
      * @param \DateTime $begin
      * @param \DateTime $end
      */
-    public function getEvents(\DateTime $begin, \DateTime $end)
+    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
         $this->calls++;
 
