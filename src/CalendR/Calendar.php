@@ -97,9 +97,9 @@ class Calendar
         return new Period\Day($yearOrStart);
     }
 
-    public function getEvents(PeriodInterface $period)
+    public function getEvents(PeriodInterface $period, array $options = array())
     {
-        return $this->eventManager->find($period);
+        return $this->eventManager->find($period, $options);
     }
 
 }

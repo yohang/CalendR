@@ -101,10 +101,10 @@ class Manager implements \IteratorAggregate, \Countable
      * @param \CalendR\Period\PeriodInterface $period
      * @return array|EventInterface
      */
-    public function find(PeriodInterface $period)
+    public function find(PeriodInterface $period, array $options = array())
     {
         if (null !== $this->provider) {
-            $this->add($this->provider->getEvents($period->getBegin(), $period->getEnd()));
+            $this->add($this->provider->getEvents($period->getBegin(), $period->getEnd(), $options));
         }
 
         $events = array();
