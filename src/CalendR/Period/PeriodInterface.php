@@ -63,6 +63,16 @@ interface PeriodInterface
     function equals(PeriodInterface $period);
 
     /**
+     * Returns true if the period include the other period
+     * given as argument
+     *
+     * @abstract
+     * @param PeriodInterface $period
+     * @param bool $strict
+     */
+    function includes(PeriodInterface $period, $strict = true);
+
+    /**
      * Checks if $start is good for building the period
      *
      * @static

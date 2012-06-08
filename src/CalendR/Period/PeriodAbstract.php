@@ -49,4 +49,28 @@ abstract class PeriodAbstract implements PeriodInterface
         ;
     }
 
+    /**
+     * Returns true if the period include the other period
+     * given as argument
+     *
+     * @param PeriodInterface $period
+     * @param bool $strict
+     */
+    public function includes(PeriodInterface $period, $strict = true)
+    {
+        if (true === $strict) {
+            return
+                $this->contains($period->getBegin()) &&
+                $this->contains($period->getEnd())
+            ;
+        }
+
+        return
+            $this->includes($period, true) ||
+            $period->includes($this, true) ||
+            $this->contains($period->getBegin()) ||
+            $this->contains($period->getEnd())
+        ;
+    }
+
 }
