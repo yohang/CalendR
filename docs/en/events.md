@@ -50,24 +50,6 @@ class Event extends AbstractEvent
 }
 ```
 
-#### Add your events to the manager
-
-```php
-
-$event = new Event('event-1', new \DateTime('2012-01-01'), new \DateTime('2012-01-03'));
-$factory->getEventManager()->add($event);
-
-```
-
-#### Find your events
-
-```php
-
-$month = $factory->getMonth(2012, 01);
-$events = $factory->getEvents($month);
-
-```
-
 ## Providers
 
 Events can come from providers, like a Doctrine Entity Repository
@@ -76,7 +58,7 @@ Events can come from providers, like a Doctrine Entity Repository
 
 You have to implements the CalendR\Event\Provider\ProviderInterface to make your class become provider.
 
-#### Define your provider
+#### Define your providers
 
 ```php
 
@@ -84,11 +66,12 @@ use CalendR\Event\Provider\ProviderInterface;
 
 class Provider implements ProviderInterface
 {
-    public function find(\DateTime $start, \DateTime $end)
+    public function find(\DateTime $start, \DateTime $end, array $options = array())
     {
         /*
             Your stuff, you have to return an event array here.
-            In most of cases, it will be a database query.
+            In most of cases, it will be a database query, or a external
+            service request (WebDAV ?)
         */
     }
 }
@@ -105,9 +88,17 @@ $factory->getEventManager()->setProvider(new Provider);
 
 And that's all. You can now find your events from your provider via $factory->getEvents()
 
+
+```php
+
+$month = $factory->getMonth(2012, 01);
+$events = $factory->getEvents($month);
+
+```
+
 ### Extra : Bundled Providers
 
-CalendR comes with 2 providers : Cache and Aggregate
+CalendR comes with 2 providers : Basic and Aggregate
 
-The Cache provider decorate your provider to make request only when necessary.
+The Basic provider is a simple array event storage.
 The Aggregate provider allows you to use multiple providers
