@@ -52,9 +52,7 @@ class Event extends AbstractEvent
 
 ## Providers
 
-Events can come from providers, like a Doctrine Entity Repository
-
-### How it works
+To retrieve your events via the CalendR event system, you need to create a provider
 
 You have to implements the CalendR\Event\Provider\ProviderInterface to make your class become provider.
 
@@ -66,7 +64,7 @@ use CalendR\Event\Provider\ProviderInterface;
 
 class Provider implements ProviderInterface
 {
-    public function find(\DateTime $start, \DateTime $end, array $options = array())
+    public function getEvents(\DateTime $start, \DateTime $end, array $options = array())
     {
         /*
             Your stuff, you have to return an event array here.
@@ -82,7 +80,7 @@ class Provider implements ProviderInterface
 
 ```php
 
-$factory->getEventManager()->setProvider(new Provider);
+$factory->getEventManager()->addProvider(new Provider);
 
 ```
 

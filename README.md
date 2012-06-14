@@ -25,7 +25,7 @@ Basic Usage
                 <?php foreach ($week as $day): ?>
 
                     <?php //Check days that are out of your month ?>
-                    <td<?php $month->contains($day->getBegin()) or print ' style="color: grey;"' ?>>
+                    <td<?php $month->contains($day->getBegin()) or print ' class="out-of-month"' ?>>
                         <?php echo $day->getBegin()->format('d') ?>
                     </td>
 
@@ -63,7 +63,7 @@ Install composer and run it
 (Optional) Autoload CalendR
 
 ```php
-    require 'vendor/.composer/autoload.php';
+    require 'vendor/autoload.php';
 ```
 
 Integration
@@ -79,6 +79,6 @@ CalendR is still in beta and all comments/PRs are welcome :)
 TODO (And / Or planned)
 -----------------------
 
- * Renderers
+ * Renderers (WIP)
  * Integration for current frameworks (Symfony2 bundle already in development)
  * Add providers for some hosted services
