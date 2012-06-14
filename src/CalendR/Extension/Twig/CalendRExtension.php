@@ -1,8 +1,83 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: yohan
- * Date: 14/06/12
- * Time: 11:48
- * To change this template use File | Settings | File Templates.
- */
+
+namespace CalendR\Extension\Twig;
+
+use CalendR\Calendar;
+
+class CalendRExtension extends \Twig_Extension
+{
+    /**
+     * @var \CalendR\Calendar
+     */
+    protected $factory;
+
+    /**
+     * @param Calendar $factory
+     */
+    public function __construct(Calendar $factory)
+    {
+        $this->factory = $factory;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return array(
+            'calendr_year'   => new \Twig_Function_Method($this, array($this, 'getYear')),
+            'calendr_month'  => new \Twig_Function_Method($this, array($this, 'getMonth')),
+            'calendr_week'   => new \Twig_Function_Method($this, array($this, 'getWeek')),
+            'calendr_day'    => new \Twig_Function_Method($this, array($this, 'getDay')),
+            'calendr_events' => new \Twig_Function_Method($this, array($this, 'getEvents')),
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getYear()
+    {
+        return call_user_func_array(array($this->factory, 'getYear'), func_get_args());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMonth()
+    {
+        return call_user_func_array(array($this->factory, 'getMonth'), func_get_args());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWeek()
+    {
+        return call_user_func_array(array($this->factory, 'getWeek'), func_get_args());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDay()
+    {
+        return call_user_func_array(array($this->factory, 'getDay'), func_get_args());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvent()
+    {
+        return call_user_func_array(array($this->factory, 'getEvent'), func_get_args());
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'calendr';
+    }
+}
