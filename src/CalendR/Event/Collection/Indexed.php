@@ -98,6 +98,16 @@ class Indexed implements CollectionInterface
     }
 
     /**
+     * Returns if we have events for the given index
+     *
+     * @return bool
+     */
+    public function has($index)
+    {
+      return 0 < count($this->find($index));
+    }
+
+    /**
      * returns events
      *
      * @param $index
