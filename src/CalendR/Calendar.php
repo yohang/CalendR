@@ -39,6 +39,10 @@ class Calendar
      */
     public function getEventManager()
     {
+        if (null === $this->eventManager) {
+            $this->eventManager = new Manager;
+        }
+
         return $this->eventManager;
     }
 
