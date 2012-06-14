@@ -35,6 +35,23 @@ interface CollectionInterface extends \Countable
     public function remove(EventInterface $event);
 
     /**
+     * Return all events;
+     *
+     * @abstract
+     * @return mixed
+     */
+    public function all();
+
+    /**
+     * Returns if there is events corresponding to $index period
+     *
+     * @abstract
+     * @param $index
+     * @return mixed
+     */
+    public function has($index);
+
+    /**
      * Find events in the collection
      *
      * @abstract

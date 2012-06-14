@@ -126,6 +126,22 @@ class Indexed implements CollectionInterface
     }
 
     /**
+     * Returns a flattened array of all events
+     *
+     * @return array
+     */
+    public function all()
+    {
+        $results = array();
+
+        foreach ($this->events as $events) {
+            $results = array_merge($results, $events);
+        }
+
+        return $results;
+    }
+
+    /**
      * Computes event index
      *
      * @param \CalendR\Event\EventInterface $event
