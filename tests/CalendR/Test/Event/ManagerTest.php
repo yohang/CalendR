@@ -57,4 +57,21 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
             array('providers' => array())
         )));
     }
+
+    public function testCollectionInstatiator()
+    {
+        $this->assertInstanceOf(
+            'CalendR\\Event\\Collection\\Indexed',
+            $this->object->find(new Month(new \DateTime('2012-01-01')))
+        );
+
+        $this->object->setCollectionInstantiator(function() {
+            return new \CalendR\Event\Collection\Basic;
+        });
+
+        $this->assertInstanceOf(
+            'CalendR\\Event\\Collection\\Basic',
+            $this->object->find(new Month(new \DateTime('2012-01-01')))
+        );
+    }
 }
