@@ -35,7 +35,7 @@ class Manager
 
     /**
      * @param array $providers
-     * @param null $instantiator
+     * @param null  $instantiator
      */
     public function __construct(array $providers = array(), $instantiator = null)
     {
@@ -55,7 +55,7 @@ class Manager
      * find events that matches the given period (during or over)
      *
      * @param \CalendR\Period\PeriodInterface $period
-     * @param array $options
+     * @param array                           $options
      * @return array|EventInterface
      */
     public function find(PeriodInterface $period, array $options = array())

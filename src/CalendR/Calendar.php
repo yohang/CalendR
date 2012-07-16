@@ -61,7 +61,7 @@ class Calendar
 
     /**
      * @param \DateTime|int $yearOrStart year if month is filled, month begin datetime otherwise
-     * @param null|int $month number (1~12)
+     * @param null|int      $month       number (1~12)
      * @return \CalendR\Period\Month
      */
     public function getMonth($yearOrStart, $month = null)
@@ -75,7 +75,7 @@ class Calendar
 
     /**
      * @param \DateTime|int $yearOrStart
-     * @param null|int $week
+     * @param null|int      $week
      * @return Period\Week
      */
     public function getWeek($yearOrStart, $week = null)
@@ -89,8 +89,8 @@ class Calendar
 
     /**
      * @param \DateTime|int $yearOrStart
-     * @param null|int $month
-     * @param null|int $day
+     * @param null|int      $month
+     * @param null|int      $day
      */
     public function getDay($yearOrStart, $month = null, $day = null)
     {

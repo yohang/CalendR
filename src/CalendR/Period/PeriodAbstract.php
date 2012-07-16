@@ -65,7 +65,7 @@ abstract class PeriodAbstract implements PeriodInterface
      * given as argument
      *
      * @param PeriodInterface $period
-     * @param bool $strict
+     * @param bool            $strict
      */
     public function includes(PeriodInterface $period, $strict = true)
     {

@@ -94,7 +94,7 @@ class Basic implements CollectionInterface
         foreach ($this->events as $event) {
             if ($index instanceof PeriodInterface && $index->containsEvent($event)) {
                 $result[] = $event;
-            } else if ($index instanceof \DateTime && $event->contains($index)) {
+            } elseif ($index instanceof \DateTime && $event->contains($index)) {
                 $result[] = $event;
             }
         }

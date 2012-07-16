@@ -51,7 +51,7 @@ class Indexed implements CollectionInterface
 
     /**
      * @param array $events
-     * @param null $callable
+     * @param null  $callable
      */
     public function __construct(array $events = array(), $callable = null)
     {

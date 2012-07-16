@@ -84,7 +84,7 @@ interface PeriodInterface
      *
      * @abstract
      * @param PeriodInterface $period
-     * @param bool $strict
+     * @param bool            $strict
      */
     function includes(PeriodInterface $period, $strict = true);
 
