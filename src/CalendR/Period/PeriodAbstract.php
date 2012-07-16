@@ -104,4 +104,15 @@ abstract class PeriodAbstract implements PeriodInterface
             $this->contains($event->getEnd())
         ;
     }
+
+    /**
+     * Format the period to a string
+     *
+     * @param $format
+     * @return string
+     */
+    public function format($format)
+    {
+        return $this->begin->format($format);
+    }
 }

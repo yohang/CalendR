@@ -68,4 +68,13 @@ class Day extends PeriodAbstract
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
+    /**
+     * Returns the day name (probably in english)
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->format('l');
+    }
 }

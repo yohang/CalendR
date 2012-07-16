@@ -156,5 +156,13 @@ class Week extends PeriodAbstract implements \Iterator
         $this->next();
     }
 
-
+    /**
+     * Returns the week number
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->format('W');
+    }
 }

@@ -103,6 +103,15 @@ interface PeriodInterface
     function containsEvent(EventInterface $event);
 
     /**
+     * Format the period to a string
+     *
+     * @abstract
+     * @param $format
+     * @return string
+     */
+    function format($format);
+
+    /**
      * Checks if $start is good for building the period
      *
      * @static

@@ -142,4 +142,13 @@ class Year extends PeriodAbstract implements \Iterator
         $this->next();
     }
 
+    /**
+     * Returns the year
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->format('Y');
+    }
 }

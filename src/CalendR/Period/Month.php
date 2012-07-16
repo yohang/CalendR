@@ -137,4 +137,14 @@ class Month extends PeriodAbstract implements \Iterator
         $this->next();
     }
 
+    /**
+     * Returns the month name (probably in english)
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->format('F');
+    }
+
 }
