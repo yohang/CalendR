@@ -26,8 +26,26 @@ class Manager
      */
     protected $providers;
 
-    public function __construct(array $providers = array())
+    /**
+     * The callable used to instantiate the event collection
+     *
+     * @var callable
+     */
+    protected $collectionInstantiator;
+
+    /**
+     * @param array $providers
+     * @param null $instantiator
+     */
+    public function __construct(array $providers = array(), $instantiator = null)
     {
+        $this->collectionInstantiator = $instantiator;
+        if (null === $instantiator) {
+            $this->collectionInstantiator = function() {
+                return new Collection\Indexed();
+            };
+        }
+
         foreach ($providers as $name => $provider) {
             $this->addProvider($name, $provider);
         }
@@ -41,28 +59,49 @@ class Manager
      */
     public function find(PeriodInterface $period, array $options = array())
     {
-        $events = array();
+        // Check if there's a provider option provided, used to filter the used providers
+        $providers = isset($options['provider']) ? $options['provider'] : array();
+        if (!is_array($providers)) {
+            $providers = array($providers);
+        }
+
+        // Instantiate an event collection
+        $collection = call_user_func($this->collectionInstantiator);
+
         foreach ($this->providers as $name => $provider) {
-            if (isset($options['providers']) && !in_array($name, (array)$options['providers'])) {
+            if (!in_array($name, $providers)) {
                 continue;
             }
 
+            // Add matching events to the collection
             foreach ($provider->getEvents($period->getBegin(), $period->getEnd(), $options) as $event) {
-                if ($event->containsPeriod($period)
-                    || $event->isDuring($period)
-                    || $period->contains($event->getBegin())
-                    || $period->contains($event->getEnd())
-                ) {
-                    $events[] = $event;
+                if ($period->containsEvent($event)) {
+                    $collection->add($event);
                 }
             }
         }
 
-        return new Collection\Indexed($events);
+        return $collection;
     }
 
+    /**
+     * Adds a provider to the provider stack
+     *
+     * @param $name
+     * @param ProviderInterface $provider
+     */
     public function addProvider($name, ProviderInterface $provider)
     {
         $this->providers[$name] = $provider;
+    }
+
+    /**
+     * Sets the callable used to instantiate the event collection
+     *
+     * @param callable $collectionInstantiator
+     */
+    public function setCollectionInstantiator($collectionInstantiator)
+    {
+        $this->collectionInstantiator = $collectionInstantiator;
     }
 }

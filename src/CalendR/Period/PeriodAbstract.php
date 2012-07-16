@@ -1,6 +1,17 @@
 <?php
 
+/*
+ * This file is part of CalendR, a Fréquence web project.
+ *
+ * (c) 2012 Fréquence web
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CalendR\Period;
+
+use CalendR\Event\EventInterface;
 
 /**
  * An abstract class that represent a date period and provide some base helpers
@@ -44,7 +55,7 @@ abstract class PeriodAbstract implements PeriodInterface
     public function equals(PeriodInterface $period)
     {
         return
-            $period instanceof self &&
+            $period instanceof static &&
             $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s')
         ;
     }
@@ -73,4 +84,24 @@ abstract class PeriodAbstract implements PeriodInterface
         ;
     }
 
+    /**
+     * Returns if $event is during this period.
+     * Non strict. Must return true if :
+     *  * Event is during period
+     *  * Period is during event
+     *  * Event begin is during Period
+     *  * Event end is during Period
+     *
+     * @param EventInterface $event
+     * @return boolean
+     */
+    public function containsEvent(EventInterface $event)
+    {
+        return
+            $event->containsPeriod($this) ||
+            $event->isDuring($this) ||
+            $this->contains($event->getBegin()) ||
+            $this->contains($event->getEnd())
+        ;
+    }
 }
