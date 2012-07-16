@@ -55,21 +55,21 @@ class Manager
      * find events that matches the given period (during or over)
      *
      * @param \CalendR\Period\PeriodInterface $period
+     * @param array $options
      * @return array|EventInterface
      */
     public function find(PeriodInterface $period, array $options = array())
     {
         // Check if there's a provider option provided, used to filter the used providers
-        $providers = isset($options['provider']) ? $options['provider'] : array();
+        $providers = isset($options['providers']) ? $options['providers'] : array();
         if (!is_array($providers)) {
             $providers = array($providers);
         }
 
         // Instantiate an event collection
         $collection = call_user_func($this->collectionInstantiator);
-
         foreach ($this->providers as $name => $provider) {
-            if (!in_array($name, $providers)) {
+            if (count($providers) > 0 && !in_array($name, $providers)) {
                 continue;
             }
 
