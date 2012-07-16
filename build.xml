@@ -19,7 +19,7 @@
     </target>
 
     <target name="build" depends="prepare" description="Builds the project">
-
+        <exec command="composer install --dev" />
     </target>
 
     <target name="test" depends="build" description="Build the project">
