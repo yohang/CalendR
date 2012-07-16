@@ -119,4 +119,13 @@ interface PeriodInterface
      * @param \DateTime $start
      */
     static function isValid(\DateTime $start);
+
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @static
+     * @abstract
+     * @return \DateInterval
+     */
+    static function getDateInterval();
 }

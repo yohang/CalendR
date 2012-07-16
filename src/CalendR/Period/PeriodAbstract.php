@@ -115,4 +115,27 @@ abstract class PeriodAbstract implements PeriodInterface
     {
         return $this->begin->format($format);
     }
+
+    /**
+     * Gets the next period of the same type
+     *
+     * @return PeriodInterface
+     */
+    public function getNext()
+    {
+        return new static($this->end);
+    }
+
+    /**
+     * Gets the previous period of the same type
+     *
+     * @return PeriodInterface
+     */
+    public function getPrevious()
+    {
+        $start = clone $this->begin;
+        $start->sub(static::getDateInterval());
+
+        return new static($start);
+    }
 }

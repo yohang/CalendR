@@ -47,25 +47,6 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * @return Month
-     */
-    public function getNext()
-    {
-        return new self($this->end);
-    }
-
-    /**
-     * @return Month
-     */
-    public function getPrevious()
-    {
-        $start = clone $this->begin;
-        $start->sub(new \DateInterval('P1M'));
-
-        return new self($start);
-    }
-
-    /**
      * Returns the period as a DatePeriod
      *
      * @return \DatePeriod
@@ -147,4 +128,14 @@ class Month extends PeriodAbstract implements \Iterator
         return $this->format('F');
     }
 
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @static
+     * @return \DateInterval
+     */
+    static function getDateInterval()
+    {
+        return new \DateInterval('P1M');
+    }
 }

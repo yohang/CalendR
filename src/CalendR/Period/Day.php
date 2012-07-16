@@ -40,25 +40,6 @@ class Day extends PeriodAbstract
     }
 
     /**
-     * @return Day
-     */
-    public function getNext()
-    {
-        return new self($this->end);
-    }
-
-    /**
-     * @return Day
-     */
-    public function getPrevious()
-    {
-        $previous = clone $this;
-        $previous->begin->sub(new \DateInterval('P1D'));
-
-        return $previous;
-    }
-
-    /**
      * Returns the period as a DatePeriod
      *
      * @return \DatePeriod
@@ -76,5 +57,16 @@ class Day extends PeriodAbstract
     public function __toString()
     {
         return $this->format('l');
+    }
+
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @static
+     * @return \DateInterval
+     */
+    static function getDateInterval()
+    {
+        return new \DateInterval('P1D');
     }
 }

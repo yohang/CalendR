@@ -46,25 +46,6 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * @return Week
-     */
-    function getNext()
-    {
-        return new self($this->end);
-    }
-
-    /**
-     * @return Week
-     */
-    function getPrevious()
-    {
-        $start = clone $this->begin;
-        $start->sub(new \DateInterval('1W'));
-
-        return new self($start);
-    }
-
-    /**
      * Returns the period as a DatePeriod
      *
      * @return \DatePeriod
@@ -164,5 +145,16 @@ class Week extends PeriodAbstract implements \Iterator
     public function __toString()
     {
         return $this->format('W');
+    }
+
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @static
+     * @return \DateInterval
+     */
+    static function getDateInterval()
+    {
+        return new \DateInterval('P1W');
     }
 }
