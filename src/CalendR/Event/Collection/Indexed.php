@@ -11,8 +11,8 @@
 
 namespace CalendR\Event\Collection;
 
-use CalendR\Period\PeriodInterface,
-    CalendR\Event\EventInterface;
+use CalendR\Event\EventInterface;
+use CalendR\Period\PeriodInterface;
 
 /**
  * This class store event by indexing them with a given index pattern.
@@ -94,8 +94,8 @@ class Indexed implements CollectionInterface
     {
         $index = $this->computeIndex($event);
         if (isset($this->events[$index])) {
-            foreach ($this->events[$index] as $key => $event) {
-                if ($event->getUid() == $event->getUid()) {
+            foreach ($this->events[$index] as $key => $internalEvent) {
+                if ($event->getUid() == $internalEvent->getUid()) {
                     unset($this->events[$index][$key]);
                     $this->count--;
                 }
