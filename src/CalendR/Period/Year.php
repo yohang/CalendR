@@ -36,25 +36,6 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * @return PeriodInterface
-     */
-    public function getNext()
-    {
-        return new self($this->end);
-    }
-
-    /**
-     * @return PeriodInterface
-     */
-    public function getPrevious()
-    {
-        $start = clone $this->begin;
-        $start->sub(new \DateInterval('P1Y'));
-
-        return new self($start);
-    }
-
-    /**
      * Returns the period as a DatePeriod
      *
      * @return \DatePeriod
@@ -142,4 +123,24 @@ class Year extends PeriodAbstract implements \Iterator
         $this->next();
     }
 
+    /**
+     * Returns the year
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->format('Y');
+    }
+
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @static
+     * @return \DateInterval
+     */
+    static function getDateInterval()
+    {
+        return new \DateInterval('P1Y');
+    }
 }

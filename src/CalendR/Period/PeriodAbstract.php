@@ -1,6 +1,17 @@
 <?php
 
+/*
+ * This file is part of CalendR, a Fréquence web project.
+ *
+ * (c) 2012 Fréquence web
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CalendR\Period;
+
+use CalendR\Event\EventInterface;
 
 /**
  * An abstract class that represent a date period and provide some base helpers
@@ -44,7 +55,7 @@ abstract class PeriodAbstract implements PeriodInterface
     public function equals(PeriodInterface $period)
     {
         return
-            $period instanceof self &&
+            $period instanceof static &&
             $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s')
         ;
     }
@@ -54,7 +65,7 @@ abstract class PeriodAbstract implements PeriodInterface
      * given as argument
      *
      * @param PeriodInterface $period
-     * @param bool $strict
+     * @param bool            $strict
      */
     public function includes(PeriodInterface $period, $strict = true)
     {
@@ -73,4 +84,58 @@ abstract class PeriodAbstract implements PeriodInterface
         ;
     }
 
+    /**
+     * Returns if $event is during this period.
+     * Non strict. Must return true if :
+     *  * Event is during period
+     *  * Period is during event
+     *  * Event begin is during Period
+     *  * Event end is during Period
+     *
+     * @param EventInterface $event
+     * @return boolean
+     */
+    public function containsEvent(EventInterface $event)
+    {
+        return
+            $event->containsPeriod($this) ||
+            $event->isDuring($this) ||
+            $this->contains($event->getBegin()) ||
+            $this->contains($event->getEnd())
+        ;
+    }
+
+    /**
+     * Format the period to a string
+     *
+     * @param $format
+     * @return string
+     */
+    public function format($format)
+    {
+        return $this->begin->format($format);
+    }
+
+    /**
+     * Gets the next period of the same type
+     *
+     * @return PeriodInterface
+     */
+    public function getNext()
+    {
+        return new static($this->end);
+    }
+
+    /**
+     * Gets the previous period of the same type
+     *
+     * @return PeriodInterface
+     */
+    public function getPrevious()
+    {
+        $start = clone $this->begin;
+        $start->sub(static::getDateInterval());
+
+        return new static($start);
+    }
 }

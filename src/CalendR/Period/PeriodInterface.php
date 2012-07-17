@@ -11,6 +11,13 @@
 
 namespace CalendR\Period;
 
+use CalendR\Event\EventInterface;
+
+/**
+ * Interface that all Periods must implement.
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
+ */
 interface PeriodInterface
 {
     /**
@@ -77,9 +84,32 @@ interface PeriodInterface
      *
      * @abstract
      * @param PeriodInterface $period
-     * @param bool $strict
+     * @param bool            $strict
      */
     function includes(PeriodInterface $period, $strict = true);
+
+    /**
+     * Returns if $event is during this period.
+     * Non strict. Must return true if :
+     *  * Event is during period
+     *  * Period is during event
+     *  * Event begin is during Period
+     *  * Event end is during Period
+     *
+     * @abstract
+     * @param EventInterface $event
+     * @return boolean
+     */
+    function containsEvent(EventInterface $event);
+
+    /**
+     * Format the period to a string
+     *
+     * @abstract
+     * @param $format
+     * @return string
+     */
+    function format($format);
 
     /**
      * Checks if $start is good for building the period
@@ -89,4 +119,13 @@ interface PeriodInterface
      * @param \DateTime $start
      */
     static function isValid(\DateTime $start);
+
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @static
+     * @abstract
+     * @return \DateInterval
+     */
+    static function getDateInterval();
 }

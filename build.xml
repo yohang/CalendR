@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="CalendR" basedir="." default="build">
+
+    <property name="builddir" value="${ws}/build" />
+    <property name="srcdir"   value="${project.basedir}" />
+    <property name="package"  value="CalendR" override="true" />
+
+    <target name="clean" description="Clean the build environment">
+        <delete dir="${builddir}" />
+        <delete dir="generatedJUnitFiles" />
+    </target>
+
+    <target name="prepare" depends="clean" description="prepare the build">
+        <mkdir dir="${builddir}" />
+        <mkdir dir="${builddir}/logs" />
+        <mkdir dir="${builddir}/logs/coverage" />
+        <mkdir dir="${builddir}/docs" />
+    </target>
+
+    <target name="build" depends="prepare" description="Builds the project">
+        <exec command="composer install --dev" />
+    </target>
+
+    <target name="test" depends="build" description="Build the project">
+        <phingcall target="phpunit" />
+        <phingcall target="phpcd" />
+        <phingcall target="pdepend" />
+        <phingcall target="pmd" />
+        <phingcall target="checkstyle" />
+    </target>
+
+    <target name="phpunit" description="Run tests">
+        <exec passthru="true" command="phpunit
+        --log-junit ${builddir}/logs/phpunit.xml
+        --coverage-clover ${builddir}/logs/coverage/clover.xml -c ${ws}" />
+    </target>
+
+    <target name="phpcd" description="Detect code duplication">
+        <exec command="phpcpd
+          --min-lines 8
+          --min-tokens 8
+          --log-pmd ${builddir}/logs/pmd-cpd.xml src/" />
+    </target>
+
+    <target name="pdepend" description="Analyze code">
+        <exec command="pdepend
+            --jdepend-xml=${builddir}/logs/jdepend.xml src/" />
+    </target>
+
+    <target name="pmd" description="PHP mess detector">
+        <exec command="phpmd src/ xml codesize,unusedcode
+            --reportfile ${builddir}/logs/pmd.xml" />
+    </target>
+
+    <target name="checkstyle" description="Code Sniffer">
+        <exec command="phpcs
+            --standard=Symfony2
+            --report=checkstyle
+            ${project.basedir}/src > ${builddir}/logs/checkstyle.xml" />
+    </target>
+
+</project>

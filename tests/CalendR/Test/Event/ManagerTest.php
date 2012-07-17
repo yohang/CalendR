@@ -52,9 +52,26 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
             new Month(new \DateTime('2012-01-01')),
             array('providers' => array('basic-1', 'basic-2'))
         )));
-        $this->assertSame(0, count($this->object->find(
+        $this->assertSame(2, count($this->object->find(
             new Month(new \DateTime('2012-01-01')),
             array('providers' => array())
         )));
+    }
+
+    public function testCollectionInstatiator()
+    {
+        $this->assertInstanceOf(
+            'CalendR\\Event\\Collection\\Indexed',
+            $this->object->find(new Month(new \DateTime('2012-01-01')))
+        );
+
+        $this->object->setCollectionInstantiator(function() {
+            return new \CalendR\Event\Collection\Basic;
+        });
+
+        $this->assertInstanceOf(
+            'CalendR\\Event\\Collection\\Basic',
+            $this->object->find(new Month(new \DateTime('2012-01-01')))
+        );
     }
 }
