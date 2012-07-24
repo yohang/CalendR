@@ -66,10 +66,16 @@ Install composer and run it
     require 'vendor/autoload.php';
 ```
 
+More docs
+---------
+
+Check the `docs/` folder
+
 Integration
 -----------
 
-Symfony2 : [FrequenceWebCalendRBundle](https://github.com/frequence-web/FrequenceWebCalendRBundle)
+ * Silex : bundled with CalendR, check CalendR\Extension\Silex\Provider\CalendRServiceProvider
+ * Symfony2 : [FrequenceWebCalendRBundle](https://github.com/frequence-web/FrequenceWebCalendRBundle)
 
 Contribute
 ----------
@@ -80,5 +86,5 @@ TODO (And / Or planned)
 -----------------------
 
  * Renderers (WIP)
- * Integration for current frameworks (Symfony2 bundle already in development)
+ * Integration for current frameworks (Symfony2 bundle and Silex ServiceProvider already available)
  * Add providers for some hosted services
