@@ -104,4 +104,12 @@ class Manager
     {
         $this->collectionInstantiator = $collectionInstantiator;
     }
+
+    /**
+     * @return \CalendR\Event\Provider\ProviderInterface
+     */
+    public function getProviders()
+    {
+        return $this->providers;
+    }
 }
