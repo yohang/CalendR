@@ -1,0 +1,22 @@
+Silex integration
+==================
+
+CalendR is bundled with a Silex integration.
+
+Juste use :
+
+```php
+
+    $app->register(new CalendR\Extension\Silex\Provider\CalendRServiceProvider(), array(
+        'calendr.event.providers' => array(
+            // Your providers likes 'provider_name' => new YourAwesomeProvider()
+        )
+    ));
+
+```
+
+To add CalendR support to silex.
+
+You can now use `$app['calendr']` everywhere in your silex app.
+
+If you use twig, the CalendR twig extension will automatically be added to Twig.
