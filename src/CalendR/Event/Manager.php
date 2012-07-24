@@ -24,7 +24,7 @@ class Manager
     /**
      * @var ProviderInterface
      */
-    protected $providers;
+    protected $providers = array();
 
     /**
      * The callable used to instantiate the event collection
