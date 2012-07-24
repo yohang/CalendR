@@ -103,7 +103,7 @@ class Calendar
 
     public function getEvents(PeriodInterface $period, array $options = array())
     {
-        return $this->eventManager->find($period, $options);
+        return $this->getEventManager()->find($period, $options);
     }
 
 }
