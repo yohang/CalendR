@@ -25,7 +25,7 @@ class CalendRServiceProvider implements ServiceProviderInterface
             return $calendr;
         });
 
-        $app['calendr.event_manager'] = $app->share(function() {
+        $app['calendr.event_manager'] = $app->share(function($app) {
             return new Manager(
                 isset($app['calendr.event.providers']) ? $app['calendr.event.providers']: array(),
                 isset($app['calendr.event.collection.instantiator']) ? $app['calendr.event.collection.instantiator']: null
