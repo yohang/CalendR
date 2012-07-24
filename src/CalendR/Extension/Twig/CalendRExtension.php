@@ -25,11 +25,11 @@ class CalendRExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'calendr_year'   => new \Twig_Function_Method($this, array($this, 'getYear')),
-            'calendr_month'  => new \Twig_Function_Method($this, array($this, 'getMonth')),
-            'calendr_week'   => new \Twig_Function_Method($this, array($this, 'getWeek')),
-            'calendr_day'    => new \Twig_Function_Method($this, array($this, 'getDay')),
-            'calendr_events' => new \Twig_Function_Method($this, array($this, 'getEvents')),
+            'calendr_year'   => new \Twig_Function_Method($this, 'getYear'),
+            'calendr_month'  => new \Twig_Function_Method($this, 'getMonth'),
+            'calendr_week'   => new \Twig_Function_Method($this, 'getWeek'),
+            'calendr_day'    => new \Twig_Function_Method($this, 'getDay'),
+            'calendr_events' => new \Twig_Function_Method($this, 'getEvents'),
         );
     }
 
@@ -68,9 +68,9 @@ class CalendRExtension extends \Twig_Extension
     /**
      * @return mixed
      */
-    public function getEvent()
+    public function getEvents()
     {
-        return call_user_func_array(array($this->factory, 'getEvent'), func_get_args());
+        return call_user_func_array(array($this->factory, 'getEvents'), func_get_args());
     }
 
     /**
