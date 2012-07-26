@@ -75,6 +75,7 @@ Integration
 -----------
 
  * Silex : bundled with CalendR, check CalendR\Extension\Silex\Provider\CalendRServiceProvider
+ * symfony : [fwCalendRPlugin](https://github.com/yohang/fwCalendRPlugin)
  * Symfony2 : [FrequenceWebCalendRBundle](https://github.com/frequence-web/FrequenceWebCalendRBundle)
 
 Contribute
@@ -82,9 +83,14 @@ Contribute
 
 CalendR is still in beta and all comments/PRs are welcome :)
 
+License
+-------
+
+CalendR is licensed under the MIT License - see the LICENSE file for details
+
 TODO (And / Or planned)
 -----------------------
 
  * Renderers (WIP)
- * Integration for current frameworks (Symfony2 bundle and Silex ServiceProvider already available)
+ * Integration for current frameworks (Symfony2 bundle, symfony1 plugin and Silex ServiceProvider already available)
  * Add providers for some hosted services
