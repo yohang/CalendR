@@ -42,7 +42,7 @@ class Manager
         $this->collectionInstantiator = $instantiator;
         if (null === $instantiator) {
             $this->collectionInstantiator = function() {
-                return new Collection\Indexed();
+                return new Collection\Basic();
             };
         }
 
