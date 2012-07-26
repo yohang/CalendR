@@ -61,16 +61,16 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function testCollectionInstatiator()
     {
         $this->assertInstanceOf(
-            'CalendR\\Event\\Collection\\Indexed',
+            'CalendR\\Event\\Collection\\Basic',
             $this->object->find(new Month(new \DateTime('2012-01-01')))
         );
 
         $this->object->setCollectionInstantiator(function() {
-            return new \CalendR\Event\Collection\Basic;
+            return new \CalendR\Event\Collection\Indexed;
         });
 
         $this->assertInstanceOf(
-            'CalendR\\Event\\Collection\\Basic',
+            'CalendR\\Event\\Collection\\Indexed',
             $this->object->find(new Month(new \DateTime('2012-01-01')))
         );
     }
