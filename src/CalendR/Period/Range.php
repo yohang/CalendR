@@ -75,4 +75,15 @@ class Range extends PeriodAbstract
     {
         return new \DatePeriod($this->begin, $this->begin->diff($this->end), $this->end);
     }
+
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @static
+     * @return \DateInterval
+     */
+    static function getDateInterval()
+    {
+      throw new Exception\NotImplemented('Range period doesn\'t support getDateInterval().');
+    }
 }
