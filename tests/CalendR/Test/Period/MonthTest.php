@@ -32,6 +32,20 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public static function providerGetFirstMondayAndLastSunday()
+    {
+        $factory = new \CalendR\Calendar();
+
+        return array(
+            array($factory->getMonth(2012, 1), '2011-12-26', '2012-02-05'),
+            array($factory->getMonth(2012, 2), '2012-01-30', '2012-03-04'),
+            array($factory->getMonth(2012, 3), '2012-02-27', '2012-04-01'),
+            array($factory->getMonth(2012, 9), '2012-08-27', '2012-09-30'),
+            array($factory->getMonth(2012, 10), '2012-10-01', '2012-11-04'),
+            array($factory->getMonth(2012, 12), '2012-11-26', '2013-01-06'),
+        );
+    }
+
     /**
      * @dataProvider providerContains
      */
@@ -41,6 +55,22 @@ class MonthTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($month->contains($contain));
         $this->assertFalse($month->contains($notContain));
+    }
+
+    /**
+     * @dataProvider providerGetFirstMondayAndLastSunday
+     */
+    public function testGetFirstMonday(Month $month, $monday)
+    {
+        $this->assertSame($monday, $month->getFirstMonday()->format('Y-m-d'));
+    }
+
+    /**
+     * @dataProvider providerGetFirstMondayAndLastSunday
+     */
+    public function testGetLastSunday(Month $month, $monday, $sunday)
+    {
+        $this->assertSame($sunday, $month->getLastSunday()->format('Y-m-d'));
     }
 
 

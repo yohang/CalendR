@@ -71,6 +71,49 @@ class Month extends PeriodAbstract implements \Iterator
         return $days;
     }
 
+    /**
+     * Returns a Range period begining at the Monday of first week of this month,
+     * and ending at the last sunday of the last week of this month.
+     *
+     * @return Range
+     */
+    public function getExtendedMonth()
+    {
+        return new Range($this->getFirstMonday(), $this->getLastSunday());
+    }
+
+    /**
+     * Returns the monday of the first week of this month.
+     *
+     * @return \DateTime
+     */
+    public function getFirstMonday()
+    {
+        $delta = $this->begin->format('w') ?: 7;
+        $delta--;
+
+        $monday = clone $this->begin;
+        $monday->sub(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $monday;
+    }
+
+    /**
+     * Returns the sunday of the last week of this month.
+     *
+     * @return \DateTime
+     */
+    public function getLastSunday()
+    {
+        $sunday = clone $this->end;
+        $sunday->sub(new \DateInterval('P1D'));
+
+        $delta = 7 - ($sunday->format('w') ?: 7);
+        $sunday->add(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $sunday;
+    }
+
     /*
     * Iterator implementation
     */
@@ -86,13 +129,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $delta = $this->begin->format('w');
-            $delta = $delta ?: 7;
-            $delta--;
-
-            $start = clone $this->begin;
-
-            $this->current = new Week($start->sub(new \DateInterval(sprintf('P%sD', $delta))));
+            $this->current = new Week($this->getFirstMonday());
         } else {
             $this->current = $this->current->getNext();
 
