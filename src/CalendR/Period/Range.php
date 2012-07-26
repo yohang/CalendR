@@ -48,6 +48,7 @@ class Range extends PeriodAbstract
         $begin->add($diff);
         $end = clone($this->end);
         $end->add($diff);
+
         return new self($begin, $end);
     }
 
@@ -61,6 +62,7 @@ class Range extends PeriodAbstract
         $begin->sub($diff);
         $end = clone($this->end);
         $end->sub($diff);
+
         return new self($begin, $end);
     }
 
