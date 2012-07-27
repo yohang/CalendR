@@ -17,7 +17,8 @@
 
     "require-dev": {
         "twig/twig": "*",
-        "silex/silex": "*"
+        "silex/silex": "*",
+        "doctrine/orm": "*"
     },
 
     "minimum-stability": "dev",
