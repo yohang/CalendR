@@ -4,23 +4,13 @@ namespace CalendR\Test\Extension\Doctrine2;
 
 use CalendR\Test\BaseDoctrine2TestCase;
 use CalendR\Test\Stubs\Event;
-use CalendR\Test\Stubs\EventRepository;
+use CalendR\Extension\Doctrine2\QueryHelper;
 
-class EventRepositoryTest extends BaseDoctrine2TestCase
+class QueryHelperTest extends BaseDoctrine2TestCase
 {
-    /**
-     * @var EventRepository
-     */
-    protected $repo;
-
     public function setUp()
     {
-        if (version_compare(PHP_VERSION, '5.4.0') < 0) {
-            $this->markTestSkipped('You need PHP5.4 to use and test traits.');
-        }
-
         $this->setUpDoctrine();
-        $this->repo = $this->em->getRepository('CalendR\\Test\\Stubs\\Event');
     }
 
     public static function testGetEventsProvider()
@@ -35,7 +25,17 @@ class EventRepositoryTest extends BaseDoctrine2TestCase
      */
     public function testGetEvents($begin, $end, array $eventUids)
     {
-        $events = $this->repo->getEvents(new \DateTime($begin), new \DateTime($end));
+        $events = QueryHelper::addEventQuery(
+                $this->em->createQueryBuilder()->select('evt')->from('CalendR\\Test\\Stubs\\Event', 'evt'),
+                'evt.begin',
+                'evt.end',
+                new \DateTime($begin),
+                new \DateTime($end)
+            )
+            ->getQuery()
+            ->getResult()
+        ;
+
         $this->assertSame(count($eventUids), count($events));
         foreach ($events as $event) {
             $this->assertContains($event->getUid(), $eventUids);
