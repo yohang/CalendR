@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+{% include head.html %}
+<body>
+    {% include nav.html %}
+    <div class="container">
+        <div class="row">
+            <div class="span7">
+                <div class="hero-unit">
+                    <h1>CalendR</h1>
+                    <p>The missing PHP5.3+ calendar management library</p>
+                </div>
+            </div>
+            <div class="span5">
+                <h2>Install</h2>
+                <pre> $ curl -s http://getcomposer.org/installer | php
+ $ php composer.phar require yohang/calendr</pre>
+                <a href="https://github.com/yohang/CalendR" class="btn btn-success btn-large" id="view-on-github">
+                    View on Github
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+                {{ content }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
