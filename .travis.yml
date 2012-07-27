@@ -1,4 +1,9 @@
 language: php
+
+branches:
+  except:
+    - gh-pages
+
 php:
     - 5.3
     - 5.4
