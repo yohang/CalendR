@@ -24,40 +24,39 @@ trait EventRepository
      * @param \DateTime $end
      * @param array     $options
      *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getEventsQueryBuilder(\DateTime $begin, \DateTime $end, array $options = array())
+    {
+        return QueryHelper::addEventQuery(
+            $this->createQueryBuilderForGetEvent($options),
+            $this->getBeginFieldName(),
+            $this->getEndFieldName(),
+            $begin,
+            $end
+        );
+    }
+
+    /**
+     * @param \DateTime $begin
+     * @param \DateTime $end
+     * @param array     $options
+     * @return \Doctrine\ORM\Query
+     */
+    public function getEventsQuery(\DateTime $begin, \DateTime $end, array $options = array())
+    {
+        return $this->getEventsQueryBuilder($begin, $end, $options)->getQuery();
+    }
+
+    /**
+     * @param \DateTime $begin
+     * @param \DateTime $end
+     * @param array     $options
      * @return array|\CalendR\Event\EventInterface
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
-        $qb = $this->createQueryBuilderForGetEvent($options);
-        $beginField = $this->getBeginFieldName();
-        $endField = $this->getEndFieldName();
-
-        return $qb
-            ->where(
-                $qb->expr()->orX(
-                    // Period in event
-                    $qb->expr()->andX(
-                        $qb->expr()->lte($beginField, $begin),
-                        $qb->expr()->gte($endField, $end)
-                    ),
-                    // Event in period
-                    $qb->expr()->andX(
-                        $qb->expr()->gte($beginField, $begin),
-                        $qb->expr()->lt($endField, $end)
-                    ),
-                    // Event begins during period
-                    $qb->expr()->andX(
-                        $qb->expr()->lt($beginField, $end),
-                        $qb->expr()->gte($beginField, $begin)
-                    ),
-                    // Event ends during period
-                    $qb->expr()->andX(
-                        $qb->expr()->gte($endField, $begin),
-                        $qb->expr()->lt($endField, $end)
-                    )
-                )
-            )
-        ;
+        return $this->getEventsQuery($begin, $end, $options)->getResult();
     }
 
     /**
