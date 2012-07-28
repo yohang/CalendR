@@ -4,5 +4,150 @@ title: Working with Events
 current: events
 ---
 
-Events
-======
+Working with events
+===================
+
+What could you do with your awesome generated calendar without the ability to fill it with events ?
+
+CalendR include a pretty simple, but powerfull, event management system.
+
+Overview <small>display all the events of the year by month</small>
+-------------------------------------------------------------------
+
+{% highlight php %}
+<?php
+$year = $factory->getYear(2012);
+$eventCollection = $factory->getEvents($year);
+?>
+<h1>Events in <?= $year ?></h1>
+<?php foreach ($year as $month): ?>
+<h2><?= $month ?></h2>
+<ul>
+    <?php foreach ($eventCollection->find($month) as $event): ?>
+        <li><?= $event ?></li>
+    <?php endforeach ?>
+</ul>
+<?php endforeach ?>
+{% endhighlight %}
+
+Create your event class
+-----------------------
+
+The events returned by CalendR when you call `$factory->getEvents()` are you own Plain PHP Objects. So you need to
+define them to use the event system.
+
+<p class="alert alert-info">
+    <strong>Note : </strong>CalendR provides a base event class,
+    <a href="/CalendR/api/CalendR/Event/Event.html"><code>CalendR\Event\Event</code></a>, but in most (all) cases,
+    you'd better to implement your own.
+</p>
+
+Creating your event class is pretty simple. Just define a class that implements the
+[`EventInterface`](http://yohang.github.com/CalendR/api/CalendR/Event/EventInterface) interface, or extends
+the abstract [`AbstractEvent`](http://yohang.github.com/CalendR/api/CalendR/Event/AbstractEvent) class that
+implements most of the interface methods
+
+{% highlight php %}
+<?php
+use CalendR\Event\AbstractEvent;
+
+class Event extends AbstractEvent
+{
+    protected $begin;
+    protected $end;
+    protected $uid;
+
+    // And all your fields
+
+    public function __construct($uid, \DateTime $start, \DateTime $end)
+    {
+        $this->uid = $uid;
+        $this->begin = clone $start;
+        $this->end = clone $end;
+    }
+
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
+    public function getEnd()
+    {
+        return $this->end;
+    }
+}
+
+{% endhighlight %}
+
+In this case, we extends the AbstractEvent, wich is the better choice when you can (sorry Propel users, for you, it
+seems that implementing all the EventInterface methods is the only choice).
+
+Create your event provider
+--------------------------
+
+Now that you have your event class defined, you need to provide them to CalendR via an event provider. An event provider
+is basically an object that implements
+[`CalendR\Event\Provider\ProviderInterface`](http://yohang.github.com/CalendR/api/CalendR/Event/Provider/ProviderInterface) interface.
+
+<p class="alert alert-info">
+    <strong>Note : </strong>CalendR provides a basic Provider,
+    <a href="/CalendR/api/CalendR/Event/Provider/Basic.html"><code>CalendR\Event\Provider\Basic</code></a>,
+    that can be suffisant in case of very simple needs.
+</p>
+
+A provider can be any type of object, for exemple, if will often be a Doctrine2 Repository, a Propel ActiveQuery,
+a Doctrine1 table, or, why not, a class that fetch events from an iCalendar Server.
+
+{% highlight php %}
+<?php
+
+use CalendR\Event\Provider\ProviderInterface;
+
+class MyAwesomeProvider implements ProviderInterface
+{
+    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
+    {
+        /*
+         Returns an array of events here. $options is the second argument of
+         $factory->getEvents(), so you can filter your event on anything (Calendar id/slug ?)
+        */
+    }
+}
+
+{% endhighlight %}
+
+<p class="alert alert-info">
+    <strong>Note : </strong>CalendR provides lot extensions / tools to ease the creation of your provider, see if
+    there is one for you in the extension part of the doc.
+    For exemple, for Doctrine2 users, we've done the job for you.
+</p>
+<p class="alert alert-info">
+    <strong>Note : </strong>If your event source is small and performant, just returns ALL your events in the provider.
+    The CalendR EventManager will filter the events when needed.
+</p>
+
+Add your provider to Calendar
+-----------------------------
+
+Ok, the last thing, you have to add your provider to the CalendR EventManager :
+
+
+{% highlight php %}
+<?php
+
+$factory = new CalendR\Calendar;
+$factory->getEventManager()->addProvider(new MyAwesomeProvider);
+
+{% endhighlight %}
+
+That's all.
+
+<p class="alert alert-info">
+    <strong>Note : </strong>If you use a framework supported by CalendR (symfony, Symfony2, Silex ATM), don't use this
+    syntax, there is a simple way ! Check the Plugin / Bundle / ServiceProvider documentation.
+</p>
