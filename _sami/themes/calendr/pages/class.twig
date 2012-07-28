@@ -8,6 +8,9 @@
     </div>
 {% endmacro %}
 
+{% block current_class class.name %}
+{% block current_namespace class.namespace %}
+
 {% block title %}{{ class.name }} | {{ parent() }}{% endblock %}
 
 {% block content %}
