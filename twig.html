@@ -46,7 +46,7 @@ Example <small>display events for a week</small>
 -----------------------
 
 {% highlight jinja %}
-{% raw %}
+{% literal %}
 {% set week = calendr_week(2012, 14) %}
 {% set events = calendr_events(week) %}
 
@@ -59,7 +59,7 @@ Example <small>display events for a week</small>
         {% endfor %}
     </ul>
 {% endfor %}
-{% endraw %}
+{% endliteral %}
 {% endhighlight %}
 
 

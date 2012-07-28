@@ -60,7 +60,7 @@ $app->get('/calendar/{year}/{month}', function($year, $month) use($app) {
 ### Template :
 
 {% highlight jinja %}
-{% raw %}
+{% literal %}
 <table>
     <thead>
         <tr>
@@ -94,7 +94,7 @@ $app->get('/calendar/{year}/{month}', function($year, $month) use($app) {
     </tbody>
 </table>
 
-{% endraw %}
+{% endliteral %}
 {% endhighlight %}
 
 <p class="alert alert-info">
