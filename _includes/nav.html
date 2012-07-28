@@ -7,11 +7,23 @@
                     <li{% if page.current == "index"%} class="active"{%endif%}><a href="/CalendR/index.html">Overview</a></li>
                     <li{% if page.current == "periods"%} class="active"{%endif%}><a href="/CalendR/periods.html">Periods</a></li>
                     <li{% if page.current == "events"%} class="active"{%endif%}><a href="/CalendR/events.html">Events</a></li>
+                    <li class="dropdown{% if page.current_category == "extensions"%} active{%endif%}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Extension<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Frameworks</li>
+                            <li{% if page.current == "symfony"%} class="active"{%endif%}><a href="#">symfony</a></li>
+                            <li{% if page.current == "symfony2"%} class="active"{%endif%}><a href="#">Symfony2</a></li>
+                            <li{% if page.current == "silex"%} class="active"{%endif%}><a href="/CalendR/silex.html">Silex</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">ORM</li>
+                            <li{% if page.current == "doctrine2"%} class="active"{%endif%}><a href="#">Doctrine2</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Others</li>
+                            <li{% if page.current == "twig"%} class="active"{%endif%}><a href="#">Twig</a></li>
+                        </ul>
+                    </li>
                     <li class="dropdown{% if page.current == "api"%} active{%endif%}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            API
-                            <b class="caret"></b>
-                        </a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
                         {% include api/classes.html %}
                     </li>
                 </ul>
