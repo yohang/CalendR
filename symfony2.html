@@ -1,0 +1,85 @@
+---
+layout: main
+title: Symfony2 Integration
+current: symfony2
+current_category: extensions
+---
+
+Symfony2 integration <small>via FrequenceWebCalendRBundle</small>
+=================================================================
+
+The Symfony2 integration is quite basic and provided by
+[FrequenceWebCalendRBundle](https://github.com/frequence-web/FrequenceWebCalendRBundle).
+
+You can install it with composer (`frequence-web/calendr-bundle`), git submodule, or Symfony2.0 `deps` file.
+Then, juste add the bundle to your `AppKernelClass`.
+
+{% highlight php %}
+<?php
+
+use Symfony\Component\HttpKernel\Kernel;
+
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // Your bundles
+            new FrequenceWeb\Bundle\CalendRBundle\FrequenceWebCalendRBundle(),
+        );
+
+        return $bundles;
+    }
+}
+{% endhighlight %}
+
+
+
+
+
+Accessing CalendR
+-----------------
+
+The CalendR bundle register the CalendR factory into the Symfony2 DIC. You can access it everywhere by requesting the
+`calendr` service.
+
+
+
+
+Register an event provider
+--------------------------
+
+To add your event provider to the CalendR event manager, you have to declare it as a service, and mark it with the
+`calendr.event_provider` tag.
+
+### Example <small>Plain Old PHP Object</small>
+
+{% highlight yaml %}
+services:
+    my_awesome_event_provider:
+        class: Vendor\MyAwesomeEventProvider
+        tags:
+            - { name: calendr.event_provider }
+{% endhighlight %}
+
+### Example <small>Doctrine2 repository</small>
+
+For Doctrine2 repositories, wich are instantied by the EntityManager, you have to declare the service via
+`factory_service` and `factory_method`.
+
+{% highlight yaml %}
+services:
+    booking_repository:
+        class:           Your\Bundle\Entity\EventRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method:  getRepository
+        arguments:       ['YourEntity:ShortName']
+        tags:
+            - { name: calendr.event_provider }
+{% endhighlight %}
+
+Twig and Symfony2 integration
+-----------------------------
+
+If you're using Twig with Symfony2, the CalendR Twig extension will be automatically registered.
+See [Twig integration](http://yohang.github.com/CalendR/twig.html).
