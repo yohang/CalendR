@@ -3,40 +3,10 @@
 CalendR is an Object Oriented Calendar management library on top of PHP5.3+ Date objects.
 You can use it to deal with all your needs about calendars and events.
 
-Basic Usage
------------
+Complete documentation
+----------------------
 
-```php
-    <?php
-
-    use CalendR\Calendar;
-
-    // Use the factory to get your period
-    $factory = new Calendar;
-    $month = $factory->getMonth(2012, 01);
-
-    ?>
-
-    <table>
-        <?php // Iterate over your month and get weeks ?>
-        <?php foreach ($month as $week): ?>
-            <tr>
-                <?php // Iterate over your month and get days ?>
-                <?php foreach ($week as $day): ?>
-
-                    <?php //Check days that are out of your month ?>
-                    <td<?php $month->contains($day->getBegin()) or print ' class="out-of-month"' ?>>
-                        <?php echo $day->getBegin()->format('d') ?>
-                    </td>
-
-                <?php endforeach ?>
-            </tr>
-        <?php endforeach ?>
-    </table>
-
-```
-
-You can find more documentation in the docs directory.
+Complete documentation is available [here](http://yohang.github.com/CalendR).
 
 Installation
 ------------
@@ -66,18 +36,6 @@ Install composer and run it
     require 'vendor/autoload.php';
 ```
 
-More docs
----------
-
-Check the `docs/` folder
-
-Integration
------------
-
- * Silex : bundled with CalendR, check CalendR\Extension\Silex\Provider\CalendRServiceProvider
- * symfony : [fwCalendRPlugin](https://github.com/yohang/fwCalendRPlugin)
- * Symfony2 : [FrequenceWebCalendRBundle](https://github.com/frequence-web/FrequenceWebCalendRBundle)
-
 Contribute
 ----------
 
@@ -92,5 +50,5 @@ TODO (And / Or planned)
 -----------------------
 
  * Renderers (WIP)
- * Integration for current frameworks (Symfony2 bundle, symfony1 plugin and Silex ServiceProvider already available)
  * Add providers for some hosted services
+ * Add Hour, Minute and Second periods (maybe, don't know if this is really useful).
