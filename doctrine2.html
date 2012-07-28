@@ -1,0 +1,123 @@
+---
+layout: main
+title: Doctrine2 ORM integration
+current: doctrine2
+current_category: extensions
+---
+
+Doctrine2 integration
+=====================
+
+If you are a [Doctrine2 ORM](http://www.doctrine-project.org/projects/orm.html) user, CalendR provides you 2 ways to implements
+your event providers in seconds (really, seconds).
+
+
+
+First way <small>for PHP 5.4+ users</small>
+------------------------------------------
+
+CalendR provides a `EventRepository` trait, that can be used in your event repository to implements the
+`ProviderInterface::getEvents()` mandatory method.
+
+{% highlight php %}
+<?php
+use Doctrine\ORM\EntityRepository;
+use CalendR\Extension\Doctrine2\EventRepository as EventRepositoryTrait;
+
+class EventRepository extends EntityRepository
+{
+    use EventRepositoryTrait;
+}
+?>
+{% endhighlight %}
+
+And... well... That's all.
+
+### Tweaking field names and options management
+
+The above example is valid and fully working (you can check, it's used as-is in the CalendR test suite), but it
+assumes some little things :
+
+ * Your begin field is called `begin`
+ * Your end field is called `end`
+ * You don't need options management (single calendar)
+
+
+Thanks to PHP 5.4 trait methods overriding, here is a more complete example :
+
+{% highlight php %}
+<?php
+use Doctrine\ORM\EntityRepository;
+use CalendR\Extension\Doctrine2\EventRepository as EventRepositoryTrait;
+
+class EventRepository extends EntityRepository
+{
+    use EventRepositoryTrait;
+
+    /**
+     * Returns the query builder on wich the event retrieving query will
+     * be append. The default table alias is `evt`
+     */
+    public function createQueryBuilderForGetEvent(array $options)
+    {
+        // do what you want with the $option array
+        return $this->createQueryBuilder('evt')
+            ->setMaxResults(10)
+        ;
+    }
+
+    /**
+     * Returns the name of the begin field.
+     */
+    public function getBeginFieldName()
+    {
+        return 'evt.beginDate';
+    }
+
+    /**
+     * Returns the name of the end field.
+     */
+    public function getEndFieldName()
+    {
+        return 'evt.endDate';
+    }
+}
+
+{% endhighlight %}
+
+<div class="alert alert-info">
+    <strong>Note : </strong>The EventRepository trait provide you two more methods :
+    <ul>
+        <li><code>getEventsQueryBuilder()</code></li>
+        <li><code>getEventsQuery()</code></li>
+    </ul>
+</div>
+
+
+
+Second way <small>for PHP 5.3+ users</small>
+--------------------------------------------
+
+There is a
+[CalendR\Extensions\Doctrine2\QueryHelper](http://yohang.github.com/CalendR/api/CalendR/Extension/Doctrine2/QueryHelper)
+class that provides a `addEventQuery` method to add the event retrieving criteria to the QueryBuilder.
+
+{% highlight php %}
+<?php
+use Doctrine\ORM\EntityRepository;
+use CalendR\Extension\Doctrine2\QueryHelper;
+
+class EventRepository extends EntityRepository
+{
+    public function getEventsQueryBuilder(\DateTime $begin, \DateTime $end, array $options = array())
+    {
+        $qb = $this->createQueryBuilder('e');
+
+        return QueryHelper::addEventQuery($qb, 'e.begin', 'e.end', $begin, $end)
+            ->getQuery()
+            ->getResults()
+        ;
+    }
+}
+
+{% endhighlight %}
