@@ -53,30 +53,30 @@ class QueryHelper
         $end = sprintf("'%s'", $end->format('Y-m-d H:i:s'));
 
         return $qb
-            ->where(
-            $qb->expr()->orX(
-                // Period in event
-                $qb->expr()->andX(
-                    $qb->expr()->lte($beginField, $begin),
-                    $qb->expr()->gte($endField, $end)
-                ),
-                // Event in period
-                $qb->expr()->andX(
-                    $qb->expr()->gte($beginField, $begin),
-                    $qb->expr()->lt($endField, $end)
-                ),
-                // Event begins during period
-                $qb->expr()->andX(
-                    $qb->expr()->lt($beginField, $end),
-                    $qb->expr()->gte($beginField, $begin)
-                ),
-                // Event ends during period
-                $qb->expr()->andX(
-                    $qb->expr()->gte($endField, $begin),
-                    $qb->expr()->lt($endField, $end)
+            ->andWhere(
+                $qb->expr()->orX(
+                    // Period in event
+                    $qb->expr()->andX(
+                        $qb->expr()->lte($beginField, $begin),
+                        $qb->expr()->gte($endField, $end)
+                    ),
+                    // Event in period
+                    $qb->expr()->andX(
+                        $qb->expr()->gte($beginField, $begin),
+                        $qb->expr()->lt($endField, $end)
+                    ),
+                    // Event begins during period
+                    $qb->expr()->andX(
+                        $qb->expr()->lt($beginField, $end),
+                        $qb->expr()->gte($beginField, $begin)
+                    ),
+                    // Event ends during period
+                    $qb->expr()->andX(
+                        $qb->expr()->gte($endField, $begin),
+                        $qb->expr()->lt($endField, $end)
+                    )
                 )
             )
-        )
         ;
     }
 }
