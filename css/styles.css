@@ -115,3 +115,8 @@ table table:not(.table) td {
     padding: 40px 0;
     text-align: center;
 }
+
+#share-buttons {
+    margin: 10px 0;
+    text-align: center;
+}
