@@ -3,11 +3,11 @@ body {
 }
 
 #forkme {
-    background:  url(/img/forkme.png);
+    background:  url(/CalendR/img/forkme.png);
     display:     block;
     height:      149px;
     overflow:    hidden;
-    position:    absolute;
+    position:    fixed;
     right:       0;
     text-indent: -3000px;
     top:         0;
@@ -17,6 +17,7 @@ body {
 
 #view-on-github {
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
     width:      100%;
 }
 
@@ -108,6 +109,9 @@ table table:not(.table) td {
 }
 
 #footer {
-    margin: 70px 0;
+    background: #eee;
+    border-top: 1px solid #999;
+    margin: 60px 0 0 0;
+    padding: 40px 0;
     text-align: center;
 }
