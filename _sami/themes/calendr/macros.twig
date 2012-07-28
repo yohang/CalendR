@@ -2,14 +2,6 @@
     {%- for key, value in attributes %} {{ key }}="{{ value }}"{% endfor -%}
 {% endmacro %}
 
-{% macro namespace_link(namespace, attributes) -%}
-    <a href="{{ '{{ ASSET_URL }}' }}/api/{{ namespace_path(namespace) }}"{{ _self.attributes(attributes) }}>{{ namespace }}</a>
-{%- endmacro %}
-
-{% macro class_href(class) -%}
-    {{ '{{ ASSET_URL }}' }}/api/{{ class }}.html
-{%- endmacro %}
-
 {% macro class_link(class, attributes, absolute) -%}
     {%- if class.projectclass -%}
         <a href="{{ _self.class_href(class) }}"{{ _self.attributes(attributes) }}
@@ -63,3 +55,5 @@
         {%- endfor -%}
     )
 {%- endmacro %}
+
+{% macro class_href(class) -%}/CalendR/api/{{ class | replace('\\', '/') }}.html{%- endmacro %}
