@@ -1,0 +1,124 @@
+---
+layout: main
+title: symfony1 Integration
+current: symfony
+current_category: extensions
+---
+
+symfony1 integration <small>via fwCalendRPlugin</small>
+=======================================================
+
+You are still using symfony1 on some project ? Me too, so there's is a (very) basic integration for CalendR for symfony1.
+
+
+
+Installation
+------------
+
+The [`fwCalendRPlugin`](https://github.com/yohang/fwCalendRPlugin) is only available via git (Go to hell, SVN !),
+and isn't available on the sf plugins PEAR channel (Go to hell, PEAR !). Sorry.
+
+{% highlight bash %}
+ $ git clone https://github.com/yohang/fwCalendRPlugin.git plugins/fwCalendarPlugin
+  OR
+ $ git submodule add https://github.com/yohang/fwCalendRPlugin.git plugins/fwCalendRPlugin
+{% endhighlight %}
+
+<p class="alert alert-info">
+    <strong>Note : </strong>You must have CalendR installed and autoloaded to use this plugin. You can use
+    <a href="https://github.com/frequence-web/fwClassLoaderPlugin"><code>fwClassLoaderPlugin</code></a>
+    and clone CalendR into <code>lib/vendor/calendr</code> to autoload it.
+</p>
+
+
+
+Register the plugin
+-------------------
+
+Edit your project configuration file :
+
+{% highlight php %}
+<?php
+
+require_once __DIR__.'/../lib/vendor/symfony/lib/autoload/sfCoreAutoload.class.php';
+sfCoreAutoload::register();
+
+class ProjectConfiguration extends sfProjectConfiguration
+{
+  public function setup()
+  {
+    $this->enablePlugin('fwCalendRPlugin');
+  }
+}
+{% endhighlight %}
+
+
+
+Usage
+-----
+
+Basicaly, the fwCalendRPlugin adds a `getCalendR()` to the `sfContext` instance.
+
+### Controller
+
+{% highlight php %}
+<?php
+
+class someActions extends sfActions
+{
+  public function executeIndex()
+  {
+    $this->month = $this->getContext()->getCalendR()->getMonth();
+  }
+}
+{% endhighlight %}
+
+<p class="alert alert-info">
+    <strong>Note : </strong>The CalendR instance is lazy loaded, it will be constructed only on <code>getCalendR()</code> call.
+</p>
+
+### Templates <small>helpers</small>
+
+This plugins provides the sames functions (helpers) that the Twig Extension.
+
+{% highlight php %}
+<?php
+use_helper('calendr');
+calendr_year(2012);
+calendr_month(2012, 7);
+calendr_week(2012, 32);
+calendr_day(2012, 7, 12);
+calendr_events($period);
+?>
+{% endhighlight %}
+
+### Declare your provider
+
+On Calendar construction, a `fw_calendr.construct` event is thrown. You just have to listen it, and to add your
+providers to the event manager, for example in your ProjectConfiguration class.
+
+Note that CalendR isn't constructed if you don't call it, so your providers won't be instantiated if not needed.
+
+Example (for a doctrine table as provider):
+
+{% highlight php %}
+<?php
+
+class ProjectConfiguration extends sfProjectConfiguration
+{
+  public function setup()
+  {
+    $this->dispatcher->connect('fw_calendr.construct', function(sfEvent $event) {
+      $event->getSubject()->getEventManager()->addProvider('my_awesome_event_provider', EventTable::getInstance());
+    });
+  }
+}
+{% endhighlight %}
+
+
+<p class="alert alert-heading">
+    <strong>Warning : </strong>You can access the CalendR instance from everywhere "thanks" to the sfContext singleton.<br />
+    However, this is a bad practice, due to all the sfContext dependencies, and code will become untestable.<br />
+    Prefer using the sfEventDispatcher to inject CalendR into your business classes.<br />
+    The same goes for the template helpers, which use the sfContext singleton.
+</p>
