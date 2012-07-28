@@ -1,0 +1,68 @@
+---
+layout: main
+title: Twig extension
+current: twig
+current_category: extensions
+---
+
+Twig integration <small>with CalendRExtension</small>
+====================================================
+
+You can use some of the CalendR factory methods in your Twig templates thanks to the CalendRExtension.
+
+
+
+Register the extension
+----------------------
+
+{% highlight php %}
+<?php
+// assuming that $twig is the \Twig_Environment instance
+$factory = new CalendR\Calendar;
+$twig->addExtension(new CalendR\Extension\Twig\CalendRExtension($factory));
+
+{% endhighlight %}
+
+
+<p class="alert alert-info">
+    <strong>Note : </strong>If you are a Symfony2 or Silex user, with TwigBundle/TwigServiceProvider available,
+    the CalendR extension is automatically registered.
+</p>
+
+
+
+Provided functions
+------------------
+
+ * `calendr_year()`   : return an instance of year
+ * `calendr_month()`  : return an instance of month
+ * `calendr_week()`   : return an instance of week
+ * `calendr_day()`    : return an instance of day
+ * `calendr_events()` : return events for a period
+
+
+
+Example <small>display events for a week</small>
+-----------------------
+
+{% highlight jinja %}
+{% raw %}
+{% set week = calendr_week(2012, 14) %}
+{% set events = calendr_events(week) %}
+
+<h1>Events for week #{{ week }}</h1>
+{% for day in week %}
+    <h2>{{ day }}</h2>
+    <ul>
+        {% for event in events.find(day) %}
+            <li>{{ event }}</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+{% endraw %}
+{% endhighlight %}
+
+
+<p class="alert alert-heading">
+    <strong>Warning : </strong>Most of time, you'd better to retrieve your time period and events inside your controller
+</p>
