@@ -41,7 +41,7 @@ Iterating over Year gives you Months
 Iterating over Month gives you Weeks, but you can use the getDays() method to iterate over days
 Iterating over Week gives you Days
 
-This allows you to create a calendar in seconds :
+This allows you to create a calendars in seconds :
 
 {% highlight php %}
 <?php
@@ -56,8 +56,8 @@ $month = $factory->getMonth(2012, 01);
     <tr>
         <?php // Iterate over your month and get days ?>
         <?php foreach ($week as $day): ?>
-        <?php //Check days that are out of your month ?>
-        <td><?php echo $day ?></td>
+            <?php //Check days that are out of your month ?>
+            <td><?php echo $day ?></td>
         <?php endforeach ?>
     </tr>
     <?php endforeach ?>

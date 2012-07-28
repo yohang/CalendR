@@ -1,0 +1,186 @@
+---
+layout: api
+title: "CalendR\Event\AbstractEvent | "
+---
+
+    <div class="hero-unit">
+        <h1>
+            <span class="class-info">
+                <small>Class</small>
+                <small>CalendR\Event\</small>
+            </span>
+            <span class="class-name">AbstractEvent</span>
+        </h1>
+
+                    <div class="class-desc">
+                <p>{% capture the_text_to_capture %}Abstract class that ease event manipulation{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+                <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+                <p>                    
+                                            <br />
+                        Implements:
+                                                    <a href="{{ ASSET_URL }}/api/CalendR\Event\EventInterface.html"
+           data-content="Base interface for events implementation"
+           data-original-title="Event\EventInterface" rel="popover">EventInterface</a>
+                                                            </p>            </div>
+            </div>
+
+
+    
+    
+            <h2>Methods</h2>
+
+            <table class="table">
+                    <tr>
+                <td class="type">
+                                                        <span class="label label-hint label-warning">bool</span>
+                </td>
+                <td class="last">
+                    <a href="#method_contains">contains</a>(                <span class="label label-hint label-info">DateTime</span> $datetime)
+                    <p>Check if the given date is during the event</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                                                        <span class="label label-hint label-warning">bool</span>
+                </td>
+                <td class="last">
+                    <a href="#method_containsPeriod">containsPeriod</a>(                <span class="label label-hint label-info"><a href="{{ ASSET_URL }}/api/CalendR\Period\PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period)
+                    <p>Check if the given period is during the event</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                                                        <span class="label label-hint label-warning">bool</span>
+                </td>
+                <td class="last">
+                    <a href="#method_isDuring">isDuring</a>(                <span class="label label-hint label-info"><a href="{{ ASSET_URL }}/api/CalendR\Period\PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period)
+                    <p>Check if the event is during the given period</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method_contains">
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">bool</span>
+    <strong>contains</strong>(                <span class="label label-hint label-info">DateTime</span> $datetime)</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}Check if the given date is during the event{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+                            <tr>
+                    <th>Parameters</th>
+                    <td>    <table class="table table-bordered table-stripped">
+                    <tr>
+                <td>                <span class="label label-hint label-info">DateTime</span></td>
+                <td colspan="2" >$datetime</td>
+                            </tr>
+            </table>
+</td>
+                </tr>
+            
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-warning">bool</span></td>
+            <td>true if $datetime is during the event, false otherwise</td>
+        </tr>
+    </table>
+</td>
+                </tr>
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_containsPeriod">
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">bool</span>
+    <strong>containsPeriod</strong>(                <span class="label label-hint label-info"><a href="{{ ASSET_URL }}/api/CalendR\Period\PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period)</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}Check if the given period is during the event{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+                            <tr>
+                    <th>Parameters</th>
+                    <td>    <table class="table table-bordered table-stripped">
+                    <tr>
+                <td>                <span class="label label-hint label-info"><a href="{{ ASSET_URL }}/api/CalendR\Period\PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span></td>
+                <td colspan="2" >$period</td>
+                            </tr>
+            </table>
+</td>
+                </tr>
+            
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-warning">bool</span></td>
+            <td>true if $period is during the event, false otherwise</td>
+        </tr>
+    </table>
+</td>
+                </tr>
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_isDuring">
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">bool</span>
+    <strong>isDuring</strong>(                <span class="label label-hint label-info"><a href="{{ ASSET_URL }}/api/CalendR\Period\PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period)</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}Check if the event is during the given period{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+                            <tr>
+                    <th>Parameters</th>
+                    <td>    <table class="table table-bordered table-stripped">
+                    <tr>
+                <td>                <span class="label label-hint label-info"><a href="{{ ASSET_URL }}/api/CalendR\Period\PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span></td>
+                <td colspan="2" >$period</td>
+                            </tr>
+            </table>
+</td>
+                </tr>
+            
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-warning">bool</span></td>
+            <td>true if the event is during $period, false otherwise</td>
+        </tr>
+    </table>
+</td>
+                </tr>
+            
+            
+                    </table>
+    </div>
+
+    
+    
+<footer id="footer">
+    Generated by <a href="https://github.com/fabpot/Sami" target="_top">Sami, the API Documentation Generator</a>.
+</footer>

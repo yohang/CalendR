@@ -1,0 +1,109 @@
+---
+layout: api
+title: "CalendR\Extension\Doctrine2\QueryHelper | "
+---
+
+    <div class="hero-unit">
+        <h1>
+            <span class="class-info">
+                <small>Class</small>
+                <small>CalendR\Extension\Doctrine2\</small>
+            </span>
+            <span class="class-name">QueryHelper</span>
+        </h1>
+
+                    <div class="class-desc">
+                <p>{% capture the_text_to_capture %}Helper class for Doctrine2 CalendR integration{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+                <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+                                    
+                                                </div>
+            </div>
+
+
+    
+    
+            <h2>Methods</h2>
+
+            <table class="table">
+                    <tr>
+                <td class="type">
+                                            <span class="label label-success">static</span>
+                                                        <span class="label label-hint label-info">QueryBuilder</span>
+                </td>
+                <td class="last">
+                    <a href="#method_addEventQuery">addEventQuery</a>(                <span class="label label-hint label-info">QueryBuilder</span> $qb,                 <span class="label label-hint label-warning">string</span> $beginField,                 <span class="label label-hint label-warning">string</span> $endField,                 <span class="label label-hint label-info">DateTime</span> $begin,                 <span class="label label-hint label-info">DateTime</span> $end)
+                    <p>This method is a helper to retrieve events in your Doctrine2 Repositories.</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method_addEventQuery">
+        <code class="heading-code">        <span class="label label-success">static</span>    <span class="label label-success">public</span>                            <span class="label label-hint label-info">QueryBuilder</span>
+    <strong>addEventQuery</strong>(                <span class="label label-hint label-info">QueryBuilder</span> $qb,                 <span class="label label-hint label-warning">string</span> $beginField,                 <span class="label label-hint label-warning">string</span> $endField,                 <span class="label label-hint label-info">DateTime</span> $begin,                 <span class="label label-hint label-info">DateTime</span> $end)</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}This method is a helper to retrieve events in your Doctrine2 Repositories.{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}Use it like :
+ {% endcapture %}{{ the_text_to_capture | markdownify }}{% highlight php %}<?php
+  public function getEvents(\DateTime $begin, \DateTime $end, array $options = array()) {
+      return QueryHelper::addEventQuery(
+          $this->createQueryBuilder('evt'),
+          'evt.begin',
+          'evt.end',
+          $begin,
+          $end
+      )->getQuery()->getResult();
+  }
+ {% endhighlight %}{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+                            <tr>
+                    <th>Parameters</th>
+                    <td>    <table class="table table-bordered table-stripped">
+                    <tr>
+                <td>                <span class="label label-hint label-info">QueryBuilder</span></td>
+                <td colspan="2" >$qb</td>
+                            </tr>
+                    <tr>
+                <td>                <span class="label label-hint label-warning">string</span></td>
+                <td colspan="2" >$beginField</td>
+                            </tr>
+                    <tr>
+                <td>                <span class="label label-hint label-warning">string</span></td>
+                <td colspan="2" >$endField</td>
+                            </tr>
+                    <tr>
+                <td>                <span class="label label-hint label-info">DateTime</span></td>
+                <td colspan="2" >$begin</td>
+                            </tr>
+                    <tr>
+                <td>                <span class="label label-hint label-info">DateTime</span></td>
+                <td colspan="2" >$end</td>
+                            </tr>
+            </table>
+</td>
+                </tr>
+            
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info">QueryBuilder</span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
+            
+            
+                    </table>
+    </div>
+
+    
+    
+<footer id="footer">
+    Generated by <a href="https://github.com/fabpot/Sami" target="_top">Sami, the API Documentation Generator</a>.
+</footer>
