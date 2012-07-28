@@ -1,0 +1,103 @@
+---
+layout: main
+title: Silex ServiceProvider
+current: silex
+current_category: extensions
+---
+
+Silex integration <small>with CalendRServiceProvider</small>
+============================================================
+
+CalendR is bundled with a Silex ServiceProvider.
+
+Juste use :
+
+{% highlight php %}
+<?php
+$app->register(new CalendR\Extension\Silex\Provider\CalendRServiceProvider(), array(
+    'calendr.event.providers' => array(
+        'my_awesome_event_provider' => new MyAwesomeEventProvider(),
+    )
+));
+
+{% endhighlight %}
+
+To add CalendR support to Silex.
+
+Now, you can access to the [`CalendR\Calendar`](http://yohang.github.com/CalendR/api/CalendR/Calendar.html) factory
+by using `$app['calendr']` in your Silex application.
+
+<p class="alert alert-info">
+    <strong>Note : </strong>If you use Twig in your silex app, the
+    <a href="http://yohang.github.com/CalendR/twig.html">CalendR Twig extension</a> will be automatically registered.
+</p>
+
+Example <small>display a month and retrieve events</small>
+----------------------------------------------------------
+
+
+### Controller :
+
+{% highlight php %}
+<?php
+
+$app->get('/calendar/{year}/{month}', function($year, $month) use($app) {
+    $calendRMonth = $app['calendr']->getMonth($year, $month);
+
+    return $this->render('show_calendar.html.twig', array(
+        'month'  => $calendRMonth,
+        'events' => $app['calendr']->getEvents($calendRMonth->getExtendedMonth())
+    ));
+});
+
+{% endhighlight %}
+
+<p class="alert alert-info">
+    <strong>Note : </strong>Using <code>$month->getExtendedMonth()</code> is not mandatory, but it will retrieve events
+    for displayed days that are out of month, and reduce call to the Event provider.
+</p>
+
+### Template :
+
+{% highlight jinja %}
+{% raw %}
+<table>
+    <thead>
+        <tr>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for week in month %}
+            <tr>
+                {% for day in week %}
+                    <td>
+                        {{ day }}
+                        {% set day_events = events.find(day) %}
+                        {% if day_events|length > 0 %}
+                            <ul>
+                                {% for event in day_events %}
+                                    <li>{{ event }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endraw %}
+{% endhighlight %}
+
+<p class="alert alert-info">
+    <strong>Note : </strong>Passing the events to the template is not mandatory, you can retrieve them directly in
+    the template by using the twig function <code>calendr_events(month)</code>.
+</p>
