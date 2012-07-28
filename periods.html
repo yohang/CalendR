@@ -16,7 +16,8 @@ The main feature of CalendR is the time period manipulation. There is 5 Period t
 
 All theese class are under the `CalendR\Period` namespace
 
-### Retrieve a period
+Retrieve a period
+-----------------
 
 Excepting the range class, all the period types can be generated using the CalendR factory, wich is the simplest way.
 
@@ -26,22 +27,48 @@ Excepting the range class, all the period types can be generated using the Calen
 $factory = new CalendR\Calendar;
 
 $year  = $factory->getYear($year);
-$month = $factory->getYear($year, $month);
-$week  = $factory->getYear($year, $weeknum);
-$day   = $factory->getYear($year, $month, $day);
+$month = $factory->getMonth($year, $month);
+$week  = $factory->getWeek($year, $weeknum);
+$day   = $factory->getDay($year, $month, $day);
 
-?>
 {% endhighlight %}
 
-### Iterating over a period
+Base periods operations
+-----------------------
+
+All periods implements [PeriodInterface](http://yohang.github.com/CalendR/api/CalendR/Period/PeriodInterface),
+and implement the following methods :
+
+ * `getBegin()` : Returns the begin \DateTime of the period. The begin is **included** in the period
+ * `getEnd()` : Returns the end \DateTime of the period. The end is **excluded** from the period
+ * `getNext()` : Returns the next period of the same type.
+ * `getPrevious()` : Returns the previous period of the same type.
+ * `getDatePeriod()` : Returns the period as a PHP \DatePeriod.
+ * `contains()` : Returns if the given \DateTime is included in the period
+ * `containsPeriod()` : Same as contains() but for CalendR periods
+ * `equals()` : Returns if the period is equal to a PHP \DatePeriod
+ * `includes()` : Returns if a PHP \DatePeriod is included into the period
+ * `containsEvent()` : Returns if an Event is during the period. See [Events](http://yohang.github.com/CalendR/events.html)
+ * `format()` : Format the period following the given pattern.
+
+Most of periods also implements :
+ * `getDateInterval()` : a static method that returns the \DateInterval for the period type. Extremely useful to use with \DateTime::add() and \DateTime::sub()
+ * `__toString()` : Returns your period as string, useful for debugging.
+
+The Month period has an extra method, `getExtendedMonth()` that return a `Range` Period, begining at the Monday of the
+first week of month, and ending at the Sunday of last week of month. This is useful for event retrieving, because the
+"extended month" fit with usual calendar view.
+
+Iterating over a period
+-----------------------
 
 You can iterate other Year, Month, and Week.
 
-Iterating over Year gives you Months
-Iterating over Month gives you Weeks, but you can use the getDays() method to iterate over days
-Iterating over Week gives you Days
+ * Iterating over Year gives you Months
+ * Iterating over Month gives you Weeks, but you can use the getDays() method to iterate over days
+ * Iterating over Week gives you Days
 
-This allows you to create a calendars in seconds :
+This allows you to create calendars in seconds :
 
 {% highlight php %}
 <?php
@@ -56,10 +83,63 @@ $month = $factory->getMonth(2012, 01);
     <tr>
         <?php // Iterate over your month and get days ?>
         <?php foreach ($week as $day): ?>
-            <?php //Check days that are out of your month ?>
             <td><?php echo $day ?></td>
         <?php endforeach ?>
     </tr>
     <?php endforeach ?>
 </table>
+{% endhighlight %}
+
+Some examples
+-------------
+
+
+### Display a month calendar and style the "out of month" days
+
+{% highlight php %}
+<?php $month = $factory->getMonth(2012, 01) ?>
+
+<table>
+    <?php // Iterate over your month and get weeks ?>
+    <?php foreach ($month as $week): ?>
+        <tr>
+            <?php // Iterate over your month and get days ?>
+            <?php foreach ($week as $day): ?>
+                <?php //Check days that are out of your month ?>
+                <td<?php if (!$month->containsPeriod($day) echo ' class="out-of-month"' ?>>
+                    <?php echo $day ?>
+                </td>
+            <?php endforeach ?>
+        </tr>
+    <?php endforeach ?>
+</table>
+
+
+{% endhighlight %}
+
+### Display a "iCal like" week
+
+{% highlight php %}
+<?php $week = $factory->getWeek(2012, 14) ?>
+
+<table>
+    <thead>
+        <tr>
+            <?php foreach ($week as $day): ?>
+                <th><?php echo $day ?></th>
+            <?php endforeach ?>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <?php foreach ($week as $day): ?>
+                <td>
+                    <?php // Retrieve your events, for exemple ?>
+                </td>
+            <?php endforeach ?>
+        </tr>
+    </tbody>
+</table>
+
+
 {% endhighlight %}
