@@ -1,5 +1,7 @@
-body {
-    padding: 70px 0 0 0;
+@media (min-width: 768px) {
+    body {
+        padding: 70px 0 0 0;
+    }
 }
 
 #forkme {
@@ -116,7 +118,24 @@ table table:not(.table) td {
     text-align: center;
 }
 
+@media (max-width: 767px) {
+    #footer {
+        margin: 60px -20px 0 -20px;
+        padding: 40px 20px;
+    }
+}
+
 #share-buttons {
     margin: 10px 0;
     text-align: center;
+}
+
+.doc-pages h2 {
+    margin: 60px 0 20px 0;
+    border-bottom: 1px solid #EEE;
+}
+
+.doc-pages h3 {
+    color:  #666;
+    margin: 30px 0 0 0;
 }
