@@ -31,7 +31,7 @@ current_namespace: "CalendR\Period"
             <table class="table">
                     <tr>
                 <td class="type">
-                                                        <span class="label label-hint label-info">true</span>
+                                                        <span class="label label-hint label-warning">boolean</span>
                 </td>
                 <td class="last">
                     <a href="#method_contains">contains</a>(                <span class="label label-hint label-info">DateTime</span> $date)
@@ -135,13 +135,23 @@ current_namespace: "CalendR\Period"
                 </td>
                 <td></td>
             </tr>
+                    <tr>
+                <td class="type">
+                                        
+                </td>
+                <td class="last">
+                    <a href="#method_isCurrent">isCurrent</a>()
+                    <p>Returns if the current period is the current one</p>
+                </td>
+                <td></td>
+            </tr>
             </table>
 
 
         <h2>Details</h2>
 
                         <h3 id="method_contains">
-        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info">true</span>
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">boolean</span>
     <strong>contains</strong>(                <span class="label label-hint label-info">DateTime</span> $date)</code>
     </h3>
     <div class="details method-details">
@@ -163,8 +173,8 @@ current_namespace: "CalendR\Period"
                     <th>Return Value</th>
                     <td>    <table>
         <tr>
-            <td>                <span class="label label-hint label-info">true</span></td>
-            <td>if the period contains this date</td>
+            <td>                <span class="label label-hint label-warning">boolean</span></td>
+            <td>true if the period contains this date</td>
         </tr>
     </table>
 </td>
@@ -385,6 +395,20 @@ current_namespace: "CalendR\Period"
     </table>
 </td>
                 </tr>
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_isCurrent">
+        <code class="heading-code">            <span class="label label-success">public</span>            
+    <strong>isCurrent</strong>()</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}Returns if the current period is the current one{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+            
             
             
                     </table>
