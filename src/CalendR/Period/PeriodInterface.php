@@ -25,7 +25,7 @@ interface PeriodInterface
      *
      * @abstract
      * @param \DateTime $date
-     * @return true if the period contains this date
+     * @return boolean true if the period contains this date
      */
     function contains(\DateTime $date);
 
@@ -110,6 +110,14 @@ interface PeriodInterface
      * @return string
      */
     function format($format);
+
+    /**
+     * Returns if the current period is the current one
+     *
+     * @abstract
+     * @return boolean
+     */
+    function isCurrent();
 
     /**
      * Checks if $start is good for building the period

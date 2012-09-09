@@ -153,4 +153,18 @@ class MonthTest extends \PHPUnit_Framework_TestCase
             $date->add(new \DateInterval('P1D'));
         }
     }
+
+    public function testIsCurrent()
+    {
+        $currentDate = new \DateTime();
+        $otherDate = clone $currentDate;
+        $otherDate->add(new \DateInterval('P5M'));
+
+        $currentMonth = new Month(new \DateTime(date('Y-m').'-01'));
+        $otherMonth = $currentMonth->getNext();
+
+        $this->assertTrue($currentMonth->contains($currentDate));
+        $this->assertFalse($currentMonth->contains($otherDate));
+        $this->assertFalse($otherMonth->contains($currentDate));
+    }
 }

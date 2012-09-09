@@ -117,6 +117,16 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
+     * Returns if the current period is the current one
+     *
+     * @return boolean
+     */
+    public function isCurrent()
+    {
+        return $this->contains(new \DateTime);
+    }
+
+    /**
      * Gets the next period of the same type
      *
      * @return PeriodInterface

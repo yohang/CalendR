@@ -51,4 +51,18 @@ class DayTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('2012-01-31', $dateTime->format('Y-m-d'));
         }
     }
+
+    public function testIsCurrent()
+    {
+        $currentDate = new \DateTime();
+        $otherDate = clone $currentDate;
+        $otherDate->add(new \DateInterval('P5D'));
+
+        $currentDay = new Day(new \DateTime(date('Y-m-d')));
+        $otherDay = $currentDay->getNext();
+
+        $this->assertTrue($currentDay->contains($currentDate));
+        $this->assertFalse($currentDay->contains($otherDate));
+        $this->assertFalse($otherDay->contains($currentDate));
+    }
 }
