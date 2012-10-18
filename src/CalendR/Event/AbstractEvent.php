@@ -51,7 +51,6 @@ abstract class AbstractEvent implements EventInterface
      */
     function isDuring(PeriodInterface $period)
     {
-        return $this->getBegin()->diff($period->getBegin())->invert == 1
-            && $this->getEnd()->diff($period->getEnd())->invert == 0;
+        return $this->getBegin() >= $period->getBegin() && $this->getEnd() < $period->getEnd();
     }
 }
