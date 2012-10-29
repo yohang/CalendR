@@ -97,7 +97,7 @@ Some examples
             <?php // Iterate over your month and get days ?>
             <?php foreach ($week as $day): ?>
                 <?php //Check days that are out of your month ?>
-                <td<?php if (!$month->includes($day) echo ' class="out-of-month"' ?>>
+                <td<?php if (!$month->includes($day)) echo ' class="out-of-month"' ?>>
                     <?php echo $day ?>
                 </td>
             <?php endforeach ?>
