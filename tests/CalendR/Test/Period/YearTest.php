@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Period\Day;
 use CalendR\Period\Year;
 
 class YearTest extends \PHPUnit_Framework_TestCase
@@ -29,6 +30,7 @@ class YearTest extends \PHPUnit_Framework_TestCase
             array(new \DateTime('2012-01-01'), new \DateTime('2012-01-04'), new \DateTime('2013-02-09')),
             array(new \DateTime('2011-01-01'), new \DateTime('2011-01-01'), new \DateTime('2012-03-19')),
             array(new \DateTime('2013-01-01'), new \DateTime('2013-09-09'), new \DateTime('2011-10-09')),
+            array(new \DateTime('2013-01-01'), new \DateTime('2013-12-31'), new \DateTime('2014-01-01')),
         );
     }
 
@@ -41,6 +43,17 @@ class YearTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($year->contains($contain));
         $this->assertFalse($year->contains($notContain));
+    }
+
+    /**
+     * @dataProvider providerContains
+     */
+    public function testIncludes($start, $contain, $notContain)
+    {
+        $year = new Year($start);
+
+        $this->assertTrue($year->includes(new Day($contain)));
+        $this->assertFalse($year->includes(new Day($notContain)));
     }
 
 
