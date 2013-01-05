@@ -137,7 +137,7 @@ Ok, the last thing, you have to add your provider to the CalendR EventManager :
 <?php
 
 $factory = new CalendR\Calendar;
-$factory->getEventManager()->addProvider(new MyAwesomeProvider);
+$factory->getEventManager()->addProvider('myawesomeprovider', 'new MyAwesomeProvider);
 
 {% endhighlight %}
 
