@@ -11,6 +11,7 @@
 
 namespace CalendR;
 
+use CalendR\Period\Day;
 use CalendR\Event\Manager;
 use CalendR\Period\PeriodInterface;
 
@@ -25,6 +26,39 @@ class Calendar
      * @var \CalendR\Event\Manager
      */
     private $eventManager;
+
+    static private $firstWeekday = Day::Monday;
+    
+    /**
+     * @param int $firstWeekday
+     *     First day of a week (Day::Sunday to Day::Saturday)
+     */
+    public function __construct($firstWeekday = Day::Monday)
+    {
+        $this->setFirstWeekday($firstWeekday);
+    }
+
+    /**
+     * @param int $firstWeekday
+     *     First day of a week (Day::Sunday to Day::Saturday)
+     */
+    static public function setFirstWeekday($firstWeekday)
+    {
+        if ($firstWeekday < Day::Sunday || $firstWeekday > Day::Saturday) {
+            throw new Exception('Invalid first weekday');
+        }
+                
+        self::$firstWeekday = $firstWeekday;
+    }
+
+    /**
+     * @return int
+     *     First day of a week (Day::Sunday to Day::Saturday)
+     */
+    static public function getFirstWeekday()
+    {
+        return self::$firstWeekday;
+    }
 
     /**
      * @param Manager $eventManager

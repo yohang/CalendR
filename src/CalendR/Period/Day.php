@@ -18,6 +18,14 @@ namespace CalendR\Period;
  */
 class Day extends PeriodAbstract
 {
+    const Sunday = 0;
+    const Monday = 1;
+    const Tuesday = 2;
+    const Wednesday = 3;
+    const Thursday = 4;
+    const Friday = 5;
+    const Saturday = 6;
+
     public function __construct(\DateTime $begin)
     {
         $this->begin = clone $begin;
