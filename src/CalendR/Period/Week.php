@@ -2,6 +2,8 @@
 
 namespace CalendR\Period;
 
+use CalendR\Calendar;
+
 /**
  * Represents a week
  *
@@ -62,7 +64,7 @@ class Week extends PeriodAbstract implements \Iterator
      */
     public static function isValid(\DateTime $start)
     {
-        if (1 != $start->format('w')) {
+        if (Calendar::getFirstWeekday() != $start->format('w')) {
             return false;
         }
 

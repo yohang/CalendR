@@ -2,6 +2,8 @@
 
 namespace CalendR\Period;
 
+use CalendR\Calendar;
+
 /**
  * Represents a Month
  *
@@ -79,13 +81,15 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstMonday(), $this->getLastSunday());
+        return new Range($this->getFirstWeekday(), $this->getLastWeekday());
     }
 
     /**
      * Returns the monday of the first week of this month.
      *
      * @return \DateTime
+     * @deprecated
+     *      Use self::getFirstWeekday() instead.
      */
     public function getFirstMonday()
     {
@@ -102,6 +106,8 @@ class Month extends PeriodAbstract implements \Iterator
      * Returns the sunday of the last week of this month.
      *
      * @return \DateTime
+     * @deprecated
+     *      Use self::getLastWeekday() instead.
      */
     public function getLastSunday()
     {
@@ -112,6 +118,40 @@ class Month extends PeriodAbstract implements \Iterator
         $sunday->add(new \DateInterval(sprintf('P%sD', $delta)));
 
         return $sunday;
+    }    
+
+    /**
+     * Returns the first weekday of the first week of this month.
+     *
+     * @return \DateTime
+     */
+    public function getFirstWeekday()
+    {
+        $delta = $this->begin->format('w') ?: 7;
+        $delta -= Calendar::getFirstWeekday();
+
+        $first_weekday = clone $this->begin;
+        $first_weekday->sub(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $first_weekday;
+    }
+
+    /**
+     * Returns the last weekday of the last week of this month.
+     *
+     * @return \DateTime
+     */
+    public function getLastWeekday()
+    {
+        $last_weekday = clone $this->end;
+        $last_weekday->sub(new \DateInterval('P1D'));
+
+        $delta = 7 - ($this->firstWeekday->format('w') ?: 7);
+        $delta -= Calendar::getFirstWeekday();
+
+        $last_weekday->add(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $last_weekday;
     }
 
     /*
@@ -129,7 +169,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstMonday());
+            $this->current = new Week($this->getFirstWeekday());
         } else {
             $this->current = $this->current->getNext();
 
