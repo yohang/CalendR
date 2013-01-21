@@ -27,6 +27,11 @@ class Calendar
     private $eventManager;
 
     /**
+     * @var int
+     */
+    private $firstWeekday = Period\Day::MONDAY;
+
+    /**
      * @param Manager $eventManager
      */
     public function setEventManager(Manager $eventManager)
@@ -56,7 +61,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
         }
 
-        return new Period\Year($yearOrStart);
+        return new Period\Year($yearOrStart, $this->firstWeekday);
     }
 
     /**
@@ -70,7 +75,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
         }
 
-        return new Period\Month($yearOrStart);
+        return new Period\Month($yearOrStart, $this->firstWeekday);
     }
 
     /**
@@ -84,13 +89,15 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
         }
 
-        return new Period\Week($yearOrStart);
+        return new Period\Week($yearOrStart, $this->firstWeekday);
     }
 
     /**
-     * @param \DateTime|int $yearOrStart
-     * @param null|int      $month
-     * @param null|int      $day
+     * @param  \DateTime|int $yearOrStart
+     * @param  null|int      $month
+     * @param  null|int      $day
+     *
+     * @return Period\Day
      */
     public function getDay($yearOrStart, $month = null, $day = null)
     {
@@ -98,7 +105,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
         }
 
-        return new Period\Day($yearOrStart);
+        return new Period\Day($yearOrStart, $this->firstWeekday);
     }
 
     public function getEvents(PeriodInterface $period, array $options = array())
@@ -106,4 +113,19 @@ class Calendar
         return $this->getEventManager()->find($period, $options);
     }
 
+    /**
+     * @param int $firstWeekday
+     */
+    public function setFirstWeekday($firstWeekday)
+    {
+        $this->firstWeekday = $firstWeekday;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFirstWeekday()
+    {
+        return $this->firstWeekday;
+    }
 }

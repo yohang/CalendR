@@ -12,6 +12,7 @@
 namespace CalendR\Period;
 
 use CalendR\Event\EventInterface;
+use CalendR\Exception;
 
 /**
  * An abstract class that represent a date period and provide some base helpers
@@ -29,6 +30,24 @@ abstract class PeriodAbstract implements PeriodInterface
      * @var \DateTime
      */
     protected $end;
+
+    /**
+     * @var int
+     */
+    protected $firstWeekday;
+
+    /**
+     * @param  int       $firstWeekday
+     *
+     * @throws Exception
+     */
+    public function __construct($firstWeekday = Day::MONDAY)
+    {
+        if ($firstWeekday < 0 || $firstWeekday > 6) {
+            throw new Exception(sprintf('"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)'));
+        }
+        $this->firstWeekday = $firstWeekday;
+    }
 
     /**
      * @return \DateTime
@@ -132,7 +151,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getNext()
     {
-        return new static($this->end);
+        return new static($this->end, $this->firstWeekday);
     }
 
     /**
@@ -145,6 +164,22 @@ abstract class PeriodAbstract implements PeriodInterface
         $start = clone $this->begin;
         $start->sub(static::getDateInterval());
 
-        return new static($start);
+        return new static($start, $this->firstWeekday);
+    }
+
+    /**
+     * @param int $firstWeekday
+     */
+    public function setFirstWeekday($firstWeekday)
+    {
+        $this->firstWeekday = $firstWeekday;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFirstWeekday()
+    {
+        return $this->firstWeekday;
     }
 }

@@ -12,10 +12,12 @@ class Week extends PeriodAbstract implements \Iterator
     private $current = null;
 
     /**
-     * @param \DateTime $start
-     * @throw Exception\NotAWeek
+     * @param  \DateTime $start
+     * @param  int       $firstWeekday
+     *
+     * @throws Exception\NotAWeek
      */
-    public function __construct(\DateTime $start)
+    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAWeek;
@@ -24,6 +26,8 @@ class Week extends PeriodAbstract implements \Iterator
         $this->begin = clone $start;
         $this->end = clone $start;
         $this->end->add(new \DateInterval('P7D'));
+
+        parent::__construct($firstWeekday);
     }
 
     /**
@@ -92,7 +96,7 @@ class Week extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Day($this->begin);
+            $this->current = new Day($this->begin, $this->firstWeekday);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {

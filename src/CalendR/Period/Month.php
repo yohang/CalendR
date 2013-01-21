@@ -15,9 +15,12 @@ class Month extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param \DateTime $start
+     * @param  \DateTime $start
+     * @param  int       $firstWeekday
+     *
+     * @throws Exception\NotAMonth
      */
-    public function __construct(\DateTime $start)
+    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAMonth;
@@ -26,6 +29,8 @@ class Month extends PeriodAbstract implements \Iterator
         $this->begin = clone $start;
         $this->end = clone $this->begin;
         $this->end->add(new \DateInterval('P1M'));
+
+        parent::__construct($firstWeekday);
     }
 
     /**
@@ -65,7 +70,7 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
-            $days[] = new Day($date);
+            $days[] = new Day($date, $this->firstWeekday);
         }
 
         return $days;
@@ -79,7 +84,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstMonday(), $this->getLastSunday());
+        return new Range($this->getFirstMonday(), $this->getLastSunday(), $this->firstWeekday);
     }
 
     /**
@@ -129,7 +134,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstMonday());
+            $this->current = new Week($this->getFirstMonday(), $this->firstWeekday);
         } else {
             $this->current = $this->current->getNext();
 
