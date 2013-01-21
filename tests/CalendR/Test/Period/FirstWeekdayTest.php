@@ -75,4 +75,21 @@ class FirstWeekdayTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Day::SUNDAY, $day->getPrevious()->getFirstWeekday());
         $this->assertSame(Day::SUNDAY, $day->getNext()->getFirstWeekday());
     }
+
+    public function testIterateOnMonth()
+    {
+        $calendar = new Calendar;
+        $month = $calendar->getMonth(2013, 3);
+
+        foreach ($month as $week) {
+            $this->assertSame(Day::MONDAY, (int)$week->getBegin()->format('w'));
+        }
+
+        $calendar->setFirstWeekday(Day::SUNDAY);
+        $month = $calendar->getMonth(2013, 3);
+
+        foreach ($month as $week) {
+            $this->assertSame(Day::SUNDAY, (int)$week->getBegin()->format('w'));
+        }
+    }
 }

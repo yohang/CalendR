@@ -61,15 +61,12 @@ class Week extends PeriodAbstract implements \Iterator
 
     /**
      * @static
-     * @param \DateTime $start
+     * @param  \DateTime $start
+     *
      * @return bool
      */
     public static function isValid(\DateTime $start)
     {
-        if (1 != $start->format('w')) {
-            return false;
-        }
-
         return true;
     }
 

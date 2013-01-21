@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Period\Day;
 use CalendR\Period\Month;
 
 class MonthTest extends \PHPUnit_Framework_TestCase
@@ -71,6 +72,22 @@ class MonthTest extends \PHPUnit_Framework_TestCase
     public function testGetLastSunday(Month $month, $monday, $sunday)
     {
         $this->assertSame($sunday, $month->getLastSunday()->format('Y-m-d'));
+    }
+
+    /**
+     * @dataProvider providerGetFirstMondayAndLastSunday
+     */
+    public function testGetFirstDayOfFirstWeek(Month $month, $monday)
+    {
+        $this->assertSame($monday, $month->getFirstDayOfFirstWeek()->format('Y-m-d'));
+    }
+
+    /**
+     * @dataProvider providerGetFirstMondayAndLastSunday
+     */
+    public function testGetLastDayOfLastWeek(Month $month, $monday, $sunday)
+    {
+        $this->assertSame($sunday, $month->getLastDayOfLastWeek()->format('Y-m-d'));
     }
 
 

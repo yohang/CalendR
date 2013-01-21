@@ -6,14 +6,6 @@ use CalendR\Period\Week;
 
 class WeekTest extends \PHPUnit_Framework_TestCase
 {
-    public static function providerConstructInvalid()
-    {
-        return array(
-            array(new \DateTime('2012-01-03')),
-            array(new \DateTime('2012-01-07')),
-        );
-    }
-
     public static function providerConstructValid()
     {
         return array(
@@ -61,15 +53,6 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         $week = new Week($start);
 
         $this->assertEquals($week->getNumber(), $number);
-    }
-
-    /**
-     * @dataProvider providerConstructInvalid
-     * @expectedException \CalendR\Period\Exception\NotAWeek
-     */
-    public function testConstructInvalid($start)
-    {
-        new Week($start);
     }
 
     /**

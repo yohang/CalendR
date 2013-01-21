@@ -77,18 +77,57 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a Range period begining at the Monday of first week of this month,
-     * and ending at the last sunday of the last week of this month.
+     * Returns a Range period begining at the first day of first week of this month,
+     * and ending at the last day of the last week of this month.
      *
      * @return Range
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstMonday(), $this->getLastSunday(), $this->firstWeekday);
+        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->firstWeekday);
+    }
+
+    /**
+     * Returns the first day of the first week of month.
+     * First day of week is configurable via self::setFirstWeekday()
+     *
+     * @return \DateTime
+     */
+    public function getFirstDayOfFirstWeek()
+    {
+        $delta  = $this->begin->format('w') ?: 7;
+        $delta -= $this->firstWeekday;
+
+        $firstDay = clone $this->begin;
+        $firstDay->sub(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $firstDay;
+    }
+
+    /**
+     * Returns the last day of last week of month
+     * First day of week is configurable via self::setFirstWeekday()
+     *
+     * @return \DateTime
+     */
+    public function getLastDayOfLastWeek()
+    {
+        $lastDay = clone $this->end;
+        $lastDay->sub(new \DateInterval('P1D'));
+        $lastWeekday = $this->firstWeekday === Day::SUNDAY ? Day::SATURDAY : $this->firstWeekday - 1;
+
+        $delta = $lastDay->format('w') - $lastWeekday;
+        $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);
+        $delta = $delta === 7 ? 0 : $delta;
+        $lastDay->add(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $lastDay;
     }
 
     /**
      * Returns the monday of the first week of this month.
+     *
+     * @deprecated see self::getFirstDayOfFirstWeek
      *
      * @return \DateTime
      */
@@ -105,6 +144,8 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the sunday of the last week of this month.
+     *
+     * @deprecated see self::getLastDayOfLastWeek
      *
      * @return \DateTime
      */
@@ -134,7 +175,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstMonday(), $this->firstWeekday);
+            $this->current = new Week($this->getFirstDayOfFirstWeek(), $this->firstWeekday);
         } else {
             $this->current = $this->current->getNext();
 
