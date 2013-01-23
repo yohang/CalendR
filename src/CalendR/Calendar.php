@@ -88,8 +88,6 @@ class Calendar
     {
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
-        } else {
-            $yearOrStart = clone $yearOrStart;
         }
 
         return new Period\Week($yearOrStart, $this->firstWeekday);
