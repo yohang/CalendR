@@ -18,11 +18,25 @@ namespace CalendR\Period;
  */
 class Day extends PeriodAbstract
 {
-    public function __construct(\DateTime $begin)
+    const MONDAY    = 1;
+    const TUESDAY   = 2;
+    const WEDNESDAY = 3;
+    const THURSDAY  = 4;
+    const FRIDAY    = 5;
+    const SATURDAY  = 6;
+    const SUNDAY    = 0;
+
+    /**
+     * @param \DateTime $begin
+     * @param int       $firstWeekday
+     */
+    public function __construct(\DateTime $begin, $firstWeekday = Day::MONDAY)
     {
         $this->begin = clone $begin;
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1D'));
+
+        parent::__construct($firstWeekday);
     }
 
     /**

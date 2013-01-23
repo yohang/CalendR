@@ -31,6 +31,28 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $end;
 
     /**
+     * @var int
+     */
+    protected $firstWeekday;
+
+    /**
+     * @param  int       $firstWeekday
+     *
+     * @throws Exception\NotAWeekDay
+     */
+    public function __construct($firstWeekday = Day::MONDAY)
+    {
+        if ($firstWeekday < 0 || $firstWeekday > 6) {
+            throw new Exception\NotAWeekday(
+                sprintf(
+                    '"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)'
+                )
+            );
+        }
+        $this->firstWeekday = $firstWeekday;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getBegin()
@@ -132,7 +154,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getNext()
     {
-        return new static($this->end);
+        return new static($this->end, $this->firstWeekday);
     }
 
     /**
@@ -145,6 +167,22 @@ abstract class PeriodAbstract implements PeriodInterface
         $start = clone $this->begin;
         $start->sub(static::getDateInterval());
 
-        return new static($start);
+        return new static($start, $this->firstWeekday);
+    }
+
+    /**
+     * @param int $firstWeekday
+     */
+    public function setFirstWeekday($firstWeekday)
+    {
+        $this->firstWeekday = $firstWeekday;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFirstWeekday()
+    {
+        return $this->firstWeekday;
     }
 }
