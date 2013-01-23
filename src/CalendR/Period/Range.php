@@ -18,10 +18,17 @@ namespace CalendR\Period;
  */
 class Range extends PeriodAbstract
 {
-    public function __construct(\DateTime $begin, \DateTime $end)
+    /**
+     * @param \DateTime $begin
+     * @param \DateTime $end
+     * @param int       $firstWeekday
+     */
+    public function __construct(\DateTime $begin, \DateTime $end, $firstWeekday = Day::MONDAY)
     {
         $this->begin = clone $begin;
-        $this->end = clone $end;
+        $this->end   = clone $end;
+
+        parent::__construct($firstWeekday);
     }
 
     /**
@@ -49,7 +56,7 @@ class Range extends PeriodAbstract
         $end = clone($this->end);
         $end->add($diff);
 
-        return new self($begin, $end);
+        return new self($begin, $end, $this->firstWeekday);
     }
 
     /**
@@ -63,7 +70,7 @@ class Range extends PeriodAbstract
         $end = clone($this->end);
         $end->sub($diff);
 
-        return new self($begin, $end);
+        return new self($begin, $end, $this->firstWeekday);
     }
 
     /**

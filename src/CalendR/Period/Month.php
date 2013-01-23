@@ -15,9 +15,12 @@ class Month extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param \DateTime $start
+     * @param  \DateTime $start
+     * @param  int       $firstWeekday
+     *
+     * @throws Exception\NotAMonth
      */
-    public function __construct(\DateTime $start)
+    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAMonth;
@@ -26,6 +29,8 @@ class Month extends PeriodAbstract implements \Iterator
         $this->begin = clone $start;
         $this->end = clone $this->begin;
         $this->end->add(new \DateInterval('P1M'));
+
+        parent::__construct($firstWeekday);
     }
 
     /**
@@ -65,25 +70,64 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
-            $days[] = new Day($date);
+            $days[] = new Day($date, $this->firstWeekday);
         }
 
         return $days;
     }
 
     /**
-     * Returns a Range period begining at the Monday of first week of this month,
-     * and ending at the last sunday of the last week of this month.
+     * Returns a Range period begining at the first day of first week of this month,
+     * and ending at the last day of the last week of this month.
      *
      * @return Range
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstMonday(), $this->getLastSunday());
+        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->firstWeekday);
+    }
+
+    /**
+     * Returns the first day of the first week of month.
+     * First day of week is configurable via self::setFirstWeekday()
+     *
+     * @return \DateTime
+     */
+    public function getFirstDayOfFirstWeek()
+    {
+        $delta  = $this->begin->format('w') ?: 7;
+        $delta -= $this->firstWeekday;
+
+        $firstDay = clone $this->begin;
+        $firstDay->sub(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $firstDay;
+    }
+
+    /**
+     * Returns the last day of last week of month
+     * First day of week is configurable via self::setFirstWeekday()
+     *
+     * @return \DateTime
+     */
+    public function getLastDayOfLastWeek()
+    {
+        $lastDay = clone $this->end;
+        $lastDay->sub(new \DateInterval('P1D'));
+        $lastWeekday = $this->firstWeekday === Day::SUNDAY ? Day::SATURDAY : $this->firstWeekday - 1;
+
+        $delta = $lastDay->format('w') - $lastWeekday;
+        $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);
+        $delta = $delta === 7 ? 0 : $delta;
+        $lastDay->add(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $lastDay;
     }
 
     /**
      * Returns the monday of the first week of this month.
+     *
+     * @deprecated see self::getFirstDayOfFirstWeek
      *
      * @return \DateTime
      */
@@ -100,6 +144,8 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the sunday of the last week of this month.
+     *
+     * @deprecated see self::getLastDayOfLastWeek
      *
      * @return \DateTime
      */
@@ -129,7 +175,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstMonday());
+            $this->current = new Week($this->getFirstDayOfFirstWeek(), $this->firstWeekday);
         } else {
             $this->current = $this->current->getNext();
 

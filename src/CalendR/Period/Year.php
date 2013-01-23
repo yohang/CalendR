@@ -9,13 +9,18 @@ namespace CalendR\Period;
  */
 class Year extends PeriodAbstract implements \Iterator
 {
-
     /**
      * @var Month
      */
     private $current;
 
-    public function __construct(\DateTime $begin)
+    /**
+     * @param \DateTime $begin
+     * @param int       $firstWeekday
+     *
+     * @throws Exception\NotAYear
+     */
+    public function __construct(\DateTime $begin, $firstWeekday = Day::MONDAY)
     {
         if (!self::isValid($begin)) {
             throw new Exception\NotAYear;
@@ -24,6 +29,8 @@ class Year extends PeriodAbstract implements \Iterator
         $this->begin = clone $begin;
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1Y'));
+
+        parent::__construct($firstWeekday);
     }
 
     /**
@@ -78,7 +85,7 @@ class Year extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (null === $this->current) {
-            $this->current = new Month($this->begin);
+            $this->current = new Month($this->begin, $this->firstWeekday);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {

@@ -120,6 +120,13 @@ interface PeriodInterface
     function isCurrent();
 
     /**
+     * Sets the first day of week
+     *
+     * @param int $firstWeekday
+     */
+    function setFirstWeekday($firstWeekday);
+
+    /**
      * Checks if $start is good for building the period
      *
      * @static
