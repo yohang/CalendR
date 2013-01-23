@@ -25,7 +25,7 @@ class Basic implements CollectionInterface
     /**
      * The events
      *
-     * @var array|EventInterface
+     * @var array<EventInterface>
      */
     protected $events;
 
@@ -40,7 +40,7 @@ class Basic implements CollectionInterface
     /**
      * Adds an event to the collection
      *
-     * @param CalendR\Event\EventInterface $event
+     * @param EventInterface $event
      */
     public function add(EventInterface $event)
     {
@@ -50,7 +50,7 @@ class Basic implements CollectionInterface
     /**
      * Removes an event from the collection
      *
-     * @param CalendR\Event\EventInterface $event
+     * @param EventInterface $event
      */
     public function remove(EventInterface $event)
     {
@@ -64,7 +64,7 @@ class Basic implements CollectionInterface
     /**
      * Return all events;
      *
-     * @return mixed
+     * @return array<EventInterface>
      */
     public function all()
     {
@@ -74,8 +74,9 @@ class Basic implements CollectionInterface
     /**
      * Returns if there is events corresponding to $index period
      *
-     * @param $index
-     * @return mixed
+     * @param mixed $index
+     *
+     * @return bool
      */
     public function has($index)
     {
@@ -85,8 +86,9 @@ class Basic implements CollectionInterface
     /**
      * Find events in the collection
      *
-     * @param $index
-     * @return array|EventInterface
+     * @param mixed $index
+     *
+     * @return array<EventInterface>
      */
     public function find($index)
     {
@@ -109,5 +111,4 @@ class Basic implements CollectionInterface
     {
         return count($this->events);
     }
-
 }

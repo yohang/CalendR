@@ -23,7 +23,7 @@ use CalendR\Period\PeriodInterface;
 class Indexed implements CollectionInterface
 {
     /**
-     * @var array|array|EventInterface
+     * @var array<array<EventInterface>>
      */
     protected $events;
 
@@ -50,8 +50,8 @@ class Indexed implements CollectionInterface
     protected $indexFunction;
 
     /**
-     * @param array $events
-     * @param null  $callable
+     * @param array<EventInterface> $events
+     * @param callable|null         $callable
      */
     public function __construct(array $events = array(), $callable = null)
     {
@@ -71,7 +71,7 @@ class Indexed implements CollectionInterface
     /**
      * Adds an event to the collection
      *
-     * @param CalendR\Event\EventInterface $event
+     * @param EventInterface $event
      */
     public function add(EventInterface $event)
     {
@@ -88,7 +88,7 @@ class Indexed implements CollectionInterface
     /**
      * Removes an event from the collection
      *
-     * @param CalendR\Event\EventInterface $event
+     * @param EventInterface $event
      */
     public function remove(EventInterface $event)
     {
@@ -106,6 +106,8 @@ class Indexed implements CollectionInterface
     /**
      * Returns if we have events for the given index
      *
+     * @param mixed $index
+     *
      * @return bool
      */
     public function has($index)
@@ -116,8 +118,9 @@ class Indexed implements CollectionInterface
     /**
      * returns events
      *
-     * @param $index
-     * @return array
+     * @param mixed $index
+     *
+     * @return array<EventInterface>
      */
     public function find($index)
     {
@@ -134,7 +137,7 @@ class Indexed implements CollectionInterface
     /**
      * Returns a flattened array of all events
      *
-     * @return array
+     * @return array<EventInterface>
      */
     public function all()
     {
@@ -150,7 +153,8 @@ class Indexed implements CollectionInterface
     /**
      * Computes event index
      *
-     * @param \CalendR\Event\EventInterface $event
+     * @param EventInterface|\DateTime $toCompute
+     *
      * @return string
      */
     protected function computeIndex($toCompute)

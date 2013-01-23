@@ -22,7 +22,7 @@ use CalendR\Event\EventInterface;
 class Basic implements ProviderInterface, \IteratorAggregate, \Countable
 {
     /**
-     * @var array|\CalendR\Event\EventInterface
+     * @var array<EventInterface>
      */
     protected $events;
 
@@ -47,7 +47,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     /**
      * Adds an event to the provider
      *
-     * @param \CalendR\Event\EventInterface $event
+     * @param EventInterface $event
      */
     public function add(EventInterface $event)
     {
@@ -57,7 +57,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     /**
      * Returns all events
      *
-     * @return array|\CalendR\Event\EventInterface
+     * @return array<EventInterface>
      */
     public function all()
     {
@@ -67,7 +67,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     /**
      * Retrieve an external iterator
      *
-     * @return Traversable An instance of an object implementing Iterator or Traversable
+     * @return \Traversable
      */
     public function getIterator()
     {
@@ -77,7 +77,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     /**
      * The return value is cast to an integer.
      *
-     * @return int The custom count as an integer.
+     * @return int
      */
     public function count()
     {

@@ -22,7 +22,7 @@ use CalendR\Period\PeriodInterface;
 class Calendar
 {
     /**
-     * @var \CalendR\Event\Manager
+     * @var Manager
      */
     private $eventManager;
 
@@ -53,6 +53,7 @@ class Calendar
 
     /**
      * @param \DateTime|int $yearOrStart
+     *
      * @return Period\Year
      */
     public function getYear($yearOrStart)
@@ -67,7 +68,8 @@ class Calendar
     /**
      * @param \DateTime|int $yearOrStart year if month is filled, month begin datetime otherwise
      * @param null|int      $month       number (1~12)
-     * @return \CalendR\Period\Month
+     *
+     * @return Period\Month
      */
     public function getMonth($yearOrStart, $month = null)
     {
@@ -79,8 +81,8 @@ class Calendar
     }
 
     /**
-     * @param  \DateTime|int $yearOrStart
-     * @param  null|int      $week
+     * @param \DateTime|int $yearOrStart
+     * @param null|int      $week
      *
      * @return Period\Week
      */
@@ -94,9 +96,9 @@ class Calendar
     }
 
     /**
-     * @param  \DateTime|int $yearOrStart
-     * @param  null|int      $month
-     * @param  null|int      $day
+     * @param \DateTime|int $yearOrStart
+     * @param null|int      $month
+     * @param null|int      $day
      *
      * @return Period\Day
      */
@@ -109,6 +111,12 @@ class Calendar
         return new Period\Day($yearOrStart, $this->firstWeekday);
     }
 
+    /**
+     * @param Period\PeriodInterface $period
+     * @param array                  $options
+     *
+     * @return array<Event\EventInterface>
+     */
     public function getEvents(PeriodInterface $period, array $options = array())
     {
         return $this->getEventManager()->find($period, $options);

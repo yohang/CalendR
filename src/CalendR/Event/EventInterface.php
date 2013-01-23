@@ -28,7 +28,7 @@ interface EventInterface
      * @abstract
      * @return string an unique event identifier
      */
-    function getUid();
+    public function getUid();
 
     /**
      * Returns the event begin
@@ -36,7 +36,7 @@ interface EventInterface
      * @abstract
      * @return \DateTime event begin
      */
-    function getBegin();
+    public function getBegin();
 
     /**
      * Returns the event end
@@ -44,32 +44,32 @@ interface EventInterface
      * @abstract
      * @return \DateTime event end
      */
-    function getEnd();
+    public function getEnd();
 
     /**
      * Check if the given date is during the event
      *
      * @abstract
-     * @param \DateTime $datetime
-     * @return bool true if $datetime is during the event, false otherwise
+     * @param  \DateTime $datetime
+     * @return bool      true if $datetime is during the event, false otherwise
      */
-    function contains(\DateTime $datetime);
+    public function contains(\DateTime $datetime);
 
     /**
      * Check if the given period is during the event
      *
      * @abstract
-     * @param \CalendR\Period\PeriodInterface $period
-     * @return bool true if $period is during the event, false otherwise
+     * @param  \CalendR\Period\PeriodInterface $period
+     * @return bool                            true if $period is during the event, false otherwise
      */
-    function containsPeriod(PeriodInterface $period);
+    public function containsPeriod(PeriodInterface $period);
 
     /**
      * Check if the event is during the given period
      *
      * @abstract
-     * @param \CalendR\Period\PeriodInterface $period
-     * @return bool true if the event is during $period, false otherwise
+     * @param  \CalendR\Period\PeriodInterface $period
+     * @return bool                            true if the event is during $period, false otherwise
      */
-    function isDuring(PeriodInterface $period);
+    public function isDuring(PeriodInterface $period);
 }

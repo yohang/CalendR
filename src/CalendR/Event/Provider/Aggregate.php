@@ -19,10 +19,15 @@ namespace CalendR\Event\Provider;
 class Aggregate implements ProviderInterface
 {
     /**
-     * @var array|ProviderInterface
+     * @var array<ProviderInterface>
      */
     private $providers;
 
+    /**
+     * @param array<ProviderInterface> $providers
+     *
+     * @throws \InvalidArgumentException
+     */
     public function __construct(array $providers)
     {
         foreach ($providers as $provider) {
@@ -37,6 +42,7 @@ class Aggregate implements ProviderInterface
      * Adds a provider
      *
      * @param ProviderInterface $provider
+     *
      * @return Aggregate
      */
     public function add(ProviderInterface $provider)
@@ -52,7 +58,9 @@ class Aggregate implements ProviderInterface
      *
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @return array|EventInterface
+     * @param array     $options
+     *
+     * @return array<EventInterface>
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
@@ -64,5 +72,4 @@ class Aggregate implements ProviderInterface
 
         return $events;
     }
-
 }

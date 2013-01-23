@@ -9,7 +9,9 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 
 /**
+ * Silex CalendR Service Provider
  *
+ * @author Yohan Giarelli<yohan@giarel.li>
  */
 class CalendRServiceProvider implements ServiceProviderInterface
 {

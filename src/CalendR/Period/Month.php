@@ -15,8 +15,8 @@ class Month extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param  \DateTime $start
-     * @param  int       $firstWeekday
+     * @param \DateTime $start
+     * @param int       $firstWeekday
      *
      * @throws Exception\NotAMonth
      */
@@ -35,20 +35,12 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * @param \DateTime $date
+     *
      * @return bool
      */
     public function contains(\DateTime $date)
     {
         return $date->format('Y-m') == $this->begin->format('Y-m');
-    }
-
-    public static function isValid(\DateTime $start)
-    {
-        if (1 != $start->format('d')) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -64,7 +56,7 @@ class Month extends PeriodAbstract implements \Iterator
     /**
      * Returns a Day array
      *
-     * @return array|Day
+     * @return array<Day>
      */
     public function getDays()
     {
@@ -172,6 +164,9 @@ class Month extends PeriodAbstract implements \Iterator
         return $this->current;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function next()
     {
         if (!$this->valid()) {
@@ -185,16 +180,25 @@ class Month extends PeriodAbstract implements \Iterator
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function key()
     {
         return $this->current->getNumber();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function valid()
     {
         return null !== $this->current();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function rewind()
     {
         $this->current = null;
@@ -212,12 +216,25 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
+     * @param \DateTime $start
+     *
+     * @return bool
+     */
+    public static function isValid(\DateTime $start)
+    {
+        if (1 != $start->format('d')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Returns a \DateInterval equivalent to the period
      *
-     * @static
      * @return \DateInterval
      */
-    static function getDateInterval()
+    public static function getDateInterval()
     {
         return new \DateInterval('P1M');
     }

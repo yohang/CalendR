@@ -35,17 +35,16 @@ class QueryHelper
      *  }
      * ```
      *
-     * @static
      * @deprecated This method is deprecated from release, prefer the use of the EventRepository trait.
      *             However, the methods won't be removed until PHP5.3 is officialy maintained.
      *
-     * @param QueryBuilder  $qb
-     * @param string        $beginField
-     * @param string        $endField
-     * @param \DateTime     $begin
-     * @param \DateTime     $end
+     * @param QueryBuilder $qb
+     * @param string       $beginField
+     * @param string       $endField
+     * @param \DateTime    $begin
+     * @param \DateTime    $end
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public static function addEventQuery(QueryBuilder $qb, $beginField, $endField, \DateTime $begin, \DateTime $end)
     {

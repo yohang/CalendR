@@ -12,8 +12,8 @@ class Week extends PeriodAbstract implements \Iterator
     private $current = null;
 
     /**
-     * @param  \DateTime $start
-     * @param  int       $firstWeekday
+     * @param \DateTime $start
+     * @param int       $firstWeekday
      *
      * @throws Exception\NotAWeek
      */
@@ -32,6 +32,7 @@ class Week extends PeriodAbstract implements \Iterator
 
     /**
      * @param \DateTime $date
+     *
      * @return bool
      */
     public function contains(\DateTime $date)
@@ -60,8 +61,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * @static
-     * @param  \DateTime $start
+     * @param \DateTime $start
      *
      * @return bool
      */
@@ -70,14 +70,8 @@ class Week extends PeriodAbstract implements \Iterator
         return true;
     }
 
-    /*
-    * Iterator implementation
-    */
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Return the current element
-     * @link http://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * {@inheritDoc}
      */
     public function current()
     {
@@ -85,10 +79,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Move forward to next element
-     * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
+     * {@inheritDoc}
      */
     public function next()
     {
@@ -103,11 +94,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Return the key of the current element
-     * @link http://php.net/manual/en/iterator.key.php
-     * @return scalar scalar on success, integer
-     * 0 on failure.
+     * {@inheritDoc}
      */
     public function key()
     {
@@ -115,11 +102,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Checks if current position is valid
-     * @link http://php.net/manual/en/iterator.valid.php
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     * Returns true on success or false on failure.
+     * {@inheritDoc}
      */
     public function valid()
     {
@@ -127,10 +110,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Rewind the Iterator to the first element
-     * @link http://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
+     * {@inheritDoc}
      */
     public function rewind()
     {
@@ -151,10 +131,9 @@ class Week extends PeriodAbstract implements \Iterator
     /**
      * Returns a \DateInterval equivalent to the period
      *
-     * @static
      * @return \DateInterval
      */
-    static function getDateInterval()
+    public static function getDateInterval()
     {
         return new \DateInterval('P1W');
     }

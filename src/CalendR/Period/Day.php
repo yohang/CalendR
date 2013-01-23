@@ -41,16 +41,12 @@ class Day extends PeriodAbstract
 
     /**
      * @param \DateTime $date
-     * @return true if the period contains this date
+     *
+     * @return bool true if the period contains this date
      */
     public function contains(\DateTime $date)
     {
         return $this->begin->format('d-m-Y') == $date->format('d-m-Y');
-    }
-
-    public static function isValid(\DateTime $start)
-    {
-        return true;
     }
 
     /**
@@ -74,12 +70,22 @@ class Day extends PeriodAbstract
     }
 
     /**
+     * @param \DateTime $start
+     *
+     * @return bool
+     */
+    public static function isValid(\DateTime $start)
+    {
+        return true;
+    }
+
+    /**
      * Returns a \DateInterval equivalent to the period
      *
      * @static
      * @return \DateInterval
      */
-    static function getDateInterval()
+    public static function getDateInterval()
     {
         return new \DateInterval('P1D');
     }

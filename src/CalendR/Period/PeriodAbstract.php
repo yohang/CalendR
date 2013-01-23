@@ -36,7 +36,7 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $firstWeekday;
 
     /**
-     * @param  int       $firstWeekday
+     * @param int $firstWeekday
      *
      * @throws Exception\NotAWeekDay
      */
@@ -72,7 +72,8 @@ abstract class PeriodAbstract implements PeriodInterface
      * Checks if a period is equals to an other
      *
      * @param PeriodInterface $period
-     * @return boolean
+     *
+     * @return bool
      */
     public function equals(PeriodInterface $period)
     {
@@ -86,8 +87,8 @@ abstract class PeriodAbstract implements PeriodInterface
      * Returns true if the period include the other period
      * given as argument
      *
-     * @param  PeriodInterface $period
-     * @param  bool            $strict
+     * @param PeriodInterface $period
+     * @param bool            $strict
      *
      * @return bool
      */
@@ -114,6 +115,7 @@ abstract class PeriodAbstract implements PeriodInterface
      *  * Event end is during Period
      *
      * @param EventInterface $event
+     *
      * @return boolean
      */
     public function containsEvent(EventInterface $event)
@@ -129,7 +131,8 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * Format the period to a string
      *
-     * @param $format
+     * @param string $format
+     *
      * @return string
      */
     public function format($format)
@@ -140,7 +143,7 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * Returns if the current period is the current one
      *
-     * @return boolean
+     * @return bool
      */
     public function isCurrent()
     {

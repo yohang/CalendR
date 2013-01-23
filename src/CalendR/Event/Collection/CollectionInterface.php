@@ -21,41 +21,39 @@ interface CollectionInterface extends \Countable
     /**
      * Adds an event to the collection
      *
-     * @abstract
-     * @param CalendR\Event\EventInterface $event
+     * @param EventInterface $event
      */
     public function add(EventInterface $event);
 
     /**
      * Removes an event from the collection
      *
-     * @abstract
-     * @param CalendR\Event\EventInterface $event
+     * @param EventInterface $event
      */
     public function remove(EventInterface $event);
 
     /**
      * Return all events;
      *
-     * @abstract
-     * @return mixed
+     * @return array<EventInterface>
      */
     public function all();
 
     /**
      * Returns if there is events corresponding to $index period
      *
-     * @abstract
-     * @param $index
-     * @return mixed
+     * @param mixed $index
+     *
+     * @return bool
      */
     public function has($index);
 
     /**
      * Find events in the collection
      *
-     * @abstract
-     * @param $index
+     * @param mixed $index
+     *
+     * @return array<EventInterface>
      */
     public function find($index);
 }

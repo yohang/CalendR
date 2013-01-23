@@ -41,6 +41,7 @@ trait EventRepository
      * @param \DateTime $begin
      * @param \DateTime $end
      * @param array     $options
+     *
      * @return \Doctrine\ORM\Query
      */
     public function getEventsQuery(\DateTime $begin, \DateTime $end, array $options = array())
@@ -52,7 +53,8 @@ trait EventRepository
      * @param \DateTime $begin
      * @param \DateTime $end
      * @param array     $options
-     * @return array|\CalendR\Event\EventInterface
+     *
+     * @return array<\CalendR\Event\EventInterface>
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
@@ -60,6 +62,8 @@ trait EventRepository
     }
 
     /**
+     * @param array $options
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function createQueryBuilderForGetEvent(array $options)
@@ -70,7 +74,6 @@ trait EventRepository
     /**
      * Returns the begin date field name
      *
-     * @abstract
      * @return string
      */
     public function getBeginFieldName()
@@ -80,7 +83,7 @@ trait EventRepository
 
     /**
      * Returns the end date field name
-     * @abstract
+     *
      * @return string
      */
     public function getEndFieldName()

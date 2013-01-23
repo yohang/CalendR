@@ -33,13 +33,19 @@ class Range extends PeriodAbstract
 
     /**
      * @param \DateTime $date
-     * @return true if the period contains this date
+     *
+     * @return bool true if the period contains this date
      */
     public function contains(\DateTime $date)
     {
         return ($date->format('U') > $this->begin->format('U') && $date->format('U') < $this->end->format('U'));
     }
 
+    /**
+     * @param \DateTime $start
+     *
+     * @return bool
+     */
     public static function isValid(\DateTime $start)
     {
         return true;
@@ -86,10 +92,9 @@ class Range extends PeriodAbstract
     /**
      * Returns a \DateInterval equivalent to the period
      *
-     * @static
-     * @return \DateInterval
+     * @throws Exception\NotImplemented
      */
-    static function getDateInterval()
+    public static function getDateInterval()
     {
       throw new Exception\NotImplemented('Range period doesn\'t support getDateInterval().');
     }

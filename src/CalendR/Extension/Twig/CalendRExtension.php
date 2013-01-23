@@ -7,7 +7,7 @@ use CalendR\Calendar;
 class CalendRExtension extends \Twig_Extension
 {
     /**
-     * @var \CalendR\Calendar
+     * @var Calendar
      */
     protected $factory;
 
@@ -20,7 +20,7 @@ class CalendRExtension extends \Twig_Extension
     }
 
     /**
-     * @return array
+     * @return array<\Twig_Function>
      */
     public function getFunctions()
     {

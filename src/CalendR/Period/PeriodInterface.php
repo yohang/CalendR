@@ -23,70 +23,64 @@ interface PeriodInterface
     /**
      * Checks if the given period is contained in the current period
      *
-     * @abstract
      * @param \DateTime $date
-     * @return boolean true if the period contains this date
+     *
+     * @return bool true if the period contains this date
      */
-    function contains(\DateTime $date);
+    public function contains(\DateTime $date);
 
     /**
      * Gets the DateTime of period begin
      *
-     * @abstract
      * @return \DateTime
      */
-    function getBegin();
+    public function getBegin();
 
     /**
      * Gets the DateTime of the period end
      *
-     * @abstract
      * @return \DateTime
      */
-    function getEnd();
+    public function getEnd();
 
     /**
      * Gets the next period of the same type
      *
-     * @abstract
      * @return PeriodInterface
      */
-    function getNext();
+    public function getNext();
 
     /**
      * Gets the previous period of the same type
      *
-     * @abstract
      * @return PeriodInterface
      */
-    function getPrevious();
+    public function getPrevious();
 
     /**
      * Returns the period as a DatePeriod
      *
-     * @abstract
      * @return \DatePeriod
      */
-    function getDatePeriod();
+    public function getDatePeriod();
 
     /**
      * Checks if a period is equals to an other
      *
-     * @abstract
      * @param PeriodInterface $period
-     * @return boolean
+     *
+     * @return bool
      */
-    function equals(PeriodInterface $period);
+    public function equals(PeriodInterface $period);
 
     /**
      * Returns true if the period include the other period
      * given as argument
      *
-     * @abstract
      * @param PeriodInterface $period
      * @param bool            $strict
      */
-    function includes(PeriodInterface $period, $strict = true);
+    public function includes(PeriodInterface $period, $strict = true);
 
     /**
      * Returns if $event is during this period.
@@ -96,51 +90,46 @@ interface PeriodInterface
      *  * Event begin is during Period
      *  * Event end is during Period
      *
-     * @abstract
      * @param EventInterface $event
+     *
      * @return boolean
      */
-    function containsEvent(EventInterface $event);
+    public function containsEvent(EventInterface $event);
 
     /**
      * Format the period to a string
      *
-     * @abstract
-     * @param $format
+     * @param string $format
+     *
      * @return string
      */
-    function format($format);
+    public function format($format);
 
     /**
      * Returns if the current period is the current one
      *
-     * @abstract
      * @return boolean
      */
-    function isCurrent();
+    public function isCurrent();
 
     /**
      * Sets the first day of week
      *
      * @param int $firstWeekday
      */
-    function setFirstWeekday($firstWeekday);
+    public function setFirstWeekday($firstWeekday);
 
     /**
      * Checks if $start is good for building the period
      *
-     * @static
-     * @abstract
      * @param \DateTime $start
      */
-    static function isValid(\DateTime $start);
+    public static function isValid(\DateTime $start);
 
     /**
      * Returns a \DateInterval equivalent to the period
      *
-     * @static
-     * @abstract
      * @return \DateInterval
      */
-    static function getDateInterval();
+    public static function getDateInterval();
 }
