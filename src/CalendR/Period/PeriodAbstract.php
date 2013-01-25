@@ -69,6 +69,18 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
+     * Checks if the given period is contained in the current period
+     *
+     * @param \DateTime $date
+     *
+     * @return bool true if the period contains this date
+     */
+    public function contains(\DateTime $date)
+    {
+        return $this->begin <= $date && $date < $this->end;
+    }
+
+    /**
      * Checks if a period is equals to an other
      *
      * @param PeriodInterface $period

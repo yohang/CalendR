@@ -32,16 +32,6 @@ class Range extends PeriodAbstract
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return bool true if the period contains this date
-     */
-    public function contains(\DateTime $date)
-    {
-        return ($date->format('U') > $this->begin->format('U') && $date->format('U') < $this->end->format('U'));
-    }
-
-    /**
      * @param \DateTime $start
      *
      * @return bool

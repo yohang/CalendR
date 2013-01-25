@@ -21,6 +21,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
             array(new \DateTime('2012-01-02'), new \DateTime('2012-01-04'), new \DateTime('2012-01-09')),
             array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2012-01-19')),
             array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2011-01-10')),
+            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2012-01-17')),
         );
     }
 

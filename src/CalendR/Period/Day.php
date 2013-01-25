@@ -40,16 +40,6 @@ class Day extends PeriodAbstract
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return bool true if the period contains this date
-     */
-    public function contains(\DateTime $date)
-    {
-        return $this->begin->format('d-m-Y') == $date->format('d-m-Y');
-    }
-
-    /**
      * Returns the period as a DatePeriod
      *
      * @return \DatePeriod

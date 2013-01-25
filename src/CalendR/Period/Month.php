@@ -34,16 +34,6 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return bool
-     */
-    public function contains(\DateTime $date)
-    {
-        return $date->format('Y-m') == $this->begin->format('Y-m');
-    }
-
-    /**
      * Returns the period as a DatePeriod
      *
      * @return \DatePeriod

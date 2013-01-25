@@ -31,6 +31,8 @@ class YearTest extends \PHPUnit_Framework_TestCase
             array(new \DateTime('2011-01-01'), new \DateTime('2011-01-01'), new \DateTime('2012-03-19')),
             array(new \DateTime('2013-01-01'), new \DateTime('2013-09-09'), new \DateTime('2011-10-09')),
             array(new \DateTime('2013-01-01'), new \DateTime('2013-12-31'), new \DateTime('2014-01-01')),
+            array(new \DateTime('2013-01-01'), new \DateTime('2013-12-31'), new \DateTime('2014-01-01')),
+            array(new \DateTime('2013-01-01'), new \DateTime('2013-01-01'), new \DateTime('2014-01-01')),
         );
     }
 

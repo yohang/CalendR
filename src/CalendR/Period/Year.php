@@ -34,16 +34,6 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return bool true if the period contains this date
-     */
-    public function contains(\DateTime $date)
-    {
-        return $date->format('Y') == $this->begin->format('Y');
-    }
-
-    /**
      * Returns the period as a DatePeriod
      *
      * @return \DatePeriod

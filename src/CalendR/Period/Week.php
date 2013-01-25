@@ -31,18 +31,6 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return bool
-     */
-    public function contains(\DateTime $date)
-    {
-        return
-            $this->begin->diff($date)->invert == 0 &&
-            $this->end->diff($date)->invert == 1;
-    }
-
-    /**
      * @return int
      */
     public function getNumber()
