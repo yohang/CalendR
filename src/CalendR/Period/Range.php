@@ -25,10 +25,9 @@ class Range extends PeriodAbstract
      */
     public function __construct(\DateTime $begin, \DateTime $end, $firstWeekday = Day::MONDAY)
     {
-        $this->begin = clone $begin;
-        $this->end   = clone $end;
+        parent::__construct($begin, $firstWeekday);
 
-        parent::__construct($firstWeekday);
+        $this->end   = clone $end;
     }
 
     /**

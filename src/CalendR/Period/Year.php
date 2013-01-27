@@ -29,12 +29,11 @@ class Year extends PeriodAbstract implements \Iterator
         if (!self::isValid($begin)) {
             throw new Exception\NotAYear;
         }
+        parent::__construct($begin, $firstWeekday);
 
-        $this->begin = clone $begin;
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1Y'));
         $this->monthClass = (!empty($classes['monthClass'])) ? $classes['monthClass'] : __NAMESPACE__ . '\Month';
-        parent::__construct($firstWeekday);
     }
 
     /**

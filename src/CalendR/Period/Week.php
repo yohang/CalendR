@@ -26,13 +26,11 @@ class Week extends PeriodAbstract implements \Iterator, WeekInterface
         if (!self::isValid($start)) {
             throw new Exception\NotAWeek;
         }
+        parent::__construct($start, $firstWeekday);
 
-        $this->begin = clone $start;
         $this->end = clone $start;
         $this->end->add(new \DateInterval('P7D'));
         $this->dayClass = (!empty($classes['dayClass'])) ? $classes['dayClass'] : __NAMESPACE__ . '\Day';
-
-        parent::__construct($firstWeekday);
     }
 
     /**

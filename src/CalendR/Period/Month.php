@@ -31,14 +31,12 @@ class Month extends PeriodAbstract implements \Iterator
         if (!self::isValid($start)) {
             throw new Exception\NotAMonth;
         }
+        parent::__construct($start, $firstWeekday);
 
-        $this->begin = clone $start;
-        $this->end = clone $this->begin;
+        $this->end = clone $start;
         $this->end->add(new \DateInterval('P1M'));
         $this->dayClass = (!empty($classes['dayClass'])) ? $classes['dayClass'] : __NAMESPACE__ . '\Day';
         $this->weekClass = (!empty($classes['weekClass'])) ? $classes['weekClass'] : __NAMESPACE__ . '\Week';
-
-        parent::__construct($firstWeekday);
     }
 
     /**

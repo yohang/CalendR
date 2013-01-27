@@ -36,11 +36,12 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $firstWeekday;
 
     /**
+     * @param \DateTime $start
      * @param int $firstWeekday
      *
-     * @throws Exception\NotAWeekDay
+     * @throws Exception\NotAWeekday
      */
-    public function __construct($firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
     {
         if(!isset($this->firstWeekday)){
             if ($firstWeekday < 0 || $firstWeekday > 6) {
@@ -52,6 +53,7 @@ abstract class PeriodAbstract implements PeriodInterface
             }
             $this->firstWeekday = $firstWeekday;
         }
+        $this->begin = clone $start;
     }
 
     /**
