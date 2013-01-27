@@ -10,17 +10,23 @@ namespace CalendR\Period;
 class Month extends PeriodAbstract implements \Iterator
 {
     /**
-     * @var Week
+     * @var WeekInterface
      */
     private $current;
 
+    /** @var string */
+    protected $dayClass;
+
+    /** @var string */
+    protected $weekClass;
+
     /**
      * @param \DateTime $start
-     * @param int       $firstWeekday
-     *
+     * @param int $firstWeekday
+     * @param array $classes
      * @throws Exception\NotAMonth
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY, $classes = array())
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAMonth;
@@ -29,6 +35,8 @@ class Month extends PeriodAbstract implements \Iterator
         $this->begin = clone $start;
         $this->end = clone $this->begin;
         $this->end->add(new \DateInterval('P1M'));
+        $this->dayClass = (!empty($classes['dayClass'])) ? $classes['dayClass'] : __NAMESPACE__ . '\Day';
+        $this->weekClass = (!empty($classes['weekClass'])) ? $classes['weekClass'] : __NAMESPACE__ . '\Week';
 
         parent::__construct($firstWeekday);
     }
@@ -52,7 +60,7 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
-            $days[] = new Day($date, $this->firstWeekday);
+            $days[] = new $this->dayClass($date, $this->firstWeekday);
         }
 
         return $days;
@@ -160,7 +168,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstDayOfFirstWeek(), $this->firstWeekday);
+            $this->current = new $this->weekClass($this->getFirstDayOfFirstWeek(), $this->firstWeekday);
         } else {
             $this->current = $this->current->getNext();
 

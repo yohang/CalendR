@@ -31,6 +31,11 @@ class Calendar
      */
     private $firstWeekday = Period\Day::MONDAY;
 
+    private $dayClass   = 'CalendR\Period\Day';
+    private $weekClass  = 'CalendR\Period\Week';
+    private $monthClass = 'CalendR\Period\Month';
+    private $yearClass  = 'CalendR\Period\Year';
+
     /**
      * @param Manager $eventManager
      */
@@ -62,7 +67,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
         }
 
-        return new Period\Year($yearOrStart, $this->firstWeekday);
+        return new $this->yearClass($yearOrStart, $this->firstWeekday);
     }
 
     /**
@@ -77,7 +82,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
         }
 
-        return new Period\Month($yearOrStart, $this->firstWeekday);
+        return new $this->monthClass($yearOrStart, $this->firstWeekday);
     }
 
     /**
@@ -92,7 +97,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
         }
 
-        return new Period\Week($yearOrStart, $this->firstWeekday);
+        return new $this->weekClass($yearOrStart, $this->firstWeekday);
     }
 
     /**
@@ -108,7 +113,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
         }
 
-        return new Period\Day($yearOrStart, $this->firstWeekday);
+        return new $this->dayClass($yearOrStart, $this->firstWeekday);
     }
 
     /**
@@ -136,5 +141,15 @@ class Calendar
     public function getFirstWeekday()
     {
         return $this->firstWeekday;
+    }
+
+    /**
+     * @param array $classes
+     */
+    public function setClasses(array $classes)
+    {
+        foreach ($classes as $class=>$name){
+            if(property_exists($this, $class)) $this->$class = $name;
+        }
     }
 }
