@@ -26,10 +26,10 @@ class Calendar
      */
     private $eventManager;
 
-    /**
-     * @var int
-     */
-    private $firstWeekday = Period\Day::MONDAY;
+    private $dayClass   = 'CalendR\Period\Day';
+    private $weekClass  = 'CalendR\Period\Week';
+    private $monthClass = 'CalendR\Period\Month';
+    private $yearClass  = 'CalendR\Period\Year';
 
     /**
      * @param Manager $eventManager
@@ -62,7 +62,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
         }
 
-        return new Period\Year($yearOrStart, $this->firstWeekday);
+        return new $this->yearClass($yearOrStart, array('monthClass' => $this->monthClass));
     }
 
     /**
@@ -77,7 +77,8 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
         }
 
-        return new Period\Month($yearOrStart, $this->firstWeekday);
+        return new $this->monthClass($yearOrStart,
+            array('dayClass'=> $this->dayClass, 'WeekClass' => $this->weekClass));
     }
 
     /**
@@ -92,7 +93,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
         }
 
-        return new Period\Week($yearOrStart, $this->firstWeekday);
+        return new $this->weekClass($yearOrStart, array('dayClass' => $this->dayClass));
     }
 
     /**
@@ -108,14 +109,14 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
         }
 
-        return new Period\Day($yearOrStart, $this->firstWeekday);
+        return new $this->dayClass($yearOrStart);
     }
 
     /**
      * @param Period\PeriodInterface $period
      * @param array                  $options
      *
-     * @return array<Event\EventInterface>
+     * @return \CalendR\Period\PeriodInterface <Event\EventInterface>
      */
     public function getEvents(PeriodInterface $period, array $options = array())
     {
@@ -123,18 +124,12 @@ class Calendar
     }
 
     /**
-     * @param int $firstWeekday
+     * @param array $classes
      */
-    public function setFirstWeekday($firstWeekday)
+    public function setClasses(array $classes)
     {
-        $this->firstWeekday = $firstWeekday;
-    }
-
-    /**
-     * @return int
-     */
-    public function getFirstWeekday()
-    {
-        return $this->firstWeekday;
+        foreach ($classes as $class=>$name){
+            if(property_exists($this, $class)) $this->$class = $name;
+        }
     }
 }
