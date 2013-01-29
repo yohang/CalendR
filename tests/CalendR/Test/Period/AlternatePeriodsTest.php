@@ -3,6 +3,7 @@
 namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
+use CalendR\Period\PeriodFactory;
 
 class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,26 +14,29 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
          'yearClass'  => 'CalendR\Test\Period\AlternatePeriod\Year',
     );
 
-    /** @var $factory Calendar */
-    protected $factory;
+    protected $periodFactory;
+
+    /** @var $calendar Calendar */
+    protected $calendar;
 
     protected function setUp()
     {
-        $this->factory = new Calendar();
-        $this->factory->setClasses($this->classes);
+        $this->periodFactory = new PeriodFactory();
+        $this->periodFactory->setOptions($this->classes);
+        $this->calendar = new Calendar($this->periodFactory);
     }
 
-    public function testFactory()
+    public function testCalendar()
     {
-        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Year', $this->factory->getYear(2013));
-        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Month', $this->factory->getMonth(2013, 1));
-        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Week', $this->factory->getWeek(2013, 1));
-        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Day', $this->factory->getDay(2013, 1, 1));
+        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Year', $this->calendar->getYear(2013));
+        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Month', $this->calendar->getMonth(2013, 1));
+        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Week', $this->calendar->getWeek(2013, 1));
+        $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Day', $this->calendar->getDay(2013, 1, 1));
     }
 
     public function testYear()
     {
-        $year = new \CalendR\Period\Year(new \DateTime('2013-01-01'), 1, $this->classes);
+        $year = new \CalendR\Period\Year(new \DateTime('2013-01-01'), $this->periodFactory);
         foreach ($year as $month) {
             $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Month', $month);
         }
@@ -40,7 +44,7 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 
     public function testMonth()
     {
-        $month = new \CalendR\Period\Month(new \DateTime('2013-01-01'), 1, $this->classes);
+        $month = new \CalendR\Period\Month(new \DateTime('2013-01-01'), $this->periodFactory);
         foreach ($month as $week){
             $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Week', $week);
         }
@@ -50,7 +54,7 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 
     public function testWeek()
     {
-        $week = new \CalendR\Period\Week(new \DateTime('2013W01'), 1, $this->classes);
+        $week = new \CalendR\Period\Week(new \DateTime('2013W01'), $this->periodFactory);
         foreach ($week as $day) {
             $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Day', $day);
         }

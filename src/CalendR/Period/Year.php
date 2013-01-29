@@ -15,25 +15,20 @@ class Year extends PeriodAbstract implements \Iterator
      */
     private $current;
 
-    /** @var string */
-    protected $monthClass;
-
     /**
      * @param \DateTime $begin
-     * @param int $firstWeekday
-     * @param array $classes
+     * @param null|int|PeriodFactoryInterface $factory
      * @throws Exception\NotAYear
      */
-    public function __construct(\DateTime $begin, $firstWeekday = Day::MONDAY, $classes = array())
+    public function __construct(\DateTime $begin, $factory = null)
     {
         if (!self::isValid($begin)) {
             throw new Exception\NotAYear;
         }
-        parent::__construct($begin, $firstWeekday);
+        parent::__construct($begin, $factory);
 
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1Y'));
-        $this->monthClass = (!empty($classes['monthClass'])) ? $classes['monthClass'] : __NAMESPACE__ . '\Month';
     }
 
     /**
@@ -70,7 +65,7 @@ class Year extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (null === $this->current) {
-            $this->current = new $this->monthClass($this->begin, $this->firstWeekday);
+            $this->current = $this->factory->create('month', $this->begin);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {

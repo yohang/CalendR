@@ -30,30 +30,29 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     protected $end;
 
-    /**
-     * @var int
-     */
-    protected $firstWeekday;
+    /** @var PeriodFactoryInterface */
+    protected $factory;
 
     /**
      * @param \DateTime $start
-     * @param int $firstWeekday
+     * @param null|int|PeriodFactoryInterface $factory
+     * @throws Exception\InvalidFactoryArgument
      *
-     * @throws Exception\NotAWeekday
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $factory = null)
     {
-        if(!isset($this->firstWeekday)){
-            if ($firstWeekday < 0 || $firstWeekday > 6) {
-                throw new Exception\NotAWeekday(
-                    sprintf(
-                        '"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)'
-                    )
-                );
-            }
-            $this->firstWeekday = $firstWeekday;
-        }
         $this->begin = clone $start;
+        if (null === $factory) $factory = new PeriodFactory();
+        if (is_integer($factory)){
+            $weekFirstDay = $factory;
+            $factory = new PeriodFactory();
+            $factory->setOption('weekFirstDay', $weekFirstDay);
+        }
+        if ($factory instanceof PeriodFactoryInterface){
+            $this->factory = $factory;
+        } else {
+            throw new Exception\InvalidFactoryArgument();
+        }
     }
 
     /**
@@ -77,7 +76,8 @@ abstract class PeriodAbstract implements PeriodInterface
      *
      * @param \DateTime $date
      *
-     * @return bool true if the period contains this date
+     * true if the period contains this date
+     * @return bool
      */
     public function contains(\DateTime $date)
     {
@@ -173,9 +173,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getNext()
     {
-        $next = clone $this;
-        $next->__construct($this->end);
-        return $next;
+        return new static($this->end, $this->factory);
     }
 
     /**
@@ -187,25 +185,25 @@ abstract class PeriodAbstract implements PeriodInterface
     {
         $start = clone $this->begin;
         $start->sub(static::getDateInterval());
-        $previous = clone $this;
-        $previous->__construct($start);
 
-        return $previous;
+        return new static($start, $this->factory);
     }
 
     /**
      * @param int $firstWeekday
+     * @deprecated - use  periodFactory::setOption('weekFirstDay', $value)
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->firstWeekday = $firstWeekday;
+        $this->factory->setOption('weekFirstDay', $firstWeekday);
     }
 
     /**
      * @return int
+     * @deprecated - use periodFactory::getOption('weekFirstDay')
      */
     public function getFirstWeekday()
     {
-        return $this->firstWeekday;
+        return $this->factory->getOption('weekFirstDay');
     }
 }

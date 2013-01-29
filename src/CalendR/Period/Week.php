@@ -12,25 +12,20 @@ class Week extends PeriodAbstract implements \Iterator, WeekInterface
     /** @var null|PeriodInterface */
     private $current = null;
 
-    /** @var string */
-    private $dayClass;
-
     /**
      * @param \DateTime $start
-     * @param int $firstWeekday
-     * @param array $classes
+     * @param null|int|PeriodFactoryInterface $factory
      * @throws Exception\NotAWeek
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY, $classes = array())
+    public function __construct(\DateTime $start, $factory = null)
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAWeek;
         }
-        parent::__construct($start, $firstWeekday);
+        parent::__construct($start, $factory);
 
         $this->end = clone $start;
         $this->end->add(new \DateInterval('P7D'));
-        $this->dayClass = (!empty($classes['dayClass'])) ? $classes['dayClass'] : __NAMESPACE__ . '\Day';
     }
 
     /**
@@ -61,6 +56,11 @@ class Week extends PeriodAbstract implements \Iterator, WeekInterface
         return true;
     }
 
+    public function getWeekFirstDay()
+    {
+        return $this->factory->getOption('weekFirstDay');
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -75,7 +75,7 @@ class Week extends PeriodAbstract implements \Iterator, WeekInterface
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new $this->dayClass($this->begin, $this->firstWeekday);
+            $this->current = $this->factory->create('day', $this->begin);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {
