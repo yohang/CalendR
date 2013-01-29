@@ -21,14 +21,12 @@ class Range extends PeriodAbstract
     /**
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param int       $firstWeekday
      */
-    public function __construct(\DateTime $begin, \DateTime $end, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $begin, \DateTime $end, $factory = null)
     {
-        $this->begin = clone $begin;
-        $this->end   = clone $end;
+        parent::__construct($begin, $factory);
 
-        parent::__construct($firstWeekday);
+        $this->end   = clone $end;
     }
 
     /**
@@ -52,7 +50,7 @@ class Range extends PeriodAbstract
         $end = clone($this->end);
         $end->add($diff);
 
-        return new self($begin, $end, $this->firstWeekday);
+        return new self($begin, $end, $this->factory);
     }
 
     /**
@@ -66,7 +64,7 @@ class Range extends PeriodAbstract
         $end = clone($this->end);
         $end->sub($diff);
 
-        return new self($begin, $end, $this->firstWeekday);
+        return new self($begin, $end, $this->factory);
     }
 
     /**

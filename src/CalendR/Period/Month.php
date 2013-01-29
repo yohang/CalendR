@@ -10,27 +10,27 @@ namespace CalendR\Period;
 class Month extends PeriodAbstract implements \Iterator
 {
     /**
-     * @var Week
+     * @var WeekInterface
      */
     private $current;
 
     /**
      * @param \DateTime $start
-     * @param int       $firstWeekday
+     * @param PeriodFactoryInterface|int|null $factory
      *
+     * @throws Exception\NotAWeek
      * @throws Exception\NotAMonth
+     * @throws Exception\NotAWeekday
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $factory = null)
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAMonth;
         }
+        parent::__construct($start, $factory);
 
-        $this->begin = clone $start;
-        $this->end = clone $this->begin;
+        $this->end = clone $start;
         $this->end->add(new \DateInterval('P1M'));
-
-        parent::__construct($firstWeekday);
     }
 
     /**
@@ -52,7 +52,7 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
-            $days[] = new Day($date, $this->firstWeekday);
+            $days[] = $this->factory->create('day', $date);
         }
 
         return $days;
@@ -66,19 +66,19 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->firstWeekday);
+        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->factory);
     }
 
     /**
      * Returns the first day of the first week of month.
-     * First day of week is configurable via self::setFirstWeekday()
+     * First day of week is set in factory
      *
      * @return \DateTime
      */
     public function getFirstDayOfFirstWeek()
     {
         $delta  = $this->begin->format('w') ?: 7;
-        $delta -= $this->firstWeekday;
+        $delta -= $this->factory->getOption('weekFirstDay');
 
         $firstDay = clone $this->begin;
         $firstDay->sub(new \DateInterval(sprintf('P%sD', $delta)));
@@ -88,7 +88,6 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the last day of last week of month
-     * First day of week is configurable via self::setFirstWeekday()
      *
      * @return \DateTime
      */
@@ -96,9 +95,10 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $lastDay = clone $this->end;
         $lastDay->sub(new \DateInterval('P1D'));
-        $lastWeekday = $this->firstWeekday === Day::SUNDAY ? Day::SATURDAY : $this->firstWeekday - 1;
+        $weekLastDay = ($this->factory->getOption('weekFirstDay') === Day::SUNDAY)
+            ? Day::SATURDAY : $this->factory->getOption('weekFirstDay') - 1;
 
-        $delta = $lastDay->format('w') - $lastWeekday;
+        $delta = $lastDay->format('w') - $weekLastDay;
         $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);
         $delta = $delta === 7 ? 0 : $delta;
         $lastDay->add(new \DateInterval(sprintf('P%sD', $delta)));
@@ -160,7 +160,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstDayOfFirstWeek(), $this->firstWeekday);
+            $this->current = $this->factory->create('week', $this->getFirstDayOfFirstWeek());
         } else {
             $this->current = $this->current->getNext();
 

@@ -28,15 +28,14 @@ class Day extends PeriodAbstract
 
     /**
      * @param \DateTime $begin
-     * @param int       $firstWeekday
+     * @param null|int|PeriodFactoryInterface $factory
      */
-    public function __construct(\DateTime $begin, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $begin, $factory = null)
     {
-        $this->begin = clone $begin;
+        parent::__construct($begin, $factory);
+
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1D'));
-
-        parent::__construct($firstWeekday);
     }
 
     /**

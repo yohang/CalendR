@@ -7,27 +7,25 @@ namespace CalendR\Period;
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Week extends PeriodAbstract implements \Iterator
+class Week extends PeriodAbstract implements \Iterator, WeekInterface
 {
+    /** @var null|PeriodInterface */
     private $current = null;
 
     /**
      * @param \DateTime $start
-     * @param int       $firstWeekday
-     *
+     * @param null|int|PeriodFactoryInterface $factory
      * @throws Exception\NotAWeek
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $factory = null)
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAWeek;
         }
+        parent::__construct($start, $factory);
 
-        $this->begin = clone $start;
         $this->end = clone $start;
         $this->end->add(new \DateInterval('P7D'));
-
-        parent::__construct($firstWeekday);
     }
 
     /**
@@ -58,6 +56,11 @@ class Week extends PeriodAbstract implements \Iterator
         return true;
     }
 
+    public function getWeekFirstDay()
+    {
+        return $this->factory->getOption('weekFirstDay');
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -72,7 +75,7 @@ class Week extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Day($this->begin, $this->firstWeekday);
+            $this->current = $this->factory->create('day', $this->begin);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {
