@@ -28,10 +28,11 @@ class Day extends PeriodAbstract
 
     /**
      * @param \DateTime $begin
+     * @param null|int|PeriodFactoryInterface $factory
      */
-    public function __construct(\DateTime $begin)
+    public function __construct(\DateTime $begin, $factory = null)
     {
-        parent::__construct($begin);
+        parent::__construct($begin, $factory);
 
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1D'));

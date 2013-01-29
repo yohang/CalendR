@@ -2,8 +2,11 @@
 
 namespace CalendR\Test\Period;
 
-use CalendR\Period\Week;
+use CalendR\Calendar;
+use CalendR\Period\Day;
 use CalendR\Period\Month;
+use CalendR\Period\Range;
+use CalendR\Period\Week;
 use CalendR\Period\Year;
 
 class WeekFirstDayTest extends \PHPUnit_Framework_TestCase

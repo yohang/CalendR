@@ -66,7 +66,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek());
+        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->factory);
     }
 
     /**
