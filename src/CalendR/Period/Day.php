@@ -28,7 +28,6 @@ class Day extends PeriodAbstract
 
     /**
      * @param \DateTime $begin
-     * @param int       $firstWeekday
      */
     public function __construct(\DateTime $begin)
     {

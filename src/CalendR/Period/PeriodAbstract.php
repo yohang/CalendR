@@ -30,13 +30,29 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     protected $end;
 
+    /** @var PeriodFactoryInterface */
+    protected $factory;
+
     /**
      * @param \DateTime $start
+     * @param null|int|PeriodFactoryInterface $factory
+     * @throws Exception\InvalidFactoryArgument
      *
      */
-    public function __construct(\DateTime $start)
+    public function __construct(\DateTime $start, $factory = null)
     {
         $this->begin = clone $start;
+        if (null === $factory) $factory = new PeriodFactory();
+        if (is_integer($factory)){
+            $weekFirstDay = $factory;
+            $factory = new PeriodFactory();
+            $factory->setOption('weekFirstDay', $weekFirstDay);
+        }
+        if ($factory instanceof PeriodFactoryInterface){
+            $this->factory = $factory;
+        } else {
+            throw new Exception\InvalidFactoryArgument();
+        }
     }
 
     /**
@@ -157,9 +173,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getNext()
     {
-        $next = clone $this;
-        $next->__construct($this->end);
-        return $next;
+        return new static($this->end, $this->factory);
     }
 
     /**
@@ -171,9 +185,25 @@ abstract class PeriodAbstract implements PeriodInterface
     {
         $start = clone $this->begin;
         $start->sub(static::getDateInterval());
-        $previous = clone $this;
-        $previous->__construct($start);
 
-        return $previous;
+        return new static($start, $this->factory);
+    }
+
+    /**
+     * @param int $firstWeekday
+     * @deprecated - use  periodFactory::setOption('weekFirstDay', $value)
+     */
+    public function setFirstWeekday($firstWeekday)
+    {
+        $this->factory->setOption('weekFirstDay', $firstWeekday);
+    }
+
+    /**
+     * @return int
+     * @deprecated - use periodFactory::getOption('weekFirstDay')
+     */
+    public function getFirstWeekday()
+    {
+        return $this->factory->getOption('weekFirstDay');
     }
 }

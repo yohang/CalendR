@@ -13,6 +13,9 @@ namespace CalendR;
 
 use CalendR\Event\Manager;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\PeriodFactory;
+use CalendR\Period\PeriodFactoryInterface;
+use CalendR\Period\Day;
 
 /**
  * Factory class for calendar handling
@@ -26,10 +29,19 @@ class Calendar
      */
     private $eventManager;
 
-    private $dayClass   = 'CalendR\Period\Day';
-    private $weekClass  = 'CalendR\Period\Week';
-    private $monthClass = 'CalendR\Period\Month';
-    private $yearClass  = 'CalendR\Period\Year';
+    /**
+     * @var PeriodFactoryInterface
+     */
+    private $periodFactory;
+
+    function __construct(PeriodFactoryInterface $periodFactory = null)
+    {
+        if (null === $periodFactory){
+            $periodFactory = new PeriodFactory();
+        }
+        $this->periodFactory = $periodFactory;
+    }
+
 
     /**
      * @param Manager $eventManager
@@ -62,7 +74,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
         }
 
-        return new $this->yearClass($yearOrStart, array('monthClass' => $this->monthClass));
+        return $this->periodFactory->create('year', $yearOrStart);
     }
 
     /**
@@ -77,8 +89,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
         }
 
-        return new $this->monthClass($yearOrStart,
-            array('dayClass'=> $this->dayClass, 'WeekClass' => $this->weekClass));
+        return $this->periodFactory->create('month', $yearOrStart);
     }
 
     /**
@@ -93,7 +104,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
         }
 
-        return new $this->weekClass($yearOrStart, array('dayClass' => $this->dayClass));
+        return $this->periodFactory->create('week', $yearOrStart);
     }
 
     /**
@@ -109,7 +120,7 @@ class Calendar
             $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
         }
 
-        return new $this->dayClass($yearOrStart);
+        return $this->periodFactory->create('day', $yearOrStart);
     }
 
     /**
@@ -124,12 +135,30 @@ class Calendar
     }
 
     /**
-     * @param array $classes
+     * @param array $options
      */
-    public function setClasses(array $classes)
+    public function setOptions(array $options)
     {
-        foreach ($classes as $class=>$name){
-            if(property_exists($this, $class)) $this->$class = $name;
+        foreach ($options as $option=>$value){
+            if(property_exists($this, $option)) $this->$option = $value;
         }
+    }
+
+    /**
+     * @param int $weekFirstDay
+     * @deprecated - use periodFactory::setOption('weekFirstDay', $value)
+     */
+    public function setFirstWeekday($weekFirstDay)
+    {
+        $this->periodFactory->setOption('weekFirstDay', $weekFirstDay);
+    }
+
+     /**
+     * @return int
+     * @deprecated - use periodFactory->getOption('weekFirstDay')
+     */
+    public function getFirstWeekday()
+    {
+        return $this->periodFactory->getOption('weekFirstDay');
     }
 }

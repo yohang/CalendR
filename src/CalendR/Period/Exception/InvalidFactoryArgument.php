@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace CalendR\Period;
+namespace CalendR\Period\Exception;
 
-interface WeekInterface extends PeriodInterface
+use CalendR\Exception;
+
+class InvalidFactoryArgument extends Exception
 {
-    /**
-     * @return int
-     */
-    function getNumber();
 }

@@ -3,6 +3,7 @@
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Week;
+use CalendR\Period\Day;
 
 class WeekTest extends \PHPUnit_Framework_TestCase
 {
@@ -72,6 +73,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         $i = 0;
 
         foreach ($week as $day) {
+            /** @var $day Day */
             $this->assertSame($start->format('d-m-Y'), $day->getBegin()->format('d-m-Y'));
             $start->add(new \DateInterval('P1D'));
             $i++;
