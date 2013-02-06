@@ -31,25 +31,29 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $end;
 
     /**
-     * @var int
+     * @var array
      */
-    protected $firstWeekday;
+    protected $options = array('first_day' => Day::MONDAY);
 
     /**
-     * @param int $firstWeekday
-     *
-     * @throws Exception\NotAWeekDay
+     * @param array|int $options
+     * @throws Exception\NotAWeekday
+     * @throws Exception\InvalidArgument
      */
-    public function __construct($firstWeekday = Day::MONDAY)
+    public function __construct($options = array())
     {
-        if ($firstWeekday < 0 || $firstWeekday > 6) {
+        if (is_numeric($options)){ // for backwards compatibility
+            $options = array('first_day' => $options);
+        }
+        if (!is_array($options)){
+            throw new Exception\InvalidArgument('options parameter must be integer or array');
+        }
+        if (isset($options['first_day']) && ($options['first_day'] < 0 || $options['first_day'] > 6)) {
             throw new Exception\NotAWeekday(
-                sprintf(
-                    '"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)'
-                )
+                sprintf('"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)', $options['first_day'])
             );
         }
-        $this->firstWeekday = $firstWeekday;
+        $this->setOptions($options);
     }
 
     /**
@@ -169,7 +173,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getNext()
     {
-        return new static($this->end, $this->firstWeekday);
+        return new static($this->end, $this->options);
     }
 
     /**
@@ -182,22 +186,67 @@ abstract class PeriodAbstract implements PeriodInterface
         $start = clone $this->begin;
         $start->sub(static::getDateInterval());
 
-        return new static($start, $this->firstWeekday);
+        return new static($start, $this->options);
     }
 
     /**
      * @param int $firstWeekday
+     * @return void
+     * @deprecated - use  setOption('first_day', $value)
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->firstWeekday = $firstWeekday;
+        $this->options['first_day'] = $firstWeekday;
     }
 
     /**
      * @return int
+     * @deprecated - use getOption('first_day')
      */
     public function getFirstWeekday()
     {
-        return $this->firstWeekday;
+        return $this->options['first_day'];
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions($options)
+    {
+        foreach ($options as $name=>$value){
+            $this->setOption($name, $value);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasOption($name){
+        return isset($this->options[$name]);
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getOption($name){
+        return (isset($this->options[$name])) ? $this->options[$name] : null;
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     */
+    public function setOption($name, $value){
+        $this->options[$name] = $value;
     }
 }

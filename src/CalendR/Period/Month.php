@@ -10,17 +10,17 @@ namespace CalendR\Period;
 class Month extends PeriodAbstract implements \Iterator
 {
     /**
-     * @var Week
+     * @var PeriodInterface
      */
     private $current;
 
     /**
      * @param \DateTime $start
-     * @param int       $firstWeekday
-     *
+     * @param array|int $options
      * @throws Exception\NotAMonth
+     *
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $options = array())
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAMonth;
@@ -30,7 +30,7 @@ class Month extends PeriodAbstract implements \Iterator
         $this->end = clone $this->begin;
         $this->end->add(new \DateInterval('P1M'));
 
-        parent::__construct($firstWeekday);
+        parent::__construct($options);
     }
 
     /**
@@ -50,9 +50,10 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getDays()
     {
+        $dayClass = ($this->hasOption('day')) ? $this->getOption('day') : 'CalendR\Period\Day';
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
-            $days[] = new Day($date, $this->firstWeekday);
+            $days[] = new $dayClass($date, $this->options);
         }
 
         return $days;
@@ -66,7 +67,8 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->firstWeekday);
+        $rangeClass = ($this->hasOption('range')) ? $this->getOption('range') : 'CalendR\Period\Range';
+        return new $rangeClass($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->options);
     }
 
     /**
@@ -78,7 +80,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function getFirstDayOfFirstWeek()
     {
         $delta  = $this->begin->format('w') ?: 7;
-        $delta -= $this->firstWeekday;
+        $delta -= $this->getOption('first_day');
 
         $firstDay = clone $this->begin;
         $firstDay->sub(new \DateInterval(sprintf('P%sD', $delta)));
@@ -96,7 +98,7 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $lastDay = clone $this->end;
         $lastDay->sub(new \DateInterval('P1D'));
-        $lastWeekday = $this->firstWeekday === Day::SUNDAY ? Day::SATURDAY : $this->firstWeekday - 1;
+        $lastWeekday = $this->getOption('first_day') === Day::SUNDAY ? Day::SATURDAY : $this->getOption('first_day') - 1;
 
         $delta = $lastDay->format('w') - $lastWeekday;
         $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);
@@ -160,7 +162,8 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstDayOfFirstWeek(), $this->firstWeekday);
+            $weekClass = ($this->hasOption('week')) ? $this->getOption('week') : 'CalendR\Period\Week';
+            $this->current = new $weekClass($this->getFirstDayOfFirstWeek(), $this->options);
         } else {
             $this->current = $this->current->getNext();
 
@@ -175,7 +178,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function key()
     {
-        return $this->current->getNumber();
+        return $this->current->getBegin()->format('W');
     }
 
     /**
