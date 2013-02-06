@@ -67,7 +67,7 @@ class Year extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (null === $this->current) {
-            $monthClass = ($this->hasOption('month')) ? $this->getOption('month') : 'CalendR\Period\Month';
+            $monthClass = $this->getOption('month');
             $this->current = new $monthClass($this->begin, $this->options);
         } else {
             $this->current = $this->current->getNext();
