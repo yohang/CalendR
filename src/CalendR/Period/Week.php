@@ -7,27 +7,32 @@ namespace CalendR\Period;
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Week extends PeriodAbstract implements \Iterator
+class Week extends PeriodAbstract implements \Iterator, WeekInterface
 {
+    const firstWeekDay = Day::MONDAY;
+
+    /** @var null|PeriodInterface */
     private $current = null;
+
+    /** @var string */
+    private $dayClass;
 
     /**
      * @param \DateTime $start
-     * @param int       $firstWeekday
+     * @param array $classes
      *
      * @throws Exception\NotAWeek
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $classes = array())
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAWeek;
         }
+        parent::__construct($start);
 
-        $this->begin = clone $start;
         $this->end = clone $start;
         $this->end->add(new \DateInterval('P7D'));
-
-        parent::__construct($firstWeekday);
+        $this->dayClass = (!empty($classes['dayClass'])) ? $classes['dayClass'] : __NAMESPACE__ . '\Day';
     }
 
     /**
@@ -55,7 +60,7 @@ class Week extends PeriodAbstract implements \Iterator
      */
     public static function isValid(\DateTime $start)
     {
-        return true;
+        return ($start->format('w') == static::firstWeekDay);
     }
 
     /**
@@ -72,7 +77,7 @@ class Week extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Day($this->begin, $this->firstWeekday);
+            $this->current = new $this->dayClass($this->begin);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {
@@ -124,5 +129,13 @@ class Week extends PeriodAbstract implements \Iterator
     public static function getDateInterval()
     {
         return new \DateInterval('P1W');
+    }
+
+    /**
+     * @return int
+     */
+    public static function getFirstWeekday()
+    {
+        return self::firstWeekDay;
     }
 }
