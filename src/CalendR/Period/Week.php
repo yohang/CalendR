@@ -75,7 +75,7 @@ class Week extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $dayClass = ($this->hasOption('day')) ? $this->getOption('day') : 'CalendR\Period\Day';
+            $dayClass = $this->getOption('day');
             $this->current = new $dayClass($this->begin, $this->options);
         } else {
             $this->current = $this->current->getNext();

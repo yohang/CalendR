@@ -33,7 +33,14 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * @var array
      */
-    protected $options = array('first_day' => Day::MONDAY);
+    protected $options = array(
+        'first_day' => Day::MONDAY,
+        'day'       => 'CalendR\Period\Day',
+        'week'      => 'CalendR\Period\Week',
+        'month'     => 'CalendR\Period\Month',
+        'year'      => 'CalendR\Period\Year',
+        'range'     => 'CalendR\Period\Range',
+    );
 
     /**
      * @param array|int $options

@@ -50,7 +50,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getDays()
     {
-        $dayClass = ($this->hasOption('day')) ? $this->getOption('day') : 'CalendR\Period\Day';
+        $dayClass = $this->getOption('day');
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
             $days[] = new $dayClass($date, $this->options);
@@ -67,7 +67,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getExtendedMonth()
     {
-        $rangeClass = ($this->hasOption('range')) ? $this->getOption('range') : 'CalendR\Period\Range';
+        $rangeClass = $this->getOption('range');
         return new $rangeClass($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->options);
     }
 
@@ -162,7 +162,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $weekClass = ($this->hasOption('week')) ? $this->getOption('week') : 'CalendR\Period\Week';
+            $weekClass = $this->getOption('week');
             $this->current = new $weekClass($this->getFirstDayOfFirstWeek(), $this->options);
         } else {
             $this->current = $this->current->getNext();
