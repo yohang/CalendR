@@ -27,9 +27,16 @@ class Calendar
     private $eventManager;
 
     /**
-     * @var int
+     * @var array
      */
-    private $options = array('first_day' => Period\Day::MONDAY);
+    protected $options = array(
+        'first_day' => Period\Day::MONDAY,
+        'day'       => 'CalendR\Period\Day',
+        'week'      => 'CalendR\Period\Week',
+        'month'     => 'CalendR\Period\Month',
+        'year'      => 'CalendR\Period\Year',
+        'range'     => 'CalendR\Period\Range',
+    );
 
     /**
      * @param Manager $eventManager
@@ -61,7 +68,7 @@ class Calendar
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
         }
-        $yearClass = ($this->hasOption('year')) ? $this->getOption('year') : 'CalendR\Period\Year';
+        $yearClass = $this->getOption('year');
 
         return new $yearClass($yearOrStart, $this->options);
     }
@@ -77,7 +84,7 @@ class Calendar
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
         }
-        $monthClass = ($this->hasOption('month')) ? $this->getOption('month') : 'CalendR\Period\Month';
+        $monthClass = $this->getOption('month');
 
         return new $monthClass($yearOrStart, $this->options);
     }
@@ -93,7 +100,7 @@ class Calendar
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
         }
-        $weekClass = ($this->hasOption('week')) ? $this->getOption('week') : 'CalendR\Period\Week';
+        $weekClass = $this->getOption('week');
 
         return new $weekClass($yearOrStart, $this->options);
     }
@@ -110,7 +117,7 @@ class Calendar
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
         }
-        $dayClass = ($this->hasOption('day')) ? $this->getOption('day') : 'CalendR\Period\Day';
+        $dayClass = $this->getOption('day');
 
         return new $dayClass($yearOrStart, $this->options);
     }
