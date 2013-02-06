@@ -113,13 +113,6 @@ interface PeriodInterface
     public function isCurrent();
 
     /**
-     * Sets the first day of week
-     *
-     * @param int $firstWeekday
-     */
-    public function setFirstWeekday($firstWeekday);
-
-    /**
      * Checks if $start is good for building the period
      *
      * @param \DateTime $start
