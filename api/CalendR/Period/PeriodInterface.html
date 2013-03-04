@@ -31,7 +31,7 @@ current_namespace: 'CalendR\Period'
             <table class="table">
                     <tr>
                 <td class="type">
-                                                        <span class="label label-hint label-warning">boolean</span>
+                                                        <span class="label label-hint label-warning">bool</span>
                 </td>
                 <td class="last">
                     <a href="#method_contains">contains</a>(                <span class="label label-hint label-info">DateTime</span> $date)
@@ -41,7 +41,7 @@ current_namespace: 'CalendR\Period'
             </tr>
                     <tr>
                 <td class="type">
-                                        
+                                                        <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span>
                 </td>
                 <td class="last">
                     <a href="#method_getBegin">getBegin</a>()
@@ -51,7 +51,7 @@ current_namespace: 'CalendR\Period'
             </tr>
                     <tr>
                 <td class="type">
-                                        
+                                                        <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span>
                 </td>
                 <td class="last">
                     <a href="#method_getEnd">getEnd</a>()
@@ -61,7 +61,9 @@ current_namespace: 'CalendR\Period'
             </tr>
                     <tr>
                 <td class="type">
-                                        
+                                                        <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span>
                 </td>
                 <td class="last">
                     <a href="#method_getNext">getNext</a>()
@@ -71,7 +73,9 @@ current_namespace: 'CalendR\Period'
             </tr>
                     <tr>
                 <td class="type">
-                                        
+                                                        <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span>
                 </td>
                 <td class="last">
                     <a href="#method_getPrevious">getPrevious</a>()
@@ -81,7 +85,7 @@ current_namespace: 'CalendR\Period'
             </tr>
                     <tr>
                 <td class="type">
-                                        
+                                                        <span class="label label-hint label-info"><a href="http://php.net/DatePeriod">DatePeriod</a></span>
                 </td>
                 <td class="last">
                     <a href="#method_getDatePeriod">getDatePeriod</a>()
@@ -91,7 +95,7 @@ current_namespace: 'CalendR\Period'
             </tr>
                     <tr>
                 <td class="type">
-                                                        <span class="label label-hint label-warning">boolean</span>
+                                                        <span class="label label-hint label-warning">bool</span>
                 </td>
                 <td class="last">
                     <a href="#method_equals">equals</a>(                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
@@ -108,7 +112,7 @@ current_namespace: 'CalendR\Period'
                 <td class="last">
                     <a href="#method_includes">includes</a>(                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
            data-content="Interface that all Periods must implement."
-           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period, $strict = true)
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period,                 <span class="label label-hint label-warning">bool</span> $strict = true)
                     <p>Returns true if the period include the other period given as argument</p>
                 </td>
                 <td></td>
@@ -130,8 +134,18 @@ current_namespace: 'CalendR\Period'
                                                         <span class="label label-hint label-warning">string</span>
                 </td>
                 <td class="last">
-                    <a href="#method_format">format</a>($format)
+                    <a href="#method_format">format</a>(                <span class="label label-hint label-warning">string</span> $format)
                     <p>Format the period to a string</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                                                        <span class="label label-hint label-warning">boolean</span>
+                </td>
+                <td class="last">
+                    <a href="#method_isCurrent">isCurrent</a>()
+                    <p>Returns if the current period is the current one</p>
                 </td>
                 <td></td>
             </tr>
@@ -140,8 +154,30 @@ current_namespace: 'CalendR\Period'
                                         
                 </td>
                 <td class="last">
-                    <a href="#method_isCurrent">isCurrent</a>()
-                    <p>Returns if the current period is the current one</p>
+                    <a href="#method_setFirstWeekday">setFirstWeekday</a>(                <span class="label label-hint label-warning">int</span> $firstWeekday)
+                    <p>Sets the first day of week</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                                            <span class="label label-success">static</span>
+                                        
+                </td>
+                <td class="last">
+                    <a href="#method_isValid">isValid</a>(                <span class="label label-hint label-info">DateTime</span> $start)
+                    <p>Checks if $start is good for building the period</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                                            <span class="label label-success">static</span>
+                                                        <span class="label label-hint label-info"><a href="http://php.net/DateInterval">DateInterval</a></span>
+                </td>
+                <td class="last">
+                    <a href="#method_getDateInterval">getDateInterval</a>()
+                    <p>Returns a \DateInterval equivalent to the period</p>
                 </td>
                 <td></td>
             </tr>
@@ -151,7 +187,7 @@ current_namespace: 'CalendR\Period'
         <h2>Details</h2>
 
                         <h3 id="method_contains">
-        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">boolean</span>
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">bool</span>
     <strong>contains</strong>(                <span class="label label-hint label-info">DateTime</span> $date)</code>
     </h3>
     <div class="details method-details">
@@ -173,7 +209,7 @@ current_namespace: 'CalendR\Period'
                     <th>Return Value</th>
                     <td>    <table>
         <tr>
-            <td>                <span class="label label-hint label-warning">boolean</span></td>
+            <td>                <span class="label label-hint label-warning">bool</span></td>
             <td>true if the period contains this date</td>
         </tr>
     </table>
@@ -185,7 +221,7 @@ current_namespace: 'CalendR\Period'
     </div>
 
                 <h3 id="method_getBegin">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span>
     <strong>getBegin</strong>()</code>
     </h3>
     <div class="details method-details">
@@ -193,13 +229,23 @@ current_namespace: 'CalendR\Period'
         <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
         <table class="tags table method-detail">
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>
     </div>
 
                 <h3 id="method_getEnd">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span>
     <strong>getEnd</strong>()</code>
     </h3>
     <div class="details method-details">
@@ -207,13 +253,25 @@ current_namespace: 'CalendR\Period'
         <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
         <table class="tags table method-detail">
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>
     </div>
 
                 <h3 id="method_getNext">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span>
     <strong>getNext</strong>()</code>
     </h3>
     <div class="details method-details">
@@ -221,13 +279,27 @@ current_namespace: 'CalendR\Period'
         <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
         <table class="tags table method-detail">
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>
     </div>
 
                 <h3 id="method_getPrevious">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span>
     <strong>getPrevious</strong>()</code>
     </h3>
     <div class="details method-details">
@@ -235,13 +307,25 @@ current_namespace: 'CalendR\Period'
         <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
         <table class="tags table method-detail">
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
+           data-content="Interface that all Periods must implement."
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>
     </div>
 
                 <h3 id="method_getDatePeriod">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info"><a href="http://php.net/DatePeriod">DatePeriod</a></span>
     <strong>getDatePeriod</strong>()</code>
     </h3>
     <div class="details method-details">
@@ -249,13 +333,23 @@ current_namespace: 'CalendR\Period'
         <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
         <table class="tags table method-detail">
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info"><a href="http://php.net/DatePeriod">DatePeriod</a></span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>
     </div>
 
                 <h3 id="method_equals">
-        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">boolean</span>
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">bool</span>
     <strong>equals</strong>(                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
            data-content="Interface that all Periods must implement."
            data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period)</code>
@@ -281,7 +375,7 @@ current_namespace: 'CalendR\Period'
                     <th>Return Value</th>
                     <td>    <table>
         <tr>
-            <td>                <span class="label label-hint label-warning">boolean</span></td>
+            <td>                <span class="label label-hint label-warning">bool</span></td>
             <td></td>
         </tr>
     </table>
@@ -296,7 +390,7 @@ current_namespace: 'CalendR\Period'
         <code class="heading-code">            <span class="label label-success">public</span>            
     <strong>includes</strong>(                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
            data-content="Interface that all Periods must implement."
-           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period, $strict = true)</code>
+           data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period,                 <span class="label label-hint label-warning">bool</span> $strict = true)</code>
     </h3>
     <div class="details method-details">
         <p>{% capture the_text_to_capture %}Returns true if the period include the other period given as argument{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
@@ -312,7 +406,7 @@ current_namespace: 'CalendR\Period'
                 <td colspan="2" >$period</td>
                             </tr>
                     <tr>
-                <td></td>
+                <td>                <span class="label label-hint label-warning">bool</span></td>
                 <td colspan="2" >$strict</td>
                             </tr>
             </table>
@@ -368,7 +462,7 @@ current_namespace: 'CalendR\Period'
 
                 <h3 id="method_format">
         <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">string</span>
-    <strong>format</strong>($format)</code>
+    <strong>format</strong>(                <span class="label label-hint label-warning">string</span> $format)</code>
     </h3>
     <div class="details method-details">
         <p>{% capture the_text_to_capture %}Format the period to a string{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
@@ -378,7 +472,7 @@ current_namespace: 'CalendR\Period'
                     <th>Parameters</th>
                     <td>    <table class="table table-bordered table-stripped">
                     <tr>
-                <td></td>
+                <td>                <span class="label label-hint label-warning">string</span></td>
                 <td colspan="2" >$format</td>
                             </tr>
             </table>
@@ -401,7 +495,7 @@ current_namespace: 'CalendR\Period'
     </div>
 
                 <h3 id="method_isCurrent">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">boolean</span>
     <strong>isCurrent</strong>()</code>
     </h3>
     <div class="details method-details">
@@ -409,6 +503,88 @@ current_namespace: 'CalendR\Period'
         <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
         <table class="tags table method-detail">
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-warning">boolean</span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_setFirstWeekday">
+        <code class="heading-code">            <span class="label label-success">public</span>            
+    <strong>setFirstWeekday</strong>(                <span class="label label-hint label-warning">int</span> $firstWeekday)</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}Sets the first day of week{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+                            <tr>
+                    <th>Parameters</th>
+                    <td>    <table class="table table-bordered table-stripped">
+                    <tr>
+                <td>                <span class="label label-hint label-warning">int</span></td>
+                <td colspan="2" >$firstWeekday</td>
+                            </tr>
+            </table>
+</td>
+                </tr>
+            
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_isValid">
+        <code class="heading-code">        <span class="label label-success">static</span>    <span class="label label-success">public</span>            
+    <strong>isValid</strong>(                <span class="label label-hint label-info">DateTime</span> $start)</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}Checks if $start is good for building the period{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+                            <tr>
+                    <th>Parameters</th>
+                    <td>    <table class="table table-bordered table-stripped">
+                    <tr>
+                <td>                <span class="label label-hint label-info">DateTime</span></td>
+                <td colspan="2" >$start</td>
+                            </tr>
+            </table>
+</td>
+                </tr>
+            
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_getDateInterval">
+        <code class="heading-code">        <span class="label label-success">static</span>    <span class="label label-success">public</span>                            <span class="label label-hint label-info"><a href="http://php.net/DateInterval">DateInterval</a></span>
+    <strong>getDateInterval</strong>()</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}Returns a \DateInterval equivalent to the period{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+            
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info"><a href="http://php.net/DateInterval">DateInterval</a></span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>

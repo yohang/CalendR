@@ -70,7 +70,7 @@ current_namespace: 'CalendR\Event\Collection'
             </tr>
                     <tr>
                 <td class="type">
-                                                        <span class="label label-hint label-warning">mixed</span>
+                                                        <span class="label label-hint label-info">array&lt;EventInterface&gt;</span>
                 </td>
                 <td class="last">
                     <a href="#method_all">all</a>()
@@ -80,22 +80,20 @@ current_namespace: 'CalendR\Event\Collection'
             </tr>
                     <tr>
                 <td class="type">
-                                                        <span class="label label-hint label-warning">mixed</span>
+                                                        <span class="label label-hint label-warning">bool</span>
                 </td>
                 <td class="last">
-                    <a href="#method_has">has</a>(                <span class="label label-hint label-info">$index</span> $index)
+                    <a href="#method_has">has</a>(                <span class="label label-hint label-warning">mixed</span> $index)
                     <p>Returns if there is events corresponding to $index period</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                                                        <span class="label label-hint label-warning">array</span>|                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Event/EventInterface.html"
-           data-content="Base interface for events implementation"
-           data-original-title="Event\EventInterface" rel="popover">EventInterface</a></span>
+                                                        <span class="label label-hint label-info">array&lt;EventInterface&gt;</span>
                 </td>
                 <td class="last">
-                    <a href="#method_find">find</a>(                <span class="label label-hint label-info">$index</span> $index)
+                    <a href="#method_find">find</a>(                <span class="label label-hint label-warning">mixed</span> $index)
                     <p>Find events in the collection</p>
                 </td>
                 <td></td>
@@ -196,7 +194,7 @@ current_namespace: 'CalendR\Event\Collection'
     </div>
 
                 <h3 id="method_all">
-        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">mixed</span>
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info">array&lt;EventInterface&gt;</span>
     <strong>all</strong>()</code>
     </h3>
     <div class="details method-details">
@@ -208,7 +206,7 @@ current_namespace: 'CalendR\Event\Collection'
                     <th>Return Value</th>
                     <td>    <table>
         <tr>
-            <td>                <span class="label label-hint label-warning">mixed</span></td>
+            <td>                <span class="label label-hint label-info">array&lt;EventInterface&gt;</span></td>
             <td></td>
         </tr>
     </table>
@@ -220,8 +218,8 @@ current_namespace: 'CalendR\Event\Collection'
     </div>
 
                 <h3 id="method_has">
-        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">mixed</span>
-    <strong>has</strong>(                <span class="label label-hint label-info">$index</span> $index)</code>
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">bool</span>
+    <strong>has</strong>(                <span class="label label-hint label-warning">mixed</span> $index)</code>
     </h3>
     <div class="details method-details">
         <p>{% capture the_text_to_capture %}Returns if there is events corresponding to $index period{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
@@ -231,7 +229,7 @@ current_namespace: 'CalendR\Event\Collection'
                     <th>Parameters</th>
                     <td>    <table class="table table-bordered table-stripped">
                     <tr>
-                <td>                <span class="label label-hint label-info">$index</span></td>
+                <td>                <span class="label label-hint label-warning">mixed</span></td>
                 <td colspan="2" >$index</td>
                             </tr>
             </table>
@@ -242,7 +240,7 @@ current_namespace: 'CalendR\Event\Collection'
                     <th>Return Value</th>
                     <td>    <table>
         <tr>
-            <td>                <span class="label label-hint label-warning">mixed</span></td>
+            <td>                <span class="label label-hint label-warning">bool</span></td>
             <td></td>
         </tr>
     </table>
@@ -254,10 +252,8 @@ current_namespace: 'CalendR\Event\Collection'
     </div>
 
                 <h3 id="method_find">
-        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">array</span>|                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Event/EventInterface.html"
-           data-content="Base interface for events implementation"
-           data-original-title="Event\EventInterface" rel="popover">EventInterface</a></span>
-    <strong>find</strong>(                <span class="label label-hint label-info">$index</span> $index)</code>
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info">array&lt;EventInterface&gt;</span>
+    <strong>find</strong>(                <span class="label label-hint label-warning">mixed</span> $index)</code>
     </h3>
     <div class="details method-details">
         <p>{% capture the_text_to_capture %}Find events in the collection{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
@@ -267,7 +263,7 @@ current_namespace: 'CalendR\Event\Collection'
                     <th>Parameters</th>
                     <td>    <table class="table table-bordered table-stripped">
                     <tr>
-                <td>                <span class="label label-hint label-info">$index</span></td>
+                <td>                <span class="label label-hint label-warning">mixed</span></td>
                 <td colspan="2" >$index</td>
                             </tr>
             </table>
@@ -278,9 +274,7 @@ current_namespace: 'CalendR\Event\Collection'
                     <th>Return Value</th>
                     <td>    <table>
         <tr>
-            <td>                <span class="label label-hint label-warning">array</span>|                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Event/EventInterface.html"
-           data-content="Base interface for events implementation"
-           data-original-title="Event\EventInterface" rel="popover">EventInterface</a></span></td>
+            <td>                <span class="label label-hint label-info">array&lt;EventInterface&gt;</span></td>
             <td></td>
         </tr>
     </table>

@@ -91,7 +91,9 @@ current_namespace: 'CalendR'
             </tr>
                     <tr>
                 <td class="type">
-                                        
+                                                        <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/Day.html"
+           data-content="Represents a Day"
+           data-original-title="Period\Day" rel="popover">Day</a></span>
                 </td>
                 <td class="last">
                     <a href="#method_getDay">getDay</a>(                <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span>|                <span class="label label-hint label-warning">int</span> $yearOrStart,                 <span class="label label-hint label-warning">null</span>|                <span class="label label-hint label-warning">int</span> $month = null,                 <span class="label label-hint label-warning">null</span>|                <span class="label label-hint label-warning">int</span> $day = null)
@@ -101,12 +103,32 @@ current_namespace: 'CalendR'
             </tr>
                     <tr>
                 <td class="type">
-                                        
+                                                        <span class="label label-hint label-info">EventInterface&gt;</span>
                 </td>
                 <td class="last">
                     <a href="#method_getEvents">getEvents</a>(                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
            data-content="Interface that all Periods must implement."
            data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period,                 <span class="label label-hint label-warning">array</span> $options = array())
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                                        
+                </td>
+                <td class="last">
+                    <a href="#method_setFirstWeekday">setFirstWeekday</a>(                <span class="label label-hint label-warning">int</span> $firstWeekday)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                                                        <span class="label label-hint label-warning">int</span>
+                </td>
+                <td class="last">
+                    <a href="#method_getFirstWeekday">getFirstWeekday</a>()
                     <p></p>
                 </td>
                 <td></td>
@@ -295,7 +317,9 @@ current_namespace: 'CalendR'
     </div>
 
                 <h3 id="method_getDay">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/Day.html"
+           data-content="Represents a Day"
+           data-original-title="Period\Day" rel="popover">Day</a></span>
     <strong>getDay</strong>(                <span class="label label-hint label-info"><a href="http://php.net/DateTime">DateTime</a></span>|                <span class="label label-hint label-warning">int</span> $yearOrStart,                 <span class="label label-hint label-warning">null</span>|                <span class="label label-hint label-warning">int</span> $month = null,                 <span class="label label-hint label-warning">null</span>|                <span class="label label-hint label-warning">int</span> $day = null)</code>
     </h3>
     <div class="details method-details">
@@ -321,13 +345,25 @@ current_namespace: 'CalendR'
 </td>
                 </tr>
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/Day.html"
+           data-content="Represents a Day"
+           data-original-title="Period\Day" rel="popover">Day</a></span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>
     </div>
 
                 <h3 id="method_getEvents">
-        <code class="heading-code">            <span class="label label-success">public</span>            
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-info">EventInterface&gt;</span>
     <strong>getEvents</strong>(                <span class="label label-hint label-info"><a href="/CalendR/api/CalendR/Period/PeriodInterface.html"
            data-content="Interface that all Periods must implement."
            data-original-title="Period\PeriodInterface" rel="popover">PeriodInterface</a></span> $period,                 <span class="label label-hint label-warning">array</span> $options = array())</code>
@@ -353,6 +389,64 @@ current_namespace: 'CalendR'
 </td>
                 </tr>
             
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-info">EventInterface&gt;</span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_setFirstWeekday">
+        <code class="heading-code">            <span class="label label-success">public</span>            
+    <strong>setFirstWeekday</strong>(                <span class="label label-hint label-warning">int</span> $firstWeekday)</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+                            <tr>
+                    <th>Parameters</th>
+                    <td>    <table class="table table-bordered table-stripped">
+                    <tr>
+                <td>                <span class="label label-hint label-warning">int</span></td>
+                <td colspan="2" >$firstWeekday</td>
+                            </tr>
+            </table>
+</td>
+                </tr>
+            
+            
+            
+                    </table>
+    </div>
+
+                <h3 id="method_getFirstWeekday">
+        <code class="heading-code">            <span class="label label-success">public</span>                            <span class="label label-hint label-warning">int</span>
+    <strong>getFirstWeekday</strong>()</code>
+    </h3>
+    <div class="details method-details">
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <p>{% capture the_text_to_capture %}{% endcapture %}{{ the_text_to_capture | markdownify }}</p>
+        <table class="tags table method-detail">
+            
+                            <tr>
+                    <th>Return Value</th>
+                    <td>    <table>
+        <tr>
+            <td>                <span class="label label-hint label-warning">int</span></td>
+            <td></td>
+        </tr>
+    </table>
+</td>
+                </tr>
             
             
                     </table>
