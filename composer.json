@@ -17,7 +17,8 @@
     "require-dev": {
         "twig/twig": "*",
         "silex/silex": "*",
-        "doctrine/orm": "*"
+        "doctrine/orm": "*",
+        "phpunit/phpunit": "3.7.*"
     },
 
     "minimum-stability": "dev",
