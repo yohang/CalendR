@@ -15,13 +15,11 @@
     },
 
     "require-dev": {
-        "twig/twig": "*",
-        "silex/silex": "*",
-        "doctrine/orm": "*",
+        "twig/twig":       "1.*",
+        "silex/silex":     "1.0.*@dev",
+        "doctrine/orm":    ">=2.2",
         "phpunit/phpunit": "3.7.*"
     },
-
-    "minimum-stability": "dev",
 
     "autoload": {
         "psr-0": { "CalendR": "src/" }
