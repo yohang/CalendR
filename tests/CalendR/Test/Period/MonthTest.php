@@ -60,6 +60,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
                 array(new Month(new \DateTime('2013-05-01'), Day::FRIDAY), '2013-04-26', '2013-06-06'),
                 array(new Month(new \DateTime('2013-05-01'), Day::SATURDAY), '2013-04-27', '2013-05-31'),
                 array(new Month(new \DateTime('2013-05-01'), Day::SUNDAY), '2013-04-28', '2013-06-01'),
+                array(new Month(new \DateTime('2013-09-01'), Day::SUNDAY), '2013-09-01', '2013-10-05'),
             )
         );
     }
