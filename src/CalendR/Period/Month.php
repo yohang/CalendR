@@ -79,6 +79,7 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $delta  = $this->begin->format('w') ?: 7;
         $delta -= $this->firstWeekday;
+        $delta = $delta < 0 ? 7 - abs($delta) : $delta;
 
         $firstDay = clone $this->begin;
         $firstDay->sub(new \DateInterval(sprintf('P%sD', $delta)));
