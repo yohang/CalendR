@@ -6,7 +6,6 @@ use CalendR\Event\Collection,
     CalendR\Event\Event,
     CalendR\Period;
 
-
 class IndexedTest extends \PHPUnit_Framework_TestCase
 {
     private static $events = array();
@@ -85,7 +84,7 @@ class IndexedTest extends \PHPUnit_Framework_TestCase
     {
         $events = $this->collection->find($index);
         $this->assertSame($count, count($events));
-        if ($count > 0 ) {
+        if ($count > 0) {
             $this->assertSame($eventUid, $events[0]->getUid());
         }
     }

@@ -34,7 +34,6 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
     /**
      * @dataProvider providerContains
      */

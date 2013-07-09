@@ -58,7 +58,6 @@ class YearTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($year->includes(new Day($notContain)));
     }
 
-
     /**
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAYear
