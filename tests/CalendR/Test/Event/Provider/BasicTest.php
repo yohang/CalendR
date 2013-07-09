@@ -65,4 +65,9 @@ class BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertSame('event-'.$expectedEvents[$i], $events[$i]->getUid());
         }
     }
+
+    public function testNoErrorWhenNoEvents()
+    {
+        $this->assertSame(array(), $this->object->getEvents(new \DateTime('2013-06-01'), new \DateTime('2013-07-01')));
+    }
 }

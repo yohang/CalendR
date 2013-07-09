@@ -22,9 +22,9 @@ use CalendR\Event\EventInterface;
 class Basic implements ProviderInterface, \IteratorAggregate, \Countable
 {
     /**
-     * @var array<EventInterface>
+     * @var EventInterface[]
      */
-    protected $events;
+    protected $events = array();
 
     /**
      * @{inheritDoc}

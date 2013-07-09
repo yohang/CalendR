@@ -108,7 +108,6 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($lastDay, $month->getLastDayOfLastWeek()->format('Y-m-d'));
     }
 
-
     /**
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAMonth
