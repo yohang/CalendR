@@ -15,10 +15,11 @@
     },
 
     "require-dev": {
-        "twig/twig":       "1.*",
-        "silex/silex":     "1.0.*@dev",
-        "doctrine/orm":    ">=2.2",
-        "phpunit/phpunit": "3.7.*"
+        "twig/twig": "1.*",
+        "silex/silex": "1.0.*@dev",
+        "doctrine/orm": ">=2.2",
+        "phpunit/phpunit": "3.7.*",
+        "google/google-api-php-client": "0.6.2"
     },
 
     "autoload": {
@@ -28,5 +29,23 @@
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
-    }
+    },
+
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "google/google-api-php-client",
+                "version": "0.6.2",
+                "dist": {
+                    "url": "http://google-api-php-client.googlecode.com/files/google-api-php-client-0.6.2.tar.gz",
+                    "type": "tar"
+                },
+                "autoload": {
+                    "classmap": ["src/"]
+                }
+            }
+        }
+    ]
+
 }

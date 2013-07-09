@@ -55,8 +55,8 @@ class Manager
     /**
      * find events that matches the given period (during or over)
      *
-     * @param  \CalendR\Period\PeriodInterface $period
-     * @param  array                           $options
+     * @param \CalendR\Period\PeriodInterface $period
+     * @param array                           $options
      *
      * @return array|EventInterface
      *
