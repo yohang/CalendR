@@ -33,14 +33,7 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * @var array
      */
-    protected $options = array(
-        'first_day' => Day::MONDAY,
-        'day'       => 'CalendR\Period\Day',
-        'week'      => 'CalendR\Period\Week',
-        'month'     => 'CalendR\Period\Month',
-        'year'      => 'CalendR\Period\Year',
-        'range'     => 'CalendR\Period\Range',
-    );
+    protected $options = array();
 
     /**
      * @param  array|int                 $options
@@ -50,14 +43,14 @@ abstract class PeriodAbstract implements PeriodInterface
     public function __construct($options = array())
     {
         if (is_numeric($options)) { // for backwards compatibility
-            $options = array('first_day' => $options);
+            $options = array('first_weekday' => $options);
         }
         if (!is_array($options)) {
             throw new Exception\InvalidArgument('options parameter must be integer or array');
         }
-        if (isset($options['first_day']) && ($options['first_day'] < 0 || $options['first_day'] > 6)) {
+        if (isset($options['first_weekday']) && ($options['first_weekday'] < 0 || $options['first_weekday'] > 6)) {
             throw new Exception\NotAWeekday(
-                sprintf('"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)', $options['first_day'])
+                sprintf('"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)', $options['first_weekday'])
             );
         }
         $this->setOptions($options);
@@ -199,20 +192,20 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * @param  int  $firstWeekday
      * @return void
-     * @deprecated - use  setOption('first_day', $value)
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link setOption('first_weekday')} instead.
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->options['first_day'] = $firstWeekday;
+        $this->options['first_weekday'] = $firstWeekday;
     }
 
     /**
      * @return int
-     * @deprecated - use getOption('first_day')
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link getOption('first_weekday')} instead.
      */
     public function getFirstWeekday()
     {
-        return $this->options['first_day'];
+        return $this->getOption('first_weekday');
     }
 
     /**
@@ -223,14 +216,6 @@ abstract class PeriodAbstract implements PeriodInterface
         foreach ($options as $name=>$value) {
             $this->setOption($name, $value);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
     }
 
     /**
@@ -248,6 +233,8 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getOption($name)
     {
+        $this->options = Factory::resolveOptions($this->options);
+
         return (isset($this->options[$name])) ? $this->options[$name] : null;
     }
 

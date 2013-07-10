@@ -12,6 +12,7 @@
 namespace CalendR;
 
 use CalendR\Event\Manager;
+use CalendR\Period\Factory;
 use CalendR\Period\PeriodInterface;
 
 /**
@@ -29,14 +30,7 @@ class Calendar
     /**
      * @var array
      */
-    protected $options = array(
-        'first_day' => Period\Day::MONDAY,
-        'day'       => 'CalendR\Period\Day',
-        'week'      => 'CalendR\Period\Week',
-        'month'     => 'CalendR\Period\Month',
-        'year'      => 'CalendR\Period\Year',
-        'range'     => 'CalendR\Period\Range',
-    );
+    protected $options = array();
 
     /**
      * @param Manager $eventManager
@@ -65,12 +59,7 @@ class Calendar
      */
     public function getYear($yearOrStart)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
-        }
-        $yearClass = $this->getOption('year');
-
-        return new $yearClass($yearOrStart, $this->options);
+        return Factory::createYear($yearOrStart, $this->options);
     }
 
     /**
@@ -81,12 +70,7 @@ class Calendar
      */
     public function getMonth($yearOrStart, $month = null)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
-        }
-        $monthClass = $this->getOption('month');
-
-        return new $monthClass($yearOrStart, $this->options);
+        return Factory::createMonth($yearOrStart, $month, $this->options);
     }
 
     /**
@@ -97,12 +81,7 @@ class Calendar
      */
     public function getWeek($yearOrStart, $week = null)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
-        }
-        $weekClass = $this->getOption('week');
-
-        return new $weekClass($yearOrStart, $this->options);
+        return Factory::createWeek($yearOrStart, $week, $this->options);
     }
 
     /**
@@ -114,12 +93,7 @@ class Calendar
      */
     public function getDay($yearOrStart, $month = null, $day = null)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
-        }
-        $dayClass = $this->getOption('day');
-
-        return new $dayClass($yearOrStart, $this->options);
+        return Factory::createDay($yearOrStart, $month, $day, $this->options);
     }
 
     /**
@@ -158,6 +132,8 @@ class Calendar
      */
     public function getOption($name)
     {
+        $this->options = Factory::resolveOptions($this->options);
+
         return isset($this->options[$name]) ? $this->options[$name] : null;
     }
 
@@ -167,20 +143,22 @@ class Calendar
     }
 
     /**
-     * @param int $weekFirstDay
-     * @deprecated - use setOption('first_day', $value)
+     * @param int $firstWeekday
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link setOption('first_weekday')} instead.
      */
-    public function setFirstWeekday($weekFirstDay)
+    public function setFirstWeekday($firstWeekday)
     {
-        $this->setOption('first_day', $weekFirstDay);
+        $this->setOption('first_weekday', $firstWeekday);
     }
 
     /**
      * @return int
-     * @deprecated - use getOption('first_day')
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link getOption('first_weekday')} instead.
      */
     public function getFirstWeekday()
     {
-        return $this->getOption('first_day');
+        return $this->getOption('first_weekday');
     }
 }
