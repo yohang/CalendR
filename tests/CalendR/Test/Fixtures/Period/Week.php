@@ -1,5 +1,5 @@
 <?php
-namespace CalendR\Test\Period\AlternatePeriod;
+namespace CalendR\Test\Fixtures\Period;
 
 class Week extends \CalendR\Period\Week
 {

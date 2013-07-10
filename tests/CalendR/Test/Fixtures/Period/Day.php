@@ -1,5 +1,5 @@
 <?php
-namespace CalendR\Test\Period\AlternatePeriod;
+namespace CalendR\Test\Fixtures\Period;
 
 class Day extends \CalendR\Period\Day
 {
