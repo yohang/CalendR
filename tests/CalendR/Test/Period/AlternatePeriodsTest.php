@@ -67,7 +67,7 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
     public function testMonth()
     {
         $month = new \CalendR\Period\Month(new \DateTime('2013-01-01'), $this->options);
-        foreach ($month as $week){
+        foreach ($month as $week) {
             $this->assertInstanceOf('CalendR\Test\Period\AlternatePeriod\Week', $week);
         }
         $days = $month->getDays();

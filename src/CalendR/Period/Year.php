@@ -15,8 +15,8 @@ class Year extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param \DateTime $begin
-     * @param array|int $options
+     * @param  \DateTime          $begin
+     * @param  array|int          $options
      * @throws Exception\NotAYear
      *
      */
