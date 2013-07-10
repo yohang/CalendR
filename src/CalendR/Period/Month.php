@@ -50,10 +50,9 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getDays()
     {
-        $dayClass = $this->getOption('day');
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
-            $days[] = new $dayClass($date, $this->options);
+            $days[] = Factory::createDay($date, $this->options);
         }
 
         return $days;
@@ -67,9 +66,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function getExtendedMonth()
     {
-        $rangeClass = $this->getOption('range');
-
-        return new $rangeClass($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->options);
+        return Factory::createRange($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->options);
     }
 
     /**
@@ -81,7 +78,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function getFirstDayOfFirstWeek()
     {
         $delta  = $this->begin->format('w') ?: 7;
-        $delta -= $this->getOption('first_day');
+        $delta -= $this->getOption('first_weekday');
         $delta = $delta < 0 ? 7 - abs($delta) : $delta;
         $delta = $delta == 7 ? 0 : $delta;
 
@@ -101,7 +98,7 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $lastDay = clone $this->end;
         $lastDay->sub(new \DateInterval('P1D'));
-        $lastWeekday = $this->getOption('first_day') === Day::SUNDAY ? Day::SATURDAY : $this->getOption('first_day') - 1;
+        $lastWeekday = $this->getOption('first_weekday') === Day::SUNDAY ? Day::SATURDAY : $this->getOption('first_weekday') - 1;
 
         $delta = $lastDay->format('w') - $lastWeekday;
         $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);
@@ -165,8 +162,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $weekClass = $this->getOption('week');
-            $this->current = new $weekClass($this->getFirstDayOfFirstWeek(), $this->options);
+            $this->current = Factory::createWeek($this->getFirstDayOfFirstWeek(), $this->options);
         } else {
             $this->current = $this->current->getNext();
 

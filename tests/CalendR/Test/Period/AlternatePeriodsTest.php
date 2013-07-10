@@ -7,11 +7,11 @@ use CalendR\Calendar;
 class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 {
     protected $options = array(
-        'day' => 'CalendR\Test\Fixtures\Period\Day',
-        'week' => 'CalendR\Test\Fixtures\Period\Week',
-        'month' => 'CalendR\Test\Fixtures\Period\Month',
-        'year' => 'CalendR\Test\Fixtures\Period\Year',
-        'range' => 'CalendR\Test\Fixtures\Period\Range',
+        'day_class'   => 'CalendR\Test\Fixtures\Period\Day',
+        'week_class'  => 'CalendR\Test\Fixtures\Period\Week',
+        'month_class' => 'CalendR\Test\Fixtures\Period\Month',
+        'year_class'  => 'CalendR\Test\Fixtures\Period\Year',
+        'range_class' => 'CalendR\Test\Fixtures\Period\Range',
     );
 
     protected $periodFactory;
@@ -35,7 +35,7 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 
     public function testCalendarSetOptions()
     {
-        $options = array('week' => 'CalendR\Test\Fixtures\Period\Week');
+        $options = array('week_class' => 'CalendR\Test\Fixtures\Period\Week');
         $calendar = new Calendar();
         $calendar->setOptions($options);
         $this->assertInstanceOf('CalendR\Test\Fixtures\Period\Week', $calendar->getWeek(new \DateTime('2012W01')));
@@ -44,16 +44,16 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
     public function testCalendarSetOption()
     {
         $calendar = new Calendar();
-        $calendar->setOption('week', 'CalendR\Test\Fixtures\Period\Week');
+        $calendar->setOption('week_class', 'CalendR\Test\Fixtures\Period\Week');
         $this->assertInstanceOf('CalendR\Test\Fixtures\Period\Week', $calendar->getWeek(new \DateTime('2012W01')));
     }
 
     public function testCalendarGetOption()
     {
         $calendar = new Calendar();
-        $this->assertEquals(1, $calendar->getOption('first_day'));
-        $calendar->setOption('first_day', 0);
-        $this->assertEquals(0, $calendar->getOption('first_day'));
+        $this->assertEquals(1, $calendar->getOption('first_weekday'));
+        $calendar->setOption('first_weekday', 0);
+        $this->assertEquals(0, $calendar->getOption('first_weekday'));
     }
 
     public function testYear()
