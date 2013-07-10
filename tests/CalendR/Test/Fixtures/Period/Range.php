@@ -1,5 +1,5 @@
 <?php
-namespace CalendR\Test\Period\AlternatePeriod;
+namespace CalendR\Test\Fixtures\Period;
 
 class Range extends \CalendR\Period\Range
 {
