@@ -15,8 +15,8 @@ class Week extends PeriodAbstract implements \Iterator
     private $current = null;
 
     /**
-     * @param \DateTime $start
-     * @param array|int $options
+     * @param  \DateTime          $start
+     * @param  array|int          $options
      * @throws Exception\NotAWeek
      *
      */

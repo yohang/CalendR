@@ -91,7 +91,7 @@ class GoogleCalendarProvider implements ProviderInterface
     /**
      * Return the GoogleCalendarEvent array from the calendar#events $GoogleCalendar
      *
-     * @param array $googleEvents
+     * @param array  $googleEvents
      * @param string $calendarId
      *
      * @return array
@@ -111,8 +111,8 @@ class GoogleCalendarProvider implements ProviderInterface
      * Return the GoogleCalendarEvent array from the String $calendarId
      *
      * @param $calendarId
-     * @param  \DateTime $begin
-     * @param  \DateTime $end
+     * @param \DateTime $begin
+     * @param \DateTime $end
      *
      * @return array[]
      */
@@ -138,7 +138,7 @@ class GoogleCalendarProvider implements ProviderInterface
      *
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param array $options
+     * @param array     $options
      *
      * @return GoogleCalendarEvent[]
      * @throws Exception\OptionConflict

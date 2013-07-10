@@ -15,8 +15,8 @@ class Month extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param \DateTime $start
-     * @param array|int $options
+     * @param  \DateTime           $start
+     * @param  array|int           $options
      * @throws Exception\NotAMonth
      *
      */
@@ -68,6 +68,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function getExtendedMonth()
     {
         $rangeClass = $this->getOption('range');
+
         return new $rangeClass($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->options);
     }
 

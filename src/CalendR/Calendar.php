@@ -138,7 +138,7 @@ class Calendar
      */
     public function setOptions(array $options)
     {
-        foreach ($options as $name=>$value){
+        foreach ($options as $name=>$value) {
             $this->setOption($name, $value);
         };
     }

@@ -43,16 +43,16 @@ abstract class PeriodAbstract implements PeriodInterface
     );
 
     /**
-     * @param array|int $options
+     * @param  array|int                 $options
      * @throws Exception\NotAWeekday
      * @throws Exception\InvalidArgument
      */
     public function __construct($options = array())
     {
-        if (is_numeric($options)){ // for backwards compatibility
+        if (is_numeric($options)) { // for backwards compatibility
             $options = array('first_day' => $options);
         }
-        if (!is_array($options)){
+        if (!is_array($options)) {
             throw new Exception\InvalidArgument('options parameter must be integer or array');
         }
         if (isset($options['first_day']) && ($options['first_day'] < 0 || $options['first_day'] > 6)) {
@@ -197,7 +197,7 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
-     * @param int $firstWeekday
+     * @param  int  $firstWeekday
      * @return void
      * @deprecated - use  setOption('first_day', $value)
      */
@@ -220,7 +220,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function setOptions($options)
     {
-        foreach ($options as $name=>$value){
+        foreach ($options as $name=>$value) {
             $this->setOption($name, $value);
         }
     }
@@ -237,7 +237,8 @@ abstract class PeriodAbstract implements PeriodInterface
      * @param $name
      * @return bool
      */
-    public function hasOption($name){
+    public function hasOption($name)
+    {
         return isset($this->options[$name]);
     }
 
@@ -245,7 +246,8 @@ abstract class PeriodAbstract implements PeriodInterface
      * @param $name
      * @return mixed
      */
-    public function getOption($name){
+    public function getOption($name)
+    {
         return (isset($this->options[$name])) ? $this->options[$name] : null;
     }
 
@@ -253,7 +255,8 @@ abstract class PeriodAbstract implements PeriodInterface
      * @param $name
      * @param $value
      */
-    public function setOption($name, $value){
+    public function setOption($name, $value)
+    {
         $this->options[$name] = $value;
     }
 }
