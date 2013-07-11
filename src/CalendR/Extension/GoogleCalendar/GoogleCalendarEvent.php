@@ -27,17 +27,40 @@ class GoogleCalendarEvent extends AbstractEvent
     protected $end;
 
     /**
+    * @var string
+    */
+    protected $summary;
+
+    /**
+     * @var string
+     */
+    protected $status;
+
+
+    /**
+     * @var string
+     */
+    protected $htmlLink;
+
+
+    /**
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param string    $calendarId
-     * @param string    $eventId
+     * @param string $calendarId
+     * @param string $eventId
+     * @param string $summary
+     * @param string $status
+     * @param string $htmlLink
      */
-    public function __construct(\DateTime $begin, \DateTime $end, $calendarId, $eventId)
+    public function __construct(\DateTime $begin, \DateTime $end, $calendarId, $eventId, $summary, $status, $htmlLink)
     {
         $this->calendarId = $calendarId;
         $this->begin = clone $begin;
         $this->end = clone $end;
         $this->id = $eventId;
+        $this->summary = $summary;
+        $this->status = $status;
+        $this->htmlLink = $htmlLink;
     }
 
     /**
@@ -76,5 +99,37 @@ class GoogleCalendarEvent extends AbstractEvent
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCalendarId()
+    {
+      return $this->calendarId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHtmlLink()
+    {
+      return $this->htmlLink;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+      return $this->status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummary()
+    {
+      return $this->summary;
     }
 }

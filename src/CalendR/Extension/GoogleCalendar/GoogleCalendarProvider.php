@@ -71,27 +71,29 @@ class GoogleCalendarProvider implements ProviderInterface
      */
     protected function createEvent($item, $calendarId)
     {
+        $begin = new \DateTime($item['start']['dateTime']);
+        $end = new \DateTime($item['end']['dateTime']);
+
         if (isset($item['start']['timeZone']) && isset($item['end']['timeZone'])) {
-            return new GoogleCalendarEvent(
-                new \DateTime($item['start']['dateTime'], new \DateTimeZone($item['start']['timeZone'])),
-                new \DateTime($item['end']['dateTime'], new \DateTimeZone($item['end']['timeZone'])),
-                $calendarId,
-                $item['id']
-            );
+                $begin = new \DateTime($item['start']['dateTime'], new \DateTimeZone($item['start']['timeZone']));
+                $end = new \DateTime($item['end']['dateTime'], new \DateTimeZone($item['end']['timeZone']));
         }
 
         return new GoogleCalendarEvent(
-            new \DateTime($item['start']['dateTime']),
-            new \DateTime($item['end']['dateTime']),
+            $begin,
+            $end,
             $calendarId,
-            $item['id']
+            $item['id'],
+            $item['summary'],
+            $item['status'],
+            $item['htmlLink']
         );
     }
 
     /**
      * Return the GoogleCalendarEvent array from the calendar#events $GoogleCalendar
      *
-     * @param array $googleEvents
+     * @param array  $googleEvents
      * @param string $calendarId
      *
      * @return array
@@ -111,8 +113,8 @@ class GoogleCalendarProvider implements ProviderInterface
      * Return the GoogleCalendarEvent array from the String $calendarId
      *
      * @param $calendarId
-     * @param  \DateTime $begin
-     * @param  \DateTime $end
+     * @param \DateTime $begin
+     * @param \DateTime $end
      *
      * @return array[]
      */
@@ -138,7 +140,7 @@ class GoogleCalendarProvider implements ProviderInterface
      *
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param array $options
+     * @param array     $options
      *
      * @return GoogleCalendarEvent[]
      * @throws Exception\OptionConflict
