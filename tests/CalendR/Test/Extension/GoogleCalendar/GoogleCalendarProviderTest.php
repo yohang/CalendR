@@ -59,49 +59,73 @@ class GoogleCalendarProviderTest extends \PHPUnit_Framework_TestCase
                                   $event1End, $event2Begin, $event2End)
     {
         $itemsArray1= array(
-            'organizer' => array(
-              'id'=>"organizerId",
-            ),
-            'items' => array(
-                array(
-                    'organizer'=>"organame",
-                    'id'=>'event1',
-                    'start'=>array(
-                      'dateTime'=>$event1Begin,
-                    ),
-                    'end'=>array(
-                      'dateTime'=>$event1End,
-                    ),
-                ),
-            ),
+          'organizer'=>array(
+            'id'=>"organizerId",
+          ),
+          'items'=>array(
+            array(
+              'kind' => 'calendar#event',
+              'etag' => '"etag"',
+              'id' =>  'id1234567489',
+              'status' =>  'confirmed',
+              'htmlLink' =>  'www.this.is/a/link',
+              'created' =>  '2013-06-27T12:24:47.000Z',
+              'updated' =>  '2013-06-27T12:24:47.463Z',
+              'summary' =>  'lorem ipsum dolor sit amet',
+              'creator' => array('email' =>  'johne@do.com'),
+              'organizer' => array(
+                'email' =>  'john@doe.fr',
+                'displayName' =>  'John Doe',
+                'self' =>  true
+              ),
+              'start' => array('dateTime' => $event1Begin),
+              'end' => array('dateTime' =>  $event1End)
+            )
+          )
         );
 
         $itemsArray2= array(
-            'organizer'=>array(
-              'id'=>"organizerId",
+          'organizer'=>array(
+            'id'=>"organizerId",
+          ),
+          'items'=>array(
+            array(
+              'kind' => 'calendar#event',
+              'etag' => '"etag"',
+              'id' =>  'id1234567489',
+              'status' =>  'confirmed',
+              'htmlLink' =>  'www.this.is/a/link',
+              'created' =>  '2013-06-27T12:24:47.000Z',
+              'updated' =>  '2013-06-27T12:24:47.463Z',
+              'summary' =>  'lorem ipsum dolor sit amet',
+              'creator' => array ('email' =>  'johne@do.com'),
+              'organizer' => array (
+                'email' =>  'john@doe.com',
+                'displayName' =>  'John Doe',
+                'self' =>  true
+              ),
+              'start' => array ('dateTime' => $event1Begin),
+              'end' => array ('dateTime' =>  $event1End)
             ),
-            'items'=>array(
-                array(
-                    'organizer'=>"organame" ,
-                    'id'=>'event2',
-                    'start'=>array(
-                      'dateTime'=>$event2Begin,
-                    ),
-                    'end'=>array(
-                      'dateTime'=>$event2End,
-                    ),
-                ),
-                array(
-                    'organizer'=>"organame" ,
-                    'id'=>'event2',
-                    'start'=>array(
-                      'dateTime'=>$event2Begin,
-                    ),
-                    'end'=>array(
-                      'dateTime'=>$event2End,
-                    ),
-                ),
-            ),
+            array(
+              'kind' => 'calendar#event',
+              'etag' => '"etag"',
+              'id' =>  'id987654312',
+              'status' =>  'tentative',
+              'htmlLink' =>  'www.this.is/a/link',
+              'created' =>  '2013-06-27T12:24:47.000Z',
+              'updated' =>  '2013-06-27T12:24:47.463Z',
+              'summary' =>  'lorem ipsum dolor sit amet',
+              'creator' => array ('email' =>  'johne@do.com'),
+              'organizer' => array (
+                'email' =>  'john@doe.com',
+                'displayName' =>  'John Doe',
+                'self' =>  true
+              ),
+              'start' => array ('dateTime' => $event2Begin),
+              'end' => array ('dateTime' =>  $event2End)
+            )
+          )
         );
 
         $googleEventsServiceResource = $this->getMock('Google_EventsServiceResource', array(), array(), '', false);
