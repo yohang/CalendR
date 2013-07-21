@@ -28,9 +28,9 @@ class Calendar
     private $eventManager;
 
     /**
-     * @var array
+     * @var Factory
      */
-    protected $options = array();
+    protected $factory;
 
     /**
      * @param Manager $eventManager
@@ -53,13 +53,13 @@ class Calendar
     }
 
     /**
-     * @param \DateTime|int $yearOrStart
+     * @param $yearOrStart
      *
-     * @return PeriodInterface
+     * @return Period\Year
      */
     public function getYear($yearOrStart)
     {
-        return Factory::createYear($yearOrStart, $this->options);
+        return $this->getFactory()->createYear($yearOrStart);
     }
 
     /**
@@ -70,7 +70,7 @@ class Calendar
      */
     public function getMonth($yearOrStart, $month = null)
     {
-        return Factory::createMonth($yearOrStart, $month, $this->options);
+        return $this->getFactory()->createMonth($yearOrStart, $month);
     }
 
     /**
@@ -81,7 +81,7 @@ class Calendar
      */
     public function getWeek($yearOrStart, $week = null)
     {
-        return Factory::createWeek($yearOrStart, $week, $this->options);
+        return $this->getFactory()->createWeek($yearOrStart, $week);
     }
 
     /**
@@ -93,7 +93,7 @@ class Calendar
      */
     public function getDay($yearOrStart, $month = null, $day = null)
     {
-        return Factory::createDay($yearOrStart, $month, $day, $this->options);
+        return $this->getFactory()->createDay($yearOrStart, $month, $day);
     }
 
     /**
@@ -108,38 +108,23 @@ class Calendar
     }
 
     /**
-     * @param array $options
+     * @param Factory $factory
      */
-    public function setOptions(array $options)
+    public function setFactory(Factory $factory)
     {
-        foreach ($options as $name=>$value) {
-            $this->setOption($name, $value);
-        };
+        $this->factory = $factory;
     }
 
     /**
-     * @param $name string
-     * @param $value mixed
+     * @return Factory
      */
-    public function setOption($name, $value)
+    public function getFactory()
     {
-        $this->options[$name] = $value;
-    }
+        if (null === $this->factory) {
+            $this->factory = new Factory;
+        }
 
-    /**
-     * @param $name string
-     * @return mixed
-     */
-    public function getOption($name)
-    {
-        $this->options = Factory::resolveOptions($this->options);
-
-        return isset($this->options[$name]) ? $this->options[$name] : null;
-    }
-
-    public function hasOption($name)
-    {
-        return isset($this->options[$name]);
+        return $this->factory;
     }
 
     /**
@@ -149,7 +134,7 @@ class Calendar
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->setOption('first_weekday', $firstWeekday);
+        $this->getFactory()->setOption('first_weekday', $firstWeekday);
     }
 
     /**
@@ -159,6 +144,6 @@ class Calendar
      */
     public function getFirstWeekday()
     {
-        return $this->getOption('first_weekday');
+        return $this->factory->getOption('first_weekday');
     }
 }

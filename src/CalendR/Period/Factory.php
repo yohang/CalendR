@@ -17,83 +17,80 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * The period factory.
  *
- * Contains static methods that instantiate periods from given arguments
+ * Contains methods that instantiate periods from given arguments
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
 class Factory
 {
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @var OptionsResolverInterface
+     */
+    protected $resolver;
+
+    /**
+     * @param array $options
+     */
+    public function __construct(array $options = array())
+    {
+        $this->options = $this->resolveOptions($options);
+    }
+
+    /**
      * Creates and returns a new Day instance
      *
      * @param int|\DateTime $yearOrStart
-     * @param int|array     $monthOrOptions
+     * @param int|array     $month
      * @param int           $day
-     * @param array         $options
      *
      * @return \CalendR\Period\Day
      */
-    public static function createDay($yearOrStart, $monthOrOptions = null, $day = null, array $options = array())
+    public function createDay($yearOrStart, $month = null, $day = null)
     {
-        if (is_array($monthOrOptions)) {
-            $options = $monthOrOptions;
-        }
-
         if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $monthOrOptions, $day));
+            $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
         }
 
-        $className = self::extractOption($options, 'day_class');
-
-        return new $className($yearOrStart, $options);
+        return new $this->options['day_class']($yearOrStart, $this);
     }
 
     /**
      * Creates and returns a new week instance
      *
      * @param int|\DateTime $yearOrStart
-     * @param int|array     $weekOrOptions
-     * @param array         $options
+     * @param int|array     $week
      *
      * @return \CalendR\Period\Week
      */
-    public static function createWeek($yearOrStart, $weekOrOptions = null, array $options = array())
+    public function createWeek($yearOrStart, $week = null)
     {
-        if (is_array($weekOrOptions)) {
-            $options = $weekOrOptions;
-        }
-
         if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($weekOrOptions, 2, 0, STR_PAD_LEFT)));
+            $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, 0, STR_PAD_LEFT)));
         }
 
-        $className = self::extractOption($options, 'week_class');
-
-        return new $className($yearOrStart, $options);
+        return new $this->options['week_class']($yearOrStart, $this);
     }
 
     /**
      * Creates and returns a new month
      *
      * @param int|\DateTime $yearOrStart
-     * @param int|array     $monthOrOptions
-     * @param array         $options
+     * @param int|array     $month
      *
      * @return \CalendR\Period\Month
      */
-    public static function createMonth($yearOrStart, $monthOrOptions = null, array $options = array())
+    public function createMonth($yearOrStart, $month = null)
     {
-        if (is_array($monthOrOptions)) {
-            $options = $monthOrOptions;
-        }
-
         if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $monthOrOptions));
+            $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
         }
 
-        $className = self::extractOption($options, 'month_class');
-
-        return new $className($yearOrStart, $options);
+        return new $this->options['month_class']($yearOrStart, $this);
     }
 
     /**
@@ -104,15 +101,13 @@ class Factory
      *
      * @return \CalendR\Period\Year
      */
-    public static function createYear($yearOrStart, array $options = array())
+    public function createYear($yearOrStart, array $options = array())
     {
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
         }
 
-        $className = self::extractOption($options, 'year_class');
-
-        return new $className($yearOrStart, $options);
+        return new $this->options['year_class']($yearOrStart, $this);
     }
 
     /**
@@ -120,15 +115,32 @@ class Factory
      *
      * @param int|\DateTime $begin
      * @param int|\DateTime $end
-     * @param array         $options
      *
      * @return \CalendR\Period\Range
      */
-    public static function createRange($begin, $end, array $options = array())
+    public function createRange($begin, $end)
     {
-        $className = self::extractOption($options, 'range_class');
+        return new $this->options['range_class']($begin, $end, $this);
+    }
 
-        return new $className($begin, $end, $options);
+    /**
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption($name, $value)
+    {
+        $this->resolver->replaceDefaults($this->options);
+        $this->options = $this->resolver->resolve(array($name => $value));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getOption($name)
+    {
+        return $this->options[$name];
     }
 
     /**
@@ -136,13 +148,11 @@ class Factory
      *
      * @return array
      */
-    public static function resolveOptions(array $options)
+    protected function resolveOptions(array $options)
     {
-        static $resolver = null;
-
-        if (null === $resolver) {
-            $resolver = new OptionsResolver;
-            $resolver->setDefaults(
+        if (null === $this->resolver) {
+            $this->resolver = new OptionsResolver;
+            $this->resolver->setDefaults(
                 array(
                     'day_class'     => 'CalendR\Period\Day',
                     'week_class'    => 'CalendR\Period\Week',
@@ -152,21 +162,18 @@ class Factory
                     'first_weekday' => Day::MONDAY
                 )
             );
+            $this->setDefaultOptions($this->resolver);
         }
 
-        return $resolver->resolve($options);
+        return $this->resolver->resolve($options);
     }
 
     /**
-     * @param array  $options
-     * @param string $option
+     * Override this method if you have to change default/allowed options
      *
-     * @return mixed
+     * @param OptionsResolverInterface $resolver
      */
-    protected static function extractOption(array & $options, $option)
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = static::resolveOptions($options);
-
-        return $options[$option];
     }
 }
