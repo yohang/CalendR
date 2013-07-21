@@ -15,12 +15,12 @@ class Year extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param  \DateTime          $begin
-     * @param  array|int          $options
-     * @throws Exception\NotAYear
+     * @param  \DateTime $begin
+     * @param  Factory   $factory
      *
+     * @throws Exception\NotAYear
      */
-    public function __construct(\DateTime $begin, $options = array())
+    public function __construct(\DateTime $begin, $factory = null)
     {
         if (!self::isValid($begin)) {
             throw new Exception\NotAYear;
@@ -30,7 +30,7 @@ class Year extends PeriodAbstract implements \Iterator
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1Y'));
 
-        parent::__construct($options);
+        parent::__construct($factory);
     }
 
     /**
@@ -67,7 +67,7 @@ class Year extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (null === $this->current) {
-            $this->current = Factory::createMonth($this->begin, $this->options);
+            $this->current = $this->getFactory()->createMonth($this->begin);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {

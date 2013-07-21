@@ -28,15 +28,15 @@ class Day extends PeriodAbstract
 
     /**
      * @param \DateTime $begin
-     * @param array|int $options
+     * @param Factory   $factory
      */
-    public function __construct(\DateTime $begin, $options = array())
+    public function __construct(\DateTime $begin, $factory = null)
     {
         $this->begin = clone $begin;
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1D'));
 
-        parent::__construct($options);
+        parent::__construct($factory);
     }
 
     /**

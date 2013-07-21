@@ -3,6 +3,10 @@
 namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
+use CalendR\Period\Factory;
+use CalendR\Period\Month;
+use CalendR\Period\Week;
+use CalendR\Period\Year;
 
 class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,7 +26,7 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->calendar = new Calendar();
-        $this->calendar->setOptions($this->options);
+        $this->calendar->setFactory(new Factory($this->options));
     }
 
     public function testCalendar()
@@ -36,29 +40,29 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
     public function testCalendarSetOptions()
     {
         $options = array('week_class' => 'CalendR\Test\Fixtures\Period\Week');
-        $calendar = new Calendar();
-        $calendar->setOptions($options);
+        $calendar = new Calendar;
+        $calendar->setFactory(new Factory($options));
         $this->assertInstanceOf('CalendR\Test\Fixtures\Period\Week', $calendar->getWeek(new \DateTime('2012W01')));
     }
 
     public function testCalendarSetOption()
     {
         $calendar = new Calendar();
-        $calendar->setOption('week_class', 'CalendR\Test\Fixtures\Period\Week');
+        $calendar->setFactory(new Factory(array('week_class' => 'CalendR\Test\Fixtures\Period\Week')));
         $this->assertInstanceOf('CalendR\Test\Fixtures\Period\Week', $calendar->getWeek(new \DateTime('2012W01')));
     }
 
     public function testCalendarGetOption()
     {
         $calendar = new Calendar();
-        $this->assertEquals(1, $calendar->getOption('first_weekday'));
-        $calendar->setOption('first_weekday', 0);
-        $this->assertEquals(0, $calendar->getOption('first_weekday'));
+        $this->assertEquals(1, $calendar->getFactory()->getOption('first_weekday'));
+        $calendar->setFactory(new Factory(array('first_weekday' => 0)));
+        $this->assertEquals(0, $calendar->getFactory()->getOption('first_weekday'));
     }
 
     public function testYear()
     {
-        $year = new \CalendR\Period\Year(new \DateTime('2013-01-01'), $this->options);
+        $year = new Year(new \DateTime('2013-01-01'), new Factory($this->options));
         foreach ($year as $month) {
             $this->assertInstanceOf('CalendR\Test\Fixtures\Period\Month', $month);
         }
@@ -66,7 +70,7 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 
     public function testMonth()
     {
-        $month = new \CalendR\Period\Month(new \DateTime('2013-01-01'), $this->options);
+        $month = new Month(new \DateTime('2013-01-01'), new Factory($this->options));
         foreach ($month as $week) {
             $this->assertInstanceOf('CalendR\Test\Fixtures\Period\Week', $week);
         }
@@ -77,7 +81,7 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
 
     public function testWeek()
     {
-        $week = new \CalendR\Period\Week(new \DateTime('2013W01'), $this->options);
+        $week = new Week(new \DateTime('2013W01'), new Factory($this->options));
         foreach ($week as $day) {
             $this->assertInstanceOf('CalendR\Test\Fixtures\Period\Day', $day);
         }
