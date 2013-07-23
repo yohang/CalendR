@@ -52,3 +52,5 @@ TODO (And / Or planned)
  * Renderers (WIP)
  * Add providers for some hosted services
  * Add Hour, Minute and Second periods (maybe, don't know if this is really useful).
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/6dcce0ab659d3a643298bb645fdb643f "githalytics.com")](http://githalytics.com/yohan/CalendR)
