@@ -12,6 +12,7 @@
 namespace CalendR\Period;
 
 use CalendR\Event\EventInterface;
+use CalendR\Period\Factory;
 
 /**
  * An abstract class that represent a date period and provide some base helpers
@@ -31,52 +32,26 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $end;
 
     /**
-     * @var array
+     * @var Factory
      */
-    protected $options = array(
-        'first_day' => Day::MONDAY,
-        'day'       => 'CalendR\Period\Day',
-        'week'      => 'CalendR\Period\Week',
-        'month'     => 'CalendR\Period\Month',
-        'year'      => 'CalendR\Period\Year',
-        'range'     => 'CalendR\Period\Range',
-    );
+    protected $factory;
 
     /**
-     * @param array|int $options
+     * @param  Factory|int $factory
+     *
      * @throws Exception\NotAWeekday
      * @throws Exception\InvalidArgument
      */
-    public function __construct($options = array())
+    public function __construct($factory = null)
     {
-        if (is_numeric($options)){ // for backwards compatibility
-            $options = array('first_day' => $options);
+        if (is_numeric($factory)) { // for backwards compatibility
+            $factory = new Factory(array('first_weekday' => $factory));
         }
-        if (!is_array($options)){
-            throw new Exception\InvalidArgument('options parameter must be integer or array');
+        if (!(null === $factory || $factory instanceof Factory)) {
+            throw new Exception\InvalidArgument('Factory parameter must be an instance of CalendR\Period\Factory');
         }
-        if (isset($options['first_day']) && ($options['first_day'] < 0 || $options['first_day'] > 6)) {
-            throw new Exception\NotAWeekday(
-                sprintf('"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)', $options['first_day'])
-            );
-        }
-        $this->setOptions($options);
-    }
 
-    /**
-     * @return \DateTime
-     */
-    public function getBegin()
-    {
-        return $this->begin;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
+        $this->factory = $factory;
     }
 
     /**
@@ -180,7 +155,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getNext()
     {
-        return new static($this->end, $this->options);
+        return new static($this->end, $this->factory);
     }
 
     /**
@@ -193,67 +168,53 @@ abstract class PeriodAbstract implements PeriodInterface
         $start = clone $this->begin;
         $start->sub(static::getDateInterval());
 
-        return new static($start, $this->options);
+        return new static($start, $this->factory);
     }
 
     /**
-     * @param int $firstWeekday
+     * @return \DateTime
+     */
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @return Factory
+     */
+    public function getFactory()
+    {
+        if (null === $this->factory) {
+            $this->factory = new Factory;
+        }
+
+        return $this->factory;
+    }
+
+    /**
+     * @param  int  $firstWeekday
      * @return void
-     * @deprecated - use  setOption('first_day', $value)
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link Factory::setOption('first_weekday')} instead.
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->options['first_day'] = $firstWeekday;
+        $this->getFactory()->setOption('first_weekday', $firstWeekday);
     }
 
     /**
      * @return int
-     * @deprecated - use getOption('first_day')
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link Factory::getOption('first_weekday')} instead.
      */
     public function getFirstWeekday()
     {
-        return $this->options['first_day'];
-    }
-
-    /**
-     * @param array $options
-     */
-    public function setOptions($options)
-    {
-        foreach ($options as $name=>$value){
-            $this->setOption($name, $value);
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function hasOption($name){
-        return isset($this->options[$name]);
-    }
-
-    /**
-     * @param $name
-     * @return mixed
-     */
-    public function getOption($name){
-        return (isset($this->options[$name])) ? $this->options[$name] : null;
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     */
-    public function setOption($name, $value){
-        $this->options[$name] = $value;
+        return $this->getFactory()->getOption('first_weekday');
     }
 }

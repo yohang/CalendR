@@ -11,6 +11,7 @@
 
 namespace CalendR\Event;
 
+use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Period\PeriodInterface,
     CalendR\Event\Provider\ProviderInterface;
 
@@ -54,12 +55,19 @@ class Manager
     /**
      * find events that matches the given period (during or over)
      *
-     * @param  \CalendR\Period\PeriodInterface $period
-     * @param  array                           $options
+     * @param \CalendR\Period\PeriodInterface $period
+     * @param array                           $options
+     *
      * @return array|EventInterface
+     *
+     * @throws NoProviderFound
      */
     public function find(PeriodInterface $period, array $options = array())
     {
+        if (0 === count($this->providers)) {
+            throw new NoProviderFound;
+        }
+
         // Check if there's a provider option provided, used to filter the used providers
         $providers = isset($options['providers']) ? $options['providers'] : array();
         if (!is_array($providers)) {

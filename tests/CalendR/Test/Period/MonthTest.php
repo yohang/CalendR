@@ -48,6 +48,23 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public static function providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek()
+    {
+        return array_merge(
+            self::providerGetFirstMondayAndLastSunday(),
+            array(
+                array(new Month(new \DateTime('2013-05-01'), Day::MONDAY), '2013-04-29', '2013-06-02'),
+                array(new Month(new \DateTime('2013-05-01'), Day::TUESDAY), '2013-04-30', '2013-06-03'),
+                array(new Month(new \DateTime('2013-05-01'), Day::WEDNESDAY), '2013-05-01', '2013-06-04'),
+                array(new Month(new \DateTime('2013-05-01'), Day::THURSDAY), '2013-04-25', '2013-06-05'),
+                array(new Month(new \DateTime('2013-05-01'), Day::FRIDAY), '2013-04-26', '2013-06-06'),
+                array(new Month(new \DateTime('2013-05-01'), Day::SATURDAY), '2013-04-27', '2013-05-31'),
+                array(new Month(new \DateTime('2013-05-01'), Day::SUNDAY), '2013-04-28', '2013-06-01'),
+                array(new Month(new \DateTime('2013-09-01'), Day::SUNDAY), '2013-09-01', '2013-10-05'),
+            )
+        );
+    }
+
     /**
      * @dataProvider providerContains
      */
@@ -76,21 +93,20 @@ class MonthTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider providerGetFirstMondayAndLastSunday
+     * @dataProvider providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek
      */
-    public function testGetFirstDayOfFirstWeek(Month $month, $monday)
+    public function testGetFirstDayOfFirstWeek(Month $month, $firstDay)
     {
-        $this->assertSame($monday, $month->getFirstDayOfFirstWeek()->format('Y-m-d'));
+        $this->assertSame($firstDay, $month->getFirstDayOfFirstWeek()->format('Y-m-d'));
     }
 
     /**
-     * @dataProvider providerGetFirstMondayAndLastSunday
+     * @dataProvider providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek
      */
-    public function testGetLastDayOfLastWeek(Month $month, $monday, $sunday)
+    public function testGetLastDayOfLastWeek(Month $month, $firstDay, $lastDay)
     {
-        $this->assertSame($sunday, $month->getLastDayOfLastWeek()->format('Y-m-d'));
+        $this->assertSame($lastDay, $month->getLastDayOfLastWeek()->format('Y-m-d'));
     }
-
 
     /**
      * @dataProvider providerConstructInvalid

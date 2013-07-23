@@ -21,14 +21,14 @@ class Range extends PeriodAbstract
     /**
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param array|int $options
+     * @param Factory   $factory
      */
-    public function __construct(\DateTime $begin, \DateTime $end, $options = array())
+    public function __construct(\DateTime $begin, \DateTime $end, $factory = null)
     {
         $this->begin = clone $begin;
         $this->end   = clone $end;
 
-        parent::__construct($options);
+        parent::__construct($factory);
     }
 
     /**
@@ -52,7 +52,7 @@ class Range extends PeriodAbstract
         $end = clone($this->end);
         $end->add($diff);
 
-        return new self($begin, $end, $this->options);
+        return new self($begin, $end, $this->factory);
     }
 
     /**
@@ -66,7 +66,7 @@ class Range extends PeriodAbstract
         $end = clone($this->end);
         $end->sub($diff);
 
-        return new self($begin, $end, $this->options);
+        return new self($begin, $end, $this->factory);
     }
 
     /**

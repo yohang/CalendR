@@ -12,6 +12,7 @@
 namespace CalendR;
 
 use CalendR\Event\Manager;
+use CalendR\Period\Factory;
 use CalendR\Period\PeriodInterface;
 
 /**
@@ -27,16 +28,9 @@ class Calendar
     private $eventManager;
 
     /**
-     * @var array
+     * @var Factory
      */
-    protected $options = array(
-        'first_day' => Period\Day::MONDAY,
-        'day'       => 'CalendR\Period\Day',
-        'week'      => 'CalendR\Period\Week',
-        'month'     => 'CalendR\Period\Month',
-        'year'      => 'CalendR\Period\Year',
-        'range'     => 'CalendR\Period\Range',
-    );
+    protected $factory;
 
     /**
      * @param Manager $eventManager
@@ -59,18 +53,13 @@ class Calendar
     }
 
     /**
-     * @param \DateTime|int $yearOrStart
+     * @param $yearOrStart
      *
-     * @return PeriodInterface
+     * @return Period\Year
      */
     public function getYear($yearOrStart)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
-        }
-        $yearClass = $this->getOption('year');
-
-        return new $yearClass($yearOrStart, $this->options);
+        return $this->getFactory()->createYear($yearOrStart);
     }
 
     /**
@@ -81,12 +70,7 @@ class Calendar
      */
     public function getMonth($yearOrStart, $month = null)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
-        }
-        $monthClass = $this->getOption('month');
-
-        return new $monthClass($yearOrStart, $this->options);
+        return $this->getFactory()->createMonth($yearOrStart, $month);
     }
 
     /**
@@ -97,12 +81,7 @@ class Calendar
      */
     public function getWeek($yearOrStart, $week = null)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, '0', STR_PAD_LEFT)));
-        }
-        $weekClass = $this->getOption('week');
-
-        return new $weekClass($yearOrStart, $this->options);
+        return $this->getFactory()->createWeek($yearOrStart, $week);
     }
 
     /**
@@ -114,12 +93,7 @@ class Calendar
      */
     public function getDay($yearOrStart, $month = null, $day = null)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
-        }
-        $dayClass = $this->getOption('day');
-
-        return new $dayClass($yearOrStart, $this->options);
+        return $this->getFactory()->createDay($yearOrStart, $month, $day);
     }
 
     /**
@@ -134,53 +108,42 @@ class Calendar
     }
 
     /**
-     * @param array $options
+     * @param Factory $factory
      */
-    public function setOptions(array $options)
+    public function setFactory(Factory $factory)
     {
-        foreach ($options as $name=>$value){
-            $this->setOption($name, $value);
-        };
+        $this->factory = $factory;
     }
 
     /**
-     * @param $name string
-     * @param $value mixed
+     * @return Factory
      */
-    public function setOption($name, $value)
+    public function getFactory()
     {
-        $this->options[$name] = $value;
+        if (null === $this->factory) {
+            $this->factory = new Factory;
+        }
+
+        return $this->factory;
     }
 
     /**
-     * @param $name string
-     * @return mixed
+     * @param int $firstWeekday
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link setOption('first_weekday')} instead.
      */
-    public function getOption($name)
+    public function setFirstWeekday($firstWeekday)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : null;
-    }
-
-    public function hasOption($name)
-    {
-        return isset($this->options[$name]);
-    }
-
-    /**
-     * @param int $weekFirstDay
-     * @deprecated - use setOption('first_day', $value)
-     */
-    public function setFirstWeekday($weekFirstDay)
-    {
-        $this->setOption('first_day', $weekFirstDay);
+        $this->getFactory()->setOption('first_weekday', $firstWeekday);
     }
 
     /**
      * @return int
-     * @deprecated - use getOption('first_day')
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link getOption('first_weekday')} instead.
      */
     public function getFirstWeekday()
     {
-        return $this->getOption('first_day');
+        return $this->factory->getOption('first_weekday');
     }
 }

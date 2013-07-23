@@ -74,4 +74,13 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
             $this->object->find(new Month(new \DateTime('2012-01-01')))
         );
     }
+
+    /**
+     * @expectedException \CalendR\Event\Exception\NoProviderFound
+     */
+    public function testFindWithoutProvider()
+    {
+        $manager = new Manager;
+        $manager->find(new Day(new \DateTime()));
+    }
 }
