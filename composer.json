@@ -11,7 +11,8 @@
         "homepage": "http://yohan.giarel.li"
     }],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "symfony/options-resolver": ">=2.1,<3.0"
     },
 
     "require-dev": {
@@ -27,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "1.1.x-dev"
         }
     },
 
