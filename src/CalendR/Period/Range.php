@@ -19,9 +19,9 @@ namespace CalendR\Period;
 class Range extends PeriodAbstract
 {
     /**
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     * @param Factory   $factory
+     * @param \DateTime        $begin
+     * @param \DateTime        $end
+     * @param FactoryInterface $factory
      */
     public function __construct(\DateTime $begin, \DateTime $end, $factory = null)
     {

@@ -32,12 +32,12 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $end;
 
     /**
-     * @var Factory
+     * @var FactoryInterface
      */
     protected $factory;
 
     /**
-     * @param  Factory|int $factory
+     * @param FactoryInterface|int $factory
      *
      * @throws Exception\NotAWeekday
      * @throws Exception\InvalidArgument
@@ -47,8 +47,8 @@ abstract class PeriodAbstract implements PeriodInterface
         if (is_numeric($factory)) { // for backwards compatibility
             $factory = new Factory(array('first_weekday' => $factory));
         }
-        if (!(null === $factory || $factory instanceof Factory)) {
-            throw new Exception\InvalidArgument('Factory parameter must be an instance of CalendR\Period\Factory');
+        if (!(null === $factory || $factory instanceof FactoryInterface)) {
+            throw new Exception\InvalidArgument('Factory parameter must implement CalendR\Period\FactoryInterface');
         }
 
         $this->factory = $factory;
@@ -188,7 +188,7 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
-     * @return Factory
+     * @return FactoryInterface
      */
     public function getFactory()
     {
@@ -202,19 +202,17 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * @param  int  $firstWeekday
      * @return void
-     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link Factory::setOption('first_weekday')} instead.
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->getFactory()->setOption('first_weekday', $firstWeekday);
+        $this->getFactory()->setFirstWeekday($firstWeekday);
     }
 
     /**
      * @return int
-     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link Factory::getOption('first_weekday')} instead.
      */
     public function getFirstWeekday()
     {
-        return $this->getFactory()->getOption('first_weekday');
+        return $this->getFactory()->getFirstWeekday();
     }
 }

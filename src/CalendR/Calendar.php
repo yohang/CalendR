@@ -13,6 +13,7 @@ namespace CalendR;
 
 use CalendR\Event\Manager;
 use CalendR\Period\Factory;
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\PeriodInterface;
 
 /**
@@ -28,7 +29,7 @@ class Calendar
     private $eventManager;
 
     /**
-     * @var Factory
+     * @var FactoryInterface
      */
     protected $factory;
 
@@ -59,6 +60,10 @@ class Calendar
      */
     public function getYear($yearOrStart)
     {
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
+        }
+
         return $this->getFactory()->createYear($yearOrStart);
     }
 
@@ -70,7 +75,11 @@ class Calendar
      */
     public function getMonth($yearOrStart, $month = null)
     {
-        return $this->getFactory()->createMonth($yearOrStart, $month);
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
+        }
+
+        return $this->getFactory()->createMonth($yearOrStart);
     }
 
     /**
@@ -81,7 +90,11 @@ class Calendar
      */
     public function getWeek($yearOrStart, $week = null)
     {
-        return $this->getFactory()->createWeek($yearOrStart, $week);
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, 0, STR_PAD_LEFT)));
+        }
+
+        return $this->getFactory()->createWeek($yearOrStart);
     }
 
     /**
@@ -93,7 +106,11 @@ class Calendar
      */
     public function getDay($yearOrStart, $month = null, $day = null)
     {
-        return $this->getFactory()->createDay($yearOrStart, $month, $day);
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
+        }
+
+        return $this->getFactory()->createDay($yearOrStart);
     }
 
     /**
@@ -108,15 +125,15 @@ class Calendar
     }
 
     /**
-     * @param Factory $factory
+     * @param FactoryInterface $factory
      */
-    public function setFactory(Factory $factory)
+    public function setFactory(FactoryInterface $factory)
     {
         $this->factory = $factory;
     }
 
     /**
-     * @return Factory
+     * @return FactoryInterface
      */
     public function getFactory()
     {
@@ -129,21 +146,17 @@ class Calendar
 
     /**
      * @param int $firstWeekday
-     *
-     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link setOption('first_weekday')} instead.
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->getFactory()->setOption('first_weekday', $firstWeekday);
+        $this->getFactory()->setFirstWeekday($firstWeekday);
     }
 
     /**
      * @return int
-     *
-     * @deprecated Deprecated since version 1.1, to be removed in 2.0. Use {@link getOption('first_weekday')} instead.
      */
     public function getFirstWeekday()
     {
-        return $this->factory->getOption('first_weekday');
+        return $this->factory->getFirstWeekday();
     }
 }
