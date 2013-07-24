@@ -103,7 +103,9 @@ class GoogleCalendarProvider implements ProviderInterface
         $events = array();
 
         foreach ($googleEvents['items'] as $item) {
+          if(isset($item['start']) && isset($item['end'])){
             $events[] = $this->createEvent($item, $calendarId);
+          }
         }
 
         return $events;
