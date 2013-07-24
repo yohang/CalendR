@@ -3,6 +3,7 @@
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Factory;
+use CalendR\Period\FactoryInterface;
 
 /**
  * @author Yohan Giarelli <yohan@frequence-web.fr>
@@ -11,14 +12,9 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateDay()
     {
-        $this->assertInstanceOf('CalendR\Period\Day', $this->getDefaultOptionsFactory()->createDay(2012, 1, 1));
         $this->assertInstanceOf(
             'CalendR\Period\Day',
             $this->getDefaultOptionsFactory()->createDay(new \DateTime('2012-01-01'))
-        );
-        $this->assertInstanceOf(
-            'CalendR\Test\Fixtures\Period\Day',
-            $this->getAlternateOptionsFactory()->createDay(2012, 1, 1)
         );
         $this->assertInstanceOf(
             'CalendR\Test\Fixtures\Period\Day',
@@ -29,11 +25,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateWeek()
     {
         $this->assertInstanceOf('CalendR\Period\Week', $this->getDefaultOptionsFactory()->createWeek(new \DateTime('2012-W01')));
-        $this->assertInstanceOf('CalendR\Period\Week', $this->getDefaultOptionsFactory()->createWeek(2012, 1));
-        $this->assertInstanceOf(
-            'CalendR\Test\Fixtures\Period\Week',
-            $this->getAlternateOptionsFactory()->createWeek(2012, 1)
-        );
         $this->assertInstanceOf(
             'CalendR\Test\Fixtures\Period\Week',
             $this->getAlternateOptionsFactory()->createWeek(new \DateTime('2012-W01'))
@@ -43,11 +34,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateMonth()
     {
         $this->assertInstanceOf('CalendR\Period\Month', $this->getDefaultOptionsFactory()->createMonth(new \DateTime('2012-01-01')));
-        $this->assertInstanceOf('CalendR\Period\Month', $this->getDefaultOptionsFactory()->createMonth(2012, 1));
-        $this->assertInstanceOf(
-            'CalendR\Test\Fixtures\Period\Month',
-            $this->getAlternateOptionsFactory()->createMonth(2012, 1)
-        );
         $this->assertInstanceOf(
             'CalendR\Test\Fixtures\Period\Month',
             $this->getAlternateOptionsFactory()->createMonth(new \DateTime('2012-01-01'))
@@ -57,11 +43,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateYear()
     {
         $this->assertInstanceOf('CalendR\Period\Year', $this->getDefaultOptionsFactory()->createYear(new \DateTime('2012-01-01')));
-        $this->assertInstanceOf('CalendR\Period\Year', $this->getDefaultOptionsFactory()->createYear(2012));
-        $this->assertInstanceOf(
-            'CalendR\Test\Fixtures\Period\Year',
-            $this->getAlternateOptionsFactory()->createYear(2012)
-        );
         $this->assertInstanceOf(
             'CalendR\Test\Fixtures\Period\Year',
             $this->getAlternateOptionsFactory()->createYear(new \DateTime('2012-01-01'))
@@ -81,7 +62,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Factory
+     * @return FactoryInterface
      */
     protected function getDefaultOptionsFactory()
     {
@@ -89,7 +70,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Factory
+     * @return FactoryInterface
      */
     protected function getAlternateOptionsFactory()
     {

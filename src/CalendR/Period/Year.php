@@ -15,8 +15,8 @@ class Year extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param  \DateTime $begin
-     * @param  Factory   $factory
+     * @param \DateTime        $begin
+     * @param FactoryInterface $factory
      *
      * @throws Exception\NotAYear
      */

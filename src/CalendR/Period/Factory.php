@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
-class Factory
+class Factory implements FactoryInterface
 {
     /**
      * @var array
@@ -42,83 +42,41 @@ class Factory
     }
 
     /**
-     * Creates and returns a new Day instance
-     *
-     * @param int|\DateTime $yearOrStart
-     * @param int|array     $month
-     * @param int           $day
-     *
-     * @return \CalendR\Period\Day
+     * {@inheritDoc}
      */
-    public function createDay($yearOrStart, $month = null, $day = null)
+    public function createDay(\DateTime $begin)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
-        }
-
-        return new $this->options['day_class']($yearOrStart, $this);
+        return new $this->options['day_class']($begin, $this);
     }
 
     /**
-     * Creates and returns a new week instance
-     *
-     * @param int|\DateTime $yearOrStart
-     * @param int|array     $week
-     *
-     * @return \CalendR\Period\Week
+     * {@inheritDoc}
      */
-    public function createWeek($yearOrStart, $week = null)
+    public function createWeek(\DateTime $begin)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-W%s', $yearOrStart, str_pad($week, 2, 0, STR_PAD_LEFT)));
-        }
-
-        return new $this->options['week_class']($yearOrStart, $this);
+        return new $this->options['week_class']($begin, $this);
     }
 
     /**
-     * Creates and returns a new month
-     *
-     * @param int|\DateTime $yearOrStart
-     * @param int|array     $month
-     *
-     * @return \CalendR\Period\Month
+     * {@inheritDoc}
      */
-    public function createMonth($yearOrStart, $month = null)
+    public function createMonth(\DateTime $begin)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
-        }
-
-        return new $this->options['month_class']($yearOrStart, $this);
+        return new $this->options['month_class']($begin, $this);
     }
 
     /**
-     * Creates and returns a new year
-     *
-     * @param int|\DateTime $yearOrStart
-     * @param array         $options
-     *
-     * @return \CalendR\Period\Year
+     * {@inheritDoc}
      */
-    public function createYear($yearOrStart, array $options = array())
+    public function createYear(\DateTime $begin)
     {
-        if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
-        }
-
-        return new $this->options['year_class']($yearOrStart, $this);
+        return new $this->options['year_class']($begin, $this);
     }
 
     /**
-     * Creates and returns a new range
-     *
-     * @param int|\DateTime $begin
-     * @param int|\DateTime $end
-     *
-     * @return \CalendR\Period\Range
+     * {@inheritDoc}
      */
-    public function createRange($begin, $end)
+    public function createRange(\DateTime $begin, \DateTime $end)
     {
         return new $this->options['range_class']($begin, $end, $this);
     }
@@ -175,5 +133,21 @@ class Factory
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFirstWeekday($firstWeekday)
+    {
+        $this->setOption('first_weekday', $firstWeekday);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFirstWeekday()
+    {
+        return $this->getOption('first_weekday');
     }
 }
