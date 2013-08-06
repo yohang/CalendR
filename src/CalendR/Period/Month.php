@@ -15,8 +15,8 @@ class Month extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param  \DateTime $start
-     * @param  Factory   $factory
+     * @param \DateTime        $start
+     * @param FactoryInterface $factory
      *
      * @throws Exception\NotAMonth
      */
@@ -67,7 +67,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function getFirstDayOfFirstWeek()
     {
         $delta  = $this->begin->format('w') ?: 7;
-        $delta -= $this->getFactory()->getOption('first_weekday');
+        $delta -= $this->getFactory()->getFirstWeekday();
         $delta  = $delta < 0 ? 7 - abs($delta) : $delta;
         $delta  = $delta == 7 ? 0 : $delta;
 
@@ -78,7 +78,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a Range period begining at the first day of first week of this month,
+     * Returns a Range period beginning at the first day of first week of this month,
      * and ending at the last day of the last week of this month.
      *
      * @return Range
@@ -98,9 +98,9 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $lastDay = clone $this->end;
         $lastDay->sub(new \DateInterval('P1D'));
-        $lastWeekday = $this->getFactory()->getOption('first_weekday') === Day::SUNDAY ?
+        $lastWeekday = $this->getFactory()->getFirstWeekday() === Day::SUNDAY ?
             Day::SATURDAY :
-            $this->getFactory()->getOption('first_weekday') - 1;
+            $this->getFactory()->getFirstWeekday() - 1;
 
         $delta = intval($lastDay->format('w')) - $lastWeekday;
         $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);

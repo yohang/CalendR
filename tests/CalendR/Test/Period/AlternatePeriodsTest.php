@@ -55,9 +55,9 @@ class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
     public function testCalendarGetOption()
     {
         $calendar = new Calendar();
-        $this->assertEquals(1, $calendar->getFactory()->getOption('first_weekday'));
+        $this->assertEquals(1, $calendar->getFactory()->getFirstWeekday());
         $calendar->setFactory(new Factory(array('first_weekday' => 0)));
-        $this->assertEquals(0, $calendar->getFactory()->getOption('first_weekday'));
+        $this->assertEquals(0, $calendar->getFactory()->getFirstWeekday());
     }
 
     public function testYear()

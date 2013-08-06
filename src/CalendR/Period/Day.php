@@ -27,8 +27,8 @@ class Day extends PeriodAbstract
     const SUNDAY    = 0;
 
     /**
-     * @param \DateTime $begin
-     * @param Factory   $factory
+     * @param \DateTime        $begin
+     * @param FactoryInterface $factory
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
