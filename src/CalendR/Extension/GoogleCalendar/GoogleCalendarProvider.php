@@ -95,45 +95,41 @@ class GoogleCalendarProvider implements ProviderInterface
      *
      * @param array  $googleEvents
      * @param string $calendarId
+     * @param array  $optParams
      *
      * @return array
      */
-    protected function createEvents($googleEvents, $calendarId)
+    protected function createEvents($googleEvents, $calendarId, array $optParams)
     {
-        $events = array();
-
+        $events     = array();
+        $recurrings = array();
         foreach ($googleEvents['items'] as $item) {
-          if(isset($item['start']) && isset($item['end'])){
-            $events[] = $this->createEvent($item, $calendarId);
+          if(!(isset($item['start']) && isset($item['end']))) {
+              continue;
           }
+
+          if ($this->isRecurring($item)) {
+              $recurrings[] = $item;
+
+              continue;
+          }
+
+          $events[] = $this->createEvent($item, $calendarId);
+        }
+
+        foreach ($recurrings as $recurring) {
+            $instances = $this->createEvents(
+                $this->service->events->instances($calendarId, $recurring['id'], $optParams),
+                $calendarId,
+                $optParams
+            );
+
+            foreach ($instances as $instance) {
+                $events[] = $instance;
+            }
         }
 
         return $events;
-    }
-
-    /**
-     * Return the GoogleCalendarEvent array from the String $calendarId
-     *
-     * @param $calendarId
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     *
-     * @return array[]
-     */
-    private function findEventsByCalendarId($calendarId, \DateTime $begin, \DateTime $end)
-    {
-        $optParams = array(
-            'timeMin' => $begin->format('Y-m-d\TH:i:sP'),
-            'timeMax' => $end->format('Y-m-d\TH:i:sP')
-        );
-
-        $response = $this->service->events->listEvents($calendarId, $optParams);
-
-        if (isset($response['items'])) {
-            return $this->createEvents($response, $calendarId);
-        }
-
-        return array();
     }
 
     /**
@@ -183,5 +179,40 @@ class GoogleCalendarProvider implements ProviderInterface
         }
 
         return $events;
+    }
+
+    /**
+     * Return the GoogleCalendarEvent array from the String $calendarId
+     *
+     * @param $calendarId
+     * @param \DateTime $begin
+     * @param \DateTime $end
+     *
+     * @return array[]
+     */
+    private function findEventsByCalendarId($calendarId, \DateTime $begin, \DateTime $end)
+    {
+      $optParams = array(
+        'timeMin' => $begin->format('Y-m-d\TH:i:sP'),
+        'timeMax' => $end->format('Y-m-d\TH:i:sP')
+      );
+
+      $response = $this->service->events->listEvents($calendarId, $optParams);
+
+      if (isset($response['items'])) {
+        return $this->createEvents($response, $calendarId, $optParams);
+      }
+
+      return array();
+    }
+
+    /**
+     * @param array $event
+     *
+     * @return bool
+     */
+    private function isRecurring(array $event)
+    {
+        return isset($event['recurrence']) && count($event['recurrence']) > 0;
     }
 }
