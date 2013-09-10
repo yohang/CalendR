@@ -36,15 +36,22 @@ class Cache implements ProviderInterface
     protected $lifetime;
 
     /**
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * @param CacheInterface    $cache
      * @param ProviderInterface $provider
      * @param int               $lifetime
+     * @param string            $namespace
      */
-    public function __construct(CacheInterface $cache, ProviderInterface $provider, $lifetime)
+    public function __construct(CacheInterface $cache, ProviderInterface $provider, $lifetime, $namespace = null)
     {
-        $this->cache    = $cache;
-        $this->provider = $provider;
-        $this->lifetime = $lifetime;
+        $this->cache     = $cache;
+        $this->provider  = $provider;
+        $this->lifetime  = $lifetime;
+        $this->namespace = $namespace;
     }
 
     /**
@@ -53,6 +60,11 @@ class Cache implements ProviderInterface
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
         $cacheKey = md5(serialize(array($begin, $end, $options)));
+
+        if (null !== $this->namespace) {
+            $cacheKey = $this->namespace . '.' . $cacheKey;
+        }
+
         if ($this->cache->contains($cacheKey)) {
             return $this->cache->fetch($cacheKey);
         }

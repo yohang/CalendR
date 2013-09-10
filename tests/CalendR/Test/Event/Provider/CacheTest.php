@@ -62,8 +62,6 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($events, $this->object->getEvents($begin, $end));
     }
 
-
-
     public function testItCallsProviderWhenCache()
     {
         $events = array(new Event('foo', new \DateTime, new \DateTime));
@@ -86,5 +84,57 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->provider->expects($this->never())->method('getEvents');
 
         $this->assertSame($events, $this->object->getEvents($begin, $end));
+    }
+
+    public function testItUseNamespaceWhenCache()
+    {
+        $this->object = new Cache($this->cache, $this->provider, 3600, 'ns');
+
+        $begin  = new \DateTime;
+        $end    = clone $begin;
+        $end->add(new \DateInterval('P1M'));
+
+        $this->cache
+            ->expects($this->once())
+            ->method('contains')
+            ->with('ns.'.md5(serialize(array($begin, $end, array()))))
+            ->will($this->returnValue(true));
+
+        $this->cache
+            ->expects($this->once())
+            ->method('fetch')
+            ->with('ns.'.md5(serialize(array($begin, $end, array()))))
+            ->will($this->returnValue(array()));
+
+        $this->object->getEvents($begin, $end);
+    }
+
+    public function testItUseNamespaceWhenNoCache()
+    {
+        $this->object = new Cache($this->cache, $this->provider, 3600, 'ns');
+
+        $begin  = new \DateTime;
+        $end    = clone $begin;
+        $end->add(new \DateInterval('P1M'));
+
+        $this->provider
+            ->expects($this->once())
+            ->method('getEvents')
+            ->with($begin, $end, array())
+            ->will($this->returnValue(array()));
+
+        $this->cache
+            ->expects($this->once())
+            ->method('contains')
+            ->with('ns.'.md5(serialize(array($begin, $end, array()))))
+            ->will($this->returnValue(false));
+
+        $this->cache
+            ->expects($this->once())
+            ->method('save')
+            ->with('ns.'.md5(serialize(array($begin, $end, array()))), array(), 3600)
+            ->will($this->returnValue(true));
+
+        $this->object->getEvents($begin, $end);
     }
 }
