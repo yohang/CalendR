@@ -51,6 +51,7 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('CalendR\\Period\\Day', $day);
     }
 
+
     public function testGetEvents()
     {
         $em       = $this->getMock('CalendR\Event\Manager');
@@ -61,5 +62,39 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $em->expects($this->once())->method('find')->with($period, array())->will($this->returnValue($events));
 
         $this->assertSame($events, $calendar->getEvents($period, array()));
+    }
+
+    /**
+     * @dataProvider weekAndWeekdayProvider
+     */
+    public function testGetWeekWithWeekdayConfiguration($year, $week, $weekday, $day)
+    {
+        $calendar = new Calendar;
+        $calendar->getFactory()->setFirstWeekday($weekday);
+        $week     = $calendar->getWeek($year, $week);
+
+        $this->assertEquals($weekday, $week->format('w'));
+        $this->assertSame($day, $week->format('Y-m-d'));
+    }
+
+    public static function weekAndWeekdayProvider()
+    {
+        return array(
+            array(2013, 1, Day::MONDAY, '2012-12-31'),
+            array(2013, 1, Day::TUESDAY, '2012-12-25'),
+            array(2013, 1, Day::WEDNESDAY, '2012-12-26'),
+            array(2013, 1, Day::THURSDAY, '2012-12-27'),
+            array(2013, 1, Day::FRIDAY, '2012-12-28'),
+            array(2013, 1, Day::SATURDAY, '2012-12-29'),
+            array(2013, 1, Day::SUNDAY, '2012-12-30'),
+
+            array(2013, 8, Day::MONDAY, '2013-02-18'),
+            array(2013, 8, Day::TUESDAY, '2013-02-12'),
+            array(2013, 8, Day::WEDNESDAY, '2013-02-13'),
+            array(2013, 8, Day::THURSDAY, '2013-02-14'),
+            array(2013, 8, Day::FRIDAY, '2013-02-15'),
+            array(2013, 8, Day::SATURDAY, '2013-02-16'),
+            array(2013, 8, Day::SUNDAY, '2013-02-17'),
+        );
     }
 }

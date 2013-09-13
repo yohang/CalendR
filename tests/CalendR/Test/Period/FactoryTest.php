@@ -4,6 +4,7 @@ namespace CalendR\Test\Period;
 
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
+use CalendR\Period\Month;
 
 /**
  * @author Yohan Giarelli <yohan@frequence-web.fr>
@@ -58,6 +59,31 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             'CalendR\Test\Fixtures\Period\Range',
             $this->getAlternateOptionsFactory()->createRange(new \DateTime('2012-01-01'), new \DateTime('2012-01-02'))
+        );
+    }
+
+    /**
+     * @dataProvider providerGetFirstMondayAndLastSunday
+     */
+    public function testFindFirstDayOfWeek(Month $month, $firstDay)
+    {
+        $this->assertSame(
+            $firstDay,
+            $this->getDefaultOptionsFactory()->findFirstDayOfWeek($month->getBegin())->format('Y-m-d')
+        );
+    }
+
+    public static function providerGetFirstMondayAndLastSunday()
+    {
+        $factory = new \CalendR\Calendar();
+
+        return array(
+            array($factory->getMonth(2012, 1), '2011-12-26'),
+            array($factory->getMonth(2012, 2), '2012-01-30'),
+            array($factory->getMonth(2012, 3), '2012-02-27'),
+            array($factory->getMonth(2012, 9), '2012-08-27'),
+            array($factory->getMonth(2012, 10), '2012-10-01'),
+            array($factory->getMonth(2012, 12), '2012-11-26'),
         );
     }
 

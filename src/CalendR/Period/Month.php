@@ -60,21 +60,13 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the first day of the first week of month.
-     * First day of week is configurable via {@link Factory:gsetOption()}
+     * First day of week is configurable via {@link Factory:setOption()}
      *
      * @return \DateTime
      */
     public function getFirstDayOfFirstWeek()
     {
-        $delta  = $this->begin->format('w') ?: 7;
-        $delta -= $this->getFactory()->getFirstWeekday();
-        $delta  = $delta < 0 ? 7 - abs($delta) : $delta;
-        $delta  = $delta == 7 ? 0 : $delta;
-
-        $firstDay = clone $this->begin;
-        $firstDay->sub(new \DateInterval(sprintf('P%sD', $delta)));
-
-        return $firstDay;
+        return $this->getFactory()->findFirstDayOfWeek($this->begin);
     }
 
     /**
@@ -98,16 +90,8 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $lastDay = clone $this->end;
         $lastDay->sub(new \DateInterval('P1D'));
-        $lastWeekday = $this->getFactory()->getFirstWeekday() === Day::SUNDAY ?
-            Day::SATURDAY :
-            $this->getFactory()->getFirstWeekday() - 1;
 
-        $delta = intval($lastDay->format('w')) - $lastWeekday;
-        $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);
-        $delta = $delta === 7 ? 0 : $delta;
-        $lastDay->add(new \DateInterval(sprintf('P%sD', $delta)));
-
-        return $lastDay;
+        return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }
 
     /**

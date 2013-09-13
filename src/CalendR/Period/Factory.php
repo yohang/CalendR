@@ -150,4 +150,20 @@ class Factory implements FactoryInterface
     {
         return $this->getOption('first_weekday');
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function findFirstDayOfWeek($dateTime)
+    {
+        $day    = clone $dateTime;
+        $delta  = $day->format('w') ?: 7;
+        $delta -= $this->getFirstWeekday();
+        $delta  = $delta < 0 ? 7 - abs($delta) : $delta;
+        $delta  = $delta == 7 ? 0 : $delta;
+
+        $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
+
+        return $day;
+    }
 }

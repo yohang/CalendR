@@ -68,4 +68,13 @@ interface FactoryInterface
      * @return integer
      */
     public function getFirstWeekday();
+
+    /**
+     * Find the first day of the given week
+     *
+     * @param \DateTime $dateTime
+     *
+     * @return \DateTime
+     */
+    public function findFirstDayOfWeek($dateTime);
 }
