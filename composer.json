@@ -15,12 +15,13 @@
     },
 
     "require-dev": {
-        "twig/twig":                    "~1.13",
-        "silex/silex":                  "~1.1",
-        "doctrine/orm":                 "~2.3",
-        "doctrine/common":              "~2.3",
+        "doctrine/cache":               "~1.1",
+        "doctrine/common":              "~2.4",
+        "doctrine/orm":                 "~2.4",
+        "google/google-api-php-client": "0.6.2",
         "phpunit/phpunit":              "~3.7",
-        "google/google-api-php-client": "0.6.2"
+        "silex/silex":                  "~1.1",
+        "twig/twig":                    "~1.13"
     },
 
     "autoload": {
