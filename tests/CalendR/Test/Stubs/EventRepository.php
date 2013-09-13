@@ -9,4 +9,5 @@ class EventRepository extends EntityRepository
 {
     use EventRepositoryTrait;
 
+
 }

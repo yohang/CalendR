@@ -3,7 +3,6 @@
 namespace CalendR\Test\Extension\Doctrine2;
 
 use CalendR\Test\BaseDoctrine2TestCase;
-use CalendR\Test\Stubs\Event;
 use CalendR\Extension\Doctrine2\QueryHelper;
 
 class QueryHelperTest extends BaseDoctrine2TestCase
