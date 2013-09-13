@@ -2,9 +2,8 @@
 
 namespace CalendR\Test\Event\Provider;
 
-use CalendR\Event\Provider\Basic,
-    CalendR\Event\Provider\ProviderInterface,
-    CalendR\Event\Event;
+use CalendR\Event\Event;
+use CalendR\Event\Provider\Basic;
 
 class BasicTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,12 +33,16 @@ class BasicTest extends \PHPUnit_Framework_TestCase
 
     public function testAddAndCount()
     {
-        $i = 0;
+        $i      = 0;
+        $events = $this->getSomeEvents();
+
         $this->assertSame(0, count($this->object));
-        foreach ($this->getSomeEvents() as $event) {
+        foreach ($events as $event) {
             $this->object->add($event);
             $this->assertSame(++$i, count($this->object));
         }
+
+        $this->assertSame($events, $this->object->all());
     }
 
     public function getEventsProvider()
@@ -69,5 +72,10 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testNoErrorWhenNoEvents()
     {
         $this->assertSame(array(), $this->object->getEvents(new \DateTime('2013-06-01'), new \DateTime('2013-07-01')));
+    }
+
+    public function testGetIterator()
+    {
+        $this->assertInstanceOf('Iterator', $this->object->getIterator());
     }
 }

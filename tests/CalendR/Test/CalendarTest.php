@@ -3,6 +3,7 @@
 namespace CalendR\Test;
 
 use CalendR\Calendar;
+use CalendR\Period\Day;
 
 class CalendarTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,5 +49,17 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
 
         $day = $factory->getDay(2012, 1, 1);
         $this->assertInstanceOf('CalendR\\Period\\Day', $day);
+    }
+
+    public function testGetEvents()
+    {
+        $em       = $this->getMock('CalendR\Event\Manager');
+        $period   = $this->getMock('CalendR\Period\PeriodInterface');
+        $events   = array($this->getMock('CalendR\Event\EventInterface'));
+        $calendar = new Calendar;
+        $calendar->setEventManager($em);
+        $em->expects($this->once())->method('find')->with($period, array())->will($this->returnValue($events));
+
+        $this->assertSame($events, $calendar->getEvents($period, array()));
     }
 }

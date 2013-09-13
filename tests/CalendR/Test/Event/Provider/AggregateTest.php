@@ -2,16 +2,24 @@
 
 namespace CalendR\Test\Event\Provider;
 
-use CalendR\Event\Provider\Aggregate,
-    CalendR\Event\Provider\ProviderInterface,
-    CalendR\Event\Event;
+use CalendR\Event\Provider\Aggregate;
 
-class AggregateTest extends \PHPUnit_Framework_TestCase implements ProviderInterface
+class AggregateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Cache
+     * @var Aggregate
      */
     protected $object;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $provider1;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $provider2;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -19,40 +27,34 @@ class AggregateTest extends \PHPUnit_Framework_TestCase implements ProviderInter
      */
     protected function setUp()
     {
-        $this->object = new Aggregate(array($this, $this));
+        $this->provider1 = $this->getMock('CalendR\Event\Provider\ProviderInterface');
+        $this->provider2 = $this->getMock('CalendR\Event\Provider\ProviderInterface');
+        $this->object    = new Aggregate(array($this->provider1));
     }
 
-    public function getEventsProvider()
+    public function testAdd()
     {
-        return array(
-            array(new \DateTime('2012-01-01 20:30'), new \DateTime('2012-01-01 21:30')),
-            array(new \DateTime('2011-01-01 20:30'), new \DateTime('2012-01-01 21:30')),
-            array(new \DateTime('2012-01-01 20:30'), new \DateTime('2012-01-02 21:30')),
-            array(new \DateTime('2012-01-01 20:30'), new \DateTime('2012-01-02 00:00')),
-        );
+        $this->object->add($this->provider2);
+
+        $reflectionClass   = new \ReflectionClass($this->object);
+        $providersProperty = $reflectionClass->getProperty('providers');
+        $providersProperty->setAccessible(true);
+
+        $this->assertCount(2, $providersProperty->getValue($this->object));
     }
 
-    /**
-     * @dataProvider getEventsProvider
-     */
-    public function testGetEvents($begin, $end)
+    public function testGetEvents()
     {
-        $this->assertEquals(2, count($this->object->getEvents($begin, $end)));
-    }
+        $begin  = new \DateTime;
+        $end    = new \DateTime;
+        $event1 = $this->getMock('CalendR\Event\EventInterface');
+        $event2 = $this->getMock('CalendR\Event\EventInterface');
 
-    /*
-     * Mock methods
-     */
+        $this->provider1->expects($this->once())->method('getEvents')->with($begin, $end)->will($this->returnValue(array($event1)));
+        $this->provider2->expects($this->once())->method('getEvents')->with($begin, $end)->will($this->returnValue(array($event2)));
 
-    /**
-     * Return events that matches to $begin && $end
-     * $end date should be exclude
-     *
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     */
-    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
-    {
-        return array(new Event(uniqid(), $begin, $end));
+        $this->object->add($this->provider2);
+
+        $this->assertSame(array($event1, $event2), $this->object->getEvents($begin, $end));
     }
 }

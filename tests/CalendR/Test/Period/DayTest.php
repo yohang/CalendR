@@ -3,6 +3,9 @@
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
+use CalendR\Period\Month;
+use CalendR\Period\PeriodInterface;
+use CalendR\Period\Year;
 
 class DayTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,7 +56,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIsCurrent()
+    public function testCurrentDay()
     {
         $currentDate = new \DateTime();
         $otherDate = clone $currentDate;
@@ -65,5 +68,50 @@ class DayTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($currentDay->contains($currentDate));
         $this->assertFalse($currentDay->contains($otherDate));
         $this->assertFalse($otherDay->contains($currentDate));
+    }
+
+    public function testToString()
+    {
+        $day = new Day(new \DateTime(date('Y-m-d')));
+        $this->assertSame($day->getBegin()->format('l'), (string)$day);
+    }
+
+    public function testIsValid()
+    {
+        $this->assertSame(true, Day::isValid(new \DateTime));
+    }
+
+    /**
+     * @dataProvider includesDataProvider
+     */
+    public function testIncludes(\DateTime $begin, PeriodInterface $period, $strict, $result)
+    {
+        $day = new Day($begin);
+        $this->assertSame($result, $day->includes($period, $strict));
+    }
+
+    public function testFormat()
+    {
+        $day = new Day(new \DateTime);
+
+        $this->assertSame(date('Y-m-d'), $day->format('Y-m-d'));
+    }
+
+    public function testIsCurrent()
+    {
+        $currentDay = new Day(new \DateTime);
+        $otherDay   = new Day(new \DateTime('1988-11-12'));
+
+        $this->assertTrue($currentDay->isCurrent());
+        $this->assertFalse($otherDay->isCurrent());
+    }
+
+    public function includesDataProvider()
+    {
+        return array(
+            array(new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), true, false),
+            array(new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), false, true),
+            array(new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01')), true, true),
+        );
     }
 }
