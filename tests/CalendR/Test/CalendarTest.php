@@ -64,6 +64,16 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($events, $calendar->getEvents($period, array()));
     }
 
+    public function testGetFirstWeekday()
+    {
+        $calendar = new Calendar;
+        $factory  = $this->getMock('CalendR\Period\FactoryInterface');
+        $calendar->setFactory($factory);
+        $factory->expects($this->once())->method('getFirstWeekday')->will($this->returnValue(Day::SUNDAY));
+
+        $this->assertSame(Day::SUNDAY, $calendar->getFirstWeekday());
+    }
+
     /**
      * @dataProvider weekAndWeekdayProvider
      */
@@ -75,6 +85,12 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($weekday, $week->format('w'));
         $this->assertSame($day, $week->format('Y-m-d'));
+    }
+
+    public function testGetEventManager()
+    {
+        $calendar = new Calendar;
+        $this->assertInstanceOf('CalendR\Event\Manager', $calendar->getEventManager());
     }
 
     public static function weekAndWeekdayProvider()
