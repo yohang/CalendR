@@ -36,21 +36,19 @@ class GoogleCalendarEvent extends AbstractEvent
      */
     protected $status;
 
-
     /**
      * @var string
      */
     protected $htmlLink;
 
-
     /**
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param string $calendarId
-     * @param string $eventId
-     * @param string $summary
-     * @param string $status
-     * @param string $htmlLink
+     * @param string    $calendarId
+     * @param string    $eventId
+     * @param string    $summary
+     * @param string    $status
+     * @param string    $htmlLink
      */
     public function __construct(\DateTime $begin, \DateTime $end, $calendarId, $eventId, $summary, $status, $htmlLink)
     {

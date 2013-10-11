@@ -10,27 +10,27 @@ namespace CalendR\Period;
 class Month extends PeriodAbstract implements \Iterator
 {
     /**
-     * @var Week
+     * @var PeriodInterface
      */
     private $current;
 
     /**
-     * @param \DateTime $start
-     * @param int       $firstWeekday
+     * @param \DateTime        $start
+     * @param FactoryInterface $factory
      *
      * @throws Exception\NotAMonth
      */
-    public function __construct(\DateTime $start, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $start, $factory = null)
     {
         if (!self::isValid($start)) {
             throw new Exception\NotAMonth;
         }
 
         $this->begin = clone $start;
-        $this->end = clone $this->begin;
+        $this->end   = clone $this->begin;
         $this->end->add(new \DateInterval('P1M'));
 
-        parent::__construct($firstWeekday);
+        parent::__construct($factory);
     }
 
     /**
@@ -52,45 +52,37 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $days = array();
         foreach ($this->getDatePeriod() as $date) {
-            $days[] = new Day($date, $this->firstWeekday);
+            $days[] = $this->getFactory()->createDay($date);
         }
 
         return $days;
     }
 
     /**
-     * Returns a Range period begining at the first day of first week of this month,
+     * Returns the first day of the first week of month.
+     * First day of week is configurable via {@link Factory:setOption()}
+     *
+     * @return \DateTime
+     */
+    public function getFirstDayOfFirstWeek()
+    {
+        return $this->getFactory()->findFirstDayOfWeek($this->begin);
+    }
+
+    /**
+     * Returns a Range period beginning at the first day of first week of this month,
      * and ending at the last day of the last week of this month.
      *
      * @return Range
      */
     public function getExtendedMonth()
     {
-        return new Range($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek(), $this->firstWeekday);
-    }
-
-    /**
-     * Returns the first day of the first week of month.
-     * First day of week is configurable via self::setFirstWeekday()
-     *
-     * @return \DateTime
-     */
-    public function getFirstDayOfFirstWeek()
-    {
-        $delta  = $this->begin->format('w') ?: 7;
-        $delta -= $this->firstWeekday;
-        $delta = $delta < 0 ? 7 - abs($delta) : $delta;
-        $delta = $delta == 7 ? 0 : $delta;
-
-        $firstDay = clone $this->begin;
-        $firstDay->sub(new \DateInterval(sprintf('P%sD', $delta)));
-
-        return $firstDay;
+        return $this->getFactory()->createRange($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek());
     }
 
     /**
      * Returns the last day of last week of month
-     * First day of week is configurable via self::setFirstWeekday()
+     * First day of week is configurable via {@link Factory::setOption()}
      *
      * @return \DateTime
      */
@@ -98,14 +90,8 @@ class Month extends PeriodAbstract implements \Iterator
     {
         $lastDay = clone $this->end;
         $lastDay->sub(new \DateInterval('P1D'));
-        $lastWeekday = $this->firstWeekday === Day::SUNDAY ? Day::SATURDAY : $this->firstWeekday - 1;
 
-        $delta = $lastDay->format('w') - $lastWeekday;
-        $delta = 7 - ($delta < 0 ? $delta + 7 : $delta);
-        $delta = $delta === 7 ? 0 : $delta;
-        $lastDay->add(new \DateInterval(sprintf('P%sD', $delta)));
-
-        return $lastDay;
+        return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }
 
     /**
@@ -162,7 +148,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (!$this->valid()) {
-            $this->current = new Week($this->getFirstDayOfFirstWeek(), $this->firstWeekday);
+            $this->current = $this->getFactory()->createWeek($this->getFirstDayOfFirstWeek());
         } else {
             $this->current = $this->current->getNext();
 
@@ -177,7 +163,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function key()
     {
-        return $this->current->getNumber();
+        return $this->current->getBegin()->format('W');
     }
 
     /**

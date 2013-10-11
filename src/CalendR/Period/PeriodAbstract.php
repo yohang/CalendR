@@ -12,6 +12,7 @@
 namespace CalendR\Period;
 
 use CalendR\Event\EventInterface;
+use CalendR\Period\Factory;
 
 /**
  * An abstract class that represent a date period and provide some base helpers
@@ -31,41 +32,26 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $end;
 
     /**
-     * @var int
+     * @var FactoryInterface
      */
-    protected $firstWeekday;
+    protected $factory;
 
     /**
-     * @param int $firstWeekday
+     * @param FactoryInterface|int $factory
      *
-     * @throws Exception\NotAWeekDay
+     * @throws Exception\NotAWeekday
+     * @throws Exception\InvalidArgument
      */
-    public function __construct($firstWeekday = Day::MONDAY)
+    public function __construct($factory = null)
     {
-        if ($firstWeekday < 0 || $firstWeekday > 6) {
-            throw new Exception\NotAWeekday(
-                sprintf(
-                    '"%s" is not a valid day. Days are between 0 (Sunday) and 6 (Friday)'
-                )
-            );
+        if (is_numeric($factory)) { // for backwards compatibility
+            $factory = new Factory(array('first_weekday' => $factory));
         }
-        $this->firstWeekday = $firstWeekday;
-    }
+        if (!(null === $factory || $factory instanceof FactoryInterface)) {
+            throw new Exception\InvalidArgument('Factory parameter must implement CalendR\Period\FactoryInterface');
+        }
 
-    /**
-     * @return \DateTime
-     */
-    public function getBegin()
-    {
-        return $this->begin;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
+        $this->factory = $factory;
     }
 
     /**
@@ -169,7 +155,7 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getNext()
     {
-        return new static($this->end, $this->firstWeekday);
+        return new static($this->end, $this->factory);
     }
 
     /**
@@ -182,15 +168,44 @@ abstract class PeriodAbstract implements PeriodInterface
         $start = clone $this->begin;
         $start->sub(static::getDateInterval());
 
-        return new static($start, $this->firstWeekday);
+        return new static($start, $this->factory);
     }
 
     /**
-     * @param int $firstWeekday
+     * @return \DateTime
+     */
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @return FactoryInterface
+     */
+    public function getFactory()
+    {
+        if (null === $this->factory) {
+            $this->factory = new Factory;
+        }
+
+        return $this->factory;
+    }
+
+    /**
+     * @param  int  $firstWeekday
+     * @return void
      */
     public function setFirstWeekday($firstWeekday)
     {
-        $this->firstWeekday = $firstWeekday;
+        $this->getFactory()->setFirstWeekday($firstWeekday);
     }
 
     /**
@@ -198,6 +213,6 @@ abstract class PeriodAbstract implements PeriodInterface
      */
     public function getFirstWeekday()
     {
-        return $this->firstWeekday;
+        return $this->getFactory()->getFirstWeekday();
     }
 }

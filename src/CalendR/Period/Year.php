@@ -10,17 +10,17 @@ namespace CalendR\Period;
 class Year extends PeriodAbstract implements \Iterator
 {
     /**
-     * @var Month
+     * @var PeriodInterface
      */
     private $current;
 
     /**
-     * @param \DateTime $begin
-     * @param int       $firstWeekday
+     * @param \DateTime        $begin
+     * @param FactoryInterface $factory
      *
      * @throws Exception\NotAYear
      */
-    public function __construct(\DateTime $begin, $firstWeekday = Day::MONDAY)
+    public function __construct(\DateTime $begin, $factory = null)
     {
         if (!self::isValid($begin)) {
             throw new Exception\NotAYear;
@@ -30,7 +30,7 @@ class Year extends PeriodAbstract implements \Iterator
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1Y'));
 
-        parent::__construct($firstWeekday);
+        parent::__construct($factory);
     }
 
     /**
@@ -67,7 +67,7 @@ class Year extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (null === $this->current) {
-            $this->current = new Month($this->begin, $this->firstWeekday);
+            $this->current = $this->getFactory()->createMonth($this->begin);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {
