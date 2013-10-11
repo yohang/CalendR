@@ -20,7 +20,7 @@ interface FactoryInterface
     /**
      * Create and return a Day
      *
-     * @param \DateTime $begin
+     * @param  \DateTime                       $begin
      * @return \CalendR\Period\PeriodInterface
      */
     public function createDay(\DateTime $begin);
@@ -28,7 +28,7 @@ interface FactoryInterface
     /**
      * Create and return a Week
      *
-     * @param \DateTime $begin
+     * @param  \DateTime                       $begin
      * @return \CalendR\Period\PeriodInterface
      */
     public function createWeek(\DateTime $begin);
@@ -36,7 +36,7 @@ interface FactoryInterface
     /**
      * Create and return a Month
      *
-     * @param \DateTime $begin
+     * @param  \DateTime                       $begin
      * @return \CalendR\Period\PeriodInterface
      */
     public function createMonth(\DateTime $begin);
@@ -44,7 +44,7 @@ interface FactoryInterface
     /**
      * Create and return a Year
      *
-     * @param \DateTime $begin
+     * @param  \DateTime                       $begin
      * @return \CalendR\Period\PeriodInterface
      */
     public function createYear(\DateTime $begin);
@@ -52,14 +52,14 @@ interface FactoryInterface
     /**
      * Create and return a Range
      *
-     * @param \DateTime $begin
-     * @param \DateTime $end
+     * @param  \DateTime                       $begin
+     * @param  \DateTime                       $end
      * @return \CalendR\Period\PeriodInterface
      */
     public function createRange(\DateTime $begin, \DateTime $end);
 
     /**
-     * @param integer $firstWeekday
+     * @param  integer $firstWeekday
      * @return null
      */
     public function setFirstWeekday($firstWeekday);
