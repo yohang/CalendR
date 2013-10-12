@@ -3,7 +3,6 @@
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
-use CalendR\Period\Month;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Year;
 
@@ -73,7 +72,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $day = new Day(new \DateTime(date('Y-m-d')));
-        $this->assertSame($day->getBegin()->format('l'), (string)$day);
+        $this->assertSame($day->getBegin()->format('l'), (string) $day);
     }
 
     public function testIsValid()

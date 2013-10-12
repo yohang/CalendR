@@ -125,4 +125,9 @@ interface PeriodInterface
      * @return \DateInterval
      */
     public static function getDateInterval();
+
+    /**
+     * @return FactoryInterface
+     */
+    public function getFactory();
 }

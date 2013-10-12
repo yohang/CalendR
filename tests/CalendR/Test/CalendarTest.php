@@ -51,7 +51,6 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('CalendR\\Period\\Day', $day);
     }
 
-
     public function testGetEvents()
     {
         $em       = $this->getMock('CalendR\Event\Manager');

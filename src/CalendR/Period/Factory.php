@@ -114,10 +114,13 @@ class Factory implements FactoryInterface
                 array(
                     'day_class'     => 'CalendR\Period\Day',
                     'week_class'    => 'CalendR\Period\Week',
+                    'week_iterator_class' => 'CalendR\Period\WeekIterator',
+                    'weekdays_iterator_class' => 'CalendR\Period\WeekdaysIterator',
                     'month_class'   => 'CalendR\Period\Month',
                     'year_class'    => 'CalendR\Period\Year',
                     'range_class'   => 'CalendR\Period\Range',
-                    'first_weekday' => Day::MONDAY
+                    'first_weekday' => Day::MONDAY,
+                    'weekdays_only' =>false
                 )
             );
             $this->setDefaultOptions($this->resolver);

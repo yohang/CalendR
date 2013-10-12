@@ -7,12 +7,9 @@ namespace CalendR\Period;
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Week extends PeriodAbstract implements \Iterator
+class Week extends PeriodAbstract implements \IteratorAggregate
 {
-    /**
-     * @var null|PeriodInterface
-     */
-    private $current = null;
+    private $iterator;
 
     /**
      * @param \DateTime        $start
@@ -61,52 +58,25 @@ class Week extends PeriodAbstract implements \Iterator
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function current()
+    public function getIterator()
     {
-        return $this->current;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function next()
-    {
-        if (!$this->valid()) {
-            $this->current = $this->getFactory()->createDay($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+        if (null == $this->iterator) {
+//            $this->iterator = new WeekIterator($this);
+            $factory = $this->getFactory();
+            $option = ($factory->getOption('weekdays_only')) ? 'weekdays_iterator_class' : 'week_iterator_class';
+            $class = $factory->getOption($option);
+            $this->iterator = new $class($this);
         }
+
+        return $this->iterator;
     }
 
     /**
-     * {@inheritDoc}
+     * @param mixed $iterator
      */
-    public function key()
+    public function setIterator($iterator)
     {
-        return $this->current->getBegin()->format('d-m-Y');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function valid()
-    {
-        return null !== $this->current;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function rewind()
-    {
-        $this->current = null;
-        $this->next();
+        $this->iterator = $iterator;
     }
 
     /**

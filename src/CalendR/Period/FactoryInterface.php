@@ -77,4 +77,11 @@ interface FactoryInterface
      * @return \DateTime
      */
     public function findFirstDayOfWeek($dateTime);
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getOption($name);
 }
