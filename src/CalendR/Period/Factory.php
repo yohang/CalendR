@@ -156,12 +156,8 @@ class Factory implements FactoryInterface
      */
     public function findFirstDayOfWeek($dateTime)
     {
-        $day    = clone $dateTime;
-        $delta  = $day->format('w') ?: 7;
-        $delta -= $this->getFirstWeekday();
-        $delta  = $delta < 0 ? 7 - abs($delta) : $delta;
-        $delta  = $delta == 7 ? 0 : $delta;
-
+        $day   = clone $dateTime;
+        $delta = ((int) $day->format('w') - $this->getFirstWeekday() + 7) % 7;
         $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
 
         return $day;
