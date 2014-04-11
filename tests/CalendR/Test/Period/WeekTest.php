@@ -70,12 +70,30 @@ class WeekTest extends \PHPUnit_Framework_TestCase
 
         $i = 0;
 
-        foreach ($week as $day) {
+        foreach ($week as $dayKey => $day) {
+            $this->assertGreaterThan(0, preg_match('/^\\d{2}\\-\\d{2}\\-\\d{4}$/', $dayKey));
             $this->assertSame($start->format('d-m-Y'), $day->getBegin()->format('d-m-Y'));
             $start->add(new \DateInterval('P1D'));
             $i++;
         }
 
         $this->assertEquals($i, 7);
+    }
+
+    public function testGetDatePeriod()
+    {
+        $date = new \DateTime('2012-01-01');
+        $week = new Week($date);
+        foreach ($week->getDatePeriod() as $dateTime) {
+            $this->assertEquals($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
+            $date->add(new \DateInterval('P1D'));
+        }
+    }
+
+    public function testToString()
+    {
+        $date = new \DateTime(date('Y-\\WW'));
+        $week = new Week($date);
+        $this->assertSame($date->format('W'), (string) $week);
     }
 }

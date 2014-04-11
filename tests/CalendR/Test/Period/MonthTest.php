@@ -132,7 +132,8 @@ class MonthTest extends \PHPUnit_Framework_TestCase
 
         $i = 0;
 
-        foreach ($month as $week) {
+        foreach ($month as $weekKey => $week) {
+            $this->assertTrue(is_numeric($weekKey) && $weekKey > 0 && $weekKey < 54);
             $this->assertInstanceOf('CalendR\\Period\\Week', $week);
             foreach ($week as $day) {
                 if ($month->contains($day->getBegin())) {
@@ -144,6 +145,13 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($i, 31);
+    }
+
+    public function testToString()
+    {
+        $date = new \DateTime('2014-02-01');
+        $month = new Month($date);
+        $this->assertSame($date->format('F'), (string) $month);
     }
 
     public function testGetDays()
