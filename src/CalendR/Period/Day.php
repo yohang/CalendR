@@ -37,6 +37,10 @@ class Day extends PeriodAbstract implements \Iterator
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
+        if (!self::isValid($begin)) {
+            throw new Exception\NotADay;
+        }
+
         $this->begin = clone $begin;
         $this->end = clone $begin;
         $this->end->add(new \DateInterval('P1D'));
