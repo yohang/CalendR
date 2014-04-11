@@ -51,6 +51,38 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('CalendR\\Period\\Day', $day);
     }
 
+    public function testGetHour()
+    {
+        $calendar = new Calendar;
+
+        $hour = $calendar->getHour(new \DateTime('2012-01-01 17:00'));
+        $this->assertInstanceOf('CalendR\\Period\\Hour', $hour);
+
+        $hour = $calendar->getHour(2012, 1, 1, 17);
+        $this->assertInstanceOf('CalendR\\Period\\Hour', $hour);
+    }
+
+    public function testGetMinute()
+    {
+        $calendar = new Calendar;
+
+        $minute = $calendar->getMinute(new \DateTime('2012-01-01 17:23'));
+        $this->assertInstanceOf('CalendR\\Period\\Minute', $minute);
+
+        $minute = $calendar->getMinute(2012, 1, 1, 17, 23);
+        $this->assertInstanceOf('CalendR\\Period\\Minute', $minute);
+    }
+
+    public function testGetSecond()
+    {
+        $calendar = new Calendar;
+
+        $second = $calendar->getSecond(new \DateTime('2012-01-01 17:23:49'));
+        $this->assertInstanceOf('CalendR\\Period\\Second', $second);
+
+        $second = $calendar->getSecond(2012, 1, 1, 17, 23, 49);
+        $this->assertInstanceOf('CalendR\\Period\\Second', $second);
+    }
 
     public function testGetEvents()
     {

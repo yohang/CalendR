@@ -11,6 +11,42 @@ use CalendR\Period\Month;
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
+    public function testCreateSecond()
+    {
+        $this->assertInstanceOf(
+            'CalendR\Period\Second',
+            $this->getDefaultOptionsFactory()->createSecond(new \DateTime('2012-01-01 17:23:49'))
+        );
+        $this->assertInstanceOf(
+            'CalendR\Test\Fixtures\Period\Second',
+            $this->getAlternateOptionsFactory()->createSecond(new \DateTime('2012-01-01 17:23:49'))
+        );
+    }
+
+    public function testCreateMinute()
+    {
+        $this->assertInstanceOf(
+            'CalendR\Period\Minute',
+            $this->getDefaultOptionsFactory()->createMinute(new \DateTime('2012-01-01 17:23'))
+        );
+        $this->assertInstanceOf(
+            'CalendR\Test\Fixtures\Period\Minute',
+            $this->getAlternateOptionsFactory()->createMinute(new \DateTime('2012-01-01 17:23'))
+        );
+    }
+
+    public function testCreateHour()
+    {
+        $this->assertInstanceOf(
+            'CalendR\Period\Hour',
+            $this->getDefaultOptionsFactory()->createHour(new \DateTime('2012-01-01 17:00'))
+        );
+        $this->assertInstanceOf(
+            'CalendR\Test\Fixtures\Period\Hour',
+            $this->getAlternateOptionsFactory()->createHour(new \DateTime('2012-01-01 17:00'))
+        );
+    }
+
     public function testCreateDay()
     {
         $this->assertInstanceOf(
@@ -102,6 +138,9 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         return new Factory(
             array(
+                'second_class'   => 'CalendR\Test\Fixtures\Period\Second',
+                'minute_class'   => 'CalendR\Test\Fixtures\Period\Minute',
+                'hour_class'   => 'CalendR\Test\Fixtures\Period\Hour',
                 'day_class'   => 'CalendR\Test\Fixtures\Period\Day',
                 'month_class' => 'CalendR\Test\Fixtures\Period\Month',
                 'range_class' => 'CalendR\Test\Fixtures\Period\Range',
