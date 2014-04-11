@@ -7,8 +7,13 @@ namespace CalendR\Period;
  *
  * @author Zander Baldwin <mynameis@zande.rs>
  */
-class Minute extends PeriodAbstract
+class Minute extends PeriodAbstract implements \Iterator
 {
+    /**
+     * @var PeriodInterface
+     */
+    private $current;
+
     /**
      * @param \DateTime        $begin
      * @param FactoryInterface $factory
@@ -46,6 +51,54 @@ class Minute extends PeriodAbstract
     public static function isValid(\DateTime $start)
     {
         return $start->format('s') == '00';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function current()
+    {
+        return $this->current;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function next()
+    {
+        if (null === $this->current) {
+            $this->current = $this->getFactory()->createSecond($this->begin);
+        } else {
+            $this->current = $this->current->getNext();
+            if (!$this->contains($this->current->getBegin())) {
+                $this->current = null;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function key()
+    {
+        return (int) $this->current->getBegin()->format('i');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function valid()
+    {
+        return null !== $this->current;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rewind()
+    {
+        $this->current = null;
+        $this->next();
     }
 
     /**
