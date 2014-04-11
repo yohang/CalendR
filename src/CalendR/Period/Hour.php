@@ -7,8 +7,13 @@ namespace CalendR\Period;
  *
  * @author Zander Baldwin <mynameis@zande.rs>
  */
-class Hour extends PeriodAbstract
+class Hour extends PeriodAbstract implements \Iterator
 {
+    /**
+     * @var PeriodInterface
+     */
+    private $current;
+
     /**
      * @param \DateTime        $begin
      * @param FactoryInterface $factory
@@ -46,6 +51,54 @@ class Hour extends PeriodAbstract
     public static function isValid(\DateTime $start)
     {
         return $start->format('i:s') == '00:00';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function current()
+    {
+        return $this->current;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function next()
+    {
+        if (null === $this->current) {
+            $this->current = $this->getFactory()->createMinute($this->begin);
+        } else {
+            $this->current = $this->current->getNext();
+            if (!$this->contains($this->current->getBegin())) {
+                $this->current = null;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function key()
+    {
+        return (int) $this->current->getBegin()->format('G');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function valid()
+    {
+        return null !== $this->current;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rewind()
+    {
+        $this->current = null;
+        $this->next();
     }
 
     /**
