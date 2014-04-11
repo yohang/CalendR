@@ -18,6 +18,30 @@ namespace CalendR\Period;
 interface FactoryInterface
 {
     /**
+     * Create and return a Second
+     *
+     * @param  \DateTime                       $begin
+     * @return \CalendR\Period\PeriodInterface
+     */
+    public function createSecond(\DateTime $begin);
+
+    /**
+     * Create and return a Minute
+     *
+     * @param  \DateTime                       $begin
+     * @return \CalendR\Period\PeriodInterface
+     */
+    public function createMinute(\DateTime $begin);
+
+    /**
+     * Create and return an Hour
+     *
+     * @param  \DateTime                       $begin
+     * @return \CalendR\Period\PeriodInterface
+     */
+    public function createHour(\DateTime $begin);
+
+    /**
      * Create and return a Day
      *
      * @param  \DateTime                       $begin
