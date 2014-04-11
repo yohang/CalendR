@@ -114,4 +114,24 @@ class DayTest extends \PHPUnit_Framework_TestCase
             array(new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01')), true, true),
         );
     }
+
+    public function testIteration()
+    {
+        $start = new \DateTime('2012-01-15');
+        $day = new Day($start);
+
+        $i = 0;
+
+        foreach ($day as $hourKey => $hour) {
+            $this->assertTrue(is_int($hourKey) && $hourKey >= 0 && $hourKey < 24);
+            $this->assertInstanceOf('CalendR\\Period\\Hour', $hour);
+            $this->assertSame($start->format('Y-m-d H'), $hour->getBegin()->format('Y-m-d H'));
+            $this->assertSame('00:00', $hour->getBegin()->format('i:s'));
+            $start->add(new \DateInterval('PT1H'));
+            $i++;
+        }
+
+        $this->assertEquals($i, 24);
+    }
+
 }

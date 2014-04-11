@@ -16,7 +16,7 @@ namespace CalendR\Period;
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Day extends PeriodAbstract
+class Day extends PeriodAbstract implements \Iterator
 {
     const MONDAY    = 1;
     const TUESDAY   = 2;
@@ -25,6 +25,11 @@ class Day extends PeriodAbstract
     const FRIDAY    = 5;
     const SATURDAY  = 6;
     const SUNDAY    = 0;
+
+    /**
+     * @var PeriodInterface
+     */
+    private $current;
 
     /**
      * @param \DateTime        $begin
@@ -78,5 +83,53 @@ class Day extends PeriodAbstract
     public static function getDateInterval()
     {
         return new \DateInterval('P1D');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function current()
+    {
+        return $this->current;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function next()
+    {
+        if (null === $this->current) {
+            $this->current = $this->getFactory()->createHour($this->begin);
+        } else {
+            $this->current = $this->current->getNext();
+            if (!$this->contains($this->current->getBegin())) {
+                $this->current = null;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function key()
+    {
+        return (int) $this->current->getBegin()->format('G');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function valid()
+    {
+        return null !== $this->current;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rewind()
+    {
+        $this->current = null;
+        $this->next();
     }
 }
