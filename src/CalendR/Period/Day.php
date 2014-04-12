@@ -37,15 +37,17 @@ class Day extends PeriodAbstract implements \Iterator
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
-        if (!self::isValid($begin)) {
+        parent::__construct();
+        if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
             throw new Exception\NotADay;
         }
 
+        // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $begin;
-        $this->end = clone $begin;
-        $this->end->add(new \DateInterval('P1D'));
+        $this->begin->setTime(0, 0, 0);
 
-        parent::__construct($factory);
+        $this->end = clone $this->begin;
+        $this->end->add($this->getDateInterval());
     }
 
     /**
@@ -75,7 +77,7 @@ class Day extends PeriodAbstract implements \Iterator
      */
     public static function isValid(\DateTime $start)
     {
-        return true;
+        return $start->format('H:i:s') == '00:00:00';
     }
 
     /**

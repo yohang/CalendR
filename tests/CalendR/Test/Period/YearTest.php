@@ -12,6 +12,7 @@ class YearTest extends \PHPUnit_Framework_TestCase
         return array(
             array(new \DateTime('2012-01-03')),
             array(new \DateTime('2014-12-10')),
+            array(new \DateTime('2014-01-01 00:00:01')),
         );
     }
 
@@ -21,6 +22,7 @@ class YearTest extends \PHPUnit_Framework_TestCase
             array(new \DateTime('2012-01-01')),
             array(new \DateTime('2011-01-01')),
             array(new \DateTime('2013-01-01')),
+            array(new \DateTime('2014-01-01 00:00'))
         );
     }
 
@@ -62,9 +64,21 @@ class YearTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAYear
      */
-    public function testConstructInvalid($start)
+    public function testConstructInvalidStrict($start)
     {
-        new Year($start);
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(true);
+        new Year($start, $calendar->getFactory());
+    }
+
+    /**
+     * @dataProvider providerConstructInvalid
+     */
+    public function testConstructInvalidLazy($start)
+    {
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(false);
+        new Year($start, $calendar->getFactory());
     }
 
     /**

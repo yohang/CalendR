@@ -9,6 +9,52 @@ use CalendR\Period\Year;
 
 class DayTest extends \PHPUnit_Framework_TestCase
 {
+    public static function providerConstructInvalid()
+    {
+        return array(
+            array(new \DateTime('2014-12-10 17:30')),
+            array(new \DateTime('2014-12-10 00:00:01')),
+        );
+    }
+
+    public static function providerConstructValid()
+    {
+        return array(
+            array(new \DateTime('2012-01-03')),
+            array(new \DateTime('2011-12-10')),
+            array(new \DateTime('2013-07-13 00:00:00')),
+        );
+    }
+
+    /**
+     * @dataProvider providerConstructInvalid
+     * @expectedException \CalendR\Period\Exception\NotADay
+     */
+    public function testConstructInvalidStrict($start)
+    {
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(true);
+        new Day($start, $calendar->getFactory());
+    }
+
+    /**
+     * @dataProvider providerConstructInvalid
+     */
+    public function testConstructInvalidLazy($start)
+    {
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(false);
+        new Day($start, $calendar->getFactory());
+    }
+
+    /**
+     * @dataProvider providerConstructValid
+     */
+    public function testConstructValid($start)
+    {
+        new Day($start);
+    }
+
     public static function providerContains()
     {
         return array(
@@ -78,7 +124,12 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testIsValid()
     {
-        $this->assertSame(true, Day::isValid(new \DateTime));
+        $this->assertSame(true, Day::isValid(new \DateTime('2013-05-01')));
+        $this->assertSame(true, Day::isValid(new \DateTime('2013-05-01 00:00')));
+        $this->assertSame(true, Day::isValid(new \DateTime(date('Y-m-d 00:00'))));
+        $this->assertSame(false, Day::isValid(new \DateTime));
+        $this->assertSame(false, Day::isValid(new \DateTime('2013-05-01 12:43')));
+        $this->assertSame(false, Day::isValid(new \DateTime('2013-05-01 00:00:01')));
     }
 
     /**

@@ -22,15 +22,18 @@ class Year extends PeriodAbstract implements \Iterator
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
-        if (!self::isValid($begin)) {
+        parent::__construct();
+        if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
             throw new Exception\NotAYear;
         }
 
+        // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $begin;
-        $this->end = clone $begin;
-        $this->end->add(new \DateInterval('P1Y'));
+        $this->begin->setDate($this->begin->format('Y'), 1, 1);
+        $this->begin->setTime(0, 0, 0);
 
-        parent::__construct($factory);
+        $this->end = clone $this->begin;
+        $this->end->add($this->getDateInterval());
     }
 
     /**
@@ -50,7 +53,7 @@ class Year extends PeriodAbstract implements \Iterator
      */
     public static function isValid(\DateTime $start)
     {
-        return $start->format('d-m') == '01-01';
+        return $start->format('d-m H:i:s') === '01-01 00:00:00';
     }
 
     /**

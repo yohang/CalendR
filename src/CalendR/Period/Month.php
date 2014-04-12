@@ -22,15 +22,18 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function __construct(\DateTime $start, $factory = null)
     {
-        if (!self::isValid($start)) {
+        parent::__construct();
+        if ($this->getFactory()->getStrictDates() && !self::isValid($start)) {
             throw new Exception\NotAMonth;
         }
 
+        // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $start;
-        $this->end   = clone $this->begin;
-        $this->end->add(new \DateInterval('P1M'));
+        $this->begin->setDate($this->begin->format('Y'), $this->begin->format('m'), 1);
+        $this->begin->setTime(0, 0, 0);
 
-        parent::__construct($factory);
+        $this->end = clone $this->begin;
+        $this->end->add($this->getDateInterval());
     }
 
     /**
@@ -200,11 +203,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public static function isValid(\DateTime $start)
     {
-        if (1 != $start->format('d')) {
-            return false;
-        }
-
-        return true;
+        return $start->format('d H:i:s') === '01 00:00:00';
     }
 
     /**
