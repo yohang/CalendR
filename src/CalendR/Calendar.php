@@ -209,4 +209,20 @@ class Calendar
     {
         return $this->factory->getFirstWeekday();
     }
+
+    /**
+     * @return boolean
+     */
+    public function getStrictDates()
+    {
+        return $this->getFactory()->setStrictDates();
+    }
+
+    /**
+     * @param boolean $strict
+     */
+    public function setStrictDates($strict)
+    {
+        $this->getFactory()->setStrictDates($strict);
+    }
 }
