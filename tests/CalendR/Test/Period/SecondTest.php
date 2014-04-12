@@ -84,6 +84,13 @@ class SecondTest extends \PHPUnit_Framework_TestCase
         new Second($start, $calendar->getFactory());
     }
 
+    /**
+     * Data Provider: Contains
+     *
+     * @static
+     * @access public
+     * @return array
+     */
     public static function providerContains()
     {
         return array(
