@@ -45,16 +45,32 @@ class MinuteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Invalid Constructor
+     * Test: Invalid Constructor (Strict)
      *
      * @access public
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAMinute
      * @return void
      */
-    public function testConstructInvalid($start)
+    public function testConstructInvalidStrict($start)
     {
-        new Minute($start);
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(true);
+        new Minute($start, $calendar->getFactory());
+    }
+
+    /**
+     * Test: Invalid Constructor (Lazy)
+     *
+     * @access public
+     * @dataProvider providerConstructInvalid
+     * @return void
+     */
+    public function testConstructInvalidLazy($start)
+    {
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(false);
+        new Minute($start, $calendar->getFactory());
     }
 
     /**

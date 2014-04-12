@@ -22,15 +22,17 @@ class Minute extends PeriodAbstract implements \Iterator
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
-        if (!self::isValid($begin)) {
+        parent::__construct($factory);
+        if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
             throw new Exception\NotAMinute;
         }
 
+        // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $begin;
+        $this->begin->setTime($this->begin->format('G'), $this->begin->format('i'), 0);
+
         $this->end = clone $begin;
         $this->end->add($this->getDateInterval());
-
-        parent::__construct($factory);
     }
 
     /**

@@ -17,15 +17,18 @@ class Second extends PeriodAbstract
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
-        if (!self::isValid($begin)) {
+        parent::__construct($factory);
+        if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
             throw new Exception\NotASecond;
         }
 
+        // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $begin;
+        // Still do this to make sure there aren't any microseconds.
+        $this->begin->setTime($this->begin->format('G'), $this->begin->format('i'), $this->begin->format('s'));
+
         $this->end = clone $begin;
         $this->end->add($this->getDateInterval());
-
-        parent::__construct($factory);
     }
 
     /**

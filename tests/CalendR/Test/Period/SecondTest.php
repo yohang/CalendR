@@ -63,9 +63,25 @@ class SecondTest extends \PHPUnit_Framework_TestCase
      * @expectedException \CalendR\Period\Exception\NotASecond
      * @return void
      */
-    public function testConstructInvalid($start)
+    public function testConstructInvalidStrict($start)
     {
-        new Second($start);
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(true);
+        new Second($start, $calendar->getFactory());
+    }
+
+    /**
+     * Test: Valid Constructor
+     *
+     * @access public
+     * @dataProvider providerConstructInvalid
+     * @return void
+     */
+    public function testConstructInvalidLazy($start)
+    {
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(false);
+        new Second($start, $calendar->getFactory());
     }
 
     public static function providerContains()
