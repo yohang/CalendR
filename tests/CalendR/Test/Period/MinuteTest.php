@@ -95,9 +95,21 @@ class MinuteTest extends \PHPUnit_Framework_TestCase
     public static function providerContains()
     {
         return array(
-            array(new \DateTime('2012-01-02'),       new \DateTime('2012-01-02'),          new \DateTime('2012-01-03')),
-            array(new \DateTime('2012-01-02'),       new \DateTime('2012-01-02 00:00:34'), new \DateTime('2012-01-02 00:01:00')),
-            array(new \DateTime('2012-05-30 05:23'), new \DateTime('2012-05-30 05:23:23'), new \DateTime('2012-05-30')),
+            array(
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-03')
+            ),
+            array(
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-02 00:00:34'),
+                new \DateTime('2012-01-02 00:01:00')
+            ),
+            array(
+                new \DateTime('2012-05-30 05:23'),
+                new \DateTime('2012-05-30 05:23:23'),
+                new \DateTime('2012-05-30')
+            ),
         );
     }
 
@@ -296,5 +308,4 @@ class MinuteTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertEquals($i, 60);
     }
-
 }

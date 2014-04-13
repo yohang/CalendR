@@ -94,9 +94,21 @@ class SecondTest extends \PHPUnit_Framework_TestCase
     public static function providerContains()
     {
         return array(
-            array(new \DateTime('2012-01-02'),          new \DateTime('2012-01-02'),          new \DateTime('2012-01-03')),
-            array(new \DateTime('2012-01-02 05:23'),    new \DateTime('2012-01-02 05:23:00'), new \DateTime('2012-01-02 05:23:01')),
-            array(new \DateTime('2012-05-30 05:23:14'), new \DateTime('2012-05-30 05:23:14'), new \DateTime('2012-05-30 05:23:13')),
+            array(
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-03')
+            ),
+            array(
+                new \DateTime('2012-01-02 05:23'),
+                new \DateTime('2012-01-02 05:23:00'),
+                new \DateTime('2012-01-02 05:23:01')
+            ),
+            array(
+                new \DateTime('2012-05-30 05:23:14'),
+                new \DateTime('2012-05-30 05:23:14'),
+                new \DateTime('2012-05-30 05:23:13')
+            ),
         );
     }
 

@@ -97,9 +97,21 @@ class HourTest extends \PHPUnit_Framework_TestCase
     public static function providerContains()
     {
         return array(
-            array(new \DateTime('2012-01-02'),       new \DateTime('2012-01-02 00:01'),    new \DateTime('2012-01-02 12:34')),
-            array(new \DateTime('2012-05-30 05:00'), new \DateTime('2012-05-30 05:00'),    new \DateTime('2012-05-30 06:00')),
-            array(new \DateTime('2012-09-09 05:00'), new \DateTime('2012-09-09 05:00:01'), new \DateTime('2011-08-09 05:30')),
+            array(
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-02 00:01'),
+                new \DateTime('2012-01-02 12:34')
+            ),
+            array(
+                new \DateTime('2012-05-30 05:00'),
+                new \DateTime('2012-05-30 05:00'),
+                new \DateTime('2012-05-30 06:00')
+            ),
+            array(
+                new \DateTime('2012-09-09 05:00'),
+                new \DateTime('2012-09-09 05:00:01'),
+                new \DateTime('2011-08-09 05:30')
+            ),
         );
     }
 
@@ -301,5 +313,4 @@ class HourTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertEquals($i, 60);
     }
-
 }

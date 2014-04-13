@@ -184,5 +184,4 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($i, 24);
     }
-
 }
