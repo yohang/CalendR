@@ -22,7 +22,7 @@ class Month extends PeriodAbstract implements \Iterator
      */
     public function __construct(\DateTime $start, $factory = null)
     {
-        parent::__construct();
+        parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($start)) {
             throw new Exception\NotAMonth;
         }

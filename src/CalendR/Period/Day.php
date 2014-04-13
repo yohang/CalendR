@@ -37,7 +37,7 @@ class Day extends PeriodAbstract implements \Iterator
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
-        parent::__construct();
+        parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
             throw new Exception\NotADay;
         }
