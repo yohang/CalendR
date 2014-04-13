@@ -157,7 +157,9 @@ class Calendar
     public function getSecond($yearOrStart, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
         if (!$yearOrStart instanceof \DateTime) {
-            $yearOrStart = new \DateTime(sprintf('%s-%s-%s %s:%s:%s', $yearOrStart, $month, $day, $hour, $minute, $second));
+            $yearOrStart = new \DateTime(
+                sprintf('%s-%s-%s %s:%s:%s', $yearOrStart, $month, $day, $hour, $minute, $second)
+            );
         }
 
         return $this->getFactory()->createSecond($yearOrStart);
