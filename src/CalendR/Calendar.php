@@ -217,7 +217,7 @@ class Calendar
      */
     public function getStrictDates()
     {
-        return $this->getFactory()->setStrictDates();
+        return $this->getFactory()->getStrictDates();
     }
 
     /**
