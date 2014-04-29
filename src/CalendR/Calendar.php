@@ -116,6 +116,56 @@ class Calendar
     }
 
     /**
+     * @param \DateTime|int $yearOrStart
+     * @param null|int      $month
+     * @param null|int      $day
+     *
+     * @return PeriodInterface
+     */
+    public function getHour($yearOrStart, $month = null, $day = null, $hour = null)
+    {
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-%s-%s %s:00', $yearOrStart, $month, $day, $hour));
+        }
+
+        return $this->getFactory()->createHour($yearOrStart);
+    }
+
+    /**
+     * @param \DateTime|int $yearOrStart
+     * @param null|int      $month
+     * @param null|int      $day
+     *
+     * @return PeriodInterface
+     */
+    public function getMinute($yearOrStart, $month = null, $day = null, $hour = null, $minute = null)
+    {
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(sprintf('%s-%s-%s %s:%s', $yearOrStart, $month, $day, $hour, $minute));
+        }
+
+        return $this->getFactory()->createMinute($yearOrStart);
+    }
+
+    /**
+     * @param \DateTime|int $yearOrStart
+     * @param null|int      $month
+     * @param null|int      $day
+     *
+     * @return PeriodInterface
+     */
+    public function getSecond($yearOrStart, $month = null, $day = null, $hour = null, $minute = null, $second = null)
+    {
+        if (!$yearOrStart instanceof \DateTime) {
+            $yearOrStart = new \DateTime(
+                sprintf('%s-%s-%s %s:%s:%s', $yearOrStart, $month, $day, $hour, $minute, $second)
+            );
+        }
+
+        return $this->getFactory()->createSecond($yearOrStart);
+    }
+
+    /**
      * @param Period\PeriodInterface $period
      * @param array                  $options
      *
@@ -160,5 +210,21 @@ class Calendar
     public function getFirstWeekday()
     {
         return $this->factory->getFirstWeekday();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getStrictDates()
+    {
+        return $this->getFactory()->getStrictDates();
+    }
+
+    /**
+     * @param boolean $strict
+     */
+    public function setStrictDates($strict)
+    {
+        $this->getFactory()->setStrictDates($strict);
     }
 }

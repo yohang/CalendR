@@ -1,31 +1,14 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace CalendR\Period;
 
 /**
- * Represents a Day
+ * Represents a minute
  *
- * @author Yohan Giarelli <yohan@giarel.li>
+ * @author Zander Baldwin <mynameis@zande.rs>
  */
-class Day extends PeriodAbstract implements \Iterator
+class Minute extends PeriodAbstract implements \Iterator
 {
-    const MONDAY    = 1;
-    const TUESDAY   = 2;
-    const WEDNESDAY = 3;
-    const THURSDAY  = 4;
-    const FRIDAY    = 5;
-    const SATURDAY  = 6;
-    const SUNDAY    = 0;
-
     /**
      * @var PeriodInterface
      */
@@ -34,19 +17,21 @@ class Day extends PeriodAbstract implements \Iterator
     /**
      * @param \DateTime        $begin
      * @param FactoryInterface $factory
+     *
+     * @throws Exception\NotAMinute
      */
     public function __construct(\DateTime $begin, $factory = null)
     {
         parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
-            throw new Exception\NotADay;
+            throw new Exception\NotAMinute;
         }
 
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $begin;
-        $this->begin->setTime(0, 0, 0);
+        $this->begin->setTime($this->begin->format('G'), $this->begin->format('i'), 0);
 
-        $this->end = clone $this->begin;
+        $this->end = clone $begin;
         $this->end->add($this->getDateInterval());
     }
 
@@ -57,17 +42,7 @@ class Day extends PeriodAbstract implements \Iterator
      */
     public function getDatePeriod()
     {
-        return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
-    }
-
-    /**
-     * Returns the day name (probably in english)
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->format('l');
+        return new \DatePeriod($this->begin, new \DateInterval('PT1S'), $this->end);
     }
 
     /**
@@ -77,18 +52,7 @@ class Day extends PeriodAbstract implements \Iterator
      */
     public static function isValid(\DateTime $start)
     {
-        return $start->format('H:i:s') == '00:00:00';
-    }
-
-    /**
-     * Returns a \DateInterval equivalent to the period
-     *
-     * @static
-     * @return \DateInterval
-     */
-    public static function getDateInterval()
-    {
-        return new \DateInterval('P1D');
+        return $start->format('s') == '00';
     }
 
     /**
@@ -105,7 +69,7 @@ class Day extends PeriodAbstract implements \Iterator
     public function next()
     {
         if (null === $this->current) {
-            $this->current = $this->getFactory()->createHour($this->begin);
+            $this->current = $this->getFactory()->createSecond($this->begin);
         } else {
             $this->current = $this->current->getNext();
             if (!$this->contains($this->current->getBegin())) {
@@ -119,7 +83,7 @@ class Day extends PeriodAbstract implements \Iterator
      */
     public function key()
     {
-        return (int) $this->current->getBegin()->format('G');
+        return (int) $this->current->getBegin()->format('i');
     }
 
     /**
@@ -137,5 +101,25 @@ class Day extends PeriodAbstract implements \Iterator
     {
         $this->current = null;
         $this->next();
+    }
+
+    /**
+     * Returns the minute
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->format('i');
+    }
+
+    /**
+     * Returns a \DateInterval equivalent to the period
+     *
+     * @return \DateInterval
+     */
+    public static function getDateInterval()
+    {
+        return new \DateInterval('PT1M');
     }
 }

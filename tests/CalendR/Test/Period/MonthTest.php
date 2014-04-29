@@ -112,9 +112,21 @@ class MonthTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAMonth
      */
-    public function testConstructInvalid($start)
+    public function testConstructInvalidStrict($start)
     {
-        new Month($start);
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(true);
+        new Month($start, $calendar->getFactory());
+    }
+
+    /**
+     * @dataProvider providerConstructInvalid
+     */
+    public function testConstructInvalidLazy($start)
+    {
+        $calendar = new \CalendR\Calendar;
+        $calendar->setStrictDates(false);
+        new Month($start, $calendar->getFactory());
     }
 
     /**
@@ -132,7 +144,8 @@ class MonthTest extends \PHPUnit_Framework_TestCase
 
         $i = 0;
 
-        foreach ($month as $week) {
+        foreach ($month as $weekKey => $week) {
+            $this->assertTrue(is_numeric($weekKey) && $weekKey > 0 && $weekKey < 54);
             $this->assertInstanceOf('CalendR\\Period\\Week', $week);
             foreach ($week as $day) {
                 if ($month->contains($day->getBegin())) {
@@ -144,6 +157,13 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($i, 31);
+    }
+
+    public function testToString()
+    {
+        $date = new \DateTime('2014-02-01');
+        $month = new Month($date);
+        $this->assertSame($date->format('F'), (string) $month);
     }
 
     public function testGetDays()

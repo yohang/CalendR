@@ -44,6 +44,30 @@ class Factory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
+    public function createSecond(\DateTime $begin)
+    {
+        return new $this->options['second_class']($begin, $this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createMinute(\DateTime $begin)
+    {
+        return new $this->options['minute_class']($begin, $this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createHour(\DateTime $begin)
+    {
+        return new $this->options['hour_class']($begin, $this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function createDay(\DateTime $begin)
     {
         return new $this->options['day_class']($begin, $this);
@@ -112,12 +136,16 @@ class Factory implements FactoryInterface
             $this->resolver = new OptionsResolver;
             $this->resolver->setDefaults(
                 array(
+                    'second_class'  => 'CalendR\Period\Second',
+                    'minute_class'  => 'CalendR\Period\Minute',
+                    'hour_class'    => 'CalendR\Period\Hour',
                     'day_class'     => 'CalendR\Period\Day',
                     'week_class'    => 'CalendR\Period\Week',
                     'month_class'   => 'CalendR\Period\Month',
                     'year_class'    => 'CalendR\Period\Year',
                     'range_class'   => 'CalendR\Period\Range',
-                    'first_weekday' => Day::MONDAY
+                    'first_weekday' => Day::MONDAY,
+                    'strict_dates'  => false,
                 )
             );
             $this->setDefaultOptions($this->resolver);
@@ -161,5 +189,21 @@ class Factory implements FactoryInterface
         $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
 
         return $day;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStrictDates()
+    {
+        return $this->getOption('strict_dates');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setStrictDates($strict)
+    {
+        $this->setOption('strict_dates', (bool) $strict);
     }
 }

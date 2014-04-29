@@ -28,7 +28,7 @@ class Week extends PeriodAbstract implements \Iterator
 
         $this->begin = clone $start;
         $this->end = clone $start;
-        $this->end->add(new \DateInterval('P7D'));
+        $this->end->add($this->getDateInterval());
 
         parent::__construct($factory);
     }
