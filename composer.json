@@ -20,7 +20,7 @@
         "doctrine/common":              "^2.4",
         "doctrine/orm":                 "^2.4",
         "google/google-api-php-client": "^0.6.2",
-        "phpunit/phpunit":              "^3.7",
+        "phpunit/phpunit":              "^4.0",
         "silex/silex":                  "^1.1",
         "twig/twig":                    "^1.13"
     },
