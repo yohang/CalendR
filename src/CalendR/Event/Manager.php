@@ -23,7 +23,7 @@ use CalendR\Period\PeriodInterface,
 class Manager
 {
     /**
-     * @var ProviderInterface
+     * @var ProviderInterface[]
      */
     protected $providers = array();
 

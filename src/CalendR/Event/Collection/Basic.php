@@ -25,12 +25,12 @@ class Basic implements CollectionInterface
     /**
      * The events
      *
-     * @var array<EventInterface>
+     * @var EventInterface[]
      */
     protected $events;
 
     /**
-     * @param array $events
+     * @param EventInterface[] $events
      */
     public function __construct(array $events = array())
     {
@@ -64,7 +64,7 @@ class Basic implements CollectionInterface
     /**
      * Return all events;
      *
-     * @return array<EventInterface>
+     * @return EventInterface[]
      */
     public function all()
     {
@@ -88,7 +88,7 @@ class Basic implements CollectionInterface
      *
      * @param mixed $index
      *
-     * @return array<EventInterface>
+     * @return EventInterface[]
      */
     public function find($index)
     {
