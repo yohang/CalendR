@@ -92,7 +92,7 @@ class YearTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $year = new Year(new \DateTime('2014-01-01'));
-        $this->assertSame(date('Y'), (string) $year);
+        $this->assertSame('2014', (string) $year);
     }
 
     public function testIteration()
