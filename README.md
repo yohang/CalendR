@@ -1,4 +1,9 @@
-# CalendR ![project status](http://stillmaintained.com/frequence-web/CalendR.png) [![Build Status](https://secure.travis-ci.org/yohang/CalendR.png?branch=master)](http://travis-ci.org/yohang/CalendR) #
+# CalendR
+
+[![Build Status](https://travis-ci.org/yohang/CalendR.svg?branch=master)](https://travis-ci.org/yohang/CalendR)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yohang/CalendR/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yohang/CalendR/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/yohang/CalendR/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yohang/CalendR/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/ac050bc0-c3b2-4d88-be63-059a0d968157/mini.png)](https://insight.sensiolabs.com/projects/ac050bc0-c3b2-4d88-be63-059a0d968157)
 
 CalendR is an Object Oriented Calendar management library on top of PHP5.3+ Date objects.
 You can use it to deal with all your needs about calendars and events.
