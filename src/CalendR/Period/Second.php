@@ -22,6 +22,10 @@ class Second extends PeriodAbstract
             throw new Exception\NotASecond();
         }
 
+        if (!self::isValid($begin)) {
+            @trigger_error('The non-strict construction of time periods is deprecated and will be removed in 2.0. build your period using the Calendar class.', E_USER_DEPRECATED);
+        }
+
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $begin;
         // Still do this to make sure there aren't any microseconds.

@@ -27,6 +27,10 @@ class Month extends PeriodAbstract implements \Iterator
             throw new Exception\NotAMonth();
         }
 
+        if (!self::isValid($start)) {
+            @trigger_error('The non-strict construction of time periods is deprecated and will be removed in 2.0. build your period using the Calendar class.', E_USER_DEPRECATED);
+        }
+
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $start;
         $this->begin->setDate($this->begin->format('Y'), $this->begin->format('m'), 1);

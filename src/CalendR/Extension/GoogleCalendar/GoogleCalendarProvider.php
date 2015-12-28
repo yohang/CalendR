@@ -147,6 +147,8 @@ class GoogleCalendarProvider implements ProviderInterface
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
+        @trigger_error('The '.__CLASS__.' class is deprecated since version 1.1 and will be removed in 2.0.', E_USER_DEPRECATED);
+
         $events = array();
         $providedCalendars = false;
         $discoverCalendars = false;
