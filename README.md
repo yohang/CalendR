@@ -1,6 +1,6 @@
 # CalendR
 
-[![Build Status](https://travis-ci.org/yohang/CalendR.svg?branch=master)](https://travis-ci.org/yohang/CalendR)
+[![Build Status](https://travis-ci.org/yohang/CalendR.svg?branch=1.1)](https://travis-ci.org/yohang/CalendR)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yohang/CalendR/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yohang/CalendR/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/yohang/CalendR/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yohang/CalendR/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/ac050bc0-c3b2-4d88-be63-059a0d968157/mini.png)](https://insight.sensiolabs.com/projects/ac050bc0-c3b2-4d88-be63-059a0d968157)
