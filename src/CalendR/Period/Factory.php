@@ -141,10 +141,13 @@ class Factory implements FactoryInterface
                     'hour_class'    => 'CalendR\Period\Hour',
                     'day_class'     => 'CalendR\Period\Day',
                     'week_class'    => 'CalendR\Period\Week',
+                    'week_iterator_class' => 'CalendR\Period\WeekIterator',
+                    'weekdays_iterator_class' => 'CalendR\Period\WeekdaysIterator',
                     'month_class'   => 'CalendR\Period\Month',
                     'year_class'    => 'CalendR\Period\Year',
                     'range_class'   => 'CalendR\Period\Range',
                     'first_weekday' => Day::MONDAY,
+                    'weekdays_only' => false,
                     'strict_dates'  => false,
                 )
             );
