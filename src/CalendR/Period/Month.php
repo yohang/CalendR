@@ -101,42 +101,6 @@ class Month extends PeriodAbstract implements \Iterator
         return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }
 
-    /**
-     * Returns the monday of the first week of this month.
-     *
-     * @deprecated see self::getFirstDayOfFirstWeek
-     *
-     * @return \DateTime
-     */
-    public function getFirstMonday()
-    {
-        $delta = $this->begin->format('w') ?: 7;
-        --$delta;
-
-        $monday = clone $this->begin;
-        $monday->sub(new \DateInterval(sprintf('P%sD', $delta)));
-
-        return $monday;
-    }
-
-    /**
-     * Returns the sunday of the last week of this month.
-     *
-     * @deprecated see self::getLastDayOfLastWeek
-     *
-     * @return \DateTime
-     */
-    public function getLastSunday()
-    {
-        $sunday = clone $this->end;
-        $sunday->sub(new \DateInterval('P1D'));
-
-        $delta = 7 - ($sunday->format('w') ?: 7);
-        $sunday->add(new \DateInterval(sprintf('P%sD', $delta)));
-
-        return $sunday;
-    }
-
     /*
     * Iterator implementation
     */

@@ -24,13 +24,13 @@ class CalendRExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'calendr_year' => new \Twig_Function_Method($this, 'getYear'),
-            'calendr_month' => new \Twig_Function_Method($this, 'getMonth'),
-            'calendr_week' => new \Twig_Function_Method($this, 'getWeek'),
-            'calendr_day' => new \Twig_Function_Method($this, 'getDay'),
-            'calendr_events' => new \Twig_Function_Method($this, 'getEvents'),
-        );
+        return [
+            new \Twig_SimpleFunction('calendr_year', [$this, 'getYear']),
+            new \Twig_SimpleFunction('calendr_month', [$this, 'getMonth']),
+            new \Twig_SimpleFunction('calendr_week', [$this, 'getWeek']),
+            new \Twig_SimpleFunction('calendr_day', [$this, 'getDay']),
+            new \Twig_SimpleFunction('calendr_events', [$this, 'getEvents']),
+        ];
     }
 
     /**
@@ -38,7 +38,7 @@ class CalendRExtension extends \Twig_Extension
      */
     public function getYear()
     {
-        return call_user_func_array(array($this->factory, 'getYear'), func_get_args());
+        return call_user_func_array([$this->factory, 'getYear'], func_get_args());
     }
 
     /**
@@ -46,7 +46,7 @@ class CalendRExtension extends \Twig_Extension
      */
     public function getMonth()
     {
-        return call_user_func_array(array($this->factory, 'getMonth'), func_get_args());
+        return call_user_func_array([$this->factory, 'getMonth'], func_get_args());
     }
 
     /**
@@ -54,7 +54,7 @@ class CalendRExtension extends \Twig_Extension
      */
     public function getWeek()
     {
-        return call_user_func_array(array($this->factory, 'getWeek'), func_get_args());
+        return call_user_func_array([$this->factory, 'getWeek'], func_get_args());
     }
 
     /**
@@ -62,7 +62,7 @@ class CalendRExtension extends \Twig_Extension
      */
     public function getDay()
     {
-        return call_user_func_array(array($this->factory, 'getDay'), func_get_args());
+        return call_user_func_array([$this->factory, 'getDay'], func_get_args());
     }
 
     /**
@@ -70,7 +70,7 @@ class CalendRExtension extends \Twig_Extension
      */
     public function getEvents()
     {
-        return call_user_func_array(array($this->factory, 'getEvents'), func_get_args());
+        return call_user_func_array([$this->factory, 'getEvents'], func_get_args());
     }
 
     /**

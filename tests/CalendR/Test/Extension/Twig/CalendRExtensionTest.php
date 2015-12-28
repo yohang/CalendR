@@ -27,11 +27,17 @@ class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testItReturnsFunctionNames()
     {
-        $this->assertArrayHasKey('calendr_year', $this->object->getFunctions());
-        $this->assertArrayHasKey('calendr_month', $this->object->getFunctions());
-        $this->assertArrayHasKey('calendr_week', $this->object->getFunctions());
-        $this->assertArrayHasKey('calendr_day', $this->object->getFunctions());
-        $this->assertArrayHasKey('calendr_events', $this->object->getFunctions());
+
+        $functions = array_map(
+            function (\Twig_SimpleFunction $fn) { return $fn->getName(); },
+            $this->object->getFunctions()
+        );
+
+        $this->assertContains('calendr_year', $functions);
+        $this->assertContains('calendr_month', $functions);
+        $this->assertContains('calendr_week', $functions);
+        $this->assertContains('calendr_day', $functions);
+        $this->assertContains('calendr_events', $functions);
     }
 
     public function testItCallsCalendarFunctions()
