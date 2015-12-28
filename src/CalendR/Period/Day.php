@@ -12,19 +12,19 @@
 namespace CalendR\Period;
 
 /**
- * Represents a Day
+ * Represents a Day.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
 class Day extends PeriodAbstract implements \Iterator
 {
-    const MONDAY    = 1;
-    const TUESDAY   = 2;
+    const MONDAY = 1;
+    const TUESDAY = 2;
     const WEDNESDAY = 3;
-    const THURSDAY  = 4;
-    const FRIDAY    = 5;
-    const SATURDAY  = 6;
-    const SUNDAY    = 0;
+    const THURSDAY = 4;
+    const FRIDAY = 5;
+    const SATURDAY = 6;
+    const SUNDAY = 0;
 
     /**
      * @var PeriodInterface
@@ -39,7 +39,7 @@ class Day extends PeriodAbstract implements \Iterator
     {
         parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
-            throw new Exception\NotADay;
+            throw new Exception\NotADay();
         }
 
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
@@ -51,7 +51,7 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
@@ -61,7 +61,7 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the day name (probably in english)
+     * Returns the day name (probably in english).
      *
      * @return string
      */
@@ -81,9 +81,10 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @static
+     *
      * @return \DateInterval
      */
     public static function getDateInterval()
@@ -92,7 +93,7 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -100,7 +101,7 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -115,7 +116,7 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -123,7 +124,7 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -131,7 +132,7 @@ class Day extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function rewind()
     {

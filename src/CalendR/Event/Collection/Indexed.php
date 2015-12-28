@@ -23,12 +23,12 @@ use CalendR\Period\PeriodInterface;
 class Indexed implements CollectionInterface
 {
     /**
-     * @var array<array<EventInterface>>
+     * @var EventInterface[][]
      */
     protected $events;
 
     /**
-     * Event count
+     * Event count.
      *
      * @var int
      */
@@ -58,7 +58,7 @@ class Indexed implements CollectionInterface
         if (is_callable($callable)) {
             $this->indexFunction = $callable;
         } else {
-            $this->indexFunction = function(\DateTime $dateTime) {
+            $this->indexFunction = function (\DateTime $dateTime) {
                 return $dateTime->format('Y-m-d');
             };
         }
@@ -69,7 +69,7 @@ class Indexed implements CollectionInterface
     }
 
     /**
-     * Adds an event to the collection
+     * Adds an event to the collection.
      *
      * @param EventInterface $event
      */
@@ -82,11 +82,11 @@ class Indexed implements CollectionInterface
             $this->events[$index] = array($event);
         }
 
-        $this->count++;
+        ++$this->count;
     }
 
     /**
-     * Removes an event from the collection
+     * Removes an event from the collection.
      *
      * @param EventInterface $event
      */
@@ -97,14 +97,14 @@ class Indexed implements CollectionInterface
             foreach ($this->events[$index] as $key => $internalEvent) {
                 if ($event->getUid() == $internalEvent->getUid()) {
                     unset($this->events[$index][$key]);
-                    $this->count--;
+                    --$this->count;
                 }
             }
         }
     }
 
     /**
-     * Returns if we have events for the given index
+     * Returns if we have events for the given index.
      *
      * @param mixed $index
      *
@@ -112,15 +112,15 @@ class Indexed implements CollectionInterface
      */
     public function has($index)
     {
-      return 0 < count($this->find($index));
+        return 0 < count($this->find($index));
     }
 
     /**
-     * returns events
+     * returns events.
      *
      * @param mixed $index
      *
-     * @return array<EventInterface>
+     * @return EventInterface[]
      */
     public function find($index)
     {
@@ -135,9 +135,9 @@ class Indexed implements CollectionInterface
     }
 
     /**
-     * Returns a flattened array of all events
+     * Returns a flattened array of all events.
      *
-     * @return array<EventInterface>
+     * @return EventInterface[]
      */
     public function all()
     {
@@ -151,7 +151,7 @@ class Indexed implements CollectionInterface
     }
 
     /**
-     * Computes event index
+     * Computes event index.
      *
      * @param EventInterface|\DateTime $toCompute
      *
@@ -168,7 +168,7 @@ class Indexed implements CollectionInterface
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritdoc}
      */
     public function count()
     {

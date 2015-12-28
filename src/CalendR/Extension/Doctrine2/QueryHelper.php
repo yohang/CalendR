@@ -14,7 +14,7 @@ namespace CalendR\Extension\Doctrine2;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Helper class for Doctrine2 CalendR integration
+ * Helper class for Doctrine2 CalendR integration.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -33,10 +33,9 @@ class QueryHelper
      *          $end
      *      )->getQuery()->getResult();
      *  }
-     * ```
+     * ```.
      *
-     * @deprecated This method is deprecated from release, prefer the use of the EventRepository trait.
-     *             However, the methods won't be removed until PHP5.3 is officialy maintained.
+     * @deprecated Will be removed in 2.0
      *
      * @param QueryBuilder $qb
      * @param string       $beginField

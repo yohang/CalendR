@@ -4,6 +4,9 @@ namespace CalendR\Extension\GoogleCalendar;
 
 use CalendR\Event\AbstractEvent;
 
+/**
+ * @deprecated Will be removed from 2.0
+ */
 class GoogleCalendarEvent extends AbstractEvent
 {
     /**
@@ -27,8 +30,8 @@ class GoogleCalendarEvent extends AbstractEvent
     protected $end;
 
     /**
-    * @var string
-    */
+     * @var string
+     */
     protected $summary;
 
     /**
@@ -62,7 +65,7 @@ class GoogleCalendarEvent extends AbstractEvent
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getUid()
     {
@@ -70,7 +73,7 @@ class GoogleCalendarEvent extends AbstractEvent
     }
 
     /**
-     * Returns the event begin
+     * Returns the event begin.
      *
      * @return \DateTime event begin
      */
@@ -80,7 +83,7 @@ class GoogleCalendarEvent extends AbstractEvent
     }
 
     /**
-     * Returns the event end
+     * Returns the event end.
      *
      * @return \DateTime event end
      */
@@ -90,7 +93,7 @@ class GoogleCalendarEvent extends AbstractEvent
     }
 
     /**
-     * Returns the event id
+     * Returns the event id.
      *
      * @return string event id
      */
@@ -104,7 +107,7 @@ class GoogleCalendarEvent extends AbstractEvent
      */
     public function getCalendarId()
     {
-      return $this->calendarId;
+        return $this->calendarId;
     }
 
     /**
@@ -112,7 +115,7 @@ class GoogleCalendarEvent extends AbstractEvent
      */
     public function getHtmlLink()
     {
-      return $this->htmlLink;
+        return $this->htmlLink;
     }
 
     /**
@@ -120,7 +123,7 @@ class GoogleCalendarEvent extends AbstractEvent
      */
     public function getStatus()
     {
-      return $this->status;
+        return $this->status;
     }
 
     /**
@@ -128,6 +131,6 @@ class GoogleCalendarEvent extends AbstractEvent
      */
     public function getSummary()
     {
-      return $this->summary;
+        return $this->summary;
     }
 }

@@ -3,7 +3,7 @@
 namespace CalendR\Period;
 
 /**
- * Represents a minute
+ * Represents a minute.
  *
  * @author Zander Baldwin <mynameis@zande.rs>
  */
@@ -24,7 +24,7 @@ class Minute extends PeriodAbstract implements \Iterator
     {
         parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
-            throw new Exception\NotAMinute;
+            throw new Exception\NotAMinute();
         }
 
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
@@ -36,7 +36,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
@@ -56,7 +56,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -64,7 +64,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -79,7 +79,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -87,7 +87,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -95,7 +95,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -104,7 +104,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the minute
+     * Returns the minute.
      *
      * @return string
      */
@@ -114,7 +114,7 @@ class Minute extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @return \DateInterval
      */

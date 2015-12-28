@@ -12,11 +12,11 @@
 namespace CalendR\Event;
 
 use CalendR\Event\Exception\NoProviderFound;
-use CalendR\Period\PeriodInterface,
-    CalendR\Event\Provider\ProviderInterface;
+use CalendR\Period\PeriodInterface;
+use CalendR\Event\Provider\ProviderInterface;
 
 /**
- * Manage events and providers
+ * Manage events and providers.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -28,7 +28,7 @@ class Manager
     protected $providers = array();
 
     /**
-     * The callable used to instantiate the event collection
+     * The callable used to instantiate the event collection.
      *
      * @var callable
      */
@@ -42,7 +42,7 @@ class Manager
     {
         $this->collectionInstantiator = $instantiator;
         if (null === $instantiator) {
-            $this->collectionInstantiator = function() {
+            $this->collectionInstantiator = function () {
                 return new Collection\Basic();
             };
         }
@@ -53,7 +53,7 @@ class Manager
     }
 
     /**
-     * find events that matches the given period (during or over)
+     * find events that matches the given period (during or over).
      *
      * @param \CalendR\Period\PeriodInterface $period
      * @param array                           $options
@@ -65,7 +65,7 @@ class Manager
     public function find(PeriodInterface $period, array $options = array())
     {
         if (0 === count($this->providers)) {
-            throw new NoProviderFound;
+            throw new NoProviderFound();
         }
 
         // Check if there's a provider option provided, used to filter the used providers
@@ -93,7 +93,7 @@ class Manager
     }
 
     /**
-     * Adds a provider to the provider stack
+     * Adds a provider to the provider stack.
      *
      * @param $name
      * @param ProviderInterface $provider
@@ -104,7 +104,7 @@ class Manager
     }
 
     /**
-     * Sets the callable used to instantiate the event collection
+     * Sets the callable used to instantiate the event collection.
      *
      * @param callable $collectionInstantiator
      */

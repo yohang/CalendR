@@ -50,9 +50,3 @@ License
 -------
 
 CalendR is licensed under the MIT License - see the LICENSE file for details
-
-TODO (And / Or planned)
------------------------
-
- * Renderers (WIP)
- * Add Hour, Minute and Second periods (maybe, don't know if this is really useful).

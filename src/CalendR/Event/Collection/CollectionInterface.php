@@ -19,28 +19,28 @@ use CalendR\Event\EventInterface;
 interface CollectionInterface extends \Countable
 {
     /**
-     * Adds an event to the collection
+     * Adds an event to the collection.
      *
      * @param EventInterface $event
      */
     public function add(EventInterface $event);
 
     /**
-     * Removes an event from the collection
+     * Removes an event from the collection.
      *
      * @param EventInterface $event
      */
     public function remove(EventInterface $event);
 
     /**
-     * Return all events;
+     * Return all events;.
      *
-     * @return array<EventInterface>
+     * @return EventInterface[]
      */
     public function all();
 
     /**
-     * Returns if there is events corresponding to $index period
+     * Returns if there is events corresponding to $index period.
      *
      * @param mixed $index
      *
@@ -49,11 +49,11 @@ interface CollectionInterface extends \Countable
     public function has($index);
 
     /**
-     * Find events in the collection
+     * Find events in the collection.
      *
      * @param mixed $index
      *
-     * @return array<EventInterface>
+     * @return EventInterface[]
      */
     public function find($index);
 }

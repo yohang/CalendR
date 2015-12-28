@@ -3,7 +3,7 @@
 namespace CalendR\Period;
 
 /**
- * Represents a year
+ * Represents a year.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -24,7 +24,7 @@ class Year extends PeriodAbstract implements \Iterator
     {
         parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
-            throw new Exception\NotAYear;
+            throw new Exception\NotAYear();
         }
 
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
@@ -37,7 +37,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
@@ -57,7 +57,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -65,7 +65,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -80,7 +80,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -88,7 +88,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -96,7 +96,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -105,7 +105,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the year
+     * Returns the year.
      *
      * @return string
      */
@@ -115,7 +115,7 @@ class Year extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @return \DateInterval
      */

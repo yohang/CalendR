@@ -23,7 +23,7 @@ use CalendR\Period\PeriodInterface;
 class Basic implements CollectionInterface
 {
     /**
-     * The events
+     * The events.
      *
      * @var EventInterface[]
      */
@@ -38,7 +38,7 @@ class Basic implements CollectionInterface
     }
 
     /**
-     * Adds an event to the collection
+     * Adds an event to the collection.
      *
      * @param EventInterface $event
      */
@@ -48,7 +48,7 @@ class Basic implements CollectionInterface
     }
 
     /**
-     * Removes an event from the collection
+     * Removes an event from the collection.
      *
      * @param EventInterface $event
      */
@@ -62,7 +62,7 @@ class Basic implements CollectionInterface
     }
 
     /**
-     * Return all events;
+     * Return all events;.
      *
      * @return EventInterface[]
      */
@@ -72,7 +72,7 @@ class Basic implements CollectionInterface
     }
 
     /**
-     * Returns if there is events corresponding to $index period
+     * Returns if there is events corresponding to $index period.
      *
      * @param mixed $index
      *
@@ -84,7 +84,7 @@ class Basic implements CollectionInterface
     }
 
     /**
-     * Find events in the collection
+     * Find events in the collection.
      *
      * @param mixed $index
      *

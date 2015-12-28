@@ -3,7 +3,7 @@
 namespace CalendR\Period;
 
 /**
- * Represents a Month
+ * Represents a Month.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -24,7 +24,7 @@ class Month extends PeriodAbstract implements \Iterator
     {
         parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($start)) {
-            throw new Exception\NotAMonth;
+            throw new Exception\NotAMonth();
         }
 
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
@@ -37,7 +37,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
@@ -47,7 +47,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a Day array
+     * Returns a Day array.
      *
      * @return array<Day>
      */
@@ -63,7 +63,7 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the first day of the first week of month.
-     * First day of week is configurable via {@link Factory:setOption()}
+     * First day of week is configurable via {@link Factory:setOption()}.
      *
      * @return \DateTime
      */
@@ -85,7 +85,7 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the last day of last week of month
-     * First day of week is configurable via {@link Factory::setOption()}
+     * First day of week is configurable via {@link Factory::setOption()}.
      *
      * @return \DateTime
      */
@@ -107,7 +107,7 @@ class Month extends PeriodAbstract implements \Iterator
     public function getFirstMonday()
     {
         $delta = $this->begin->format('w') ?: 7;
-        $delta--;
+        --$delta;
 
         $monday = clone $this->begin;
         $monday->sub(new \DateInterval(sprintf('P%sD', $delta)));
@@ -146,7 +146,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -162,7 +162,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -170,7 +170,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -178,7 +178,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -187,7 +187,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the month name (probably in english)
+     * Returns the month name (probably in english).
      *
      * @return string
      */
@@ -207,7 +207,7 @@ class Month extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @return \DateInterval
      */

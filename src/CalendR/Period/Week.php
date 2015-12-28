@@ -3,7 +3,7 @@
 namespace CalendR\Period;
 
 /**
- * Represents a week
+ * Represents a week.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -23,7 +23,7 @@ class Week extends PeriodAbstract implements \Iterator
     public function __construct(\DateTime $start, $factory = null)
     {
         if (!self::isValid($start)) {
-            throw new Exception\NotAWeek;
+            throw new Exception\NotAWeek();
         }
 
         $this->begin = clone $start;
@@ -42,7 +42,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
@@ -62,7 +62,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -70,7 +70,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -85,7 +85,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -93,7 +93,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -101,7 +101,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -110,7 +110,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns the week number
+     * Returns the week number.
      *
      * @return string
      */
@@ -120,7 +120,7 @@ class Week extends PeriodAbstract implements \Iterator
     }
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @return \DateInterval
      */

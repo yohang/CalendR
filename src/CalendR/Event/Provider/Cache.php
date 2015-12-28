@@ -14,7 +14,7 @@ namespace CalendR\Event\Provider;
 use Doctrine\Common\Cache\Cache as CacheInterface;
 
 /**
- * Cache the result of a provider
+ * Cache the result of a provider.
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
@@ -48,21 +48,21 @@ class Cache implements ProviderInterface
      */
     public function __construct(CacheInterface $cache, ProviderInterface $provider, $lifetime, $namespace = null)
     {
-        $this->cache     = $cache;
-        $this->provider  = $provider;
-        $this->lifetime  = $lifetime;
+        $this->cache = $cache;
+        $this->provider = $provider;
+        $this->lifetime = $lifetime;
         $this->namespace = $namespace;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
         $cacheKey = md5(serialize(array($begin, $end, $options)));
 
         if (null !== $this->namespace) {
-            $cacheKey = $this->namespace . '.' . $cacheKey;
+            $cacheKey = $this->namespace.'.'.$cacheKey;
         }
 
         if ($this->cache->contains($cacheKey)) {

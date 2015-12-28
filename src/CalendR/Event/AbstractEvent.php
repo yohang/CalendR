@@ -14,16 +14,16 @@ namespace CalendR\Event;
 use CalendR\Period\PeriodInterface;
 
 /**
- * Abstract class that ease event manipulation
+ * Abstract class that ease event manipulation.
  *
  * @author Yohan Giareli <yohan@giarel.li>
  */
 abstract class AbstractEvent implements EventInterface
 {
     /**
-     * Check if the given date is during the event
+     * Check if the given date is during the event.
      *
-     * @param  \DateTime $datetime
+     * @param \DateTime $datetime
      *
      * @return bool true if $datetime is during the event, false otherwise
      */
@@ -33,9 +33,9 @@ abstract class AbstractEvent implements EventInterface
     }
 
     /**
-     * Check if the given period is during the event
+     * Check if the given period is during the event.
      *
-     * @param  PeriodInterface $period
+     * @param PeriodInterface $period
      *
      * @return bool true if $period is during the event, false otherwise
      */
@@ -45,9 +45,9 @@ abstract class AbstractEvent implements EventInterface
     }
 
     /**
-     * Check if the event is during the given period
+     * Check if the event is during the given period.
      *
-     * @param  PeriodInterface $period
+     * @param PeriodInterface $period
      *
      * @return bool true if the event is during $period, false otherwise
      */

@@ -12,7 +12,7 @@
 namespace CalendR\Event\Provider;
 
 /**
- * Base interface for event providers
+ * Base interface for event providers.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -20,11 +20,13 @@ interface ProviderInterface
 {
     /**
      * Return events that matches to $begin && $end
-     * $end date should be exclude
+     * $end date should be exclude.
      *
      * @param \DateTime $begin
      * @param \DateTime $end
      * @param array     $options
+     *
+     * @return \CalendR\Event\EventInterface[]
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array());
 }

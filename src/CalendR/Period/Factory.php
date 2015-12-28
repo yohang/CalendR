@@ -42,7 +42,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createSecond(\DateTime $begin)
     {
@@ -50,7 +50,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createMinute(\DateTime $begin)
     {
@@ -58,7 +58,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createHour(\DateTime $begin)
     {
@@ -66,7 +66,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createDay(\DateTime $begin)
     {
@@ -74,7 +74,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createWeek(\DateTime $begin)
     {
@@ -82,7 +82,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createMonth(\DateTime $begin)
     {
@@ -90,7 +90,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createYear(\DateTime $begin)
     {
@@ -98,7 +98,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createRange(\DateTime $begin, \DateTime $end)
     {
@@ -133,19 +133,19 @@ class Factory implements FactoryInterface
     protected function resolveOptions(array $options)
     {
         if (null === $this->resolver) {
-            $this->resolver = new OptionsResolver;
+            $this->resolver = new OptionsResolver();
             $this->resolver->setDefaults(
                 array(
-                    'second_class'  => 'CalendR\Period\Second',
-                    'minute_class'  => 'CalendR\Period\Minute',
-                    'hour_class'    => 'CalendR\Period\Hour',
-                    'day_class'     => 'CalendR\Period\Day',
-                    'week_class'    => 'CalendR\Period\Week',
-                    'month_class'   => 'CalendR\Period\Month',
-                    'year_class'    => 'CalendR\Period\Year',
-                    'range_class'   => 'CalendR\Period\Range',
+                    'second_class' => 'CalendR\Period\Second',
+                    'minute_class' => 'CalendR\Period\Minute',
+                    'hour_class' => 'CalendR\Period\Hour',
+                    'day_class' => 'CalendR\Period\Day',
+                    'week_class' => 'CalendR\Period\Week',
+                    'month_class' => 'CalendR\Period\Month',
+                    'year_class' => 'CalendR\Period\Year',
+                    'range_class' => 'CalendR\Period\Range',
                     'first_weekday' => Day::MONDAY,
-                    'strict_dates'  => false,
+                    'strict_dates' => false,
                 )
             );
             $this->setDefaultOptions($this->resolver);
@@ -155,7 +155,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * Override this method if you have to change default/allowed options
+     * Override this method if you have to change default/allowed options.
      *
      * @param OptionsResolverInterface $resolver
      */
@@ -164,7 +164,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setFirstWeekday($firstWeekday)
     {
@@ -172,7 +172,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFirstWeekday()
     {
@@ -180,11 +180,11 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findFirstDayOfWeek($dateTime)
     {
-        $day   = clone $dateTime;
+        $day = clone $dateTime;
         $delta = ((int) $day->format('w') - $this->getFirstWeekday() + 7) % 7;
         $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
 
@@ -192,7 +192,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getStrictDates()
     {
@@ -200,7 +200,7 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setStrictDates($strict)
     {

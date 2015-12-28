@@ -12,19 +12,19 @@
 namespace CalendR\Event\Provider;
 
 /**
- * This class provide multiple event providers support
+ * This class provide multiple event providers support.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
 class Aggregate implements ProviderInterface
 {
     /**
-     * @var array<ProviderInterface>
+     * @var ProviderInterface[]
      */
     private $providers;
 
     /**
-     * @param array<ProviderInterface> $providers
+     * @param ProviderInterface[] $providers
      *
      * @throws \InvalidArgumentException
      */
@@ -39,7 +39,7 @@ class Aggregate implements ProviderInterface
     }
 
     /**
-     * Adds a provider
+     * Adds a provider.
      *
      * @param ProviderInterface $provider
      *
@@ -54,13 +54,13 @@ class Aggregate implements ProviderInterface
 
     /**
      * Return events that matches to $begin && $end
-     * $end date should be exclude
+     * $end date should be exclude.
      *
      * @param \DateTime $begin
      * @param \DateTime $end
      * @param array     $options
      *
-     * @return array<EventInterface>
+     * @return \CalendR\Event\EventInterface
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {

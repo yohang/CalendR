@@ -25,10 +25,10 @@ class CalendRExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'calendr_year'   => new \Twig_Function_Method($this, 'getYear'),
-            'calendr_month'  => new \Twig_Function_Method($this, 'getMonth'),
-            'calendr_week'   => new \Twig_Function_Method($this, 'getWeek'),
-            'calendr_day'    => new \Twig_Function_Method($this, 'getDay'),
+            'calendr_year' => new \Twig_Function_Method($this, 'getYear'),
+            'calendr_month' => new \Twig_Function_Method($this, 'getMonth'),
+            'calendr_week' => new \Twig_Function_Method($this, 'getWeek'),
+            'calendr_day' => new \Twig_Function_Method($this, 'getDay'),
             'calendr_events' => new \Twig_Function_Method($this, 'getEvents'),
         );
     }

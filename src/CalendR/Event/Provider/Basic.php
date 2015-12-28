@@ -27,7 +27,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     protected $events = array();
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
@@ -46,7 +46,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     }
 
     /**
-     * Adds an event to the provider
+     * Adds an event to the provider.
      *
      * @param EventInterface $event
      */
@@ -56,9 +56,9 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     }
 
     /**
-     * Returns all events
+     * Returns all events.
      *
-     * @return array<EventInterface>
+     * @return EventInterface[]
      */
     public function all()
     {
@@ -66,7 +66,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     }
 
     /**
-     * Retrieve an external iterator
+     * Retrieve an external iterator.
      *
      * @return \Traversable
      */

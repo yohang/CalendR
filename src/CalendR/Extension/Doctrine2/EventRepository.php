@@ -13,7 +13,7 @@ namespace CalendR\Extension\Doctrine2;
 
 /**
  * Trait that transforms a Doctrine2 EntityRepository into
- * a CalendR Event Provider
+ * a CalendR Event Provider.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -72,7 +72,7 @@ trait EventRepository
     }
 
     /**
-     * Returns the begin date field name
+     * Returns the begin date field name.
      *
      * @return string
      */
@@ -82,7 +82,7 @@ trait EventRepository
     }
 
     /**
-     * Returns the end date field name
+     * Returns the end date field name.
      *
      * @return string
      */

@@ -15,5 +15,4 @@ use CalendR\Exception;
 
 class InvalidArgument extends Exception
 {
-
 }

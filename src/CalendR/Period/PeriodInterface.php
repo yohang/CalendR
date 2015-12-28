@@ -21,7 +21,7 @@ use CalendR\Event\EventInterface;
 interface PeriodInterface
 {
     /**
-     * Checks if the given period is contained in the current period
+     * Checks if the given period is contained in the current period.
      *
      * @param \DateTime $date
      *
@@ -30,42 +30,42 @@ interface PeriodInterface
     public function contains(\DateTime $date);
 
     /**
-     * Gets the DateTime of period begin
+     * Gets the DateTime of period begin.
      *
      * @return \DateTime
      */
     public function getBegin();
 
     /**
-     * Gets the DateTime of the period end
+     * Gets the DateTime of the period end.
      *
      * @return \DateTime
      */
     public function getEnd();
 
     /**
-     * Gets the next period of the same type
+     * Gets the next period of the same type.
      *
      * @return PeriodInterface
      */
     public function getNext();
 
     /**
-     * Gets the previous period of the same type
+     * Gets the previous period of the same type.
      *
      * @return PeriodInterface
      */
     public function getPrevious();
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
     public function getDatePeriod();
 
     /**
-     * Checks if a period is equals to an other
+     * Checks if a period is equals to an other.
      *
      * @param PeriodInterface $period
      *
@@ -75,7 +75,7 @@ interface PeriodInterface
 
     /**
      * Returns true if the period include the other period
-     * given as argument
+     * given as argument.
      *
      * @param PeriodInterface $period
      * @param bool            $strict
@@ -88,16 +88,16 @@ interface PeriodInterface
      *  * Event is during period
      *  * Period is during event
      *  * Event begin is during Period
-     *  * Event end is during Period
+     *  * Event end is during Period.
      *
      * @param EventInterface $event
      *
-     * @return boolean
+     * @return bool
      */
     public function containsEvent(EventInterface $event);
 
     /**
-     * Format the period to a string
+     * Format the period to a string.
      *
      * @param string $format
      *
@@ -106,21 +106,21 @@ interface PeriodInterface
     public function format($format);
 
     /**
-     * Returns if the current period is the current one
+     * Returns if the current period is the current one.
      *
-     * @return boolean
+     * @return bool
      */
     public function isCurrent();
 
     /**
-     * Checks if $start is good for building the period
+     * Checks if $start is good for building the period.
      *
      * @param \DateTime $start
      */
     public static function isValid(\DateTime $start);
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @return \DateInterval
      */

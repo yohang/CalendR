@@ -17,7 +17,7 @@ use CalendR\Period\FactoryInterface;
 use CalendR\Period\PeriodInterface;
 
 /**
- * Factory class for calendar handling
+ * Factory class for calendar handling.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
@@ -47,7 +47,7 @@ class Calendar
     public function getEventManager()
     {
         if (null === $this->eventManager) {
-            $this->eventManager = new Manager;
+            $this->eventManager = new Manager();
         }
 
         return $this->eventManager;
@@ -190,7 +190,7 @@ class Calendar
     public function getFactory()
     {
         if (null === $this->factory) {
-            $this->factory = new Factory;
+            $this->factory = new Factory();
         }
 
         return $this->factory;
@@ -213,7 +213,7 @@ class Calendar
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getStrictDates()
     {
@@ -221,7 +221,7 @@ class Calendar
     }
 
     /**
-     * @param boolean $strict
+     * @param bool $strict
      */
     public function setStrictDates($strict)
     {

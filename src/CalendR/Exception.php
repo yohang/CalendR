@@ -12,7 +12,7 @@
 namespace CalendR;
 
 /**
- * The base CalendR exception class
+ * The base CalendR exception class.
  */
 class Exception extends \Exception
 {

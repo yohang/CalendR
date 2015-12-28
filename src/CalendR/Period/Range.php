@@ -12,7 +12,7 @@
 namespace CalendR\Period;
 
 /**
- * Represents a Range
+ * Represents a Range.
  *
  * @author Stefan Koopmanschap <left@leftontheweb.com>
  */
@@ -26,7 +26,7 @@ class Range extends PeriodAbstract
     public function __construct(\DateTime $begin, \DateTime $end, $factory = null)
     {
         $this->begin = clone $begin;
-        $this->end   = clone $end;
+        $this->end = clone $end;
 
         parent::__construct($factory);
     }
@@ -47,9 +47,9 @@ class Range extends PeriodAbstract
     public function getNext()
     {
         $diff = $this->begin->diff($this->end);
-        $begin = clone($this->begin);
+        $begin = clone $this->begin;
         $begin->add($diff);
-        $end = clone($this->end);
+        $end = clone $this->end;
         $end->add($diff);
 
         return new self($begin, $end, $this->factory);
@@ -61,16 +61,16 @@ class Range extends PeriodAbstract
     public function getPrevious()
     {
         $diff = $this->begin->diff($this->end);
-        $begin = clone($this->begin);
+        $begin = clone $this->begin;
         $begin->sub($diff);
-        $end = clone($this->end);
+        $end = clone $this->end;
         $end->sub($diff);
 
         return new self($begin, $end, $this->factory);
     }
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
@@ -80,12 +80,12 @@ class Range extends PeriodAbstract
     }
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @throws Exception\NotImplemented
      */
     public static function getDateInterval()
     {
-      throw new Exception\NotImplemented('Range period doesn\'t support getDateInterval().');
+        throw new Exception\NotImplemented('Range period doesn\'t support getDateInterval().');
     }
 }

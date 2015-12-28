@@ -3,7 +3,7 @@
 namespace CalendR\Period;
 
 /**
- * Represents a second
+ * Represents a second.
  *
  * @author Zander Baldwin <mynameis@zande.rs>
  */
@@ -19,7 +19,7 @@ class Second extends PeriodAbstract
     {
         parent::__construct($factory);
         if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
-            throw new Exception\NotASecond;
+            throw new Exception\NotASecond();
         }
 
         // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
@@ -32,7 +32,7 @@ class Second extends PeriodAbstract
     }
 
     /**
-     * Returns the period as a DatePeriod
+     * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
      */
@@ -52,7 +52,7 @@ class Second extends PeriodAbstract
     }
 
     /**
-     * Returns the second
+     * Returns the second.
      *
      * @return string
      */
@@ -62,7 +62,7 @@ class Second extends PeriodAbstract
     }
 
     /**
-     * Returns a \DateInterval equivalent to the period
+     * Returns a \DateInterval equivalent to the period.
      *
      * @return \DateInterval
      */

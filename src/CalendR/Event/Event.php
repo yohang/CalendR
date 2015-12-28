@@ -49,7 +49,7 @@ class Event extends AbstractEvent
     /**
      * Returns an unique identifier for the Event.
      * Could be any string, but MUST to be unique.
-     *   ex : 'event-8', 'meeting-43'
+     *   ex : 'event-8', 'meeting-43'.
      *
      * @return string an unique event identifier
      */
@@ -59,7 +59,8 @@ class Event extends AbstractEvent
     }
 
     /**
-     * Returns the event begin
+     * Returns the event begin.
+     *
      * @return \DateTime event begin
      */
     public function getBegin()
@@ -68,7 +69,8 @@ class Event extends AbstractEvent
     }
 
     /**
-     * Returns the event end
+     * Returns the event end.
+     *
      * @return \DateTime event end
      */
     public function getEnd()
