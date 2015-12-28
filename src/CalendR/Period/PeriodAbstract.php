@@ -45,6 +45,8 @@ abstract class PeriodAbstract implements PeriodInterface
     {
         if (is_numeric($factory)) { // for backwards compatibility
             $factory = new Factory(array('first_weekday' => $factory));
+
+            @trigger_error('Factory is now required for period construction.', E_USER_DEPRECATED);
         }
         if (!(null === $factory || $factory instanceof FactoryInterface)) {
             throw new Exception\InvalidArgument('Factory parameter must implement CalendR\Period\FactoryInterface');
