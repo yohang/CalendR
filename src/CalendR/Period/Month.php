@@ -15,24 +15,6 @@ class Month extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param \DateTime        $start
-     * @param FactoryInterface $factory
-     *
-     * @throws Exception\NotAMonth
-     */
-    public function __construct(\DateTime $start, $factory = null)
-    {
-        parent::__construct($factory);
-        if (!self::isValid($start)) {
-            throw new Exception\NotAMonth();
-        }
-
-        $this->begin = clone $start;
-        $this->end   = clone $this->begin;
-        $this->end->add($this->getDateInterval());
-    }
-
-    /**
      * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod

@@ -1,6 +1,7 @@
 <?php
 
 namespace CalendR\Period;
+use CalendR\Period\Exception\NotAnHour;
 
 /**
  * Represents an hour.
@@ -13,24 +14,6 @@ class Hour extends PeriodAbstract implements \Iterator
      * @var PeriodInterface
      */
     private $current;
-
-    /**
-     * @param \DateTime        $begin
-     * @param FactoryInterface $factory
-     *
-     * @throws Exception\NotAnHour
-     */
-    public function __construct(\DateTime $begin, $factory = null)
-    {
-        parent::__construct($factory);
-        if (!self::isValid($begin)) {
-            throw new Exception\NotAnHour();
-        }
-
-        $this->begin = clone $begin;
-        $this->end   = clone $begin;
-        $this->end->add($this->getDateInterval());
-    }
 
     /**
      * Returns the period as a DatePeriod.
@@ -118,5 +101,13 @@ class Hour extends PeriodAbstract implements \Iterator
     public static function getDateInterval()
     {
         return new \DateInterval('PT1H');
+    }
+
+    /**
+     * @return NotAnHour
+     */
+    protected function createInvalidException()
+    {
+        return new NotAnHour;
     }
 }

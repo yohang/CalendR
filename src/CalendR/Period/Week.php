@@ -15,25 +15,6 @@ class Week extends PeriodAbstract implements \Iterator
     private $current = null;
 
     /**
-     * @param \DateTime        $start
-     * @param FactoryInterface $factory
-     *
-     * @throws Exception\NotAWeek
-     */
-    public function __construct(\DateTime $start, $factory = null)
-    {
-        if (!self::isValid($start)) {
-            throw new Exception\NotAWeek();
-        }
-
-        $this->begin = clone $start;
-        $this->end   = clone $start;
-        $this->end->add($this->getDateInterval());
-
-        parent::__construct($factory);
-    }
-
-    /**
      * @return int
      */
     public function getNumber()

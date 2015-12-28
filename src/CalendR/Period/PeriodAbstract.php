@@ -36,11 +36,21 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $factory;
 
     /**
+     * @param \DateTime        $begin
      * @param FactoryInterface $factory
+     *
+     * @throws \CalendR\Exception
      */
-    public function __construct(FactoryInterface $factory)
+    public function __construct(\DateTime $begin, FactoryInterface $factory)
     {
         $this->factory = $factory;
+        if (!static::isValid($begin)) {
+            throw $this->createInvalidException();
+        }
+
+        $this->begin = clone $begin;
+        $this->end   = clone $begin;
+        $this->end->add($this->getDateInterval());
     }
 
     /**
@@ -186,5 +196,15 @@ abstract class PeriodAbstract implements PeriodInterface
         }
 
         return $this->factory;
+    }
+
+    /**
+     * @return \CalendR\Exception
+     */
+    protected function createInvalidException()
+    {
+        $class = 'CalendR\Period\Exception\NotA' . (new \ReflectionClass($this))->getShortName();
+
+        return new $class;
     }
 }

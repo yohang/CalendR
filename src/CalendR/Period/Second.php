@@ -10,24 +10,6 @@ namespace CalendR\Period;
 class Second extends PeriodAbstract
 {
     /**
-     * @param \DateTime        $begin
-     * @param FactoryInterface $factory
-     *
-     * @throws Exception\NotASecond
-     */
-    public function __construct(\DateTime $begin, $factory = null)
-    {
-        parent::__construct($factory);
-        if (!self::isValid($begin)) {
-            throw new Exception\NotASecond();
-        }
-
-        $this->begin = clone $begin;
-        $this->end   = clone $begin;
-        $this->end->add($this->getDateInterval());
-    }
-
-    /**
      * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod

@@ -15,24 +15,6 @@ class Minute extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param \DateTime        $begin
-     * @param FactoryInterface $factory
-     *
-     * @throws Exception\NotAMinute
-     */
-    public function __construct(\DateTime $begin, $factory = null)
-    {
-        parent::__construct($factory);
-        if (!self::isValid($begin)) {
-            throw new Exception\NotAMinute();
-        }
-
-        $this->begin = clone $begin;
-        $this->end   = clone $begin;
-        $this->end->add($this->getDateInterval());
-    }
-
-    /**
      * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod
