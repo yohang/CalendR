@@ -30,20 +30,9 @@ class DayTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotADay
      */
-    public function testConstructInvalidStrict($start)
+    public function testConstructInvalid($start)
     {
         $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(true);
-        new Day($start, $calendar->getFactory());
-    }
-
-    /**
-     * @dataProvider providerConstructInvalid
-     */
-    public function testConstructInvalidLazy($start)
-    {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(false);
         new Day($start, $calendar->getFactory());
     }
 
@@ -143,14 +132,14 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testFormat()
     {
-        $day = new Day(new \DateTime);
+        $day = new Day(new \DateTime('00:00:00'));
 
         $this->assertSame(date('Y-m-d'), $day->format('Y-m-d'));
     }
 
     public function testIsCurrent()
     {
-        $currentDay = new Day(new \DateTime);
+        $currentDay = new Day(new \DateTime('00:00:00'));
         $otherDay   = new Day(new \DateTime('1988-11-12'));
 
         $this->assertTrue($currentDay->isCurrent());

@@ -34,11 +34,11 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testFind()
     {
-        $this->assertSame(0, count($this->object->find(new Day(new \DateTime()))));
-        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-01')))));
-        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-04')))));
+        $this->assertSame(0, count($this->object->find(new Day(new \DateTime('00:00:00')))));
+        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-01 00:00:00')))));
+        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-04 00:00:00')))));
 
-        $this->assertSame(2, count($this->object->find(new Month(new \DateTime('2012-01-01')))));
+        $this->assertSame(2, count($this->object->find(new Month(new \DateTime('2012-01-01 00:00:00')))));
 
         $this->assertSame(1, count($this->object->find(
             new Month(new \DateTime('2012-01-01')),
@@ -62,7 +62,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'CalendR\\Event\\Collection\\Basic',
-            $this->object->find(new Month(new \DateTime('2012-01-01')))
+            $this->object->find(new Month(new \DateTime('2012-01-01 00:00')))
         );
 
         $this->object->setCollectionInstantiator(function() {
@@ -81,6 +81,6 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function testFindWithoutProvider()
     {
         $manager = new Manager;
-        $manager->find(new Day(new \DateTime()));
+        $manager->find(new Day(new \DateTime('00:00:00')));
     }
 }

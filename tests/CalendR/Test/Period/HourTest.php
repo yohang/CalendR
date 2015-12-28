@@ -44,43 +44,21 @@ class HourTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Invalid Constructors (Strict)
+     * @param \DateTime $start
      *
-     * @access public
-     * @param DateTime $start
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAnHour
-     * @return void
      */
-    public function testConstructInvalidStrict($start)
+    public function testConstructInvalid($start)
     {
         $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(true);
         new Hour($start, $calendar->getFactory());
     }
 
     /**
-     * Test: Invalid Constructors (Lazy)
+     * @param \DateTime $start
      *
-     * @access public
-     * @param DateTime $start
-     * @dataProvider providerConstructInvalid
-     * @return void
-     */
-    public function testConstructInvalidLazy($start)
-    {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(false);
-        new Hour($start, $calendar->getFactory());
-    }
-
-    /**
-     * Test: Valid Constructors
-     *
-     * @access public
-     * @param DateTime $start
      * @dataProvider providerConstructValid
-     * @return void
      */
     public function testConstructValid($start)
     {

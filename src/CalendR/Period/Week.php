@@ -26,12 +26,8 @@ class Week extends PeriodAbstract implements \Iterator
             throw new Exception\NotAWeek();
         }
 
-        if (!self::isValid($start)) {
-            @trigger_error('The non-strict construction of time periods is deprecated and will be removed in 2.0. build your period using the Calendar class.', E_USER_DEPRECATED);
-        }
-
         $this->begin = clone $start;
-        $this->end = clone $start;
+        $this->end   = clone $start;
         $this->end->add($this->getDateInterval());
 
         parent::__construct($factory);
@@ -62,6 +58,10 @@ class Week extends PeriodAbstract implements \Iterator
      */
     public static function isValid(\DateTime $start)
     {
+        if ($start->format('H:i:s') !== '00:00:00') {
+            return false;
+        }
+
         return true;
     }
 

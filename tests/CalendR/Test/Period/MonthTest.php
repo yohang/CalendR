@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Calendar;
 use CalendR\Period\Day;
 use CalendR\Period\Month;
 
@@ -79,20 +80,9 @@ class MonthTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotAMonth
      */
-    public function testConstructInvalidStrict($start)
+    public function testConstructInvalid($start)
     {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(true);
-        new Month($start, $calendar->getFactory());
-    }
-
-    /**
-     * @dataProvider providerConstructInvalid
-     */
-    public function testConstructInvalidLazy($start)
-    {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(false);
+        $calendar = new Calendar;
         new Month($start, $calendar->getFactory());
     }
 

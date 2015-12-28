@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Calendar;
 use CalendR\Period\Second;
 use CalendR\Period\Minute;
 use CalendR\Period\Hour;
@@ -56,31 +57,12 @@ class SecondTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Valid Constructor
-     *
-     * @access public
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotASecond
-     * @return void
      */
-    public function testConstructInvalidStrict($start)
+    public function testConstructInvalid($start)
     {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(true);
-        new Second($start, $calendar->getFactory());
-    }
-
-    /**
-     * Test: Valid Constructor
-     *
-     * @access public
-     * @dataProvider providerConstructInvalid
-     * @return void
-     */
-    public function testConstructInvalidLazy($start)
-    {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(false);
+        $calendar = new Calendar;
         new Second($start, $calendar->getFactory());
     }
 

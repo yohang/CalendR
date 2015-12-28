@@ -23,20 +23,12 @@ class Year extends PeriodAbstract implements \Iterator
     public function __construct(\DateTime $begin, $factory = null)
     {
         parent::__construct($factory);
-        if ($this->getFactory()->getStrictDates() && !self::isValid($begin)) {
+        if (!self::isValid($begin)) {
             throw new Exception\NotAYear();
         }
 
-        if (!self::isValid($begin)) {
-            @trigger_error('The non-strict construction of time periods is deprecated and will be removed in 2.0. build your period using the Calendar class.', E_USER_DEPRECATED);
-        }
-
-        // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
         $this->begin = clone $begin;
-        $this->begin->setDate($this->begin->format('Y'), 1, 1);
-        $this->begin->setTime(0, 0, 0);
-
-        $this->end = clone $this->begin;
+        $this->end   = clone $this->begin;
         $this->end->add($this->getDateInterval());
     }
 
