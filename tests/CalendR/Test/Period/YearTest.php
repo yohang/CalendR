@@ -4,6 +4,8 @@ namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
 use CalendR\Period\Day;
+use CalendR\Period\Factory;
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\Year;
 
 class YearTest extends \PHPUnit_Framework_TestCase
@@ -44,7 +46,7 @@ class YearTest extends \PHPUnit_Framework_TestCase
      */
     public function testContains($start, $contain, $notContain)
     {
-        $year = new Year($start);
+        $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($year->contains($contain));
         $this->assertFalse($year->contains($notContain));
@@ -55,10 +57,10 @@ class YearTest extends \PHPUnit_Framework_TestCase
      */
     public function testIncludes($start, $contain, $notContain)
     {
-        $year = new Year($start);
+        $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
 
-        $this->assertTrue($year->includes(new Day($contain)));
-        $this->assertFalse($year->includes(new Day($notContain)));
+        $this->assertTrue($year->includes(new Day($contain, $this->prophesize(FactoryInterface::class)->reveal())));
+        $this->assertFalse($year->includes(new Day($notContain, $this->prophesize(FactoryInterface::class)->reveal())));
     }
 
     /**
@@ -67,8 +69,7 @@ class YearTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructInvalid($start)
     {
-        $calendar = new Calendar;
-        new Year($start, $calendar->getFactory());
+        new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     /**
@@ -76,19 +77,19 @@ class YearTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Year($start);
+        new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     public function testToString()
     {
-        $year = new Year(new \DateTime('2014-01-01'));
+        $year = new Year(new \DateTime('2014-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame('2014', (string) $year);
     }
 
     public function testIteration()
     {
         $start = new \DateTime('2012-01');
-        $year = new Year($start);
+        $year = new Year($start, new Factory);
 
         $i = 0;
 
@@ -105,20 +106,20 @@ class YearTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNext()
     {
-        $year = new Year(new \DateTime('2012-01-01'));
+        $year = new Year(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2013-01-01', $year->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious()
     {
-        $year = new Year(new \DateTime('2012-01-01'));
+        $year = new Year(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2011-01-01', $year->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod()
     {
         $date = new \DateTime('2012-01-01');
-        $year = new Year($date);
+        $year = new Year($date, $this->prophesize(FactoryInterface::class)->reveal());
         foreach ($year->getDatePeriod() as $dateTime) {
             $this->assertEquals($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
             $date->add(new \DateInterval('P1D'));

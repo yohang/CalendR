@@ -2,11 +2,12 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Period\Factory;
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\Second;
 use CalendR\Period\Minute;
 use CalendR\Period\Hour;
 use CalendR\Period\Day;
-use CalendR\Period\Month;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Year;
 
@@ -50,29 +51,17 @@ class MinuteTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructInvalid($start)
     {
-        $calendar = new \CalendR\Calendar;
-        new Minute($start, $calendar->getFactory());
+        new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     /**
-     * Test: Valid Constructor
-     *
-     * @access public
      * @dataProvider providerConstructValid
-     * @return void
      */
     public function testConstructValid($start)
     {
-        new Minute($start);
+        new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
-    /**
-     * Data Provider: Contains
-     *
-     * @static
-     * @access public
-     * @return array
-     */
     public static function providerContains()
     {
         return array(
@@ -95,60 +84,38 @@ class MinuteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Contains
-     *
-     * @access public
      * @dataProvider providerContains
-     * @return void
      */
     public function testContains($start, $contain, $notContain)
     {
-        $minute = new Minute($start);
+        $minute = new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertTrue($minute->contains($contain));
         $this->assertFalse($minute->contains($notContain));
     }
 
-    /**
-     * Test: Get Next
-     *
-     * @access public
-     * @return void
-     */
     public function testGetNext()
     {
-        $minute = new Minute(new \DateTime('2012-01-01 05:00'));
+        $minute = new Minute(new \DateTime('2012-01-01 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-01-01 05:01', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
-        $minute = new Minute(new \DateTime('2012-01-31 14:59'));
+        $minute = new Minute(new \DateTime('2012-01-31 14:59'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-01-31 15:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
-        $minute = new Minute(new \DateTime('2013-02-28 23:59'));
+        $minute = new Minute(new \DateTime('2013-02-28 23:59'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2013-03-01 00:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
     }
 
-    /**
-     * Test: Get Previous
-     *
-     * @access public
-     * @return void
-     */
     public function testGetPrevious()
     {
-        $minute = new Minute(new \DateTime('2012-01-01 00:00'));
+        $minute = new Minute(new \DateTime('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2011-12-31 23:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
-        $minute = new Minute(new \DateTime('2012-01-31 05:00'));
+        $minute = new Minute(new \DateTime('2012-01-31 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-01-31 04:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
-        $minute = new Minute(new \DateTime('2012-01-31 05:25'));
+        $minute = new Minute(new \DateTime('2012-01-31 05:25'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-01-31 05:24', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
     }
 
-    /**
-     * Test: Get Date Period
-     *
-     * @access public
-     * @return void
-     */
     public function testGetDatePeriod()
     {
-        $minute = new Minute(new \DateTime('2012-01-31 13:12'));
+        $minute = new Minute(new \DateTime('2012-01-31 13:12'), $this->prophesize(FactoryInterface::class)->reveal());
         $i = 0;
         foreach ($minute->getDatePeriod() as $dateTime) {
             $i++;
@@ -157,42 +124,24 @@ class MinuteTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(60, $i);
     }
 
-    /**
-     * Test: Current Minute
-     *
-     * @access public
-     * @return void
-     */
     public function testCurrentMinute()
     {
         $currentDateTime = new \DateTime();
         $otherDateTime = clone $currentDateTime;
         $otherDateTime->add(new \DateInterval('PT5M'));
-        $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')));
+        $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
         $otherMinute = $currentMinute->getNext();
         $this->assertTrue($currentMinute->contains($currentDateTime));
         $this->assertFalse($currentMinute->contains($otherDateTime));
         $this->assertFalse($otherMinute->contains($currentDateTime));
     }
 
-    /**
-     * Test: To String
-     *
-     * @access public
-     * @return void
-     */
     public function testToString()
     {
-        $minute = new Minute(new \DateTime(date('Y-m-d H:i')));
-        $this->assertSame($minute->getBegin()->format('i'), (string) $minute);
+        $minute = new Minute(new \DateTime(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
+        $this->assertSame($minute->getBegin()->format('i'), (string)$minute);
     }
 
-    /**
-     * Test: Is Valid
-     *
-     * @access public
-     * @return void
-     */
     public function testIsValid()
     {
         $this->assertSame(true, Minute::isValid(new \DateTime('2014-03-05')));
@@ -202,83 +151,53 @@ class MinuteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Includes
-     *
-     * @access public
      * @dataProvider providerIncludes
-     * @param DateTime $begin
-     * @param PeriodInterface $period
-     * @param boolean $strict
-     * @param boolean $result
-     * @return void
      */
     public function testIncludes(\DateTime $begin, PeriodInterface $period, $strict, $result)
     {
-        $minute = new Minute($begin);
+        $minute = new Minute($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $minute->includes($period, $strict));
     }
 
-    /**
-     * Test: Format
-     *
-     * @access public
-     * @return void
-     */
     public function testFormat()
     {
-        $minute = new Minute(new \DateTime(date('Y-m-d H:00')));
+        $minute = new Minute(new \DateTime(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame(date('Y-m-d H:00'), $minute->format('Y-m-d H:i'));
     }
 
-    /**
-     * Test: Is Current?
-     *
-     * @access public
-     * @return void
-     */
     public function testIsCurrent()
     {
-        $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')));
-        $otherMinute   = new Minute(new \DateTime('1988-11-12 16:00'));
+        $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherMinute = new Minute(new \DateTime('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertTrue($currentMinute->isCurrent());
         $this->assertFalse($otherMinute->isCurrent());
     }
 
-    /**
-     * Data Provider: Includes
-     *
-     * @access public
-     * @return array
-     */
     public function providerIncludes()
     {
+        $factory = $this->prophesize(FactoryInterface::class)->reveal();
+
         return array(
-            array(new \DateTime('2013-09-01 12:00'),  new Year(new \DateTime('2013-01-01')),            true,   false),
-            array(new \DateTime('2013-09-01 12:00'),  new Year(new \DateTime('2013-01-01')),            false,  true),
-            array(new \DateTime('2013-09-01 12:00'),  new Year(new \DateTime('2013-01-01')),            false,  true),
-            array(new \DateTime('2013-09-01 12:00'),  new Day(new \DateTime('2013-09-01')),             true,   false),
-            array(new \DateTime('2013-09-01 12:00'),  new Day(new \DateTime('2013-09-01')),             false,  true),
-            array(new \DateTime('2013-09-01 12:00'),  new Hour(new \DateTime('2013-09-01 12:00')),      true,   false),
-            array(new \DateTime('2013-09-01 12:00'),  new Hour(new \DateTime('2013-09-01 12:00')),      false,  true),
-            array(new \DateTime('2013-09-01 12:00'),  new Minute(new \DateTime('2013-09-01 12:00')),    true,   true),
-            array(new \DateTime('2013-09-01 12:00'),  new Minute(new \DateTime('2013-09-01 12:34')),    false,  false),
-            array(new \DateTime('2013-09-01 12:00'),  new Second(new \DateTime('2013-09-01 12:00:00')), true,   true),
-            array(new \DateTime('2013-09-01 12:00'),  new Second(new \DateTime('2013-09-01 12:00:00')), false,  true),
-            array(new \DateTime('2013-09-01 12:00'),  new Second(new \DateTime('2013-09-01 12:00:30')), true,   true),
-            array(new \DateTime('2013-09-01 12:00'),  new Second(new \DateTime('2013-09-01 12:00:30')), false,  true),
+            array(new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), true, false),
+            array(new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true),
+            array(new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true),
+            array(new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), true, false),
+            array(new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), false, true),
+            array(new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), true, false),
+            array(new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), false, true),
+            array(new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:00'), $factory), true, true),
+            array(new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34'), $factory), false, false),
+            array(new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), true, true),
+            array(new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), false, true),
+            array(new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), true, true),
+            array(new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), false, true),
         );
     }
 
-    /**
-     * Test: Iteration (Iterator Interface)
-     *
-     * @access public
-     * @return void
-     */
     public function testIteration()
     {
         $start = new \DateTime('2012-01-15 15:47');
-        $minute = new Minute($start);
+        $minute = new Minute($start, new Factory());
         $i = 0;
         foreach ($minute as $secondKey => $second) {
             $this->assertTrue(is_int($secondKey) && $secondKey >= 0 && $secondKey < 60);

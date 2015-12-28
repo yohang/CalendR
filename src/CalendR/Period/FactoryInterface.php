@@ -90,6 +90,8 @@ interface FactoryInterface
 
     /**
      * @param int $firstWeekday
+     *
+     * @return FactoryInterface
      */
     public function setFirstWeekday($firstWeekday);
 

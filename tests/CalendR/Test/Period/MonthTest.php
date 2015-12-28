@@ -2,8 +2,9 @@
 
 namespace CalendR\Test\Period;
 
-use CalendR\Calendar;
 use CalendR\Period\Day;
+use CalendR\Period\Factory;
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
 
 class MonthTest extends \PHPUnit_Framework_TestCase
@@ -38,14 +39,14 @@ class MonthTest extends \PHPUnit_Framework_TestCase
     public static function providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek()
     {
         return array(
-            array(new Month(new \DateTime('2013-05-01'), Day::MONDAY), '2013-04-29', '2013-06-02'),
-            array(new Month(new \DateTime('2013-05-01'), Day::TUESDAY), '2013-04-30', '2013-06-03'),
-            array(new Month(new \DateTime('2013-05-01'), Day::WEDNESDAY), '2013-05-01', '2013-06-04'),
-            array(new Month(new \DateTime('2013-05-01'), Day::THURSDAY), '2013-04-25', '2013-06-05'),
-            array(new Month(new \DateTime('2013-05-01'), Day::FRIDAY), '2013-04-26', '2013-06-06'),
-            array(new Month(new \DateTime('2013-05-01'), Day::SATURDAY), '2013-04-27', '2013-05-31'),
-            array(new Month(new \DateTime('2013-05-01'), Day::SUNDAY), '2013-04-28', '2013-06-01'),
-            array(new Month(new \DateTime('2013-09-01'), Day::SUNDAY), '2013-09-01', '2013-10-05'),
+            array(new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'),
+            array(new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'),
+            array(new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'),
+            array(new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'),
+            array(new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'),
+            array(new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'),
+            array(new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'),
+            array(new Month(new \DateTime('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'),
         );
     }
 
@@ -54,7 +55,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
      */
     public function testContains($start, $contain, $notContain)
     {
-        $month = new Month($start);
+        $month = new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($month->contains($contain));
         $this->assertFalse($month->contains($notContain));
@@ -82,8 +83,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructInvalid($start)
     {
-        $calendar = new Calendar;
-        new Month($start, $calendar->getFactory());
+        new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     /**
@@ -91,13 +91,13 @@ class MonthTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Month($start);
+        new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     public function testIteration()
     {
         $start = new \DateTime('2012-01-01');
-        $month = new Month($start);
+        $month = new Month($start, new Factory());
 
         $i = 0;
 
@@ -119,13 +119,13 @@ class MonthTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $date = new \DateTime('2014-02-01');
-        $month = new Month($date);
+        $month = new Month($date, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($date->format('F'), (string) $month);
     }
 
     public function testGetDays()
     {
-        $month = new Month(new \DateTime('2012-01-01'));
+        $month = new Month(new \DateTime('2012-01-01'), new Factory());
         $days = $month->getDays();
 
         $this->assertEquals(31, count($days));
@@ -139,26 +139,26 @@ class MonthTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNext()
     {
-        $month = new Month(new \DateTime('2012-01-01'));
+        $month = new Month(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-02-01', $month->getNext()->getBegin()->format('Y-m-d'));
 
-        $month = new Month(new \DateTime('2012-12-01'));
+        $month = new Month(new \DateTime('2012-12-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2013-01-01', $month->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious()
     {
-        $month = new Month(new \DateTime('2012-01-01'));
+        $month = new Month(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2011-12-01', $month->getPrevious()->getBegin()->format('Y-m-d'));
 
-        $month = new Month(new \DateTime('2012-03-01'));
+        $month = new Month(new \DateTime('2012-03-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-02-01', $month->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod()
     {
         $date = new \DateTime('2012-01-01');
-        $month = new Month($date);
+        $month = new Month($date, $this->prophesize(FactoryInterface::class)->reveal());
         foreach ($month->getDatePeriod() as $dateTime) {
             $this->assertEquals($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
             $date->add(new \DateInterval('P1D'));
@@ -171,7 +171,7 @@ class MonthTest extends \PHPUnit_Framework_TestCase
         $otherDate = clone $currentDate;
         $otherDate->add(new \DateInterval('P5M'));
 
-        $currentMonth = new Month(new \DateTime(date('Y-m').'-01'));
+        $currentMonth = new Month(new \DateTime(date('Y-m').'-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $otherMonth = $currentMonth->getNext();
 
         $this->assertTrue($currentMonth->contains($currentDate));

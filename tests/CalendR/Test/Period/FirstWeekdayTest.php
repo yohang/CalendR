@@ -14,65 +14,6 @@ use CalendR\Period\Year;
  */
 class FirstWeekdayTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDefaultDayIsMonday()
-    {
-        $calendar = new Calendar;
-        $this->assertSame(Day::MONDAY, $calendar->getYear(2013)->getFirstWeekday());
-        $this->assertSame(Day::MONDAY, $calendar->getMonth(2013, 1)->getFirstWeekday());
-        $this->assertSame(Day::MONDAY, $calendar->getWeek(2013, 1)->getFirstWeekday());
-        $this->assertSame(Day::MONDAY, $calendar->getDay(2013, 1, 1)->getFirstWeekday());
-        $range = new Range(new \DateTime, new \DateTime('+3 days'));
-        $this->assertSame(Day::MONDAY, $range->getFirstWeekday());
-    }
-
-    public function testFactoryTransmitDefaultWeekday()
-    {
-        $calendar = new Calendar;
-        $calendar->setFirstWeekday(Day::SUNDAY);
-        $this->assertSame(Day::SUNDAY, $calendar->getYear(2013)->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $calendar->getMonth(2013, 1)->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $calendar->getWeek(2013, 1)->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $calendar->getDay(2013, 1, 1)->getFirstWeekday());
-    }
-
-    public function testYearTransmitToMonth()
-    {
-        $year = new Year(new \DateTime('2013-01-01'), Day::SUNDAY);
-        $this->assertSame(Day::SUNDAY, $year->getPrevious()->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $year->getNext()->getFirstWeekday());
-        foreach ($year as $month) {
-            $this->assertSame(Day::SUNDAY, $month->getFirstWeekday());
-        }
-    }
-
-    public function testMonthTransmitToWeek()
-    {
-        $month = new Month(new \DateTime('2013-01-01'), Day::SUNDAY);
-        $this->assertSame(Day::SUNDAY, $month->getPrevious()->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $month->getNext()->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $month->getExtendedMonth()->getFirstWeekday());
-        foreach ($month as $week) {
-            $this->assertSame(Day::SUNDAY, $week->getFirstWeekday());
-        }
-    }
-
-    public function testWeekTransmitToDay()
-    {
-        $week = new Week(new \DateTime('2013-W01'), Day::SUNDAY);
-        $this->assertSame(Day::SUNDAY, $week->getPrevious()->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $week->getNext()->getFirstWeekday());
-        foreach ($week as $day) {
-            $this->assertSame(Day::SUNDAY, $day->getFirstWeekday());
-        }
-    }
-
-    public function testDayTransmitToPreviousAndNext()
-    {
-        $day = new Day(new \DateTime('2013-01-01'), Day::SUNDAY);
-        $this->assertSame(Day::SUNDAY, $day->getPrevious()->getFirstWeekday());
-        $this->assertSame(Day::SUNDAY, $day->getNext()->getFirstWeekday());
-    }
-
     public function testIterateOnMonth()
     {
         $calendar = new Calendar;
@@ -92,15 +33,12 @@ class FirstWeekdayTest extends \PHPUnit_Framework_TestCase
 
     public function testSetFirstWeekday()
     {
-        $factory = new \CalendR\Calendar;
-        $month = $factory->getMonth(2014, 5);
+        $factory = new Calendar;
 
-        $this->assertSame($factory->getFirstWeekday(), $month->getFirstWeekday());
-
-        $month->setFirstWeekday(Day::FRIDAY);
+        $factory->setFirstWeekday(Day::FRIDAY);
         $this->assertSame(Day::FRIDAY, $factory->getFirstWeekday());
 
-        $month->setFirstWeekday(Day::THURSDAY);
+        $factory->setFirstWeekday(Day::THURSDAY);
         $this->assertSame(Day::THURSDAY, $factory->getFirstWeekday());
     }
 }

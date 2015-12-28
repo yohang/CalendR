@@ -36,20 +36,10 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $factory;
 
     /**
-     * @param FactoryInterface|int $factory
-     *
-     * @throws Exception\NotAWeekday
-     * @throws Exception\InvalidArgument
+     * @param FactoryInterface $factory
      */
-    public function __construct($factory = null)
+    public function __construct(FactoryInterface $factory)
     {
-        if (is_numeric($factory)) { // for backwards compatibility
-            $factory = new Factory(array('first_weekday' => $factory));
-        }
-        if (!(null === $factory || $factory instanceof FactoryInterface)) {
-            throw new Exception\InvalidArgument('Factory parameter must implement CalendR\Period\FactoryInterface');
-        }
-
         $this->factory = $factory;
     }
 
@@ -196,21 +186,5 @@ abstract class PeriodAbstract implements PeriodInterface
         }
 
         return $this->factory;
-    }
-
-    /**
-     * @param int $firstWeekday
-     */
-    public function setFirstWeekday($firstWeekday)
-    {
-        $this->getFactory()->setFirstWeekday($firstWeekday);
-    }
-
-    /**
-     * @return int
-     */
-    public function getFirstWeekday()
-    {
-        return $this->getFactory()->getFirstWeekday();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Period\Factory;
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\Week;
 
 class WeekTest extends \PHPUnit_Framework_TestCase
@@ -39,7 +41,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
      */
     public function testContains($start, $contain, $notContain)
     {
-        $week = new Week($start);
+        $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($week->contains($contain));
         $this->assertFalse($week->contains($notContain));
@@ -50,7 +52,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
      */
     public function testNumber($start, $number)
     {
-        $week = new Week($start);
+        $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertEquals($week->getNumber(), $number);
     }
@@ -60,13 +62,13 @@ class WeekTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Week($start);
+        new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     public function testIteration()
     {
         $start = new \DateTime('2012-W01');
-        $week = new Week($start);
+        $week = new Week($start, new Factory);
 
         $i = 0;
 
@@ -83,7 +85,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
     public function testGetDatePeriod()
     {
         $date = new \DateTime('2012-01-01');
-        $week = new Week($date);
+        $week = new Week($date, $this->prophesize(FactoryInterface::class)->reveal());
         foreach ($week->getDatePeriod() as $dateTime) {
             $this->assertEquals($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
             $date->add(new \DateInterval('P1D'));
@@ -93,7 +95,7 @@ class WeekTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $date = new \DateTime(date('Y-\\WW'));
-        $week = new Week($date);
+        $week = new Week($date, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($date->format('W'), (string) $week);
     }
 }
