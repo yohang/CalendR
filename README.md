@@ -23,7 +23,7 @@ Create a composer.json file
 ```json
     {
         "require": {
-            "yohang/calendr": "1.*"
+            "yohang/calendr": "^1.1"
         }
     }
 ```
@@ -44,7 +44,7 @@ Install composer and run it
 Contribute
 ----------
 
-CalendR is still in beta and all comments/PRs are welcome :)
+Calendar is open to contributions. Merging delays can vary depending to my free time, but always be welcome.
 
 License
 -------
@@ -55,7 +55,4 @@ TODO (And / Or planned)
 -----------------------
 
  * Renderers (WIP)
- * Add providers for some hosted services
  * Add Hour, Minute and Second periods (maybe, don't know if this is really useful).
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/6dcce0ab659d3a643298bb645fdb643f "githalytics.com")](http://githalytics.com/yohan/CalendR)
