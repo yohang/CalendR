@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\DefaultQuoteStrategy;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Doctrine\ORM\Tools\SchemaTool;
 
 class BaseDoctrine2TestCase extends \PHPUnit_Framework_TestCase
@@ -112,6 +113,14 @@ class BaseDoctrine2TestCase extends \PHPUnit_Framework_TestCase
             ->method('getClassMetadataFactoryName')
             ->will($this->returnValue('Doctrine\\ORM\\Mapping\\ClassMetadataFactory'))
         ;
+
+        $config->expects($this->any())
+            ->method('getRepositoryFactory')
+            ->will($this->returnValue(new DefaultRepositoryFactory));
+
+        $config->expects($this->any())
+            ->method('getDefaultQueryHints')
+            ->will($this->returnValue(array()));
 
         $mappingDriver = $this->getMetadataDriverImplementation();
 
