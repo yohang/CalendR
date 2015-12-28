@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\Range;
 
 class RangeTest extends \PHPUnit_Framework_TestCase
@@ -21,7 +22,7 @@ class RangeTest extends \PHPUnit_Framework_TestCase
      */
     public function testContains($begin, $end, $contain, $notContain)
     {
-        $range = new Range($begin, $end);
+        $range = new Range($begin, $end, $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($range->contains($contain));
         $this->assertFalse($range->contains($notContain));
@@ -29,20 +30,20 @@ class RangeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNext()
     {
-        $range = new Range(new \DateTime('2012-01-01'), new \DateTime('2012-01-03'));
+        $range = new Range(new \DateTime('2012-01-01'), new \DateTime('2012-01-03'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-01-03', $range->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious()
     {
-        $range = new Range(new \DateTime('2012-01-01'), new \DateTime('2012-01-03'));
+        $range = new Range(new \DateTime('2012-01-01'), new \DateTime('2012-01-03'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2011-12-30', $range->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod()
     {
         $begin = new \DateTime('2012-01-01');
-        $range = new Range($begin, new \DateTime('2012-01-03'));
+        $range = new Range($begin, new \DateTime('2012-01-03'), $this->prophesize(FactoryInterface::class)->reveal());
         foreach ($range->getDatePeriod() as $dateTime) {
             $this->assertEquals($begin->format('Y-m-d'), $dateTime->format('Y-m-d'));
             $begin->add(new \DateInterval('P2D'));

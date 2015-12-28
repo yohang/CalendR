@@ -145,13 +145,4 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
             array(2013, 8, Day::SUNDAY, '2013-02-17'),
         );
     }
-    
-    public function testStrictDates()
-    {
-        // When we start, the option "strict_dates" should be set to false.
-        $calendar = new Calendar;
-        $this->assertSame(false, $calendar->getStrictDates());
-        $calendar->setStrictDates(true);
-        $this->assertSame(true, $calendar->getStrictDates());
-    }
 }

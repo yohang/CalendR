@@ -15,32 +15,6 @@ class Month extends PeriodAbstract implements \Iterator
     private $current;
 
     /**
-     * @param \DateTime        $start
-     * @param FactoryInterface $factory
-     *
-     * @throws Exception\NotAMonth
-     */
-    public function __construct(\DateTime $start, $factory = null)
-    {
-        parent::__construct($factory);
-        if ($this->getFactory()->getStrictDates() && !self::isValid($start)) {
-            throw new Exception\NotAMonth();
-        }
-
-        if (!self::isValid($start)) {
-            @trigger_error('The non-strict construction of time periods is deprecated and will be removed in 2.0. build your period using the Calendar class.', E_USER_DEPRECATED);
-        }
-
-        // Not in strict mode, accept any timestamp and set the begin date back to the beginning of this period.
-        $this->begin = clone $start;
-        $this->begin->setDate($this->begin->format('Y'), $this->begin->format('m'), 1);
-        $this->begin->setTime(0, 0, 0);
-
-        $this->end = clone $this->begin;
-        $this->end->add($this->getDateInterval());
-    }
-
-    /**
      * Returns the period as a DatePeriod.
      *
      * @return \DatePeriod

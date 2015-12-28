@@ -36,23 +36,21 @@ abstract class PeriodAbstract implements PeriodInterface
     protected $factory;
 
     /**
-     * @param FactoryInterface|int $factory
+     * @param \DateTime        $begin
+     * @param FactoryInterface $factory
      *
-     * @throws Exception\NotAWeekday
-     * @throws Exception\InvalidArgument
+     * @throws \CalendR\Exception
      */
-    public function __construct($factory = null)
+    public function __construct(\DateTime $begin, FactoryInterface $factory)
     {
-        if (is_numeric($factory)) { // for backwards compatibility
-            $factory = new Factory(array('first_weekday' => $factory));
-
-            @trigger_error('Factory is now required for period construction.', E_USER_DEPRECATED);
-        }
-        if (!(null === $factory || $factory instanceof FactoryInterface)) {
-            throw new Exception\InvalidArgument('Factory parameter must implement CalendR\Period\FactoryInterface');
-        }
-
         $this->factory = $factory;
+        if (!static::isValid($begin)) {
+            throw $this->createInvalidException();
+        }
+
+        $this->begin = clone $begin;
+        $this->end   = clone $begin;
+        $this->end->add($this->getDateInterval());
     }
 
     /**
@@ -201,18 +199,12 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
-     * @param int $firstWeekday
+     * @return \CalendR\Exception
      */
-    public function setFirstWeekday($firstWeekday)
+    protected function createInvalidException()
     {
-        $this->getFactory()->setFirstWeekday($firstWeekday);
-    }
+        $class = 'CalendR\Period\Exception\NotA' . (new \ReflectionClass($this))->getShortName();
 
-    /**
-     * @return int
-     */
-    public function getFirstWeekday()
-    {
-        return $this->getFactory()->getFirstWeekday();
+        return new $class;
     }
 }

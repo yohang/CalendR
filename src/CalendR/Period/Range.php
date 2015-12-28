@@ -25,10 +25,9 @@ class Range extends PeriodAbstract
      */
     public function __construct(\DateTime $begin, \DateTime $end, $factory = null)
     {
-        $this->begin = clone $begin;
-        $this->end = clone $end;
-
-        parent::__construct($factory);
+        $this->factory = $factory;
+        $this->begin   = clone $begin;
+        $this->end     = clone $end;
     }
 
     /**

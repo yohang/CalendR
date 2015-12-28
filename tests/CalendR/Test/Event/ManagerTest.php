@@ -1,9 +1,11 @@
 <?php
 namespace CalendR\Test\Event;
 
+use CalendR\Event\Collection\Indexed;
 use CalendR\Event\Manager;
 use CalendR\Event\Event;
 use CalendR\Period\Day;
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
 use CalendR\Event\Provider\Basic;
 
@@ -34,26 +36,28 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testFind()
     {
-        $this->assertSame(0, count($this->object->find(new Day(new \DateTime()))));
-        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-01')))));
-        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-04')))));
+        $factory = $this->prophesize(FactoryInterface::class)->reveal();
 
-        $this->assertSame(2, count($this->object->find(new Month(new \DateTime('2012-01-01')))));
+        $this->assertSame(0, count($this->object->find(new Day(new \DateTime('00:00:00'), $factory))));
+        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-01 00:00:00'), $factory))));
+        $this->assertSame(1, count($this->object->find(new Day(new \DateTime('2012-01-04 00:00:00'), $factory))));
+
+        $this->assertSame(2, count($this->object->find(new Month(new \DateTime('2012-01-01 00:00:00'), $factory))));
 
         $this->assertSame(1, count($this->object->find(
-            new Month(new \DateTime('2012-01-01')),
+            new Month(new \DateTime('2012-01-01'), $factory),
             array('providers' => 'basic-1')
         )));
         $this->assertSame(1, count($this->object->find(
-            new Month(new \DateTime('2012-01-01')),
+            new Month(new \DateTime('2012-01-01'), $factory),
             array('providers' => array('basic-2'))
         )));
         $this->assertSame(2, count($this->object->find(
-            new Month(new \DateTime('2012-01-01')),
+            new Month(new \DateTime('2012-01-01'), $factory),
             array('providers' => array('basic-1', 'basic-2'))
         )));
         $this->assertSame(2, count($this->object->find(
-            new Month(new \DateTime('2012-01-01')),
+            new Month(new \DateTime('2012-01-01'), $factory),
             array('providers' => array())
         )));
     }
@@ -62,16 +66,16 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'CalendR\\Event\\Collection\\Basic',
-            $this->object->find(new Month(new \DateTime('2012-01-01')))
+            $this->object->find(new Month(new \DateTime('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal()))
         );
 
         $this->object->setCollectionInstantiator(function() {
-            return new \CalendR\Event\Collection\Indexed;
+            return new Indexed;
         });
 
         $this->assertInstanceOf(
             'CalendR\\Event\\Collection\\Indexed',
-            $this->object->find(new Month(new \DateTime('2012-01-01')))
+            $this->object->find(new Month(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal()))
         );
     }
 
@@ -81,6 +85,6 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function testFindWithoutProvider()
     {
         $manager = new Manager;
-        $manager->find(new Day(new \DateTime()));
+        $manager->find(new Day(new \DateTime('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal()));
     }
 }

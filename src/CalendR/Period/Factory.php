@@ -145,7 +145,6 @@ class Factory implements FactoryInterface
                     'year_class' => 'CalendR\Period\Year',
                     'range_class' => 'CalendR\Period\Range',
                     'first_weekday' => Day::MONDAY,
-                    'strict_dates' => false,
                 )
             );
             $this->setDefaultOptions($this->resolver);
@@ -189,21 +188,5 @@ class Factory implements FactoryInterface
         $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
 
         return $day;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStrictDates()
-    {
-        return $this->getOption('strict_dates');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStrictDates($strict)
-    {
-        $this->setOption('strict_dates', (bool) $strict);
     }
 }

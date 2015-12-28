@@ -69,11 +69,13 @@ class IndexedTest extends \PHPUnit_Framework_TestCase
 
     public function findProvider()
     {
+        $factory = $this->prophesize(Period\FactoryInterface::class)->reveal();
+
         return array(
             array('2012-05-09', 1, 'event-a'),
             array(new \DateTime('2012-05-09T05:56:00'), 1, 'event-a'),
-            array(new Period\Day(new \DateTime('2012-05-09')), 1, 'event-a'),
-            array(new Period\Day(new \DateTime('2011-05-09')), 0, null),
+            array(new Period\Day(new \DateTime('2012-05-09'), $factory), 1, 'event-a'),
+            array(new Period\Day(new \DateTime('2011-05-09'), $factory), 0, null),
         );
     }
 

@@ -3,7 +3,8 @@
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
-use CalendR\Period\Month;
+use CalendR\Period\Factory;
+use CalendR\Period\FactoryInterface;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Year;
 
@@ -30,21 +31,9 @@ class DayTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerConstructInvalid
      * @expectedException \CalendR\Period\Exception\NotADay
      */
-    public function testConstructInvalidStrict($start)
+    public function testConstructInvalid($start)
     {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(true);
-        new Day($start, $calendar->getFactory());
-    }
-
-    /**
-     * @dataProvider providerConstructInvalid
-     */
-    public function testConstructInvalidLazy($start)
-    {
-        $calendar = new \CalendR\Calendar;
-        $calendar->setStrictDates(false);
-        new Day($start, $calendar->getFactory());
+        new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     /**
@@ -52,7 +41,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Day($start);
+        new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
     public static function providerContains()
@@ -70,7 +59,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
      */
     public function testContains($start, $contain, $notContain)
     {
-        $day = new Day($start);
+        $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($day->contains($contain));
         $this->assertFalse($day->contains($notContain));
@@ -78,25 +67,25 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNext()
     {
-        $day = new Day(new \DateTime('2012-01-01'));
+        $day = new Day(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-01-02', $day->getNext()->getBegin()->format('Y-m-d'));
 
-        $day = new Day(new \DateTime('2012-01-31'));
+        $day = new Day(new \DateTime('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-02-01', $day->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious()
     {
-        $day = new Day(new \DateTime('2012-01-01'));
+        $day = new Day(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2011-12-31', $day->getPrevious()->getBegin()->format('Y-m-d'));
 
-        $day = new Day(new \DateTime('2012-01-31'));
+        $day = new Day(new \DateTime('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertEquals('2012-01-30', $day->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod()
     {
-        $day = new Day(new \DateTime('2012-01-31'));
+        $day = new Day(new \DateTime('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
         foreach ($day->getDatePeriod() as $dateTime) {
             $this->assertEquals('2012-01-31', $dateTime->format('Y-m-d'));
         }
@@ -108,7 +97,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
         $otherDate = clone $currentDate;
         $otherDate->add(new \DateInterval('P5D'));
 
-        $currentDay = new Day(new \DateTime(date('Y-m-d')));
+        $currentDay = new Day(new \DateTime(date('Y-m-d')), $this->prophesize(FactoryInterface::class)->reveal());
         $otherDay = $currentDay->getNext();
 
         $this->assertTrue($currentDay->contains($currentDate));
@@ -118,7 +107,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $day = new Day(new \DateTime(date('Y-m-d')));
+        $day = new Day(new \DateTime(date('Y-m-d')), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($day->getBegin()->format('l'), (string)$day);
     }
 
@@ -137,21 +126,21 @@ class DayTest extends \PHPUnit_Framework_TestCase
      */
     public function testIncludes(\DateTime $begin, PeriodInterface $period, $strict, $result)
     {
-        $day = new Day($begin);
+        $day = new Day($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $day->includes($period, $strict));
     }
 
     public function testFormat()
     {
-        $day = new Day(new \DateTime);
+        $day = new Day(new \DateTime('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertSame(date('Y-m-d'), $day->format('Y-m-d'));
     }
 
     public function testIsCurrent()
     {
-        $currentDay = new Day(new \DateTime);
-        $otherDay   = new Day(new \DateTime('1988-11-12'));
+        $currentDay = new Day(new \DateTime('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherDay   = new Day(new \DateTime('1988-11-12'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($currentDay->isCurrent());
         $this->assertFalse($otherDay->isCurrent());
@@ -159,17 +148,19 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function includesDataProvider()
     {
+        $factory = $this->prophesize(FactoryInterface::class)->reveal();
+
         return array(
-            array(new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), true, false),
-            array(new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), false, true),
-            array(new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01')), true, true),
+            array(new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), true, false),
+            array(new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), false, true),
+            array(new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01'), $factory), true, true),
         );
     }
 
     public function testIteration()
     {
         $start = new \DateTime('2012-01-15');
-        $day = new Day($start);
+        $day = new Day($start, new Factory());
 
         $i = 0;
 

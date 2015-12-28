@@ -90,6 +90,8 @@ interface FactoryInterface
 
     /**
      * @param int $firstWeekday
+     *
+     * @return FactoryInterface
      */
     public function setFirstWeekday($firstWeekday);
 
@@ -106,18 +108,4 @@ interface FactoryInterface
      * @return \DateTime
      */
     public function findFirstDayOfWeek($dateTime);
-
-    /**
-     * @deprecated strict dates will be forced to true in 2.0
-     *
-     * @return bool
-     */
-    public function getStrictDates();
-
-    /**
-     * @deprecated strict dates will be forced to true in 2.0
-     *
-     * @param bool $strict
-     */
-    public function setStrictDates($strict);
 }
