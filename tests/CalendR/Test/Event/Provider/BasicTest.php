@@ -28,6 +28,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
             new Event('event-2', new \DateTime('2011-01-01T20:30'), new \DateTime('2012-01-01T01:30')),
             new Event('event-3', new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T21:30')),
             new Event('event-4', new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T00:00')),
+            new Event('event-5', new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-29T00:00')),
         );
     }
 
@@ -50,6 +51,8 @@ class BasicTest extends \PHPUnit_Framework_TestCase
         return array(
             array(new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), array(1, 3, 4)),
             array(new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), array(2)),
+            array(new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), array(5)),
+            array(new \DateTime('2015-12-27T00:00'), new \DateTime('2015-12-28T00:00'), array()),
         );
     }
 
