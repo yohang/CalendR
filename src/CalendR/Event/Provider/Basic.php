@@ -27,7 +27,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     protected $events = array();
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
     {
@@ -35,7 +35,8 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
         foreach ($this->events as $event) {
             if (
                 $event->contains($begin) || $event->contains($end) ||
-                (1 === $event->getBegin()->diff($begin)->invert && 0 === $event->getEnd()->diff($end)->invert)
+                ($begin <= $event->getBegin() && $event->getEnd() <= $end) ||
+                ($event->getBegin() < $begin && $end < $event->getEnd())
             ) {
                 $events[] = $event;
             }

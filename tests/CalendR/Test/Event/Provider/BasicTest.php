@@ -63,7 +63,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
         }
 
         $events = $this->object->getEvents($begin, $end);
-        $this->assertSame(count($expectedEvents), count($events));
+        $this->assertCount(count($expectedEvents), $events);
         foreach ($events as $i => $event) {
             $this->assertSame('event-'.$expectedEvents[$i], $events[$i]->getUid());
         }
