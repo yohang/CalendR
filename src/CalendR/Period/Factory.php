@@ -12,7 +12,6 @@
 namespace CalendR\Period;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * The period factory.
@@ -29,7 +28,7 @@ class Factory implements FactoryInterface
     protected $options;
 
     /**
-     * @var OptionsResolverInterface
+     * @var OptionsResolver
      */
     protected $resolver;
 
@@ -111,7 +110,8 @@ class Factory implements FactoryInterface
      */
     public function setOption($name, $value)
     {
-        $this->resolver->replaceDefaults($this->options);
+        $this->resolver->clear();
+        $this->resolver->setDefaults($this->options);
         $this->options = $this->resolver->resolve(array($name => $value));
     }
 
@@ -156,9 +156,9 @@ class Factory implements FactoryInterface
     /**
      * Override this method if you have to change default/allowed options.
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    protected function setDefaultOptions(OptionsResolver $resolver)
     {
     }
 
