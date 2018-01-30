@@ -21,7 +21,7 @@ class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->calendar = $this->getMock('CalendR\Calendar');
+        $this->calendar = $this->createMock('CalendR\Calendar');
         $this->object   = new CalendRExtension($this->calendar);
     }
 
@@ -43,7 +43,7 @@ class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
     public function testItCallsCalendarFunctions()
     {
         foreach (array('year', 'month', 'week', 'day') as $periodName) {
-            $period = $this->getMock('CalendR\Perdiod\PeriodInterface');
+            $period = $this->createMock('CalendR\Period\PeriodInterface');
             $this->calendar
                 ->expects($this->once())
                 ->method('get' . ucfirst($periodName))
@@ -53,8 +53,8 @@ class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($period, $this->object->{'get' . ucfirst($periodName)}('foo', 'bar'));
         }
 
-        $events = array($this->getMock('CalendR\Event\EventInterface'));
-        $period = $this->getMock('CalendR\Period\PeriodInterface');
+        $events = array($this->createMock('CalendR\Event\EventInterface'));
+        $period = $this->createMock('CalendR\Period\PeriodInterface');
         $this->calendar
             ->expects($this->once())
             ->method('getEvents')

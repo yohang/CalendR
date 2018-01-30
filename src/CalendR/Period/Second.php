@@ -26,7 +26,9 @@ class Second extends PeriodAbstract
      */
     public static function isValid(\DateTime $start)
     {
-        return $start->format('u') === '000000';
+        // keeping microsecond check for backwards compatability with PHP < 7.1
+        // otherwise, any DateTime is valid, even with microseconds
+        return PHP_VERSION_ID < 70100 ? $start->format('u') === '000000' : true;
     }
 
     /**

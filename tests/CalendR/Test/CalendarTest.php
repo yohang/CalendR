@@ -86,9 +86,9 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEvents()
     {
-        $em       = $this->getMock('CalendR\Event\Manager');
-        $period   = $this->getMock('CalendR\Period\PeriodInterface');
-        $events   = array($this->getMock('CalendR\Event\EventInterface'));
+        $em       = $this->createMock('CalendR\Event\Manager');
+        $period   = $this->createMock('CalendR\Period\PeriodInterface');
+        $events   = array($this->createMock('CalendR\Event\EventInterface'));
         $calendar = new Calendar;
         $calendar->setEventManager($em);
         $em->expects($this->once())->method('find')->with($period, array())->will($this->returnValue($events));
@@ -99,7 +99,7 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
     public function testGetFirstWeekday()
     {
         $calendar = new Calendar;
-        $factory  = $this->getMock('CalendR\Period\FactoryInterface');
+        $factory  = $this->createMock('CalendR\Period\FactoryInterface');
         $calendar->setFactory($factory);
         $factory->expects($this->once())->method('getFirstWeekday')->will($this->returnValue(Day::SUNDAY));
 

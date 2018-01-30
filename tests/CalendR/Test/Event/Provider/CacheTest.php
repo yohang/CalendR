@@ -29,8 +29,8 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->cache    = $this->getMock('Doctrine\Common\Cache\Cache');
-        $this->provider = $this->getMock('CalendR\Event\Provider\ProviderInterface');
+        $this->cache    = $this->createMock('Doctrine\Common\Cache\Cache');
+        $this->provider = $this->createMock('CalendR\Event\Provider\ProviderInterface');
         $this->object = new Cache($this->cache, $this->provider, 3600);
     }
 

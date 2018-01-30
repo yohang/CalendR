@@ -27,8 +27,8 @@ class AggregateTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->provider1 = $this->getMock('CalendR\Event\Provider\ProviderInterface');
-        $this->provider2 = $this->getMock('CalendR\Event\Provider\ProviderInterface');
+        $this->provider1 = $this->createMock('CalendR\Event\Provider\ProviderInterface');
+        $this->provider2 = $this->createMock('CalendR\Event\Provider\ProviderInterface');
         $this->object    = new Aggregate(array($this->provider1));
     }
 
@@ -47,8 +47,8 @@ class AggregateTest extends \PHPUnit_Framework_TestCase
     {
         $begin  = new \DateTime;
         $end    = new \DateTime;
-        $event1 = $this->getMock('CalendR\Event\EventInterface');
-        $event2 = $this->getMock('CalendR\Event\EventInterface');
+        $event1 = $this->createMock('CalendR\Event\EventInterface');
+        $event2 = $this->createMock('CalendR\Event\EventInterface');
 
         $this->provider1->expects($this->once())->method('getEvents')->with($begin, $end)->will($this->returnValue(array($event1)));
         $this->provider2->expects($this->once())->method('getEvents')->with($begin, $end)->will($this->returnValue(array($event2)));

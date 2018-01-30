@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Period\Exception\NotASecond;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Second;
 use CalendR\Period\Minute;
@@ -57,10 +58,14 @@ class SecondTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider providerConstructInvalid
-     * @expectedException \CalendR\Period\Exception\NotASecond
      */
     public function testConstructInvalid($start)
     {
+        // microseconds are valid for PHP 7.1+ due to new DateTime default
+        if (PHP_VERSION_ID < 70100) {
+            $this->expectException(NotASecond::class);
+        }
+
         new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 

@@ -3,6 +3,7 @@
 namespace CalendR\Test\Extension\Silex;
 
 use CalendR\Extension\Silex\Provider\CalendRServiceProvider;
+use CalendR\Extension\Twig\CalendRExtension;
 use CalendR\Event\Provider;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
@@ -54,6 +55,6 @@ class CalendRServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->app->register($this->provider);
         $this->app->register(new TwigServiceProvider());
         $this->app->boot();
-        $this->assertInstanceOf('CalendR\\Extension\\Twig\\CalendRExtension', $this->app['twig']->getExtension('calendr'));
+        $this->assertInstanceOf(CalendRExtension::class, $this->app['twig']->getExtension(CalendRExtension::class));
     }
 }

@@ -33,7 +33,7 @@ class EventRepositoryTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('You need PHP5.4 to use and test traits.');
         }
 
-        $this->em            = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $this->em            = $this->createMock('Doctrine\ORM\EntityManagerInterface');
         $this->classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
             ->getMock();
@@ -64,7 +64,7 @@ class EventRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEvents($begin, $end, array $providedEvents)
     {
-        $expr  = $this->getMock('Doctrine\ORM\Query\Expr');
+        $expr  = $this->createMock('Doctrine\ORM\Query\Expr');
         $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
             ->disableOriginalConstructor()
             ->setMethods(array('_doExecute', 'getSQL', 'execute', 'getResult'))
