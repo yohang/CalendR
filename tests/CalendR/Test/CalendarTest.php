@@ -4,8 +4,9 @@ namespace CalendR\Test;
 
 use CalendR\Calendar;
 use CalendR\Period\Day;
+use PHPUnit\Framework\TestCase;
 
-class CalendarTest extends \PHPUnit_Framework_TestCase
+class CalendarTest extends TestCase
 {
     public function testGetYear()
     {
@@ -86,9 +87,9 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEvents()
     {
-        $em       = $this->getMock('CalendR\Event\Manager');
-        $period   = $this->getMock('CalendR\Period\PeriodInterface');
-        $events   = array($this->getMock('CalendR\Event\EventInterface'));
+        $em       = $this->getMockBuilder('CalendR\Event\Manager')->getMock();
+        $period   = $this->getMockBuilder('CalendR\Period\PeriodInterface')->getMock();
+        $events   = array($this->getMockBuilder('CalendR\Event\EventInterface')->getMock());
         $calendar = new Calendar;
         $calendar->setEventManager($em);
         $em->expects($this->once())->method('find')->with($period, array())->will($this->returnValue($events));
@@ -99,7 +100,7 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
     public function testGetFirstWeekday()
     {
         $calendar = new Calendar;
-        $factory  = $this->getMock('CalendR\Period\FactoryInterface');
+        $factory  = $this->getMockBuilder('CalendR\Period\FactoryInterface')->getMock();
         $calendar->setFactory($factory);
         $factory->expects($this->once())->method('getFirstWeekday')->will($this->returnValue(Day::SUNDAY));
 

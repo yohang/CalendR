@@ -12,8 +12,9 @@ use Doctrine\ORM\Mapping\DefaultQuoteStrategy;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Doctrine\ORM\Tools\SchemaTool;
+use PHPUnit\Framework\TestCase;
 
-class BaseDoctrine2TestCase extends \PHPUnit_Framework_TestCase
+class BaseDoctrine2TestCase extends TestCase
 {
     /**
      * @var CachedReader
@@ -88,7 +89,7 @@ class BaseDoctrine2TestCase extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $config = $this->getMock($configurationClass, $mockMethods);
+        $config = $this->getMockBuilder($configurationClass)->setMethods($mockMethods)->getMock();
 
         $config
             ->expects($this->once())

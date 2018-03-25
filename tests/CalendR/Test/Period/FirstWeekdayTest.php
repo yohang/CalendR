@@ -8,11 +8,12 @@ use CalendR\Period\Month;
 use CalendR\Period\Range;
 use CalendR\Period\Week;
 use CalendR\Period\Year;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
-class FirstWeekdayTest extends \PHPUnit_Framework_TestCase
+class FirstWeekdayTest extends TestCase
 {
     public function testIterateOnMonth()
     {

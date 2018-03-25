@@ -4,10 +4,11 @@ namespace CalendR\Test\Extension\Silex;
 
 use CalendR\Extension\Silex\Provider\CalendRServiceProvider;
 use CalendR\Event\Provider;
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 
-class CalendRServiceProviderTest extends \PHPUnit_Framework_TestCase
+class CalendRServiceProviderTest extends TestCase
 {
     /**
      * @var Application
@@ -47,6 +48,8 @@ class CalendRServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->app->register($this->provider);
         $this->app->boot();
         // Just expecting all is good
+
+        $this->assertTrue(true);
     }
 
     public function testBootWithTwig()

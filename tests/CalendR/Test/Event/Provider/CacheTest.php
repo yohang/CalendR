@@ -4,13 +4,14 @@ namespace CalendR\Test\Event\Provider;
 
 use CalendR\Event\Event;
 use CalendR\Event\Provider\Cache;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
-class CacheTest extends \PHPUnit_Framework_TestCase
+class CacheTest extends TestCase
 {
     /**
      * @var Cache
@@ -29,8 +30,8 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->cache    = $this->getMock('Doctrine\Common\Cache\Cache');
-        $this->provider = $this->getMock('CalendR\Event\Provider\ProviderInterface');
+        $this->cache    = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
+        $this->provider = $this->getMockBuilder('CalendR\Event\Provider\ProviderInterface')->getMock();
         $this->object = new Cache($this->cache, $this->provider, 3600);
     }
 

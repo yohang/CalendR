@@ -10,8 +10,9 @@ use CalendR\Period\Hour;
 use CalendR\Period\Day;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Year;
+use PHPUnit\Framework\TestCase;
 
-class HourTest extends \PHPUnit_Framework_TestCase
+class HourTest extends TestCase
 {
     public static function providerConstructInvalid()
     {
@@ -46,7 +47,9 @@ class HourTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Hour($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour($start, $this->prophesize(FactoryInterface::class)->reveal());
+
+        $this->assertInstanceOf(Hour::class, $hour);
     }
 
     public static function providerContains()

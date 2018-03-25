@@ -4,8 +4,9 @@ namespace CalendR\Test\Period;
 
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Range;
+use PHPUnit\Framework\TestCase;
 
-class RangeTest extends \PHPUnit_Framework_TestCase
+class RangeTest extends TestCase
 {
     public static function providerContains()
     {

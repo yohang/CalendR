@@ -6,8 +6,9 @@ use CalendR\Period\Day;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
+use PHPUnit\Framework\TestCase;
 
-class MonthTest extends \PHPUnit_Framework_TestCase
+class MonthTest extends TestCase
 {
     public static function providerConstructInvalid()
     {
@@ -91,7 +92,9 @@ class MonthTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $month = new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
+
+        $this->assertInstanceOf(Month::class, $month);
     }
 
     public function testIteration()

@@ -5,8 +5,9 @@ namespace CalendR\Test\Event\Collection;
 use CalendR\Event\Collection;
 use CalendR\Event\Event;
 use CalendR\Period;
+use PHPUnit\Framework\TestCase;
 
-class BasicTest extends \PHPUnit_Framework_TestCase
+class BasicTest extends TestCase
 {
     private static $events = array();
     /**

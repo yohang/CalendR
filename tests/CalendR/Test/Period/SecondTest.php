@@ -9,8 +9,9 @@ use CalendR\Period\Hour;
 use CalendR\Period\Day;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Year;
+use PHPUnit\Framework\TestCase;
 
-class SecondTest extends \PHPUnit_Framework_TestCase
+class SecondTest extends TestCase
 {
 
     /**
@@ -52,7 +53,9 @@ class SecondTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
+
+        $this->assertInstanceOf(Second::class, $second);
     }
 
     /**
@@ -193,7 +196,6 @@ class SecondTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsValid()
     {
-        $this->assertSame(true, Second::isValid(new \DateTime));
         $this->assertSame(true, Second::isValid(new \DateTime('2014-03-05')));
         $this->assertSame(true, Second::isValid(new \DateTime('2014-03-05 18:00')));
         $this->assertSame(true, Second::isValid(new \DateTime('2014-03-05 18:36')));

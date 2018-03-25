@@ -5,21 +5,25 @@
     "homepage": "https://github.com/yohang/CalendR",
     "type": "library",
     "license": "MIT",
-    "authors": [{
-        "name": "Yohan GIARELLI",
-        "email": "yohan@giarel.li",
-        "homepage": "http://yohan.giarel.li"
-    }],
+
+    "authors": [
+        {
+            "name": "Yohan GIARELLI",
+            "email": "yohan@giarel.li",
+            "homepage": "http://yohan.giarel.li"
+        }
+    ],
+
     "require": {
         "php": "^5.5|^7.0",
-        "symfony/options-resolver": "^2.7|^3.0"
+        "symfony/options-resolver": "^2.7|^3.0|^4.0"
     },
 
     "require-dev": {
         "doctrine/cache":               "^1.5",
         "doctrine/common":              "^2.5",
         "doctrine/orm":                 "^2.5",
-        "phpunit/phpunit":              "^4.0",
+        "phpunit/phpunit":              "^4.8.35|^5.4.0|^6.0|^7.0",
         "silex/silex":                  "^1.3",
         "twig/twig":                    "^1.23"
     },
@@ -27,9 +31,10 @@
     "autoload": {
         "psr-0": { "CalendR": "src/" }
     },
+
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "2.1.x-dev"
         }
     }
 }

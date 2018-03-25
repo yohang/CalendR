@@ -4,8 +4,9 @@ namespace CalendR\Test\Event\Provider;
 
 use CalendR\Event\Event;
 use CalendR\Event\Provider\Basic;
+use PHPUnit\Framework\TestCase;
 
-class BasicTest extends \PHPUnit_Framework_TestCase
+class BasicTest extends TestCase
 {
     /**
      * @var Basic

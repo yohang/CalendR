@@ -4,8 +4,9 @@ namespace CalendR\Test\Extension\Doctrine2;
 
 use CalendR\Event\Event;
 use CalendR\Test\Stubs\EventRepository;
+use PHPUnit\Framework\TestCase;
 
-class EventRepositoryTest extends \PHPUnit_Framework_TestCase
+class EventRepositoryTest extends TestCase
 {
     /**
      * @var EventRepository
@@ -33,7 +34,7 @@ class EventRepositoryTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('You need PHP5.4 to use and test traits.');
         }
 
-        $this->em            = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $this->em            = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')->getMock();
         $this->classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
             ->getMock();
@@ -43,7 +44,7 @@ class EventRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->repo          = new EventRepository($this->em, $this->classMetadata);
     }
 
-    public static function testGetEventsProvider()
+    public static function getEventsProvider()
     {
         return array(
             array(
@@ -60,11 +61,11 @@ class EventRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testGetEventsProvider
+     * @dataProvider getEventsProvider
      */
     public function testGetEvents($begin, $end, array $providedEvents)
     {
-        $expr  = $this->getMock('Doctrine\ORM\Query\Expr');
+        $expr  = $this->getMockBuilder('Doctrine\ORM\Query\Expr')->getMock();
         $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
             ->disableOriginalConstructor()
             ->setMethods(array('_doExecute', 'getSQL', 'execute', 'getResult'))

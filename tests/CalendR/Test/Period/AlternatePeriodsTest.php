@@ -7,8 +7,9 @@ use CalendR\Period\Factory;
 use CalendR\Period\Month;
 use CalendR\Period\Week;
 use CalendR\Period\Year;
+use PHPUnit\Framework\TestCase;
 
-class AlternatePeriodsTest extends \PHPUnit_Framework_TestCase
+class AlternatePeriodsTest extends TestCase
 {
     protected $options = array(
         'day_class'   => 'CalendR\Test\Fixtures\Period\Day',

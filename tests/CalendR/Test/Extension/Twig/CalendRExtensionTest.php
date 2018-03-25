@@ -3,11 +3,12 @@
 namespace CalendR\Test\Extension\Twig;
 
 use CalendR\Extension\Twig\CalendRExtension;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
-class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
+class CalendRExtensionTest extends TestCase
 {
     /**
      * @var CalendRExtension
@@ -21,7 +22,7 @@ class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->calendar = $this->getMock('CalendR\Calendar');
+        $this->calendar = $this->getMockBuilder('CalendR\Calendar')->getMock();
         $this->object   = new CalendRExtension($this->calendar);
     }
 
@@ -43,7 +44,7 @@ class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
     public function testItCallsCalendarFunctions()
     {
         foreach (array('year', 'month', 'week', 'day') as $periodName) {
-            $period = $this->getMock('CalendR\Perdiod\PeriodInterface');
+            $period = $this->getMockBuilder('CalendR\Period\PeriodInterface')->getMock();
             $this->calendar
                 ->expects($this->once())
                 ->method('get' . ucfirst($periodName))
@@ -53,8 +54,8 @@ class CalendRExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($period, $this->object->{'get' . ucfirst($periodName)}('foo', 'bar'));
         }
 
-        $events = array($this->getMock('CalendR\Event\EventInterface'));
-        $period = $this->getMock('CalendR\Period\PeriodInterface');
+        $events = array($this->getMockBuilder('CalendR\Event\EventInterface')->getMock());
+        $period = $this->getMockBuilder('CalendR\Period\PeriodInterface')->getMock();
         $this->calendar
             ->expects($this->once())
             ->method('getEvents')

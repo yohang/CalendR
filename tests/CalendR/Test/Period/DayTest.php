@@ -7,8 +7,9 @@ use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Year;
+use PHPUnit\Framework\TestCase;
 
-class DayTest extends \PHPUnit_Framework_TestCase
+class DayTest extends TestCase
 {
     public static function providerConstructInvalid()
     {
@@ -41,7 +42,9 @@ class DayTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
+
+        $this->assertInstanceOf(Day::class, $day);
     }
 
     public static function providerContains()

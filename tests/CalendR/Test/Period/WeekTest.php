@@ -5,8 +5,9 @@ namespace CalendR\Test\Period;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Week;
+use PHPUnit\Framework\TestCase;
 
-class WeekTest extends \PHPUnit_Framework_TestCase
+class WeekTest extends TestCase
 {
     public static function providerConstructValid()
     {
@@ -62,7 +63,9 @@ class WeekTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructValid($start)
     {
-        new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
+
+        $this->assertInstanceOf(Week::class, $week);
     }
 
     public function testIteration()
