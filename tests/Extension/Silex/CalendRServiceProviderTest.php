@@ -4,7 +4,7 @@ namespace CalendR\Test\Extension\Silex;
 
 use CalendR\Extension\Silex\Provider\CalendRServiceProvider;
 use CalendR\Event\Provider;
-use CalendR\Extension\Twig\CalendRExtension;
+use CalendR\Bridge\Twig\CalendRExtension;
 use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
