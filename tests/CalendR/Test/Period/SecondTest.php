@@ -169,7 +169,7 @@ class SecondTest extends TestCase
         $currentDateTime = new \DateTime();
         $otherDateTime = clone $currentDateTime;
         $otherDateTime->add(new \DateInterval('PT5S'));
-        $currentSecond = new Second(new \DateTime(date('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentSecond = new Second(new \DateTime($currentDateTime->format('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
         $otherSecond = $currentSecond->getNext();
         $this->assertTrue($currentSecond->contains($currentDateTime));
         $this->assertFalse($currentSecond->contains($otherDateTime));
