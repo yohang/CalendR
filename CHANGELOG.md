@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+2.2.0
+-----
+
+ * Added `CalendR\Bridge` namespace and deprecated `CalendR\Extension` (no BC-break)
+ * Removing `CalendR` directories to use full PSR-4 structure
+ * Introduced built-in Symfony Bundle
+
 2.1.2
 -----
 
