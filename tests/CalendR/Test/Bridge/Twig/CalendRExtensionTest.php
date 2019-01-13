@@ -1,12 +1,16 @@
 <?php
 
-namespace CalendR\Test\Extension\Twig;
+namespace CalendR\Test\Bridge\Twig;
 
-use CalendR\Extension\Twig\CalendRExtension;
+use CalendR\Bridge\Twig\CalendRExtension;
+use CalendR\Calendar;
+use CalendR\Event\EventInterface;
+use CalendR\Period\PeriodInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Yohan Giarelli <yohan@frequence-web.fr>
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
 class CalendRExtensionTest extends TestCase
 {
@@ -16,13 +20,13 @@ class CalendRExtensionTest extends TestCase
     protected $object;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject|Calendar
      */
     protected $calendar;
 
     protected function setUp()
     {
-        $this->calendar = $this->getMockBuilder('CalendR\Calendar')->getMock();
+        $this->calendar = $this->getMockBuilder(Calendar::class)->getMock();
         $this->object   = new CalendRExtension($this->calendar);
     }
 
@@ -43,8 +47,8 @@ class CalendRExtensionTest extends TestCase
 
     public function testItCallsCalendarFunctions()
     {
-        foreach (array('year', 'month', 'week', 'day') as $periodName) {
-            $period = $this->getMockBuilder('CalendR\Period\PeriodInterface')->getMock();
+        foreach (['year', 'month', 'week', 'day'] as $periodName) {
+            $period = $this->getMockBuilder(PeriodInterface::class)->getMock();
             $this->calendar
                 ->expects($this->once())
                 ->method('get' . ucfirst($periodName))
@@ -54,8 +58,8 @@ class CalendRExtensionTest extends TestCase
             $this->assertSame($period, $this->object->{'get' . ucfirst($periodName)}('foo', 'bar'));
         }
 
-        $events = array($this->getMockBuilder('CalendR\Event\EventInterface')->getMock());
-        $period = $this->getMockBuilder('CalendR\Period\PeriodInterface')->getMock();
+        $events = [$this->getMockBuilder(EventInterface::class)->getMock()];
+        $period = $this->getMockBuilder(PeriodInterface::class)->getMock();
         $this->calendar
             ->expects($this->once())
             ->method('getEvents')

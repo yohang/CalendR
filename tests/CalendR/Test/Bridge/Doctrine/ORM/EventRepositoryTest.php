@@ -1,9 +1,13 @@
 <?php
 
-namespace CalendR\Test\Extension\Doctrine2;
+namespace CalendR\Test\Bridge\Doctrine\ORM;
 
 use CalendR\Event\Event;
 use CalendR\Test\Stubs\EventRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\QueryBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class EventRepositoryTest extends TestCase
@@ -14,50 +18,42 @@ class EventRepositoryTest extends TestCase
     protected $repo;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject|EntityManagerInterface
      */
     protected $em;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject|ClassMetadata
      */
     protected $classMetadata;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject|QueryBuilder
      */
     protected $qb;
 
     public function setUp()
     {
-        if (version_compare(PHP_VERSION, '5.4.0') < 0) {
-            $this->markTestSkipped('You need PHP5.4 to use and test traits.');
-        }
-
-        $this->em            = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')->getMock();
-        $this->classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->qb            = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->em            = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $this->classMetadata = $this->getMockBuilder(ClassMetadata::class)->disableOriginalConstructor()->getMock();
+        $this->qb            = $this->getMockBuilder(QueryBuilder::class)->disableOriginalConstructor()->getMock();
         $this->repo          = new EventRepository($this->em, $this->classMetadata);
     }
 
     public static function getEventsProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 '2012-01-01',
                 '2012-01-05',
-                array(
+                [
                     new Event('event_during_begin', new \DateTime('2011-12-25'), new \DateTime('2012-01-01')),
                     new Event('event_during_end', new \DateTime('2012-01-04'), new \DateTime('2012-01-06')),
                     new Event('event_during_period', new \DateTime('2012-01-03'), new \DateTime('2012-01-04')),
-                    new Event('event_around_period', new \DateTime('2011-12-25'), new \DateTime('2012-01-06'))
-                )
-            ),
-        );
+                    new Event('event_around_period', new \DateTime('2011-12-25'), new \DateTime('2012-01-06')),
+                ],
+            ],
+        ];
     }
 
     /**
@@ -67,9 +63,9 @@ class EventRepositoryTest extends TestCase
     {
         $expr  = $this->getMockBuilder('Doctrine\ORM\Query\Expr')->getMock();
         $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
-            ->disableOriginalConstructor()
-            ->setMethods(array('_doExecute', 'getSQL', 'execute', 'getResult'))
-            ->getMock();
+                      ->disableOriginalConstructor()
+                      ->setMethods(['_doExecute', 'getSQL', 'execute', 'getResult'])
+                      ->getMock();
         $query->expects($this->once())->method('getResult')->will($this->returnValue($providedEvents));
         $this->em->expects($this->once())->method('createQueryBuilder')->will($this->returnValue($this->qb));
         $this->qb->expects($this->once())->method('select')->will($this->returnValue($this->qb));
