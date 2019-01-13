@@ -25,7 +25,7 @@ class EventProviderPassTest extends TestCase
     public function testProcess()
     {
         $eventManagerDefinition = $this->getMockBuilder(Definition::class)->getMock();
-        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)->getMock();
+        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)->setMethods(['findTaggedServiceIds', 'getDefinition'])->getMock();
         $containerBuilder->expects($this->once())->method('getDefinition')->with(Manager::class)->willReturn($eventManagerDefinition);
         $containerBuilder
             ->expects($this->once())

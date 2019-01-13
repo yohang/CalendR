@@ -24,7 +24,9 @@ class CalendRBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->registerForAutoconfiguration(ProviderInterface::class)->addTag(EventProviderPass::TAG);
+        if (method_exists($container, 'registerForAutoconfiguration')) {
+            $container->registerForAutoconfiguration(ProviderInterface::class)->addTag(EventProviderPass::TAG);
+        }
 
         parent::build($container);
 
