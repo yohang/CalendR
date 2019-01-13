@@ -4,7 +4,7 @@ namespace CalendR\Extension\Silex\Provider;
 
 use CalendR\Calendar;
 use CalendR\Event\Manager;
-use CalendR\Extension\Twig\CalendRExtension;
+use CalendR\Bridge\Twig\CalendRExtension;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

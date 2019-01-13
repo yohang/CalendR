@@ -58,6 +58,6 @@ class CalendRServiceProviderTest extends TestCase
         $this->app->register($this->provider);
         $this->app->register(new TwigServiceProvider());
         $this->app->boot();
-        $this->assertInstanceOf('CalendR\\Extension\\Twig\\CalendRExtension', $this->app['twig']->getExtension(CalendRExtension::class));
+        $this->assertInstanceOf('CalendR\\Bridge\\Twig\\CalendRExtension', $this->app['twig']->getExtension(CalendRExtension::class));
     }
 }
