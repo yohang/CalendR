@@ -29,11 +29,11 @@
     },
 
     "autoload": {
-        "psr-4": { "CalendR\\": "src/CalendR/" }
+        "psr-4": { "CalendR\\": "src/" }
     },
 
     "autoload-dev": {
-        "psr-4": { "CalendR\\": "tests/CalendR/" }
+        "psr-4": { "CalendR\\Test\\": "tests/" }
     },
 
     "extra": {
