@@ -1,15 +1,21 @@
 language: php
-sudo: false
+
 php:
     - 7.1
     - 7.2
     - 7.3
+
+matrix:
+  include:
+    - php: 7.1
+      env: dependencies=lowest
 
 before_install:
   - composer self-update
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
 
 script:
   - ./vendor/bin/phpunit --coverage-clover=coverage.clover
