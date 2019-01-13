@@ -11,6 +11,8 @@ use Silex\ServiceProviderInterface;
 /**
  * Silex CalendR Service Provider.
  *
+ * @deprecated
+ *
  * @author Yohan Giarelli<yohan@giarel.li>
  */
 class CalendRServiceProvider implements ServiceProviderInterface
