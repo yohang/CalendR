@@ -78,6 +78,6 @@ class CalendRExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'calendr';
+        return self::class;
     }
 }
