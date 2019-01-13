@@ -13,13 +13,13 @@ services:
       - { name: twig.extension }
 
   calendr:
-    alias: '@CalendR\Calendar'
+    alias: 'CalendR\Calendar'
     public: true
 
   calendr.factory:
-    alias: '@CalendR\Calendar'
+    alias: 'CalendR\Calendar'
     public: true
 
   calendr.event_manager:
-    alias: '@CalendR\Event\Manager'
+    alias: 'CalendR\Event\Manager'
     public: true
