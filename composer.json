@@ -25,6 +25,9 @@
         "doctrine/orm":                 "^2.5",
         "phpunit/phpunit":              "^4.8.35|^5.4.0|^6.0|^7.0",
         "silex/silex":                  "^1.3",
+        "symfony/dependency-injection": "^2.7|^3.4|^4.0",
+        "symfony/config":               "^2.7|^3.4|^4.0",
+        "symfony/yaml":                 "^2.7|^3.4|^4.0",
         "twig/twig":                    "^1.23|^2.0"
     },
 

@@ -1,0 +1,25 @@
+services:
+  CalendR\Calendar:
+    calls:
+      - ['setEventManager', ['@calendr.event_manager']]
+
+  CalendR\Event\Manager:
+    class: 'CalendR\Event\Manager'
+
+  CalendR\Extension\Twig\CalendRExtension:
+    class: 'CalendR\Extension\Twig\CalendRExtension'
+    arguments: [ '@calendr' ]
+    tags:
+      - { name: twig.extension }
+
+  calendr:
+    alias: '@CalendR\Calendar'
+    public: true
+
+  calendr.factory:
+    alias: '@CalendR\Calendar'
+    public: true
+
+  calendr.event_manager:
+    alias: '@CalendR\Event\Manager'
+    public: true
