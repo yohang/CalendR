@@ -11,7 +11,7 @@ use Silex\ServiceProviderInterface;
 /**
  * Silex CalendR Service Provider.
  *
- * @deprecated
+ * @deprecated since 2.1, will be removed in 3.0 as silex isn't maintained anymore
  *
  * @author Yohan Giarelli<yohan@giarel.li>
  */
@@ -22,6 +22,8 @@ class CalendRServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        @trigger_error('The silex service provider is deprecated since 2.1 as Silex isn’t maintained anymore', E_USER_DEPRECATED);
+
         $app['calendr'] = $app->share(function ($app) {
             $calendr = new Calendar();
             $calendr->setEventManager($app['calendr.event_manager']);
