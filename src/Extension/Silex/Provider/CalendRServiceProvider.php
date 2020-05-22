@@ -46,9 +46,9 @@ class CalendRServiceProvider implements ServiceProviderInterface
     {
         if (class_exists('Twig_Environment')) {
             $extension = new CalendRExtension($app['calendr']);
-            if (isset($app['calendr.twig']) && 'Twig_Environment' == get_class($app['calendr.twig'])) {
+            if (isset($app['calendr.twig']) && $app['calendr.twig'] instanceof \Twig_Environment) {
                 $app['calendr.twig']->addExtension($extension);
-            } elseif (isset($app['twig']) && 'Twig_Environment' == get_class($app['twig'])) {
+            } elseif (isset($app['twig']) && $app['twig'] instanceof \Twig_Environment) {
                 $app['twig']->addExtension($extension);
             }
         }
