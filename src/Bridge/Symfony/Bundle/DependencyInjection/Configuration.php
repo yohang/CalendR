@@ -10,8 +10,8 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $root    = $builder->root('calendr');
+        $builder = new TreeBuilder('calendr');
+        $root    = method_exists(TreeBuilder::class, 'getRootNode') ? $builder->getRootNode() : $builder->root('monolog');
 
         $root
             ->children()
