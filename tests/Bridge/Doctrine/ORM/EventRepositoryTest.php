@@ -7,32 +7,21 @@ use CalendR\Test\Stubs\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query\Expr;
 
 class EventRepositoryTest extends TestCase
 {
-    /**
-     * @var EventRepository
-     */
-    protected $repo;
+    protected EventRepository $repo;
 
-    /**
-     * @var MockObject|EntityManagerInterface
-     */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    /**
-     * @var MockObject|ClassMetadata
-     */
-    protected $classMetadata;
+    protected ClassMetadata $classMetadata;
 
-    /**
-     * @var MockObject|QueryBuilder
-     */
-    protected $qb;
+    protected QueryBuilder $qb;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->em            = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $this->classMetadata = $this->getMockBuilder(ClassMetadata::class)->disableOriginalConstructor()->getMock();
@@ -40,7 +29,7 @@ class EventRepositoryTest extends TestCase
         $this->repo          = new EventRepository($this->em, $this->classMetadata);
     }
 
-    public static function getEventsProvider()
+    public static function getEventsProvider(): array
     {
         return [
             [
@@ -59,24 +48,25 @@ class EventRepositoryTest extends TestCase
     /**
      * @dataProvider getEventsProvider
      */
-    public function testGetEvents($begin, $end, array $providedEvents)
+    public function testGetEvents($begin, $end, array $providedEvents): void
     {
-        $expr  = $this->getMockBuilder('Doctrine\ORM\Query\Expr')->getMock();
-        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
+        $expr  = $this->getMockBuilder(Expr::class)->getMock();
+        $query = $this->getMockBuilder(AbstractQuery::class)
                       ->disableOriginalConstructor()
-                      ->setMethods(['_doExecute', 'getSQL', 'execute', 'getResult'])
+                      ->onlyMethods(['_doExecute', 'getSQL', 'execute', 'getResult'])
                       ->getMock();
-        $query->expects($this->once())->method('getResult')->will($this->returnValue($providedEvents));
-        $this->em->expects($this->once())->method('createQueryBuilder')->will($this->returnValue($this->qb));
-        $this->qb->expects($this->once())->method('select')->will($this->returnValue($this->qb));
-        $this->qb->expects($this->once())->method('from')->will($this->returnValue($this->qb));
-        $this->qb->expects($this->once())->method('andWhere')->will($this->returnValue($this->qb));
-        $this->qb->expects($this->once())->method('getQuery')->will($this->returnValue($query));
-        $this->qb->expects($this->atLeastOnce())->method('expr')->will($this->returnValue($expr));
+
+        $query->expects($this->once())->method('getResult')->willReturn($providedEvents);
+        $this->em->expects($this->once())->method('createQueryBuilder')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('select')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('from')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('andWhere')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('getQuery')->willReturn($query);
+        $this->qb->expects($this->atLeastOnce())->method('expr')->willReturn($expr);
         $expr->expects($this->once())->method('orX');
         $expr->expects($this->exactly(4))->method('andX');
 
-        $events = $this->repo->getEvents(new \DateTime($begin), new \DateTime($end));
+        $events = $this->repo->getEvents(new \DateTimeImmutable($begin), new \DateTimeImmutable($end));
         $this->assertSame($providedEvents, $events);
     }
 }

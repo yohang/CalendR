@@ -29,56 +29,30 @@ interface EventInterface
      *
      * @return string an unique event identifier
      */
-    public function getUid();
+    public function getUid(): string;
 
     /**
      * Returns the event begin.
-     *
-     * @abstract
-     *
-     * @return \DateTime event begin
      */
-    public function getBegin();
+    public function getBegin(): \DateTimeInterface;
 
     /**
      * Returns the event end.
-     *
-     * @abstract
-     *
-     * @return \DateTime event end
      */
-    public function getEnd();
+    public function getEnd(): \DateTimeInterface;
 
     /**
      * Check if the given date is during the event.
-     *
-     * @abstract
-     *
-     * @param \DateTime $datetime
-     *
-     * @return bool true if $datetime is during the event, false otherwise
      */
-    public function contains(\DateTime $datetime);
+    public function contains(\DateTimeInterface $datetime): bool;
 
     /**
      * Check if the given period is during the event.
-     *
-     * @abstract
-     *
-     * @param \CalendR\Period\PeriodInterface $period
-     *
-     * @return bool true if $period is during the event, false otherwise
      */
-    public function containsPeriod(PeriodInterface $period);
+    public function containsPeriod(PeriodInterface $period): bool;
 
     /**
      * Check if the event is during the given period.
-     *
-     * @abstract
-     *
-     * @param \CalendR\Period\PeriodInterface $period
-     *
-     * @return bool true if the event is during $period, false otherwise
      */
-    public function isDuring(PeriodInterface $period);
+    public function isDuring(PeriodInterface $period): bool;
 }

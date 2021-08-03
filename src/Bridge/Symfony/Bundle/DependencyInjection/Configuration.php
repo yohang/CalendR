@@ -10,10 +10,11 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $root    = $builder->root('calendr');
 
-        $root
+        $treeBuilder = new TreeBuilder('calendr');
+
+        $treeBuilder
+            ->getRootNode()
             ->children()
                 ->arrayNode('periods')
                     ->addDefaultsIfNotSet()
@@ -29,6 +30,6 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
-        return $builder;
+        return $treeBuilder;
     }
 }

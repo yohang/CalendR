@@ -21,7 +21,7 @@ class Aggregate implements ProviderInterface
     /**
      * @var ProviderInterface[]
      */
-    private $providers;
+    private array $providers;
 
     /**
      * @param ProviderInterface[] $providers
@@ -34,37 +34,22 @@ class Aggregate implements ProviderInterface
             if (!$provider instanceof ProviderInterface) {
                 throw new \InvalidArgumentException('Providers must implement CalendR\\Event\\ProviderInterface');
             }
+
             $this->providers[] = $provider;
         }
     }
 
     /**
      * Adds a provider.
-     *
-     * @param ProviderInterface $provider
-     *
-     * @return Aggregate
      */
-    public function add(ProviderInterface $provider)
+    public function add(ProviderInterface $provider): void
     {
         $this->providers[] = $provider;
-
-        return $this;
     }
 
-    /**
-     * Return events that matches to $begin && $end
-     * $end date should be exclude.
-     *
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     * @param array     $options
-     *
-     * @return \CalendR\Event\EventInterface
-     */
-    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
+    public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
-        $events = array();
+        $events = [];
 
         foreach ($this->providers as $provider) {
             $events = array_merge($events, $provider->getEvents($begin, $end, $options));

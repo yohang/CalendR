@@ -5,48 +5,52 @@ namespace CalendR\Test;
 use CalendR\Test\Stubs\Event;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Annotations\PsrCachedReader;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\DefaultQuoteStrategy;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadataFactory;
 
+/**
+ * @test
+ */
 class BaseDoctrine2TestCase extends TestCase
 {
-    /**
-     * @var CachedReader
-     */
-    protected $reader;
+    protected Reader $reader;
 
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    public function setUpDoctrine()
+    public function setUpDoctrine(): void
     {
-        $this->reader = new AnnotationReader();
-        $this->reader = new CachedReader($this->reader, new ArrayCache());
+        $this->reader = new AnnotationReader;
+        $this->reader = new PsrCachedReader($this->reader, new ArrayAdapter);
 
         $this->em = $em = EntityManager::create(
-            array('driver' => 'pdo_sqlite', 'memory' => true),
+            ['driver' => 'pdo_sqlite', 'memory' => true],
             $this->getMockAnnotatedConfig()
         );
 
-        $schema = array($em->getClassMetadata('CalendR\\Test\\Stubs\\Event'));
+        $schema = [$em->getClassMetadata(Event::class)];
 
         $st = new SchemaTool($this->em);
-        $st->dropSchema(array());
+        $st->dropSchema([]);
         $st->createSchema($schema);
 
         $this->em->createQueryBuilder()
-            ->delete('CalendR\\Test\\Stubs\\Event', 'e')
-            ->getQuery()
-            ->execute()
-        ;
+                 ->delete(Event::class, 'e')
+                 ->getQuery()
+                 ->execute();
+
         foreach (static::getStubEvents() as $evt) {
             $event = new Event;
             $event->setId($evt[0]);
@@ -60,28 +64,24 @@ class BaseDoctrine2TestCase extends TestCase
 
     /**
      * Creates default mapping driver
-     *
-     * @return \Doctrine\ORM\Mapping\Driver\Driver
      */
-    protected function getMetadataDriverImplementation()
+    protected function getMetadataDriverImplementation(): MappingDriver
     {
         return new AnnotationDriver($this->reader);
     }
 
     /**
      * Return a Mock config. Come from the Gedmo's Doctrine Extensions test suite
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockAnnotatedConfig()
+    protected function getMockAnnotatedConfig(): Configuration
     {
         // We need to mock every method except the ones which
         // handle the filters
-        $configurationClass = 'Doctrine\ORM\Configuration';
-        $refl = new \ReflectionClass($configurationClass);
-        $methods = $refl->getMethods();
+        $configurationClass = Configuration::class;
+        $refl               = new \ReflectionClass($configurationClass);
+        $methods            = $refl->getMethods();
 
-        $mockMethods = array();
+        $mockMethods = [];
 
         foreach ($methods as $method) {
             if ($method->name !== 'addFilter' && $method->name !== 'getFilterClassName') {
@@ -89,71 +89,63 @@ class BaseDoctrine2TestCase extends TestCase
             }
         }
 
-        $config = $this->getMockBuilder($configurationClass)->setMethods($mockMethods)->getMock();
+        $config = $this->getMockBuilder($configurationClass)->onlyMethods($mockMethods)->getMock();
 
         $config
             ->expects($this->once())
             ->method('getProxyDir')
-            ->will($this->returnValue(__DIR__.'/../../temp'))
-        ;
+            ->willReturn(__DIR__ . '/../../temp');
 
         $config
             ->expects($this->once())
             ->method('getProxyNamespace')
-            ->will($this->returnValue('Proxy'))
-        ;
+            ->willReturn('Proxy');
 
         $config
             ->expects($this->once())
             ->method('getAutoGenerateProxyClasses')
-            ->will($this->returnValue(true))
-        ;
+            ->willReturn(true);
 
         $config
             ->expects($this->once())
             ->method('getClassMetadataFactoryName')
-            ->will($this->returnValue('Doctrine\\ORM\\Mapping\\ClassMetadataFactory'))
-        ;
+            ->willReturn(ClassMetadataFactory::class);
+
+        $config
+               ->method('getRepositoryFactory')
+               ->willReturn(new DefaultRepositoryFactory);
 
         $config->expects($this->any())
-            ->method('getRepositoryFactory')
-            ->will($this->returnValue(new DefaultRepositoryFactory));
-
-        $config->expects($this->any())
-            ->method('getDefaultQueryHints')
-            ->will($this->returnValue(array()));
+               ->method('getDefaultQueryHints')
+               ->willReturn([]);
 
         $mappingDriver = $this->getMetadataDriverImplementation();
 
         $config
             ->expects($this->any())
             ->method('getMetadataDriverImpl')
-            ->will($this->returnValue($mappingDriver))
-        ;
+            ->willReturn($mappingDriver);
 
         $config
             ->expects($this->any())
             ->method('getDefaultRepositoryClassName')
-            ->will($this->returnValue('Doctrine\\ORM\\EntityRepository'))
-        ;
+            ->willReturn(EntityRepository::class);
 
         $config
             ->expects($this->any())
             ->method('getQuoteStrategy')
-            ->will($this->returnValue(new DefaultQuoteStrategy()))
-        ;
+            ->willReturn(new DefaultQuoteStrategy());
 
         $config
             ->expects($this->any())
             ->method('getNamingStrategy')
-            ->will($this->returnValue(new DefaultNamingStrategy()))
-        ;
+            ->willReturn(new DefaultNamingStrategy());
 
         return $config;
     }
 
     public static function getStubEvents()
     {
-        return array();
+        return [];
     }
 }

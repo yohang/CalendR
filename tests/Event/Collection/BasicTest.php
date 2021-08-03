@@ -15,12 +15,12 @@ class BasicTest extends TestCase
      */
     private $collection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->collection = new Collection\Basic(self::$events);
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$events = array(
             new Event('event-a', new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00')),

@@ -28,7 +28,7 @@ class CacheTest extends TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cache    = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
         $this->provider = $this->getMockBuilder('CalendR\Event\Provider\ProviderInterface')->getMock();

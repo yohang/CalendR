@@ -1,11 +1,14 @@
 {
     "name": "yohang/calendr",
     "description": "Object Oriented calendar management",
-    "keywords": ["date", "calendar", "events"],
+    "keywords": [
+        "date",
+        "calendar",
+        "events"
+    ],
     "homepage": "https://github.com/yohang/CalendR",
     "type": "library",
     "license": "MIT",
-
     "authors": [
         {
             "name": "Yohan GIARELLI",
@@ -13,35 +16,37 @@
             "homepage": "http://yohan.giarel.li"
         }
     ],
-
     "require": {
-        "php": "^5.5|^7.0",
-        "symfony/options-resolver": "^2.7|^3.0|^4.0"
+        "php": ">=7.4",
+        "symfony/options-resolver": "^4.4|^5.3"
     },
-
     "require-dev": {
-        "doctrine/cache":               "^1.5",
-        "doctrine/common":              "^2.5",
-        "doctrine/orm":                 "^2.5",
-        "phpunit/phpunit":              "^4.8.35|^5.4.0|^6.0|^7.0",
-        "silex/silex":                  "^1.3",
-        "symfony/dependency-injection": "^2.7|^3.4|^4.0",
-        "symfony/config":               "^2.7|^3.4|^4.0",
-        "symfony/yaml":                 "^2.7|^3.4|^4.0",
-        "twig/twig":                    "^1.23|^2.0"
+        "doctrine/cache": "^2.1.1",
+        "doctrine/common": "^3.1.2",
+        "doctrine/orm": "^2.9.3",
+        "phpunit/phpunit": "^8.0|^9.0",
+        "symfony/dependency-injection": "^4.4|^5.3",
+        "symfony/config": "^4.4|^5.3",
+        "symfony/var-dumper": "^4.4|^5.3",
+        "symfony/yaml": "^4.4|^5.3",
+        "twig/twig": "^3.3.2",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "symfony/cache": "^5.3",
+        "symfony/http-kernel": "^5.3"
     },
-
     "autoload": {
-        "psr-4": { "CalendR\\": "src/" }
+        "psr-4": {
+            "CalendR\\": "src/"
+        }
     },
-
     "autoload-dev": {
-        "psr-4": { "CalendR\\Test\\": "tests/" }
+        "psr-4": {
+            "CalendR\\Test\\": "tests/"
+        }
     },
-
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     }
 }

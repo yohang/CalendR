@@ -11,6 +11,7 @@
 
 namespace CalendR\Event;
 
+use CalendR\Event\Collection\CollectionInterface;
 use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Period\PeriodInterface;
 use CalendR\Event\Provider\ProviderInterface;
@@ -25,7 +26,7 @@ class Manager
     /**
      * @var ProviderInterface[]
      */
-    protected $providers = array();
+    protected array $providers = [];
 
     /**
      * The callable used to instantiate the event collection.
@@ -36,14 +37,14 @@ class Manager
 
     /**
      * @param array $providers
-     * @param null  $instantiator
+     * @param null $instantiator
      */
-    public function __construct(array $providers = array(), $instantiator = null)
+    public function __construct(array $providers = [], $instantiator = null)
     {
         $this->collectionInstantiator = $instantiator;
         if (null === $instantiator) {
-            $this->collectionInstantiator = function () {
-                return new Collection\Basic();
+            $this->collectionInstantiator = static function () {
+                return new Collection\Basic;
             };
         }
 
@@ -55,29 +56,24 @@ class Manager
     /**
      * find events that matches the given period (during or over).
      *
-     * @param \CalendR\Period\PeriodInterface $period
-     * @param array                           $options
-     *
-     * @return array|EventInterface
-     *
      * @throws NoProviderFound
      */
-    public function find(PeriodInterface $period, array $options = array())
+    public function find(PeriodInterface $period, array $options = []): CollectionInterface
     {
         if (0 === count($this->providers)) {
             throw new NoProviderFound();
         }
 
         // Check if there's a provider option provided, used to filter the used providers
-        $providers = isset($options['providers']) ? $options['providers'] : array();
+        $providers = $options['providers'] ?? [];
         if (!is_array($providers)) {
-            $providers = array($providers);
+            $providers = [$providers];
         }
 
         // Instantiate an event collection
         $collection = call_user_func($this->collectionInstantiator);
         foreach ($this->providers as $name => $provider) {
-            if (count($providers) > 0 && !in_array($name, $providers)) {
+            if (count($providers) > 0 && !in_array($name, $providers, true)) {
                 continue;
             }
 
@@ -94,29 +90,24 @@ class Manager
 
     /**
      * Adds a provider to the provider stack.
-     *
-     * @param $name
-     * @param ProviderInterface $provider
      */
-    public function addProvider($name, ProviderInterface $provider)
+    public function addProvider(string $name, ProviderInterface $provider): void
     {
         $this->providers[$name] = $provider;
     }
 
     /**
      * Sets the callable used to instantiate the event collection.
-     *
-     * @param callable $collectionInstantiator
      */
-    public function setCollectionInstantiator($collectionInstantiator)
+    public function setCollectionInstantiator(callable $collectionInstantiator): void
     {
         $this->collectionInstantiator = $collectionInstantiator;
     }
 
     /**
-     * @return \CalendR\Event\Provider\ProviderInterface
+     * @return ProviderInterface[]
      */
-    public function getProviders()
+    public function getProviders(): array
     {
         return $this->providers;
     }

@@ -22,65 +22,44 @@ interface PeriodInterface
 {
     /**
      * Checks if the given period is contained in the current period.
-     *
-     * @param \DateTime $date
-     *
-     * @return bool true if the period contains this date
      */
-    public function contains(\DateTime $date);
+    public function contains(\DateTimeInterface $date): bool;
 
     /**
      * Gets the DateTime of period begin.
-     *
-     * @return \DateTime
      */
-    public function getBegin();
+    public function getBegin(): \DateTimeInterface;
 
     /**
      * Gets the DateTime of the period end.
-     *
-     * @return \DateTime
      */
-    public function getEnd();
+    public function getEnd(): \DateTimeInterface;
 
     /**
      * Gets the next period of the same type.
-     *
-     * @return PeriodInterface
      */
-    public function getNext();
+    public function getNext(): PeriodInterface;
 
     /**
      * Gets the previous period of the same type.
-     *
-     * @return PeriodInterface
      */
-    public function getPrevious();
+    public function getPrevious(): PeriodInterface;
 
     /**
      * Returns the period as a DatePeriod.
-     *
-     * @return \DatePeriod
      */
-    public function getDatePeriod();
+    public function getDatePeriod(): \DatePeriod;
 
     /**
      * Checks if a period is equals to an other.
-     *
-     * @param PeriodInterface $period
-     *
-     * @return bool
      */
-    public function equals(PeriodInterface $period);
+    public function equals(PeriodInterface $period): bool;
 
     /**
      * Returns true if the period include the other period
      * given as argument.
-     *
-     * @param PeriodInterface $period
-     * @param bool            $strict
      */
-    public function includes(PeriodInterface $period, $strict = true);
+    public function includes(PeriodInterface $period, bool $strict = true): bool;
 
     /**
      * Returns if $event is during this period.
@@ -89,40 +68,26 @@ interface PeriodInterface
      *  * Period is during event
      *  * Event begin is during Period
      *  * Event end is during Period.
-     *
-     * @param EventInterface $event
-     *
-     * @return bool
      */
-    public function containsEvent(EventInterface $event);
+    public function containsEvent(EventInterface $event): bool;
 
     /**
      * Format the period to a string.
-     *
-     * @param string $format
-     *
-     * @return string
      */
-    public function format($format);
+    public function format(string $format): string;
 
     /**
      * Returns if the current period is the current one.
-     *
-     * @return bool
      */
-    public function isCurrent();
+    public function isCurrent(): bool;
 
     /**
      * Checks if $start is good for building the period.
-     *
-     * @param \DateTime $start
      */
-    public static function isValid(\DateTime $start);
+    public static function isValid(\DateTimeInterface $start): bool;
 
     /**
      * Returns a \DateInterval equivalent to the period.
-     *
-     * @return \DateInterval
      */
-    public static function getDateInterval();
+    public static function getDateInterval(): \DateInterval;
 }

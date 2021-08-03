@@ -7,46 +7,28 @@ use CalendR\Period\Exception\NotAnHour;
  * Represents an hour.
  *
  * @author Zander Baldwin <mynameis@zande.rs>
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
 class Hour extends PeriodAbstract implements \Iterator
 {
-    /**
-     * @var PeriodInterface
-     */
-    private $current;
+    private ?PeriodInterface $current = null;
 
-    /**
-     * Returns the period as a DatePeriod.
-     *
-     * @return \DatePeriod
-     */
-    public function getDatePeriod()
+    public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('PT1M'), $this->end);
     }
 
-    /**
-     * @param \DateTime $start
-     *
-     * @return bool
-     */
-    public static function isValid(\DateTime $start)
+    public static function isValid(\DateTimeInterface $start): bool
     {
-        return $start->format('i:s') == '00:00';
+        return $start->format('i:s') === '00:00';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function current()
+    public function current(): ?PeriodInterface
     {
         return $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
+    public function next(): void
     {
         if (null === $this->current) {
             $this->current = $this->getFactory()->createMinute($this->begin);
@@ -58,55 +40,33 @@ class Hour extends PeriodAbstract implements \Iterator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
+    public function key(): int
     {
         return (int) $this->current->getBegin()->format('G');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
+    public function valid(): bool
     {
         return null !== $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->current = null;
         $this->next();
     }
 
-    /**
-     * Returns the hour.
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format('G');
     }
 
-    /**
-     * Returns a \DateInterval equivalent to the period.
-     *
-     * @return \DateInterval
-     */
-    public static function getDateInterval()
+    public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('PT1H');
     }
 
-    /**
-     * @return NotAnHour
-     */
-    protected function createInvalidException()
+    protected function createInvalidException(): NotAnHour
     {
         return new NotAnHour;
     }

@@ -24,14 +24,11 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     /**
      * @var EventInterface[]
      */
-    protected $events = array();
+    protected array $events = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
+    public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
-        $events = array();
+        $events = [];
         foreach ($this->events as $event) {
             if (
                 ($event->getBegin() >= $begin && $event->getBegin() < $end) ||
@@ -48,10 +45,8 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
 
     /**
      * Adds an event to the provider.
-     *
-     * @param EventInterface $event
      */
-    public function add(EventInterface $event)
+    public function add(EventInterface $event): void
     {
         $this->events[] = $event;
     }
@@ -61,27 +56,23 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
      *
      * @return EventInterface[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->events;
     }
 
     /**
      * Retrieve an external iterator.
-     *
-     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->events);
     }
 
     /**
      * The return value is cast to an integer.
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->events);
     }

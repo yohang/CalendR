@@ -13,29 +13,20 @@ class Event extends AbstractEvent
     /**
      * @ORM\Id
      * @ORM\Column(type="string", length=31)
-     *
-     * @var int
      */
-    protected $id;
+    protected ?string $id = null;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTime
+     * @ORM\Column(type="datetime_immutable")
      */
-    protected $begin;
+    protected ?\DateTimeImmutable $begin = null;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTime
+     * @ORM\Column(type="datetime_immutable")
      */
-    protected $end;
+    protected ?\DateTimeImmutable $end = null;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -47,49 +38,33 @@ class Event extends AbstractEvent
      *
      * @return string an unique event identifier
      */
-    public function getUid()
+    public function getUid(): string
     {
         return $this->getId();
     }
 
-    /**
-     * @param \DateTime $begin
-     */
-    public function setBegin($begin)
+    public function setBegin(\DateTimeImmutable $begin): void
     {
         $this->begin = $begin;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getBegin()
+    public function getBegin(): \DateTimeImmutable
     {
         return $this->begin;
     }
 
-    /**
-     * @param \DateTime $end
-     */
-    public function setEnd($end)
+    public function setEnd(\DateTimeImmutable $end): void
     {
         $this->end = $end;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getEnd()
+    public function getEnd(): \DateTimeImmutable
     {
         return $this->end;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
-
 }

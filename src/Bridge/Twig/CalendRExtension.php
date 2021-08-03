@@ -3,85 +3,70 @@
 namespace CalendR\Bridge\Twig;
 
 use CalendR\Calendar;
+use CalendR\Event\Collection\CollectionInterface;
+use CalendR\Event\EventInterface;
+use CalendR\Period\Day;
+use CalendR\Period\Month;
+use CalendR\Period\PeriodInterface;
+use CalendR\Period\Week;
+use CalendR\Period\Year;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Extension for using periods and events from Twig
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class CalendRExtension extends \Twig_Extension
+class CalendRExtension extends AbstractExtension
 {
-    /**
-     * @var Calendar
-     */
-    protected $factory;
+    protected Calendar $factory;
 
-    /**
-     * @param Calendar $factory
-     */
     public function __construct(Calendar $factory)
     {
         $this->factory = $factory;
     }
 
     /**
-     * @return array<\Twig_Function>
+     * @return array<TwigFunction>
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('calendr_year', [$this, 'getYear']),
-            new \Twig_SimpleFunction('calendr_month', [$this, 'getMonth']),
-            new \Twig_SimpleFunction('calendr_week', [$this, 'getWeek']),
-            new \Twig_SimpleFunction('calendr_day', [$this, 'getDay']),
-            new \Twig_SimpleFunction('calendr_events', [$this, 'getEvents']),
+            new TwigFunction('calendr_year', [$this, 'getYear']),
+            new TwigFunction('calendr_month', [$this, 'getMonth']),
+            new TwigFunction('calendr_week', [$this, 'getWeek']),
+            new TwigFunction('calendr_day', [$this, 'getDay']),
+            new TwigFunction('calendr_events', [$this, 'getEvents']),
         ];
     }
 
-    /**
-     * @return mixed
-     */
-    public function getYear()
+    public function getYear($yearOrStart): Year
     {
-        return call_user_func_array([$this->factory, 'getYear'], func_get_args());
+        return $this->factory->getYear($yearOrStart);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMonth()
+    public function getMonth($yearOrStart, ?int $month = null): Month
     {
-        return call_user_func_array([$this->factory, 'getMonth'], func_get_args());
+        return $this->factory->getMonth($yearOrStart, $month);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getWeek()
+    public function getWeek($yearOrStart, ?int $week = null): Week
     {
-        return call_user_func_array([$this->factory, 'getWeek'], func_get_args());
+        return $this->factory->getWeek($yearOrStart, $week);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDay()
+    public function getDay($yearOrStart, ?int $month = null, ?int $day = null): Day
     {
-        return call_user_func_array([$this->factory, 'getDay'], func_get_args());
+        return $this->factory->getDay($yearOrStart, $month, $day);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEvents()
+    public function getEvents(PeriodInterface $period, array $options = []): CollectionInterface
     {
-        return call_user_func_array([$this->factory, 'getEvents'], func_get_args());
+        return $this->factory->getEvents($period, $options);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return self::class;
     }

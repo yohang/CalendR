@@ -24,7 +24,7 @@ class AlternatePeriodsTest extends TestCase
     /** @var $calendar Calendar */
     protected $calendar;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calendar = new Calendar();
         $this->calendar->setFactory(new Factory($this->options));

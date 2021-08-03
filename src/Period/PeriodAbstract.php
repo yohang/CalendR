@@ -12,6 +12,7 @@
 namespace CalendR\Period;
 
 use CalendR\Event\EventInterface;
+use CalendR\Exception;
 
 /**
  * An abstract class that represent a date period and provide some base helpers.
@@ -20,28 +21,16 @@ use CalendR\Event\EventInterface;
  */
 abstract class PeriodAbstract implements PeriodInterface
 {
-    /**
-     * @var \DateTime
-     */
-    protected $begin;
+    protected \DateTimeInterface $begin;
+
+    protected \DateTimeInterface $end;
+
+    protected ?FactoryInterface $factory;
 
     /**
-     * @var \DateTime
+     * @throws Exception
      */
-    protected $end;
-
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * @param \DateTime        $begin
-     * @param FactoryInterface $factory
-     *
-     * @throws \CalendR\Exception
-     */
-    public function __construct(\DateTime $begin, FactoryInterface $factory)
+    public function __construct(\DateTimeInterface $begin, ?FactoryInterface $factory = null)
     {
         $this->factory = $factory;
         if (!static::isValid($begin)) {
@@ -49,47 +38,22 @@ abstract class PeriodAbstract implements PeriodInterface
         }
 
         $this->begin = clone $begin;
-        $this->end   = clone $begin;
-        $this->end->add($this->getDateInterval());
+        $this->end   = (clone $begin)->add($this->getDateInterval());
     }
 
-    /**
-     * Checks if the given period is contained in the current period.
-     *
-     * @param \DateTime $date
-     *
-     * @return bool true if the period contains this date
-     */
-    public function contains(\DateTime $date)
+    public function contains(\DateTimeInterface $date): bool
     {
         return $this->begin <= $date && $date < $this->end;
     }
 
-    /**
-     * Checks if a period is equals to an other.
-     *
-     * @param PeriodInterface $period
-     *
-     * @return bool
-     */
-    public function equals(PeriodInterface $period)
+    public function equals(PeriodInterface $period): bool
     {
         return
             $period instanceof static &&
-            $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s')
-        ;
+            $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s');
     }
 
-    /**
-     * Returns true if the period include the other period
-     * given as argument.
-     *
-     * @param PeriodInterface $period
-     * @param bool            $strict
-     *
-     * @return bool
-     */
-    public function includes(PeriodInterface $period, $strict = true)
+    public function includes(PeriodInterface $period, bool $strict = true): bool
     {
         if (true === $strict) {
             return $this->getBegin() <= $period->getBegin() && $this->getEnd() >= $period->getEnd();
@@ -103,19 +67,7 @@ abstract class PeriodAbstract implements PeriodInterface
         ;
     }
 
-    /**
-     * Returns if $event is during this period.
-     * Non strict. Must return true if :
-     *  * Event is during period
-     *  * Period is during event
-     *  * Event begin is during Period
-     *  * Event end is during Period.
-     *
-     * @param EventInterface $event
-     *
-     * @return bool
-     */
-    public function containsEvent(EventInterface $event)
+    public function containsEvent(EventInterface $event): bool
     {
         return
             $event->containsPeriod($this) ||
@@ -125,71 +77,49 @@ abstract class PeriodAbstract implements PeriodInterface
         ;
     }
 
-    /**
-     * Format the period to a string.
-     *
-     * @param string $format
-     *
-     * @return string
-     */
-    public function format($format)
+    public function format(string $format): string
     {
         return $this->begin->format($format);
     }
 
-    /**
-     * Returns if the current period is the current one.
-     *
-     * @return bool
-     */
-    public function isCurrent()
+    public function isCurrent(): bool
     {
-        return $this->contains(new \DateTime());
+        return $this->contains(new \DateTimeImmutable);
     }
 
     /**
-     * Gets the next period of the same type.
+     * {@inheritdoc}
      *
-     * @return PeriodInterface
+     * @throws Exception
      */
-    public function getNext()
+    public function getNext(): PeriodInterface
     {
         return new static($this->end, $this->factory);
     }
 
     /**
-     * Gets the previous period of the same type.
+     * {@inheritdoc}
      *
-     * @return PeriodInterface
+     * @throws Exception
      */
-    public function getPrevious()
+    public function getPrevious(): PeriodInterface
     {
-        $start = clone $this->begin;
-        $start->sub(static::getDateInterval());
+        $start = (clone $this->begin)->sub(static::getDateInterval());
 
         return new static($start, $this->factory);
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getBegin()
+    public function getBegin(): \DateTimeInterface
     {
         return clone $this->begin;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getEnd()
+    public function getEnd(): \DateTimeInterface
     {
         return clone $this->end;
     }
 
-    /**
-     * @return FactoryInterface
-     */
-    public function getFactory()
+    public function getFactory(): FactoryInterface
     {
         if (null === $this->factory) {
             $this->factory = new Factory();
@@ -198,10 +128,7 @@ abstract class PeriodAbstract implements PeriodInterface
         return $this->factory;
     }
 
-    /**
-     * @return \CalendR\Exception
-     */
-    protected function createInvalidException()
+    protected function createInvalidException(): Exception
     {
         $class = 'CalendR\Period\Exception\NotA' . (new \ReflectionClass($this))->getShortName();
 

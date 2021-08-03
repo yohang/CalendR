@@ -11,10 +11,16 @@
 
 namespace CalendR;
 
+use CalendR\Event\Collection\CollectionInterface;
+use CalendR\Event\EventInterface;
+use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Event\Manager;
+use CalendR\Period\Day;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
+use CalendR\Period\Month;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\Week;
 
 /**
  * Factory class for calendar handling.
@@ -53,12 +59,7 @@ class Calendar
         return $this->eventManager;
     }
 
-    /**
-     * @param $yearOrStart
-     *
-     * @return Period\Year
-     */
-    public function getYear($yearOrStart)
+    public function getYear($yearOrStart): Period\Year
     {
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-01-01', $yearOrStart));
@@ -67,13 +68,7 @@ class Calendar
         return $this->getFactory()->createYear($yearOrStart);
     }
 
-    /**
-     * @param \DateTime|int $yearOrStart year if month is filled, month begin datetime otherwise
-     * @param null|int      $month       number (1~12)
-     *
-     * @return PeriodInterface
-     */
-    public function getMonth($yearOrStart, $month = null)
+    public function getMonth($yearOrStart, ?int $month = null): Month
     {
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-%s-01', $yearOrStart, $month));
@@ -82,13 +77,7 @@ class Calendar
         return $this->getFactory()->createMonth($yearOrStart);
     }
 
-    /**
-     * @param \DateTime|int $yearOrStart
-     * @param null|int      $week
-     *
-     * @return PeriodInterface
-     */
-    public function getWeek($yearOrStart, $week = null)
+    public function getWeek($yearOrStart, ?int $week = null): Week
     {
         $factory = $this->getFactory();
 
@@ -99,14 +88,7 @@ class Calendar
         return $factory->createWeek($factory->findFirstDayOfWeek($yearOrStart));
     }
 
-    /**
-     * @param \DateTime|int $yearOrStart
-     * @param null|int      $month
-     * @param null|int      $day
-     *
-     * @return PeriodInterface
-     */
-    public function getDay($yearOrStart, $month = null, $day = null)
+    public function getDay($yearOrStart, ?int $month = null, ?int $day = null): Day
     {
         if (!$yearOrStart instanceof \DateTime) {
             $yearOrStart = new \DateTime(sprintf('%s-%s-%s', $yearOrStart, $month, $day));
@@ -166,12 +148,9 @@ class Calendar
     }
 
     /**
-     * @param Period\PeriodInterface $period
-     * @param array                  $options
-     *
-     * @return array<Event\EventInterface>
+     * @throws NoProviderFound
      */
-    public function getEvents(PeriodInterface $period, array $options = array())
+    public function getEvents(PeriodInterface $period, array $options = []): CollectionInterface
     {
         return $this->getEventManager()->find($period, $options);
     }

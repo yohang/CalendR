@@ -4,18 +4,14 @@ namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
 use CalendR\Period\Day;
-use CalendR\Period\Month;
-use CalendR\Period\Range;
-use CalendR\Period\Week;
-use CalendR\Period\Year;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Yohan Giarelli <yohan@frequence-web.fr>
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
 class FirstWeekdayTest extends TestCase
 {
-    public function testIterateOnMonth()
+    public function testIterateOnMonth(): void
     {
         $calendar = new Calendar;
         $month = $calendar->getMonth(2013, 3);
@@ -32,7 +28,7 @@ class FirstWeekdayTest extends TestCase
         }
     }
 
-    public function testSetFirstWeekday()
+    public function testSetFirstWeekday(): void
     {
         $factory = new Calendar;
 

@@ -6,45 +6,26 @@ namespace CalendR\Period;
  * Represents a second.
  *
  * @author Zander Baldwin <mynameis@zande.rs>
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
 class Second extends PeriodAbstract
 {
-    /**
-     * Returns the period as a DatePeriod.
-     *
-     * @return \DatePeriod
-     */
-    public function getDatePeriod()
+    public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('PT1S'), $this->end);
     }
 
-    /**
-     * @param \DateTime $start
-     *
-     * @return bool
-     */
-    public static function isValid(\DateTime $start)
+    public static function isValid(\DateTimeInterface $start): bool
     {
-        return $start->format('u') === '000000';
+        return '000000' === $start->format('u');
     }
 
-    /**
-     * Returns the second.
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format('s');
     }
 
-    /**
-     * Returns a \DateInterval equivalent to the period.
-     *
-     * @return \DateInterval
-     */
-    public static function getDateInterval()
+    public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('PT1S');
     }

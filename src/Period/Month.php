@@ -9,17 +9,9 @@ namespace CalendR\Period;
  */
 class Month extends PeriodAbstract implements \Iterator
 {
-    /**
-     * @var PeriodInterface
-     */
-    private $current;
+    private ?PeriodInterface $current = null;
 
-    /**
-     * Returns the period as a DatePeriod.
-     *
-     * @return \DatePeriod
-     */
-    public function getDatePeriod()
+    public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
@@ -29,9 +21,9 @@ class Month extends PeriodAbstract implements \Iterator
      *
      * @return array<Day>
      */
-    public function getDays()
+    public function getDays(): array
     {
-        $days = array();
+        $days = [];
         foreach ($this->getDatePeriod() as $date) {
             $days[] = $this->getFactory()->createDay($date);
         }
@@ -42,10 +34,8 @@ class Month extends PeriodAbstract implements \Iterator
     /**
      * Returns the first day of the first week of month.
      * First day of week is configurable via {@link Factory:setOption()}.
-     *
-     * @return \DateTime
      */
-    public function getFirstDayOfFirstWeek()
+    public function getFirstDayOfFirstWeek(): \DateTimeInterface
     {
         return $this->getFactory()->findFirstDayOfWeek($this->begin);
     }
@@ -53,10 +43,8 @@ class Month extends PeriodAbstract implements \Iterator
     /**
      * Returns a Range period beginning at the first day of first week of this month,
      * and ending at the last day of the last week of this month.
-     *
-     * @return Range
      */
-    public function getExtendedMonth()
+    public function getExtendedMonth(): PeriodInterface
     {
         return $this->getFactory()->createRange($this->getFirstDayOfFirstWeek(), $this->getLastDayOfLastWeek());
     }
@@ -64,65 +52,43 @@ class Month extends PeriodAbstract implements \Iterator
     /**
      * Returns the last day of last week of month
      * First day of week is configurable via {@link Factory::setOption()}.
-     *
-     * @return \DateTime
      */
-    public function getLastDayOfLastWeek()
+    public function getLastDayOfLastWeek(): \DateTimeInterface
     {
-        $lastDay = clone $this->end;
-        $lastDay->sub(new \DateInterval('P1D'));
+        $lastDay = (clone $this->end)->sub(new \DateInterval('P1D'));
 
         return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }
 
-    /*
-    * Iterator implementation
-    */
-
-    /**
-     * @return Week
-     */
-    public function current()
+    public function current(): ?PeriodInterface
     {
         return $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
+    public function next(): void
     {
         if (!$this->valid()) {
             $this->current = $this->getFactory()->createWeek($this->getFirstDayOfFirstWeek());
         } else {
             $this->current = $this->current->getNext();
 
-            if ($this->current->getBegin()->format('m') != $this->begin->format('m')) {
+            if ($this->current->getBegin()->format('m') !== $this->begin->format('m')) {
                 $this->current = null;
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
+    public function key(): int
     {
         return $this->current->getBegin()->format('W');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
+    public function valid(): bool
     {
         return null !== $this->current();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->current = null;
         $this->next();
@@ -130,30 +96,18 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the month name (probably in english).
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format('F');
     }
 
-    /**
-     * @param \DateTime $start
-     *
-     * @return bool
-     */
-    public static function isValid(\DateTime $start)
+    public static function isValid(\DateTimeInterface $start): bool
     {
         return $start->format('d H:i:s') === '01 00:00:00';
     }
 
-    /**
-     * Returns a \DateInterval equivalent to the period.
-     *
-     * @return \DateInterval
-     */
-    public static function getDateInterval()
+    public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('P1M');
     }

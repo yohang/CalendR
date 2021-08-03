@@ -22,11 +22,11 @@ interface ProviderInterface
      * Return events that matches to $begin && $end
      * $end date should be exclude.
      *
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     * @param array     $options
+     * @param \DateTimeInterface $begin
+     * @param \DateTimeInterface $end
+     * @param array $options
      *
      * @return \CalendR\Event\EventInterface[]
      */
-    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array());
+    public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array;
 }

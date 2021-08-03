@@ -18,14 +18,15 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class EventProviderPass implements CompilerPassInterface
 {
-    const TAG = 'calendr.event_provider';
+    public const TAG = 'calendr.event_provider';
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $eventManager = $container->getDefinition(Manager::class);
 
         foreach ($container->findTaggedServiceIds(self::TAG) as $id => $attributes) {
-            $providerAlias = isset($attributes[0]) && isset($attributes[0]['alias']) ? $attributes[0]['alias'] : $id;
+            $providerAlias = $attributes[0]['alias'] ?? $id;
+
             $eventManager->addMethodCall('addProvider', [$providerAlias, new Reference($id)]);
         }
     }

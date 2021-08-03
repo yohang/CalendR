@@ -1,111 +1,66 @@
 <?php
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace CalendR\Period;
 
 /**
- * Class FactoryInterface.
+ * Interface for Period factories.
+ *
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
 interface FactoryInterface
 {
     /**
      * Create and return a Second.
-     *
-     * @param \DateTime $begin
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createSecond(\DateTime $begin);
+    public function createSecond(\DateTimeInterface $begin): PeriodInterface;
 
     /**
      * Create and return a Minute.
-     *
-     * @param \DateTime $begin
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createMinute(\DateTime $begin);
+    public function createMinute(\DateTimeInterface $begin): PeriodInterface;
 
     /**
      * Create and return an Hour.
-     *
-     * @param \DateTime $begin
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createHour(\DateTime $begin);
+    public function createHour(\DateTimeInterface $begin): PeriodInterface;
 
     /**
      * Create and return a Day.
-     *
-     * @param \DateTime $begin
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createDay(\DateTime $begin);
+    public function createDay(\DateTimeInterface $begin): PeriodInterface;
 
     /**
      * Create and return a Week.
-     *
-     * @param \DateTime $begin
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createWeek(\DateTime $begin);
+    public function createWeek(\DateTimeInterface $begin): PeriodInterface;
 
     /**
      * Create and return a Month.
-     *
-     * @param \DateTime $begin
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createMonth(\DateTime $begin);
+    public function createMonth(\DateTimeInterface $begin): PeriodInterface;
 
     /**
      * Create and return a Year.
-     *
-     * @param \DateTime $begin
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createYear(\DateTime $begin);
+    public function createYear(\DateTimeInterface $begin): PeriodInterface;
 
     /**
      * Create and return a Range.
-     *
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     *
-     * @return \CalendR\Period\PeriodInterface
      */
-    public function createRange(\DateTime $begin, \DateTime $end);
+    public function createRange(\DateTimeInterface $begin, \DateTimeInterface $end): PeriodInterface;
 
     /**
-     * @param int $firstWeekday
-     *
-     * @return FactoryInterface
+     * Define the first day of week (e.g. Monday in France and Sunday in U.S.)
      */
-    public function setFirstWeekday($firstWeekday);
+    public function setFirstWeekday(int $firstWeekday): void;
 
     /**
-     * @return int
+     * Returns the first day of week (e.g. Monday in France and Sunday in U.S.)
      */
-    public function getFirstWeekday();
+    public function getFirstWeekday(): int;
 
     /**
      * Find the first day of the given week.
-     *
-     * @param \DateTime $dateTime
-     *
-     * @return \DateTime
      */
-    public function findFirstDayOfWeek($dateTime);
+    public function findFirstDayOfWeek(\DateTimeInterface $dateTime): \DateTimeInterface;
 }

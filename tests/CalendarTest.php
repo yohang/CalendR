@@ -3,106 +3,117 @@
 namespace CalendR\Test;
 
 use CalendR\Calendar;
+use CalendR\Event\Collection\Basic;
 use CalendR\Period\Day;
 use PHPUnit\Framework\TestCase;
+use CalendR\Event\EventInterface;
+use CalendR\Period\PeriodInterface;
+use CalendR\Event\Manager;
+use CalendR\Period\FactoryInterface;
+use CalendR\Period\Second;
+use CalendR\Period\Minute;
+use CalendR\Period\Hour;
+use CalendR\Period\Week;
+use CalendR\Period\Month;
+use CalendR\Period\Year;
 
 class CalendarTest extends TestCase
 {
-    public function testGetYear()
+    public function testGetYear(): void
     {
         $calendar = new Calendar;
 
         $year = $calendar->getYear(new \DateTime('2012-01'));
-        $this->assertInstanceOf('CalendR\\Period\\Year', $year);
+        $this->assertInstanceOf(Year::class, $year);
 
         $year = $calendar->getYear(2012);
-        $this->assertInstanceOf('CalendR\\Period\\Year', $year);
+        $this->assertInstanceOf(Year::class, $year);
     }
 
-    public function testGetMonth()
+    public function testGetMonth(): void
     {
         $calendar = new Calendar;
 
         $month = $calendar->getMonth(new \DateTime('2012-01-01'));
-        $this->assertInstanceOf('CalendR\\Period\\Month', $month);
+        $this->assertInstanceOf(Month::class, $month);
 
         $month = $calendar->getMonth(2012, 01);
-        $this->assertInstanceOf('CalendR\\Period\\Month', $month);
+        $this->assertInstanceOf(Month::class, $month);
     }
 
-    public function testGetWeek()
+    public function testGetWeek(): void
     {
         $calendar = new Calendar;
 
         $week = $calendar->getWeek(new \DateTime('2012-W01'));
-        $this->assertInstanceOf('CalendR\\Period\\Week', $week);
+        $this->assertInstanceOf(Week::class, $week);
 
         $week = $calendar->getWeek(2012, 1);
-        $this->assertInstanceOf('CalendR\\Period\\Week', $week);
+        $this->assertInstanceOf(Week::class, $week);
     }
 
-    public function testGetDay()
+    public function testGetDay(): void
     {
         $calendar = new Calendar;
 
         $day = $calendar->getDay(new \DateTime('2012-01-01'));
-        $this->assertInstanceOf('CalendR\\Period\\Day', $day);
+        $this->assertInstanceOf(Day::class, $day);
 
         $day = $calendar->getDay(2012, 1, 1);
-        $this->assertInstanceOf('CalendR\\Period\\Day', $day);
+        $this->assertInstanceOf(Day::class, $day);
     }
 
-    public function testGetHour()
+    public function testGetHour(): void
     {
         $calendar = new Calendar;
 
         $hour = $calendar->getHour(new \DateTime('2012-01-01 17:00'));
-        $this->assertInstanceOf('CalendR\\Period\\Hour', $hour);
+        $this->assertInstanceOf(Hour::class, $hour);
 
         $hour = $calendar->getHour(2012, 1, 1, 17);
-        $this->assertInstanceOf('CalendR\\Period\\Hour', $hour);
+        $this->assertInstanceOf(Hour::class, $hour);
     }
 
-    public function testGetMinute()
+    public function testGetMinute(): void
     {
         $calendar = new Calendar;
 
         $minute = $calendar->getMinute(new \DateTime('2012-01-01 17:23'));
-        $this->assertInstanceOf('CalendR\\Period\\Minute', $minute);
+        $this->assertInstanceOf(Minute::class, $minute);
 
         $minute = $calendar->getMinute(2012, 1, 1, 17, 23);
-        $this->assertInstanceOf('CalendR\\Period\\Minute', $minute);
+        $this->assertInstanceOf(Minute::class, $minute);
     }
 
-    public function testGetSecond()
+    public function testGetSecond(): void
     {
         $calendar = new Calendar;
 
         $second = $calendar->getSecond(new \DateTime('2012-01-01 17:23:49'));
-        $this->assertInstanceOf('CalendR\\Period\\Second', $second);
+        $this->assertInstanceOf(Second::class, $second);
 
         $second = $calendar->getSecond(2012, 1, 1, 17, 23, 49);
-        $this->assertInstanceOf('CalendR\\Period\\Second', $second);
+        $this->assertInstanceOf(Second::class, $second);
     }
 
-    public function testGetEvents()
+    public function testGetEvents(): void
     {
-        $em       = $this->getMockBuilder('CalendR\Event\Manager')->getMock();
-        $period   = $this->getMockBuilder('CalendR\Period\PeriodInterface')->getMock();
-        $events   = array($this->getMockBuilder('CalendR\Event\EventInterface')->getMock());
+        $em       = $this->getMockBuilder(Manager::class)->getMock();
+        $period   = $this->getMockBuilder(PeriodInterface::class)->getMock();
+        $events   = new Basic([$this->getMockBuilder(EventInterface::class)->getMock()]);
         $calendar = new Calendar;
         $calendar->setEventManager($em);
-        $em->expects($this->once())->method('find')->with($period, array())->will($this->returnValue($events));
+        $em->expects($this->once())->method('find')->with($period, [])->willReturn($events);
 
-        $this->assertSame($events, $calendar->getEvents($period, array()));
+        $this->assertSame($events, $calendar->getEvents($period, []));
     }
 
-    public function testGetFirstWeekday()
+    public function testGetFirstWeekday(): void
     {
         $calendar = new Calendar;
-        $factory  = $this->getMockBuilder('CalendR\Period\FactoryInterface')->getMock();
+        $factory  = $this->getMockBuilder(FactoryInterface::class)->getMock();
         $calendar->setFactory($factory);
-        $factory->expects($this->once())->method('getFirstWeekday')->will($this->returnValue(Day::SUNDAY));
+        $factory->expects($this->once())->method('getFirstWeekday')->willReturn(Day::SUNDAY);
 
         $this->assertSame(Day::SUNDAY, $calendar->getFirstWeekday());
     }
@@ -110,40 +121,40 @@ class CalendarTest extends TestCase
     /**
      * @dataProvider weekAndWeekdayProvider
      */
-    public function testGetWeekWithWeekdayConfiguration($year, $week, $weekday, $day)
+    public function testGetWeekWithWeekdayConfiguration($year, $week, $weekday, $day): void
     {
         $calendar = new Calendar;
         $calendar->getFactory()->setFirstWeekday($weekday);
-        $week     = $calendar->getWeek($year, $week);
+        $week = $calendar->getWeek($year, $week);
 
         $this->assertEquals($weekday, $week->format('w'));
         $this->assertSame($day, $week->format('Y-m-d'));
     }
 
-    public function testGetEventManager()
+    public function testGetEventManager(): void
     {
         $calendar = new Calendar;
-        $this->assertInstanceOf('CalendR\Event\Manager', $calendar->getEventManager());
+        $this->assertInstanceOf(Manager::class, $calendar->getEventManager());
     }
 
-    public static function weekAndWeekdayProvider()
+    public static function weekAndWeekdayProvider(): array
     {
-        return array(
-            array(2013, 1, Day::MONDAY, '2012-12-31'),
-            array(2013, 1, Day::TUESDAY, '2012-12-25'),
-            array(2013, 1, Day::WEDNESDAY, '2012-12-26'),
-            array(2013, 1, Day::THURSDAY, '2012-12-27'),
-            array(2013, 1, Day::FRIDAY, '2012-12-28'),
-            array(2013, 1, Day::SATURDAY, '2012-12-29'),
-            array(2013, 1, Day::SUNDAY, '2012-12-30'),
+        return [
+            [2013, 1, Day::MONDAY, '2012-12-31'],
+            [2013, 1, Day::TUESDAY, '2012-12-25'],
+            [2013, 1, Day::WEDNESDAY, '2012-12-26'],
+            [2013, 1, Day::THURSDAY, '2012-12-27'],
+            [2013, 1, Day::FRIDAY, '2012-12-28'],
+            [2013, 1, Day::SATURDAY, '2012-12-29'],
+            [2013, 1, Day::SUNDAY, '2012-12-30'],
 
-            array(2013, 8, Day::MONDAY, '2013-02-18'),
-            array(2013, 8, Day::TUESDAY, '2013-02-12'),
-            array(2013, 8, Day::WEDNESDAY, '2013-02-13'),
-            array(2013, 8, Day::THURSDAY, '2013-02-14'),
-            array(2013, 8, Day::FRIDAY, '2013-02-15'),
-            array(2013, 8, Day::SATURDAY, '2013-02-16'),
-            array(2013, 8, Day::SUNDAY, '2013-02-17'),
-        );
+            [2013, 8, Day::MONDAY, '2013-02-18'],
+            [2013, 8, Day::TUESDAY, '2013-02-12'],
+            [2013, 8, Day::WEDNESDAY, '2013-02-13'],
+            [2013, 8, Day::THURSDAY, '2013-02-14'],
+            [2013, 8, Day::FRIDAY, '2013-02-15'],
+            [2013, 8, Day::SATURDAY, '2013-02-16'],
+            [2013, 8, Day::SUNDAY, '2013-02-17'],
+        ];
     }
 }

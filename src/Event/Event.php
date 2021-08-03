@@ -20,30 +20,21 @@ namespace CalendR\Event;
  */
 class Event extends AbstractEvent
 {
-    /**
-     * @var \DateTime
-     */
-    protected $begin;
+    protected \DateTimeInterface $begin;
 
-    /**
-     * @var \DateTime
-     */
-    protected $end;
+    protected \DateTimeInterface $end;
 
-    /**
-     * @var string
-     */
-    protected $uid;
+    protected string $uid;
 
-    public function __construct($uid, \DateTime $start, \DateTime $end)
+    public function __construct($uid, \DateTimeInterface $start, \DateTimeInterface $end)
     {
-        if ($start->diff($end)->invert == 1) {
+        if (1 === $start->diff($end)->invert) {
             throw new \InvalidArgumentException('Events usually start before they end');
         }
 
-        $this->uid = $uid;
+        $this->uid   = $uid;
         $this->begin = clone $start;
-        $this->end = clone $end;
+        $this->end   = clone $end;
     }
 
     /**
@@ -53,27 +44,23 @@ class Event extends AbstractEvent
      *
      * @return string an unique event identifier
      */
-    public function getUid()
+    public function getUid(): string
     {
         return $this->uid;
     }
 
     /**
      * Returns the event begin.
-     *
-     * @return \DateTime event begin
      */
-    public function getBegin()
+    public function getBegin(): \DateTimeInterface
     {
         return $this->begin;
     }
 
     /**
      * Returns the event end.
-     *
-     * @return \DateTime event end
      */
-    public function getEnd()
+    public function getEnd(): \DateTimeInterface
     {
         return $this->end;
     }

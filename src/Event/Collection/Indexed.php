@@ -25,14 +25,12 @@ class Indexed implements CollectionInterface
     /**
      * @var EventInterface[][]
      */
-    protected $events;
+    protected array $events;
 
     /**
      * Event count.
-     *
-     * @var int
      */
-    protected $count = 0;
+    protected int $count = 0;
 
     /**
      * The function used to index events.
@@ -51,14 +49,14 @@ class Indexed implements CollectionInterface
 
     /**
      * @param array<EventInterface> $events
-     * @param callable|null         $callable
+     * @param callable|null $callable
      */
-    public function __construct(array $events = array(), $callable = null)
+    public function __construct(array $events = [], ?callable $callable = null)
     {
         if (is_callable($callable)) {
             $this->indexFunction = $callable;
         } else {
-            $this->indexFunction = function (\DateTime $dateTime) {
+            $this->indexFunction = static function (\DateTimeInterface $dateTime) {
                 return $dateTime->format('Y-m-d');
             };
         }
@@ -70,16 +68,14 @@ class Indexed implements CollectionInterface
 
     /**
      * Adds an event to the collection.
-     *
-     * @param EventInterface $event
      */
-    public function add(EventInterface $event)
+    public function add(EventInterface $event): void
     {
         $index = $this->computeIndex($event);
         if (isset($this->events[$index])) {
             $this->events[$index][] = $event;
         } else {
-            $this->events[$index] = array($event);
+            $this->events[$index] = [$event];
         }
 
         ++$this->count;
@@ -87,15 +83,13 @@ class Indexed implements CollectionInterface
 
     /**
      * Removes an event from the collection.
-     *
-     * @param EventInterface $event
      */
-    public function remove(EventInterface $event)
+    public function remove(EventInterface $event): void
     {
         $index = $this->computeIndex($event);
         if (isset($this->events[$index])) {
             foreach ($this->events[$index] as $key => $internalEvent) {
-                if ($event->getUid() == $internalEvent->getUid()) {
+                if ($event->getUid() === $internalEvent->getUid()) {
                     unset($this->events[$index][$key]);
                     --$this->count;
                 }
@@ -105,12 +99,8 @@ class Indexed implements CollectionInterface
 
     /**
      * Returns if we have events for the given index.
-     *
-     * @param mixed $index
-     *
-     * @return bool
      */
-    public function has($index)
+    public function has($index): bool
     {
         return 0 < count($this->find($index));
     }
@@ -122,7 +112,7 @@ class Indexed implements CollectionInterface
      *
      * @return EventInterface[]
      */
-    public function find($index)
+    public function find($index): array
     {
         if ($index instanceof PeriodInterface) {
             $index = $index->getBegin();
@@ -131,7 +121,7 @@ class Indexed implements CollectionInterface
             $index = $this->computeIndex($index);
         }
 
-        return isset($this->events[$index]) ? $this->events[$index] : array();
+        return $this->events[$index] ?? [];
     }
 
     /**
@@ -139,9 +129,9 @@ class Indexed implements CollectionInterface
      *
      * @return EventInterface[]
      */
-    public function all()
+    public function all(): array
     {
-        $results = array();
+        $results = [];
 
         foreach ($this->events as $events) {
             $results = array_merge($results, $events);
@@ -153,11 +143,9 @@ class Indexed implements CollectionInterface
     /**
      * Computes event index.
      *
-     * @param EventInterface|\DateTime $toCompute
-     *
-     * @return string
+     * @param EventInterface|\DateTimeInterface $toCompute
      */
-    protected function computeIndex($toCompute)
+    protected function computeIndex($toCompute): string
     {
         if ($toCompute instanceof EventInterface) {
             $toCompute = $toCompute->getBegin();
@@ -167,10 +155,7 @@ class Indexed implements CollectionInterface
         return $function($toCompute);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function count()
+    public function count(): int
     {
         return $this->count;
     }

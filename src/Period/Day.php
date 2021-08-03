@@ -18,106 +18,77 @@ namespace CalendR\Period;
  */
 class Day extends PeriodAbstract implements \Iterator
 {
-    const MONDAY = 1;
-    const TUESDAY = 2;
-    const WEDNESDAY = 3;
-    const THURSDAY = 4;
-    const FRIDAY = 5;
-    const SATURDAY = 6;
-    const SUNDAY = 0;
+    public const MONDAY    = 1;
+    public const TUESDAY   = 2;
+    public const WEDNESDAY = 3;
+    public const THURSDAY  = 4;
+    public const FRIDAY    = 5;
+    public const SATURDAY  = 6;
+    public const SUNDAY    = 0;
 
-    /**
-     * @var PeriodInterface
-     */
-    private $current;
+    private ?PeriodInterface $current = null;
 
     /**
      * Returns the period as a DatePeriod.
-     *
-     * @return \DatePeriod
      */
-    public function getDatePeriod()
+    public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
     /**
      * Returns the day name (probably in english).
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format('l');
     }
 
-    /**
-     * @param \DateTime $start
-     *
-     * @return bool
-     */
-    public static function isValid(\DateTime $start)
+    public static function isValid(\DateTimeInterface $start): bool
     {
-        return $start->format('H:i:s') == '00:00:00';
+        return '00:00:00' === $start->format('H:i:s');
     }
 
     /**
      * Returns a \DateInterval equivalent to the period.
-     *
-     * @static
-     *
-     * @return \DateInterval
      */
-    public static function getDateInterval()
+    public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('P1D');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function current()
+    public function current(): ?PeriodInterface
     {
         return $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
+    public function next(): void
     {
         if (null === $this->current) {
             $this->current = $this->getFactory()->createHour($this->begin);
         } else {
             $this->current = $this->current->getNext();
+
             if (!$this->contains($this->current->getBegin())) {
                 $this->current = null;
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
+    public function key(): int
     {
-        return (int) $this->current->getBegin()->format('G');
+        return (int)$this->current->getBegin()->format('G');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
+    public function valid(): bool
     {
         return null !== $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->current = null;
+
         $this->next();
     }
 }

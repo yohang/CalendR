@@ -20,49 +20,28 @@ use Doctrine\Common\Cache\Cache as CacheInterface;
  */
 class Cache implements ProviderInterface
 {
-    /**
-     * @var CacheInterface
-     */
-    protected $cache;
+    protected CacheInterface $cache;
 
-    /**
-     * @var ProviderInterface
-     */
-    protected $provider;
+    protected ProviderInterface $provider;
 
-    /**
-     * @var int
-     */
-    protected $lifetime;
+    protected int $lifetime;
 
-    /**
-     * @var string
-     */
-    protected $namespace;
+    protected ?string $namespace;
 
-    /**
-     * @param CacheInterface    $cache
-     * @param ProviderInterface $provider
-     * @param int               $lifetime
-     * @param string            $namespace
-     */
-    public function __construct(CacheInterface $cache, ProviderInterface $provider, $lifetime, $namespace = null)
+    public function __construct(CacheInterface $cache, ProviderInterface $provider, int $lifetime, ?string $namespace = null)
     {
-        $this->cache = $cache;
-        $this->provider = $provider;
-        $this->lifetime = $lifetime;
+        $this->cache     = $cache;
+        $this->provider  = $provider;
+        $this->lifetime  = $lifetime;
         $this->namespace = $namespace;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
+    public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
-        $cacheKey = md5(serialize(array($begin, $end, $options)));
+        $cacheKey = md5(serialize([$begin, $end, $options]));
 
         if (null !== $this->namespace) {
-            $cacheKey = $this->namespace.'.'.$cacheKey;
+            $cacheKey = $this->namespace . '.' . $cacheKey;
         }
 
         if ($this->cache->contains($cacheKey)) {

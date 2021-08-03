@@ -9,43 +9,24 @@ namespace CalendR\Period;
  */
 class Year extends PeriodAbstract implements \Iterator
 {
-    /**
-     * @var PeriodInterface
-     */
-    private $current;
+    private ?PeriodInterface $current = null;
 
-    /**
-     * Returns the period as a DatePeriod.
-     *
-     * @return \DatePeriod
-     */
-    public function getDatePeriod()
+    public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
-    /**
-     * @param \DateTime $start
-     *
-     * @return bool
-     */
-    public static function isValid(\DateTime $start)
+    public static function isValid(\DateTimeInterface $start): bool
     {
         return $start->format('d-m H:i:s') === '01-01 00:00:00';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function current()
+    public function current(): PeriodInterface
     {
         return $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
+    public function next(): void
     {
         if (null === $this->current) {
             $this->current = $this->getFactory()->createMonth($this->begin);
@@ -57,47 +38,28 @@ class Year extends PeriodAbstract implements \Iterator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
+    public function key(): int
     {
         return $this->current->getBegin()->format('m');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
+    public function valid(): bool
     {
         return null !== $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->current = null;
         $this->next();
     }
 
-    /**
-     * Returns the year.
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format('Y');
     }
 
-    /**
-     * Returns a \DateInterval equivalent to the period.
-     *
-     * @return \DateInterval
-     */
-    public static function getDateInterval()
+    public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('P1Y');
     }

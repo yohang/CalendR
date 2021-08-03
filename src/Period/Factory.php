@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2013 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace CalendR\Period;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,134 +9,88 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * Contains methods that instantiate periods from given arguments
  *
- * @author Yohan Giarelli <yohan@frequence-web.fr>
+ * @author Yohan Giarelli <yohan@giarel.li>
  */
 class Factory implements FactoryInterface
 {
-    /**
-     * @var array
-     */
-    protected $options;
+    protected array $options;
 
-    /**
-     * @var OptionsResolver
-     */
-    protected $resolver;
+    protected ?OptionsResolver $resolver = null;
 
-    /**
-     * @param array $options
-     */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $this->options = $this->resolveOptions($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createSecond(\DateTime $begin)
+    public function createSecond(\DateTimeInterface $begin): Second
     {
         return new $this->options['second_class']($begin, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createMinute(\DateTime $begin)
+    public function createMinute(\DateTimeInterface $begin): Minute
     {
         return new $this->options['minute_class']($begin, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createHour(\DateTime $begin)
+    public function createHour(\DateTimeInterface $begin): Hour
     {
         return new $this->options['hour_class']($begin, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createDay(\DateTime $begin)
+    public function createDay(\DateTimeInterface $begin): Day
     {
         return new $this->options['day_class']($begin, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createWeek(\DateTime $begin)
+    public function createWeek(\DateTimeInterface $begin): Week
     {
         return new $this->options['week_class']($begin, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createMonth(\DateTime $begin)
+    public function createMonth(\DateTimeInterface $begin): Month
     {
         return new $this->options['month_class']($begin, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createYear(\DateTime $begin)
+    public function createYear(\DateTimeInterface $begin): Year
     {
         return new $this->options['year_class']($begin, $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createRange(\DateTime $begin, \DateTime $end)
+    public function createRange(\DateTimeInterface $begin, \DateTimeInterface $end): Range
     {
         return new $this->options['range_class']($begin, $end, $this);
     }
 
-    /**
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function setOption($name, $value)
+    public function setOption(string $name, $value): void
     {
         $this->resolver->clear();
         $this->resolver->setDefaults($this->options);
-        $this->options = $this->resolver->resolve(array($name => $value));
+
+        $this->options = $this->resolver->resolve([$name => $value]);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return mixed
-     */
-    public function getOption($name)
+    public function getOption(string $name)
     {
         return $this->options[$name];
     }
 
-    /**
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         if (null === $this->resolver) {
             $this->resolver = new OptionsResolver();
             $this->resolver->setDefaults(
-                array(
-                    'second_class' => 'CalendR\Period\Second',
-                    'minute_class' => 'CalendR\Period\Minute',
-                    'hour_class' => 'CalendR\Period\Hour',
-                    'day_class' => 'CalendR\Period\Day',
-                    'week_class' => 'CalendR\Period\Week',
-                    'month_class' => 'CalendR\Period\Month',
-                    'year_class' => 'CalendR\Period\Year',
-                    'range_class' => 'CalendR\Period\Range',
+                [
+                    'second_class'  => Second::class,
+                    'minute_class'  => Minute::class,
+                    'hour_class'    => Hour::class,
+                    'day_class'     => Day::class,
+                    'week_class'    => Week::class,
+                    'month_class'   => Month::class,
+                    'year_class'    => Year::class,
+                    'range_class'   => Range::class,
                     'first_weekday' => Day::MONDAY,
-                )
+                ]
             );
             $this->setDefaultOptions($this->resolver);
         }
@@ -155,37 +100,26 @@ class Factory implements FactoryInterface
 
     /**
      * Override this method if you have to change default/allowed options.
-     *
-     * @param OptionsResolver $resolver
      */
-    protected function setDefaultOptions(OptionsResolver $resolver)
+    protected function setDefaultOptions(OptionsResolver $resolver): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setFirstWeekday($firstWeekday)
+    public function setFirstWeekday(int $firstWeekday): void
     {
         $this->setOption('first_weekday', $firstWeekday);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFirstWeekday()
+    public function getFirstWeekday(): int
     {
         return $this->getOption('first_weekday');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findFirstDayOfWeek($dateTime)
+    public function findFirstDayOfWeek(\DateTimeInterface $dateTime): \DateTimeInterface
     {
-        $day = clone $dateTime;
-        $delta = ((int) $day->format('w') - $this->getFirstWeekday() + 7) % 7;
-        $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
+        $day   = clone $dateTime;
+        $delta = ((int)$day->format('w') - $this->getFirstWeekday() + 7) % 7;
+        $day   = $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
 
         return $day;
     }

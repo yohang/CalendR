@@ -11,6 +11,11 @@
 
 namespace CalendR\Bridge\Doctrine\ORM;
 
+use CalendR\Event\EventInterface;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * Trait that transforms a Doctrine2 EntityRepository into
  * a CalendR Event Provider.
@@ -19,23 +24,14 @@ namespace CalendR\Bridge\Doctrine\ORM;
  */
 trait EventRepository
 {
-    /**
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     * @param array     $options
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function getEventsQueryBuilder(\DateTime $begin, \DateTime $end, array $options = array())
+    public function getEventsQueryBuilder(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): QueryBuilder
     {
-        $begin = sprintf("'%s'", $begin->format('Y-m-d H:i:s'));
-        $end   = sprintf("'%s'", $end->format('Y-m-d H:i:s'));
-        $qb    = $this->createQueryBuilderForGetEvent($options);
+        $qb = $this->createQueryBuilderForGetEvent($options);
 
         return $qb
             ->andWhere(
                 $qb->expr()->orX(
-                // Period in event
+                    // Period in event
                     $qb->expr()->andX(
                         $qb->expr()->lte($this->getBeginFieldName(), $begin),
                         $qb->expr()->gte($this->getEndFieldName(), $end)
@@ -56,18 +52,10 @@ trait EventRepository
                         $qb->expr()->lt($this->getEndFieldName(), $end)
                     )
                 )
-            )
-            ;
+            );
     }
 
-    /**
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     * @param array     $options
-     *
-     * @return \Doctrine\ORM\Query
-     */
-    public function getEventsQuery(\DateTime $begin, \DateTime $end, array $options = array())
+    public function getEventsQuery(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): AbstractQuery
     {
         return $this->getEventsQueryBuilder($begin, $end, $options)->getQuery();
     }
@@ -75,41 +63,26 @@ trait EventRepository
     /**
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param array     $options
+     * @param array $options
      *
-     * @return array<\CalendR\Event\EventInterface>
+     * @return array<EventInterface>
      */
-    public function getEvents(\DateTime $begin, \DateTime $end, array $options = array())
+    public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
         return $this->getEventsQuery($begin, $end, $options)->getResult();
     }
 
-    /**
-     * @param array $options
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function createQueryBuilderForGetEvent(array $options)
+    public function createQueryBuilderForGetEvent(array $options): QueryBuilder
     {
         return $this->createQueryBuilder('evt');
     }
 
-    /**
-     * Returns the begin date field name.
-     *
-     * @return string
-     */
-    public function getBeginFieldName()
+    public function getBeginFieldName(): string
     {
         return 'evt.begin';
     }
 
-    /**
-     * Returns the end date field name.
-     *
-     * @return string
-     */
-    public function getEndFieldName()
+    public function getEndFieldName(): string
     {
         return 'evt.end';
     }

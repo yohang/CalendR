@@ -6,41 +6,44 @@ use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Week;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class WeekTest extends TestCase
 {
-    public static function providerConstructValid()
+    use ProphecyTrait;
+
+    public static function providerConstructValid(): array
     {
-        return array(
-            array(new \DateTime('2012-01-02')),
-            array(new \DateTime('2012-01-09')),
-            array(new \DateTime('2012-01-23')),
-        );
+        return [
+            [new \DateTimeImmutable('2012-01-02')],
+            [new \DateTimeImmutable('2012-01-09')],
+            [new \DateTimeImmutable('2012-01-23')],
+        ];
     }
 
-    public static function providerContains()
+    public static function providerContains(): array
     {
-        return array(
-            array(new \DateTime('2012-01-02'), new \DateTime('2012-01-04'), new \DateTime('2012-01-09')),
-            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2012-01-19')),
-            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2011-01-10')),
-            array(new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2012-01-17')),
-        );
+        return [
+            [new \DateTimeImmutable('2012-01-02'), new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-01-09')],
+            [new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-19')],
+            [new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2011-01-10')],
+            [new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-17')],
+        ];
     }
 
-    public static function providerNumber()
+    public static function providerNumber(): array
     {
-        return array(
-            array(new \DateTime('2012-01-02'), 1),
-            array(new \DateTime('2012-01-09'), 2),
-            array(new \DateTime('2011-12-26'), 52),
-        );
+        return [
+            [new \DateTimeImmutable('2012-01-02'), 1],
+            [new \DateTimeImmutable('2012-01-09'), 2],
+            [new \DateTimeImmutable('2011-12-26'), 52],
+        ];
     }
 
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain)
+    public function testContains($start, $contain, $notContain): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -51,7 +54,7 @@ class WeekTest extends TestCase
     /**
      * @dataProvider providerNumber
      */
-    public function testNumber($start, $number)
+    public function testNumber($start, $number): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -61,44 +64,47 @@ class WeekTest extends TestCase
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start)
+    public function testConstructValid($start): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertInstanceOf(Week::class, $week);
     }
 
-    public function testIteration()
+    public function testIteration(): void
     {
-        $start = new \DateTime('2012-W01');
-        $week = new Week($start, new Factory);
+        $start = new \DateTimeImmutable('2012-W01');
+        $week  = new Week($start, new Factory);
 
         $i = 0;
-
         foreach ($week as $dayKey => $day) {
             $this->assertGreaterThan(0, preg_match('/^\\d{2}\\-\\d{2}\\-\\d{4}$/', $dayKey));
             $this->assertSame($start->format('d-m-Y'), $day->getBegin()->format('d-m-Y'));
-            $start->add(new \DateInterval('P1D'));
+
+            $start = $start->add(new \DateInterval('P1D'));
+
             $i++;
         }
 
-        $this->assertEquals($i, 7);
+        $this->assertEquals(7, $i);
     }
 
-    public function testGetDatePeriod()
+    public function testGetDatePeriod(): void
     {
-        $date = new \DateTime('2012-01-01');
+        $date = new \DateTimeImmutable('2012-01-01');
         $week = new Week($date, $this->prophesize(FactoryInterface::class)->reveal());
+
         foreach ($week->getDatePeriod() as $dateTime) {
             $this->assertEquals($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
-            $date->add(new \DateInterval('P1D'));
+            $date = $date->add(new \DateInterval('P1D'));
         }
     }
 
-    public function testToString()
+    public function testToString(): void
     {
-        $date = new \DateTime(date('Y-\\WW'));
+        $date = new \DateTimeImmutable(date('Y-\\WW'));
         $week = new Week($date, $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertSame($date->format('W'), (string) $week);
+
+        $this->assertSame($date->format('W'), (string)$week);
     }
 }
