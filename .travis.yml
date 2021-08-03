@@ -1,18 +1,15 @@
 language: php
 
 php:
-    - 7.3
     - 7.4
     - 8.0
-    - 8.1
+    - nightly
 
 matrix:
   include:
-    - php: 5.6
-      env: dependencies=lowest
     - php: 7.4
       env: dependencies=lowest
-    - php: 8.1
+    - php: 8.0
       env: dependencies=lowest
 
 before_install:
