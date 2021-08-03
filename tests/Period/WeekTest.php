@@ -18,6 +18,9 @@ class WeekTest extends TestCase
             [new \DateTimeImmutable('2012-01-02')],
             [new \DateTimeImmutable('2012-01-09')],
             [new \DateTimeImmutable('2012-01-23')],
+            [new \DateTime('2012-01-02')],
+            [new \DateTime('2012-01-09')],
+            [new \DateTime('2012-01-23')],
         ];
     }
 
@@ -28,6 +31,10 @@ class WeekTest extends TestCase
             [new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-19')],
             [new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2011-01-10')],
             [new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-09'), new \DateTimeImmutable('2012-01-17')],
+            [new \DateTime('2012-01-02'), new \DateTime('2012-01-04'), new \DateTime('2012-01-09')],
+            [new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2012-01-19')],
+            [new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2011-01-10')],
+            [new \DateTime('2012-01-09'), new \DateTime('2012-01-09'), new \DateTime('2012-01-17')],
         ];
     }
 
@@ -37,6 +44,9 @@ class WeekTest extends TestCase
             [new \DateTimeImmutable('2012-01-02'), 1],
             [new \DateTimeImmutable('2012-01-09'), 2],
             [new \DateTimeImmutable('2011-12-26'), 52],
+            [new \DateTime('2012-01-02'), 1],
+            [new \DateTime('2012-01-09'), 2],
+            [new \DateTime('2011-12-26'), 52],
         ];
     }
 

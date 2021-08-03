@@ -9,6 +9,7 @@ use CalendR\Period\FactoryInterface;
 use CalendR\Period\Year;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use CalendR\Period\Month;
 
 class YearTest extends TestCase
 {
@@ -20,6 +21,9 @@ class YearTest extends TestCase
             [new \DateTimeImmutable('2012-01-03')],
             [new \DateTimeImmutable('2014-12-10')],
             [new \DateTimeImmutable('2014-01-01 00:00:01')],
+            [new \DateTime('2012-01-03')],
+            [new \DateTime('2014-12-10')],
+            [new \DateTime('2014-01-01 00:00:01')],
         ];
     }
 
@@ -30,6 +34,10 @@ class YearTest extends TestCase
             [new \DateTimeImmutable('2011-01-01')],
             [new \DateTimeImmutable('2013-01-01')],
             [new \DateTimeImmutable('2014-01-01 00:00')],
+            [new \DateTime('2012-01-01')],
+            [new \DateTime('2011-01-01')],
+            [new \DateTime('2013-01-01')],
+            [new \DateTime('2014-01-01 00:00')],
         ];
     }
 
@@ -42,6 +50,12 @@ class YearTest extends TestCase
             [new \DateTimeImmutable('2013-01-01'), new \DateTimeImmutable('2013-12-31'), new \DateTimeImmutable('2014-01-01')],
             [new \DateTimeImmutable('2013-01-01'), new \DateTimeImmutable('2013-12-31'), new \DateTimeImmutable('2014-01-01')],
             [new \DateTimeImmutable('2013-01-01'), new \DateTimeImmutable('2013-01-01'), new \DateTimeImmutable('2014-01-01')],
+            [new \DateTime('2012-01-01'), new \DateTime('2012-01-04'), new \DateTime('2013-02-09')],
+            [new \DateTime('2011-01-01'), new \DateTime('2011-01-01'), new \DateTime('2012-03-19')],
+            [new \DateTime('2013-01-01'), new \DateTime('2013-09-09'), new \DateTime('2011-10-09')],
+            [new \DateTime('2013-01-01'), new \DateTime('2013-12-31'), new \DateTime('2014-01-01')],
+            [new \DateTime('2013-01-01'), new \DateTime('2013-12-31'), new \DateTime('2014-01-01')],
+            [new \DateTime('2013-01-01'), new \DateTime('2013-01-01'), new \DateTime('2014-01-01')],
         ];
     }
 
@@ -102,9 +116,9 @@ class YearTest extends TestCase
 
         foreach ($year as $monthKey => $month) {
             $this->assertTrue(is_numeric($monthKey) && $monthKey > 0 && $monthKey <= 12);
-            $this->assertInstanceOf('CalendR\\Period\\Month', $month);
+            $this->assertInstanceOf(Month::class, $month);
             $this->assertSame($start->format('d-m-Y'), $month->getBegin()->format('d-m-Y'));
-            $start->add(new \DateInterval('P1M'));
+            $start = $start->add(new \DateInterval('P1M'));
             $i++;
         }
 
@@ -130,7 +144,7 @@ class YearTest extends TestCase
 
         foreach ($year->getDatePeriod() as $dateTime) {
             $this->assertEquals($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
-            $date->add(new \DateInterval('P1D'));
+            $date = $date->add(new \DateInterval('P1D'));
         }
     }
 }

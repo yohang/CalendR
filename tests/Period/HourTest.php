@@ -23,6 +23,8 @@ class HourTest extends TestCase
         return [
             [new \DateTimeImmutable('2014-12-10 17:30')],
             [new \DateTimeImmutable('2014-12-10 00:00:01')],
+            [new \DateTime('2014-12-10 17:30')],
+            [new \DateTime('2014-12-10 00:00:01')],
         ];
     }
 
@@ -32,6 +34,9 @@ class HourTest extends TestCase
             [new \DateTimeImmutable('2012-01-03')],
             [new \DateTimeImmutable('2011-12-10')],
             [new \DateTimeImmutable('2013-07-13 00:00:00')],
+            [new \DateTime('2012-01-03')],
+            [new \DateTime('2011-12-10')],
+            [new \DateTime('2013-07-13 00:00:00')],
         ];
     }
 
@@ -72,6 +77,21 @@ class HourTest extends TestCase
                 new \DateTimeImmutable('2012-09-09 05:00'),
                 new \DateTimeImmutable('2012-09-09 05:00:01'),
                 new \DateTimeImmutable('2011-08-09 05:30'),
+            ],
+            [
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-02 00:01'),
+                new \DateTime('2012-01-02 12:34'),
+            ],
+            [
+                new \DateTime('2012-05-30 05:00'),
+                new \DateTime('2012-05-30 05:00'),
+                new \DateTime('2012-05-30 06:00'),
+            ],
+            [
+                new \DateTime('2012-09-09 05:00'),
+                new \DateTime('2012-09-09 05:00:01'),
+                new \DateTime('2011-08-09 05:30'),
             ],
         ];
     }
@@ -154,7 +174,7 @@ class HourTest extends TestCase
     /**
      * @dataProvider includesDataProvider
      */
-    public function testIncludes(\DateTimeImmutable $begin, PeriodInterface $period, $strict, $result): void
+    public function testIncludes(\DateTimeInterface  $begin, PeriodInterface $period, $strict, $result): void
     {
         $hour = new Hour($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $hour->includes($period, $strict));
@@ -191,6 +211,17 @@ class HourTest extends TestCase
             [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:34'), $factory), false, true],
             [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:34:45'), $factory), false, true],
             [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:34:45'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), true, false],
+            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), true, false],
+            [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), true, true],
+            [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34'), $factory), true, true],
+            [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:34:45'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:34:45'), $factory), false, true],
         ];
     }
 

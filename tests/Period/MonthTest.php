@@ -39,6 +39,10 @@ class MonthTest extends TestCase
             [new \DateTimeImmutable('2011-02-01'), new \DateTimeImmutable('2011-02-09'), new \DateTimeImmutable('2012-03-19')],
             [new \DateTimeImmutable('2012-09-01'), new \DateTimeImmutable('2012-09-09'), new \DateTimeImmutable('2011-09-01')],
             [new \DateTimeImmutable('2013-09-01'), new \DateTimeImmutable('2013-09-01'), new \DateTimeImmutable('2013-10-01')],
+            [new \DateTime('2012-01-01'), new \DateTime('2012-01-04'), new \DateTime('2012-02-09')],
+            [new \DateTime('2011-02-01'), new \DateTime('2011-02-09'), new \DateTime('2012-03-19')],
+            [new \DateTime('2012-09-01'), new \DateTime('2012-09-09'), new \DateTime('2011-09-01')],
+            [new \DateTime('2013-09-01'), new \DateTime('2013-09-01'), new \DateTime('2013-10-01')],
         ];
     }
 
@@ -53,6 +57,14 @@ class MonthTest extends TestCase
             [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'],
             [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'],
             [new Month(new \DateTimeImmutable('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'],
+            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'],
+            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'],
+            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'],
+            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'],
+            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'],
+            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'],
+            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'],
+            [new Month(new \DateTime('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'],
         ];
     }
 

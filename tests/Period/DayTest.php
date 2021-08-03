@@ -20,6 +20,8 @@ class DayTest extends TestCase
         return [
             [new \DateTimeImmutable('2014-12-10 17:30')],
             [new \DateTimeImmutable('2014-12-10 00:00:01')],
+            [new \DateTime('2014-12-10 17:30')],
+            [new \DateTime('2014-12-10 00:00:01')],
         ];
     }
 
@@ -29,6 +31,9 @@ class DayTest extends TestCase
             [new \DateTimeImmutable('2012-01-03')],
             [new \DateTimeImmutable('2011-12-10')],
             [new \DateTimeImmutable('2013-07-13 00:00:00')],
+            [new \DateTime('2012-01-03')],
+            [new \DateTime('2011-12-10')],
+            [new \DateTime('2013-07-13 00:00:00')],
         ];
     }
 
@@ -59,6 +64,10 @@ class DayTest extends TestCase
             [new \DateTimeImmutable('2012-05-30'), new \DateTimeImmutable('2012-05-30 12:25'), new \DateTimeImmutable('2012-05-29')],
             [new \DateTimeImmutable('2012-09-09'), new \DateTimeImmutable('2012-09-09 23:59'), new \DateTimeImmutable('2011-09-09')],
             [new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-03')],
+            [new \DateTime('2012-01-02'), new \DateTime('2012-01-02 00:01'), new \DateTime('2012-01-03')],
+            [new \DateTime('2012-05-30'), new \DateTime('2012-05-30 12:25'), new \DateTime('2012-05-29')],
+            [new \DateTime('2012-09-09'), new \DateTime('2012-09-09 23:59'), new \DateTime('2011-09-09')],
+            [new \DateTime('2013-02-02'), new \DateTime('2013-02-02'), new \DateTime('2013-02-03')],
         ];
     }
 
@@ -132,7 +141,7 @@ class DayTest extends TestCase
     /**
      * @dataProvider includesDataProvider
      */
-    public function testIncludes(\DateTimeImmutable $begin, PeriodInterface $period, $strict, $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, $strict, $result): void
     {
         $day = new Day($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $day->includes($period, $strict));
@@ -162,6 +171,9 @@ class DayTest extends TestCase
             [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), true, false],
             [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true],
             [new \DateTimeImmutable('2013-09-01'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), true, true],
+            [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), true, false],
+            [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
+            [new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01'), $factory), true, true],
         ];
     }
 

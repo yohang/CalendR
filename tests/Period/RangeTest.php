@@ -19,6 +19,10 @@ class RangeTest extends TestCase
             [new \DateTimeImmutable('2011-01-03'), new \DateTimeImmutable('2011-01-11'), new \DateTimeImmutable('2011-01-05'), new \DateTimeImmutable('2012-03-19')],
             [new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2013-01-01'), new \DateTimeImmutable('2012-09-09'), new \DateTimeImmutable('2011-10-09')],
             [new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-09'), new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-09')],
+            [new \DateTime('2012-01-01'), new \DateTime('2012-01-06'), new \DateTime('2012-01-04'), new \DateTime('2013-02-09')],
+            [new \DateTime('2011-01-03'), new \DateTime('2011-01-11'), new \DateTime('2011-01-05'), new \DateTime('2012-03-19')],
+            [new \DateTime('2012-01-01'), new \DateTime('2013-01-01'), new \DateTime('2012-09-09'), new \DateTime('2011-10-09')],
+            [new \DateTime('2013-02-02'), new \DateTime('2013-02-09'), new \DateTime('2013-02-02'), new \DateTime('2013-02-09')],
         ];
     }
 

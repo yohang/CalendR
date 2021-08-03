@@ -23,6 +23,8 @@ class MinuteTest extends TestCase
         return [
             [new \DateTimeImmutable('2014-12-10 17:30:34')],
             [new \DateTimeImmutable('2014-12-10 00:00:01')],
+            [new \DateTime('2014-12-10 17:30:34')],
+            [new \DateTime('2014-12-10 00:00:01')],
         ];
     }
 
@@ -32,6 +34,9 @@ class MinuteTest extends TestCase
             [new \DateTimeImmutable('2012-01-03')],
             [new \DateTimeImmutable('2011-12-10 17:45')],
             [new \DateTimeImmutable('2013-07-13 00:00:00')],
+            [new \DateTime('2012-01-03')],
+            [new \DateTime('2011-12-10 17:45')],
+            [new \DateTime('2013-07-13 00:00:00')],
         ];
     }
 
@@ -72,6 +77,21 @@ class MinuteTest extends TestCase
                 new \DateTimeImmutable('2012-05-30 05:23'),
                 new \DateTimeImmutable('2012-05-30 05:23:23'),
                 new \DateTimeImmutable('2012-05-30'),
+            ],
+            [
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-03'),
+            ],
+            [
+                new \DateTime('2012-01-02'),
+                new \DateTime('2012-01-02 00:00:34'),
+                new \DateTime('2012-01-02 00:01:00'),
+            ],
+            [
+                new \DateTime('2012-05-30 05:23'),
+                new \DateTime('2012-05-30 05:23:23'),
+                new \DateTime('2012-05-30'),
             ],
         ];
     }
@@ -148,12 +168,16 @@ class MinuteTest extends TestCase
         $this->assertTrue(Minute::isValid(new \DateTimeImmutable('2014-03-05 18:00')));
         $this->assertTrue(Minute::isValid(new \DateTimeImmutable('2014-03-05 18:36')));
         $this->assertFalse(Minute::isValid(new \DateTimeImmutable('2014-03-05 18:36:15')));
+        $this->assertTrue(Minute::isValid(new \DateTime('2014-03-05')));
+        $this->assertTrue(Minute::isValid(new \DateTime('2014-03-05 18:00')));
+        $this->assertTrue(Minute::isValid(new \DateTime('2014-03-05 18:36')));
+        $this->assertFalse(Minute::isValid(new \DateTime('2014-03-05 18:36:15')));
     }
 
     /**
      * @dataProvider providerIncludes
      */
-    public function testIncludes(\DateTimeImmutable $begin, PeriodInterface $period, $strict, $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, $strict, $result): void
     {
         $minute = new Minute($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $minute->includes($period, $strict));
@@ -163,12 +187,21 @@ class MinuteTest extends TestCase
     {
         $minute = new Minute(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame(date('Y-m-d H:00'), $minute->format('Y-m-d H:i'));
+
+        $minute = new Minute(new \DateTime(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
+        $this->assertSame(date('Y-m-d H:00'), $minute->format('Y-m-d H:i'));
     }
 
     public function testIsCurrent(): void
     {
         $currentMinute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
         $otherMinute   = new Minute(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
+
+        $this->assertTrue($currentMinute->isCurrent());
+        $this->assertFalse($otherMinute->isCurrent());
+
+        $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherMinute   = new Minute(new \DateTime('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($currentMinute->isCurrent());
         $this->assertFalse($otherMinute->isCurrent());
@@ -192,6 +225,19 @@ class MinuteTest extends TestCase
             [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00'), $factory), false, true],
             [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), true, true],
             [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), true, false],
+            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), true, false],
+            [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), true, false],
+            [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:00'), $factory), true, true],
+            [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34'), $factory), false, false],
+            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), true, true],
+            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), false, true],
+            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), true, true],
+            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), false, true],
         ];
     }
 
