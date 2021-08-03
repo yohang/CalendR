@@ -17,7 +17,7 @@ before_install:
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
-  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
+  - if [ "$dependencies" = "lowest" ]; then rm -rf vendor; composer update --prefer-lowest --prefer-stable -n; fi;
 
 script:
   - ./vendor/bin/phpunit --coverage-clover=coverage.clover
