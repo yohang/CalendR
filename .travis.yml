@@ -18,6 +18,7 @@ before_install:
   - sudo apt-get install libonig5
   - php -v
   - composer self-update
+  - composer global require scrutinizer/ocular
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
@@ -27,5 +28,4 @@ script:
   - ./vendor/bin/phpunit --coverage-clover=coverage.clover
 
 after_script:
-    - wget https://scrutinizer-ci.com/ocular.phar
-    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    - ~/.composer/vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
