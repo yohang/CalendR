@@ -1,15 +1,18 @@
 language: php
 
-php:
-    - 8.1
-    - 8.2
-    - nightly
-
-matrix:
+jobs:
   include:
+    - php: 8.0
+      dist: focal
     - php: 8.1
+      dist: focal
+    - php: 8.1
+      dist: focal
       env: dependencies=lowest
     - php: 8.2
+      dist: focal
+    - php: 8.2
+      dist: focal
       env: dependencies=lowest
 
 before_install:
