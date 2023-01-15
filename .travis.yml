@@ -2,8 +2,6 @@ language: php
 
 jobs:
   include:
-    - php: 8.0
-      dist: focal
     - php: 8.1
       dist: focal
     - php: 8.1
