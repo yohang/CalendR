@@ -16,6 +16,9 @@ jobs:
       env: dependencies=lowest
 
 before_install:
+  - sudo apt-get update
+  - sudo apt-get install libonig5
+  - php -v
   - composer self-update
 
 install:
