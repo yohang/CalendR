@@ -62,9 +62,9 @@ class EventRepositoryTest extends TestCase
         $this->qb->expects($this->once())->method('from')->willReturn($this->qb);
         $this->qb->expects($this->once())->method('andWhere')->willReturn($this->qb);
         $this->qb->expects($this->once())->method('getQuery')->willReturn($query);
-        $this->qb->expects($this->atLeastOnce())->method('expr')->willReturn($expr);
-        $expr->expects($this->once())->method('orX');
-        $expr->expects($this->exactly(4))->method('andX');
+        $this->qb->expects($this->exactly(2))->method('setParameter')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('expr')->willReturn($expr);
+        $expr->expects($this->once())->method('andX');
 
         $events = $this->repo->getEvents(new \DateTimeImmutable($begin), new \DateTimeImmutable($end));
         $this->assertSame($providedEvents, $events);
