@@ -36,10 +36,10 @@ class Manager
     protected $collectionInstantiator;
 
     /**
-     * @param array $providers
-     * @param null $instantiator
+     * @param iterable<ProviderInterface> $providers
+     * @param ?callable $instantiator
      */
-    public function __construct(array $providers = [], $instantiator = null)
+    public function __construct(iterable $providers = [], ?callable $instantiator = null)
     {
         $this->collectionInstantiator = $instantiator;
         if (null === $instantiator) {
