@@ -69,12 +69,7 @@ abstract class PeriodAbstract implements PeriodInterface
 
     public function containsEvent(EventInterface $event): bool
     {
-        return
-            $event->containsPeriod($this) ||
-            $event->isDuring($this) ||
-            $this->contains($event->getBegin()) ||
-            ($event->getEnd() && $this->contains($event->getEnd())  && $event->getEnd()->format('c') !== $this->begin->format('c'))
-        ;
+        return $event->getBegin() < $this->getEnd() && $event->getEnd() > $this->getBegin();
     }
 
     public function format(string $format): string
