@@ -26,7 +26,7 @@ class CalendRBundleTest extends TestCase
 
         $container = $this
             ->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(array_merge(['addCompilerPass'], $hasAutoconfiguration ? ['registerForAutoconfiguration']: []))
+            ->onlyMethods(array_merge(['addCompilerPass'], $hasAutoconfiguration ? ['registerForAutoconfiguration']: []))
             ->getMock();
 
         $container->expects($this->once())->method('addCompilerPass')->with($this->isInstanceOf(EventProviderPass::class));

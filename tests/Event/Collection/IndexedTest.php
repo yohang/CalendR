@@ -6,9 +6,12 @@ use CalendR\Event\Collection,
     CalendR\Event\Event,
     CalendR\Period;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class IndexedTest extends TestCase
 {
+    use ProphecyTrait;
+
     private static $events = array();
     /**
      * @var \CalendR\Event\Collection\Indexed

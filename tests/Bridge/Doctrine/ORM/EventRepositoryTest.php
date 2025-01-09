@@ -4,11 +4,12 @@ namespace CalendR\Test\Bridge\Doctrine\ORM;
 
 use CalendR\Event\Event;
 use CalendR\Test\Stubs\EventRepository;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr;
 
 class EventRepositoryTest extends TestCase
@@ -24,8 +25,9 @@ class EventRepositoryTest extends TestCase
     public function setUp(): void
     {
         $this->em            = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
-        $this->classMetadata = $this->getMockBuilder(ClassMetadata::class)->disableOriginalConstructor()->getMock();
+        $this->classMetadata = $this->getMockBuilder(ClassMetadata::class)->setConstructorArgs(['Event'])->getMock();
         $this->qb            = $this->getMockBuilder(QueryBuilder::class)->disableOriginalConstructor()->getMock();
+
         $this->repo          = new EventRepository($this->em, $this->classMetadata);
     }
 
@@ -51,7 +53,7 @@ class EventRepositoryTest extends TestCase
     public function testGetEvents($begin, $end, array $providedEvents): void
     {
         $expr  = $this->getMockBuilder(Expr::class)->getMock();
-        $query = $this->getMockBuilder(AbstractQuery::class)
+        $query = $this->getMockBuilder((new \ReflectionClass(Query::class))->isFinal() ? AbstractQuery::class : Query::class)
                       ->disableOriginalConstructor()
                       ->onlyMethods(['_doExecute', 'getSQL', 'execute', 'getResult'])
                       ->getMock();

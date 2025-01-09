@@ -27,4 +27,4 @@ jobs:
           dependency-versions: ${{ matrix.dependencies-versions }}
 
       - name: Run tests
-        run: vendor/bin/phpunit --coverage-text
+        run: vendor/bin/phpunit -c $(php ./phpunit-config-file.php) --coverage-text

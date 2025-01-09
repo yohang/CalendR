@@ -6,9 +6,12 @@ use CalendR\Event\Collection;
 use CalendR\Event\Event;
 use CalendR\Period;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class BasicTest extends TestCase
 {
+    use ProphecyTrait;
+
     private static $events = array();
     /**
      * @var \CalendR\Event\Collection\Basic
