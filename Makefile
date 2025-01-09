@@ -10,6 +10,10 @@ docker_build:
 	docker build --build-arg PHP_VERSION=8.0 --build-arg COMPOSER_FLAGS="--prefer-lowest" -t calendr:8.1-lowdeps .
 	docker build --build-arg PHP_VERSION=8.0 -t calendr:8.2 .
 	docker build --build-arg PHP_VERSION=8.0 --build-arg COMPOSER_FLAGS="--prefer-lowest" -t calendr:8.2-lowdeps .
+	docker build --build-arg PHP_VERSION=8.0 -t calendr:8.3 .
+	docker build --build-arg PHP_VERSION=8.0 --build-arg COMPOSER_FLAGS="--prefer-lowest" -t calendr:8.3-lowdeps .
+	docker build --build-arg PHP_VERSION=8.0 -t calendr:8.4 .
+	docker build --build-arg PHP_VERSION=8.0 --build-arg COMPOSER_FLAGS="--prefer-lowest" -t calendr:8.4-lowdeps .
 
 docker_test: docker_build
 	docker run -it --rm calendr:7.4 ./vendor/bin/phpunit tests --colors
@@ -20,3 +24,7 @@ docker_test: docker_build
 	docker run -it --rm calendr:8.1-lowdeps ./vendor/bin/phpunit tests --colors
 	docker run -it --rm calendr:8.2 ./vendor/bin/phpunit tests --colors
 	docker run -it --rm calendr:8.2-lowdeps ./vendor/bin/phpunit tests --colors
+	docker run -it --rm calendr:8.3 ./vendor/bin/phpunit tests --colors
+	docker run -it --rm calendr:8.3-lowdeps ./vendor/bin/phpunit tests --colors
+	docker run -it --rm calendr:8.4 ./vendor/bin/phpunit tests --colors
+	docker run -it --rm calendr:8.4-lowdeps ./vendor/bin/phpunit tests --colors
