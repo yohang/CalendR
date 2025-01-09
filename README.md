@@ -8,7 +8,7 @@ You can use it to deal with all your needs about calendars and events.
 Complete documentation
 ----------------------
 
-Complete documentation is available [here](http://yohang.github.com/CalendR).
+Complete documentation is available [here](http://yohan.giarel.li/CalendR).
 
 Installation
 ------------
