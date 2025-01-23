@@ -6,11 +6,9 @@ services:
   CalendR\Event\Manager:
     class: 'CalendR\Event\Manager'
 
-  CalendR\Extension\Twig\CalendRExtension:
-    class: 'CalendR\Extension\Twig\CalendRExtension'
-    arguments: [ '@calendr' ]
-    tags:
-      - { name: twig.extension }
+  CalendR\Bridge\Twig\CalendRExtension:
+    autowire: true
+    autoconfigure: true
 
   calendr:
     alias: 'CalendR\Calendar'
