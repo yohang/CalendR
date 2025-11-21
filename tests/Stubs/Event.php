@@ -8,7 +8,7 @@ use CalendR\Event\AbstractEvent;
 use CalendR\Event\EventInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: "CalendR\Test\Stubs\EventRepository")]
+#[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event extends AbstractEvent
 {
     #[ORM\Id]

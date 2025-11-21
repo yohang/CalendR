@@ -23,18 +23,14 @@ use CalendR\Period\PeriodInterface;
 class Basic implements CollectionInterface, \IteratorAggregate
 {
     /**
-     * The events.
-     *
-     * @var list<EventInterface>
-     */
-    protected array $events;
-
-    /**
      * @param list<EventInterface> $events
      */
-    public function __construct(array $events = [])
-    {
-        $this->events = $events;
+    public function __construct(
+        /**
+         * The events.
+         */
+        protected array $events = [],
+    ) {
     }
 
     /**

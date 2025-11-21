@@ -14,14 +14,9 @@ use CalendR\Period\Year;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-/**
- * Extension for using periods and events from Twig.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
- */
-class CalendRExtension extends AbstractExtension
+final class CalendRExtension extends AbstractExtension
 {
-    public function __construct(protected Calendar $factory)
+    public function __construct(protected readonly Calendar $factory)
     {
     }
 
@@ -62,10 +57,5 @@ class CalendRExtension extends AbstractExtension
     public function getEvents(PeriodInterface $period, array $options = []): CollectionInterface
     {
         return $this->factory->getEvents($period, $options);
-    }
-
-    public function getName(): string
-    {
-        return self::class;
     }
 }

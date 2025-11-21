@@ -2,26 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace CalendR\Bridge\Doctrine\ORM;
 
-use CalendR\Event\EventInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Trait that transforms a Doctrine2 EntityRepository into
- * a CalendR Event Provider.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
+ * Trait that transforms a Doctrine2 EntityRepository into a CalendR Event Provider.
  */
 trait EventRepository
 {
@@ -48,12 +35,6 @@ trait EventRepository
         return $this->getEventsQueryBuilder($begin, $end, $options)->getQuery();
     }
 
-    /**
-     * @param \DateTime $begin
-     * @param \DateTime $end
-     *
-     * @return array<EventInterface>
-     */
     public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
         return $this->getEventsQuery($begin, $end, $options)->getResult();
@@ -64,13 +45,7 @@ trait EventRepository
         return $this->createQueryBuilder('evt');
     }
 
-    public function getBeginFieldName(): string
-    {
-        return 'evt.begin';
-    }
+    abstract public function getBeginFieldName(): string;
 
-    public function getEndFieldName(): string
-    {
-        return 'evt.end';
-    }
+    abstract public function getEndFieldName(): string;
 }
