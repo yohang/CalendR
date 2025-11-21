@@ -31,8 +31,8 @@ final class ManagerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $basic1       = new Basic;
-        $basic2       = new Basic;
+        $basic1       = new Basic();
+        $basic2       = new Basic();
         $this->object = new Manager(['basic-1' => $basic1, 'basic-2' => $basic2]);
 
         $basic1->add(new Event('event-1', new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03')));
@@ -74,7 +74,7 @@ final class ManagerTest extends TestCase
             $this->object->find(new Month(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal()))
         );
 
-        $this->object->setCollectionInstantiator(fn(): Indexed => new Indexed);
+        $this->object->setCollectionInstantiator(fn (): Indexed => new Indexed());
 
         $this->assertInstanceOf(
             Indexed::class,
@@ -86,7 +86,7 @@ final class ManagerTest extends TestCase
     {
         $this->expectException(NoProviderFound::class);
 
-        $manager = new Manager;
+        $manager = new Manager();
         $manager->find(new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal()));
     }
 }

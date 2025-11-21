@@ -43,7 +43,7 @@ class Manager
     {
         $this->collectionInstantiator = $instantiator;
         if (null === $instantiator) {
-            $this->collectionInstantiator = (static fn(): Basic => new Basic);
+            $this->collectionInstantiator = (static fn (): Basic => new Basic());
         }
 
         foreach ($providers as $name => $provider) {

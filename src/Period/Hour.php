@@ -1,6 +1,7 @@
 <?php
 
 namespace CalendR\Period;
+
 use CalendR\Period\Exception\NotAnHour;
 
 /**
@@ -68,6 +69,6 @@ class Hour extends PeriodAbstract implements \Iterator, \Stringable
 
     protected function createInvalidException(): NotAnHour
     {
-        return new NotAnHour;
+        return new NotAnHour();
     }
 }

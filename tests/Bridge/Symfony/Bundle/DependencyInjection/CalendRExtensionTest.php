@@ -16,7 +16,7 @@ final class CalendRExtensionTest extends TestCase
     {
         $config    = [];
         $container = new ContainerBuilder();
-        (new CalendRExtension)->load($config, $container);
+        (new CalendRExtension())->load($config, $container);
 
         $this->assertTrue($container->hasDefinition(Calendar::class));
         $this->assertTrue($container->hasDefinition(Manager::class));

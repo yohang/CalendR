@@ -50,8 +50,8 @@ final class AggregateTest extends TestCase
 
     public function testGetEvents(): void
     {
-        $begin  = new \DateTime;
-        $end    = new \DateTime;
+        $begin  = new \DateTime();
+        $end    = new \DateTime();
         $event1 = $this->createMock(EventInterface::class);
         $event2 = $this->createMock(EventInterface::class);
 

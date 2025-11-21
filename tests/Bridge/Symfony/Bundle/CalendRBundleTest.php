@@ -10,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CalendR\Test\Bridge\Symfony\Bundle;
 
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -24,11 +25,11 @@ final class CalendRBundleTest extends TestCase
 {
     public function testBuild(): void
     {
-        $hasAutoconfiguration = method_exists(new ContainerBuilder, 'registerForAutoconfiguration');
+        $hasAutoconfiguration = method_exists(new ContainerBuilder(), 'registerForAutoconfiguration');
 
         $container = $this
             ->getMockBuilder(ContainerBuilder::class)
-            ->onlyMethods(array_merge(['addCompilerPass'], $hasAutoconfiguration ? ['registerForAutoconfiguration']: []))
+            ->onlyMethods(array_merge(['addCompilerPass'], $hasAutoconfiguration ? ['registerForAutoconfiguration'] : []))
             ->getMock();
 
         $container->expects($this->once())->method('addCompilerPass')->with($this->isInstanceOf(EventProviderPass::class));
@@ -39,7 +40,7 @@ final class CalendRBundleTest extends TestCase
             $container->expects($this->once())->method('registerForAutoconfiguration')->with(ProviderInterface::class)->willReturn($providerChildDefinition);
         }
 
-        $bundle = new CalendRBundle;
+        $bundle = new CalendRBundle();
         $bundle->build($container);
 
         $this->assertInstanceOf(Bundle::class, $bundle);

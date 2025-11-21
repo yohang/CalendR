@@ -80,7 +80,7 @@ final class WeekTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-W01');
-        $week  = new Week($start, new Factory);
+        $week  = new Week($start, new Factory());
 
         $i = 0;
         foreach ($week as $dayKey => $day) {

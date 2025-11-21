@@ -36,7 +36,7 @@ final class CalendRExtensionTest extends TestCase
     {
 
         $functions = array_map(
-            static fn(TwigFunction $fn): string => $fn->getName(),
+            static fn (TwigFunction $fn): string => $fn->getName(),
             $this->object->getFunctions()
         );
 

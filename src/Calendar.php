@@ -130,12 +130,12 @@ class Calendar
         return $this->factory;
     }
 
-    public function setFirstWeekday(int $firstWeekday): void
+    public function setFirstWeekday(DayOfWeek $firstWeekday): void
     {
         $this->getFactory()->setFirstWeekday($firstWeekday);
     }
 
-    public function getFirstWeekday(): int
+    public function getFirstWeekday(): DayOfWeek
     {
         return $this->factory->getFirstWeekday();
     }

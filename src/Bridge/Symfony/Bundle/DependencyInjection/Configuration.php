@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Bridge\Symfony\Bundle\DependencyInjection;
 
-use CalendR\Period\Day;
+use CalendR\DayOfWeek;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -20,9 +22,9 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('default_first_weekday')
-                            ->defaultValue(Day::MONDAY)
+                            ->defaultValue(DayOfWeek::MONDAY)
                             ->validate()
-                                ->ifNotInArray(range(DAY::SUNDAY, DAY::SATURDAY))
+                                ->ifNotInArray(DayOfWeek::cases())
                                 ->thenInvalid('Day must be be between 0 (Sunday) and 6 (Saturday)')
                             ->end()
                         ->end()

@@ -44,9 +44,9 @@ final class BasicTest extends TestCase
     public function getAddData(): array
     {
         return [
-            [new Event('event-1',new \DateTime('2012-05-03T10:00:00'),new \DateTime('2012-05-03T18:00:00')), 6],
-            [new Event('event-2',new \DateTime('2012-05-03T13:00:00'),new \DateTime('2012-05-03T16:00:00')), 7],
-            [new Event('event-3',new \DateTime('2012-05-05T13:00:00'),new \DateTime('2012-05-05T16:00:00')), 8],
+            [new Event('event-1', new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00')), 6],
+            [new Event('event-2', new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00')), 7],
+            [new Event('event-3', new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00')), 8],
         ];
     }
 

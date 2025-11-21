@@ -33,7 +33,8 @@
         "phpspec/prophecy-phpunit": "^2.3.0",
         "symfony/cache": ">=5.3,<8.0",
         "symfony/http-kernel": ">=5.3,<8.0",
-        "rector/rector": "^2.2"
+        "rector/rector": "^2.2",
+        "friendsofphp/php-cs-fixer": "^3.90"
     },
     "autoload": {
         "psr-4": {

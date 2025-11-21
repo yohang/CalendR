@@ -106,7 +106,7 @@ final class YearTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTime('2012-01');
-        $year  = new Year($start, new Factory);
+        $year  = new Year($start, new Factory());
 
         $i = 0;
 

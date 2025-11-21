@@ -130,7 +130,7 @@ final class DayTest extends TestCase
         $this->assertTrue(Day::isValid(new \DateTimeImmutable('2013-05-01')));
         $this->assertTrue(Day::isValid(new \DateTimeImmutable('2013-05-01 00:00')));
         $this->assertTrue(Day::isValid(new \DateTimeImmutable(date('Y-m-d 00:00'))));
-        $this->assertFalse(Day::isValid(new \DateTimeImmutable));
+        $this->assertFalse(Day::isValid(new \DateTimeImmutable()));
         $this->assertFalse(Day::isValid(new \DateTimeImmutable('2013-05-01 12:43')));
         $this->assertFalse(Day::isValid(new \DateTimeImmutable('2013-05-01 00:00:01')));
     }

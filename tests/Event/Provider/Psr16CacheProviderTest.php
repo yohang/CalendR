@@ -28,8 +28,8 @@ final class Psr16CacheProviderTest extends TestCase
 
     public function testItCallsProviderWhenNoCache(): void
     {
-        $events = [new Event('foo', new \DateTime, new \DateTime)];
-        $begin  = new \DateTime;
+        $events = [new Event('foo', new \DateTime(), new \DateTime())];
+        $begin  = new \DateTime();
         $end    = clone $begin;
         $end->add(new \DateInterval('P1M'));
 
@@ -56,8 +56,8 @@ final class Psr16CacheProviderTest extends TestCase
 
     public function testItCallsProviderWhenCache(): void
     {
-        $events = [new Event('foo', new \DateTime, new \DateTime)];
-        $begin  = new \DateTime;
+        $events = [new Event('foo', new \DateTime(), new \DateTime())];
+        $begin  = new \DateTime();
         $end    = clone $begin;
         $end->add(new \DateInterval('P1M'));
 
@@ -82,7 +82,7 @@ final class Psr16CacheProviderTest extends TestCase
     {
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600, 'ns');
 
-        $begin  = new \DateTime;
+        $begin  = new \DateTime();
         $end    = clone $begin;
         $end->add(new \DateInterval('P1M'));
 
@@ -105,7 +105,7 @@ final class Psr16CacheProviderTest extends TestCase
     {
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600, 'ns');
 
-        $begin  = new \DateTime;
+        $begin  = new \DateTime();
         $end    = clone $begin;
         $end->add(new \DateInterval('P1M'));
 

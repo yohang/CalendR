@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use CalendR\Period\Day;
+use CalendR\DayOfWeek;
 use CalendR\Period\Exception\NotAMonth;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
@@ -44,22 +44,22 @@ final class MonthTest extends TestCase
 
     public static function providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek(): \Iterator
     {
-        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'];
-        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'];
-        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'];
-        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'];
-        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'];
-        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'];
-        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'];
-        yield [new Month(new \DateTimeImmutable('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'];
-        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'];
-        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'];
-        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'];
-        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'];
-        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'];
-        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'];
-        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'];
-        yield [new Month(new \DateTime('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(DayOfWeek::MONDAY)), '2013-04-29', '2013-06-02'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(DayOfWeek::TUESDAY)), '2013-04-30', '2013-06-03'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(DayOfWeek::WEDNESDAY)), '2013-05-01', '2013-06-04'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(DayOfWeek::THURSDAY)), '2013-04-25', '2013-06-05'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(DayOfWeek::FRIDAY)), '2013-04-26', '2013-06-06'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(DayOfWeek::SATURDAY)), '2013-04-27', '2013-05-31'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(DayOfWeek::SUNDAY)), '2013-04-28', '2013-06-01'];
+        yield [new Month(new \DateTimeImmutable('2013-09-01'), new Factory(DayOfWeek::SUNDAY)), '2013-09-01', '2013-10-05'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(DayOfWeek::MONDAY)), '2013-04-29', '2013-06-02'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(DayOfWeek::TUESDAY)), '2013-04-30', '2013-06-03'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(DayOfWeek::WEDNESDAY)), '2013-05-01', '2013-06-04'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(DayOfWeek::THURSDAY)), '2013-04-25', '2013-06-05'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(DayOfWeek::FRIDAY)), '2013-04-26', '2013-06-06'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(DayOfWeek::SATURDAY)), '2013-04-27', '2013-05-31'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(DayOfWeek::SUNDAY)), '2013-04-28', '2013-06-01'];
+        yield [new Month(new \DateTime('2013-09-01'), new Factory(DayOfWeek::SUNDAY)), '2013-09-01', '2013-10-05'];
     }
 
     /**
@@ -112,7 +112,7 @@ final class MonthTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-01');
-        $month = new Month($start, new Factory);
+        $month = new Month($start, new Factory());
 
         $i = 0;
 

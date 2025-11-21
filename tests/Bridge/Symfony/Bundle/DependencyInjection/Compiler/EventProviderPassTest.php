@@ -10,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace CalendR\Test\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\Compiler\EventProviderPass;
@@ -44,7 +45,7 @@ final class EventProviderPassTest extends TestCase
         $eventManagerDefinition->expects($this->exactly(2))
                                ->method('addMethodCall');
 
-        $pass = new EventProviderPass;
+        $pass = new EventProviderPass();
         $pass->process($containerBuilder);
 
         $this->assertInstanceOf(CompilerPassInterface::class, $pass);

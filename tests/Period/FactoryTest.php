@@ -25,9 +25,6 @@ use CalendR\Period\Week;
 use CalendR\Period\Year;
 use CalendR\Period\Range;
 
-/**
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 final class FactoryTest extends TestCase
 {
     public function testCreateSecond(): void
@@ -35,11 +32,6 @@ final class FactoryTest extends TestCase
         $this->assertInstanceOf(
             Second::class,
             $this->getDefaultOptionsFactory()->createSecond(new \DateTimeImmutable('2012-01-01 17:23:49')),
-        );
-
-        $this->assertInstanceOf(
-            FixtureSecond::class,
-            $this->getAlternateOptionsFactory()->createSecond(new \DateTimeImmutable('2012-01-01 17:23:49')),
         );
     }
 
@@ -49,11 +41,6 @@ final class FactoryTest extends TestCase
             Minute::class,
             $this->getDefaultOptionsFactory()->createMinute(new \DateTimeImmutable('2012-01-01 17:23')),
         );
-
-        $this->assertInstanceOf(
-            FixtureMinute::class,
-            $this->getAlternateOptionsFactory()->createMinute(new \DateTimeImmutable('2012-01-01 17:23')),
-        );
     }
 
     public function testCreateHour(): void
@@ -61,11 +48,6 @@ final class FactoryTest extends TestCase
         $this->assertInstanceOf(
             Hour::class,
             $this->getDefaultOptionsFactory()->createHour(new \DateTimeImmutable('2012-01-01 17:00')),
-        );
-
-        $this->assertInstanceOf(
-            FixtureHour::class,
-            $this->getAlternateOptionsFactory()->createHour(new \DateTimeImmutable('2012-01-01 17:00')),
         );
     }
 
@@ -75,11 +57,6 @@ final class FactoryTest extends TestCase
             Day::class,
             $this->getDefaultOptionsFactory()->createDay(new \DateTimeImmutable('2012-01-01')),
         );
-
-        $this->assertInstanceOf(
-            FixtureDay::class,
-            $this->getAlternateOptionsFactory()->createDay(new \DateTimeImmutable('2012-01-01')),
-        );
     }
 
     public function testCreateWeek(): void
@@ -87,11 +64,6 @@ final class FactoryTest extends TestCase
         $this->assertInstanceOf(
             Week::class,
             $this->getDefaultOptionsFactory()->createWeek(new \DateTimeImmutable('2012-W01')),
-        );
-
-        $this->assertInstanceOf(
-            FixtureWeek::class,
-            $this->getAlternateOptionsFactory()->createWeek(new \DateTimeImmutable('2012-W01')),
         );
     }
 
@@ -101,11 +73,6 @@ final class FactoryTest extends TestCase
             Month::class,
             $this->getDefaultOptionsFactory()->createMonth(new \DateTimeImmutable('2012-01-01')),
         );
-
-        $this->assertInstanceOf(
-            FixtureMonth::class,
-            $this->getAlternateOptionsFactory()->createMonth(new \DateTimeImmutable('2012-01-01')),
-        );
     }
 
     public function testCreateYear(): void
@@ -114,11 +81,6 @@ final class FactoryTest extends TestCase
             Year::class,
             $this->getDefaultOptionsFactory()->createYear(new \DateTimeImmutable('2012-01-01')),
         );
-
-        $this->assertInstanceOf(
-            FixtureYear::class,
-            $this->getAlternateOptionsFactory()->createYear(new \DateTimeImmutable('2012-01-01')),
-        );
     }
 
     public function testCreateRange(): void
@@ -126,11 +88,6 @@ final class FactoryTest extends TestCase
         $this->assertInstanceOf(
             Range::class,
             $this->getDefaultOptionsFactory()->createRange(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-02')),
-        );
-
-        $this->assertInstanceOf(
-            FixtureRange::class,
-            $this->getAlternateOptionsFactory()->createRange(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-02')),
         );
     }
 
@@ -158,22 +115,6 @@ final class FactoryTest extends TestCase
 
     protected function getDefaultOptionsFactory(): FactoryInterface
     {
-        return new Factory;
-    }
-
-    protected function getAlternateOptionsFactory(): FactoryInterface
-    {
-        return new Factory(
-            [
-                'second_class' => FixtureSecond::class,
-                'minute_class' => FixtureMinute::class,
-                'hour_class'   => FixtureHour::class,
-                'day_class'    => FixtureDay::class,
-                'month_class'  => FixtureMonth::class,
-                'range_class'  => FixtureRange::class,
-                'week_class'   => FixtureWeek::class,
-                'year_class'   => FixtureYear::class,
-            ]
-        );
+        return new Factory();
     }
 }

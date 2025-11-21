@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CalendR\Bridge\Symfony\Bundle;
 
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\Compiler\EventProviderPass;
@@ -23,6 +22,6 @@ class CalendRBundle extends Bundle
 
         parent::build($container);
 
-        $container->addCompilerPass(new EventProviderPass);
+        $container->addCompilerPass(new EventProviderPass());
     }
 }

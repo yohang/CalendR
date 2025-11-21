@@ -34,8 +34,8 @@ class BaseDoctrine2TestCase extends TestCase
 
     public function setUpDoctrine(): void
     {
-        $this->reader = new AnnotationReader;
-        $this->reader = new PsrCachedReader($this->reader, new ArrayAdapter);
+        $this->reader = new AnnotationReader();
+        $this->reader = new PsrCachedReader($this->reader, new ArrayAdapter());
 
         $this->em = $em = EntityManager::create(
             ['driver' => 'pdo_sqlite', 'memory' => true],
@@ -54,7 +54,7 @@ class BaseDoctrine2TestCase extends TestCase
                  ->execute();
 
         foreach (static::getStubEvents() as $evt) {
-            $event = new Event;
+            $event = new Event();
             $event->setId($evt[0]);
             $event->setBegin($evt[1]);
             $event->setEnd($evt[2]);
@@ -115,7 +115,7 @@ class BaseDoctrine2TestCase extends TestCase
 
         $config
                ->method('getRepositoryFactory')
-               ->willReturn(new DefaultRepositoryFactory);
+               ->willReturn(new DefaultRepositoryFactory());
 
         $config
                ->method('getDefaultQueryHints')

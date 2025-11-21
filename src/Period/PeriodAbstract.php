@@ -81,7 +81,7 @@ abstract class PeriodAbstract implements PeriodInterface
 
     public function isCurrent(): bool
     {
-        return $this->contains(new \DateTimeImmutable);
+        return $this->contains(new \DateTimeImmutable());
     }
 
     /**
@@ -129,6 +129,6 @@ abstract class PeriodAbstract implements PeriodInterface
     {
         $class = 'CalendR\Period\Exception\NotA' . (new \ReflectionClass($this))->getShortName();
 
-        return new $class;
+        return new $class();
     }
 }

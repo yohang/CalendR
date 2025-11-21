@@ -7,9 +7,9 @@ namespace CalendR\Test\Event\Collection;
 use CalendR\Event\Collection\Indexed;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Day;
-use CalendR\Event\Collection,
-    CalendR\Event\Event,
-    CalendR\Period;
+use CalendR\Event\Collection;
+use CalendR\Event\Event;
+use CalendR\Period;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -44,9 +44,9 @@ final class IndexedTest extends TestCase
     public function getAddData(): array
     {
         return [
-            [new Event('event-1',new \DateTime('2012-05-03T10:00:00'),new \DateTime('2012-05-03T18:00:00')), 6],
-            [new Event('event-2',new \DateTime('2012-05-03T13:00:00'),new \DateTime('2012-05-03T16:00:00')), 7],
-            [new Event('event-3',new \DateTime('2012-05-05T13:00:00'),new \DateTime('2012-05-05T16:00:00')), 8],
+            [new Event('event-1', new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00')), 6],
+            [new Event('event-2', new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00')), 7],
+            [new Event('event-3', new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00')), 8],
         ];
     }
 
