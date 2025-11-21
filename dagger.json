@@ -1,0 +1,8 @@
+{
+  "name": "CalendR",
+  "engineVersion": "v0.19.6",
+  "sdk": {
+    "source": "php"
+  },
+  "source": ".dagger"
+}

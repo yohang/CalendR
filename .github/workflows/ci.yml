@@ -7,26 +7,70 @@ on:
   pull_request:
 
 jobs:
+  cs:
+    runs-on: ubuntu-latest
+    name: Code Style
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v4
+
+      -   name: Call php-cs-fixer Dagger Function
+          uses: dagger/dagger-for-github@v7
+          with:
+            version: "latest"
+            verb: call
+            args: php-cs-fixer --source=.
+            cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+
+  psalm:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    name: Static Analysis
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v4
+
+      -   name: Call Psalm Dagger Function
+          uses: dagger/dagger-for-github@v7
+          with:
+            version: "latest"
+            verb: call
+            args: psalm --source=.
+            cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+
   phpunit:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3', '8.4', '8.5' ]
+        php-versions: [ '8.2', '8.3', '8.4' , '8.5' ]
         dependencies-versions: [ lowest, highest ]
     name: PHPUnit test suite
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      -   name: Checkout
+          uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
+      -   name: Call Test Dagger Function
+          uses: dagger/dagger-for-github@v7
+          with:
+            version: "latest"
+            verb: call
+            args: test --source=. --php-version=${{ matrix.php-versions }} --dependency-version=${{ matrix.dependencies-versions }}
+            cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
 
-      - name: Install dependencies
-        uses: ramsey/composer-install@v3
-        with:
-          dependency-versions: ${{ matrix.dependencies-versions }}
+  mutation:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    name: Mutation testing
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v4
 
-      - name: Run tests
-        run: vendor/bin/phpunit --coverage-text
+      -   name: Call Psalm Dagger Function
+          uses: dagger/dagger-for-github@v7
+          with:
+            version: "latest"
+            verb: call
+            args: infection --stryker-dashboard-api-key=${{ secrets.STRYKER_DASHBOARD_API_KEY }} --github-actions=$GITHUB_ACTIONS --github-repository=${{ github.repository }} --github-ref=${{ github.ref }}
+            cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}

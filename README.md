@@ -1,6 +1,7 @@
 # CalendR
 
 ![Build Status](https://github.com/yohang/CalendR/actions/workflows/ci.yml/badge.svg)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyohang%2FCalendR%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yohang/CalendR/master)
 
 CalendR is an Object Oriented Calendar management library on top of PHP5.3+ Date objects.
 You can use it to deal with all your needs about calendars and events.
