@@ -20,11 +20,8 @@ use Twig\TwigFunction;
  */
 class CalendRExtension extends AbstractExtension
 {
-    protected Calendar $factory;
-
-    public function __construct(Calendar $factory)
+    public function __construct(protected Calendar $factory)
     {
-        $this->factory = $factory;
     }
 
     /**
@@ -33,11 +30,11 @@ class CalendRExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('calendr_year', [$this, 'getYear']),
-            new TwigFunction('calendr_month', [$this, 'getMonth']),
-            new TwigFunction('calendr_week', [$this, 'getWeek']),
-            new TwigFunction('calendr_day', [$this, 'getDay']),
-            new TwigFunction('calendr_events', [$this, 'getEvents']),
+            new TwigFunction('calendr_year', $this->getYear(...)),
+            new TwigFunction('calendr_month', $this->getMonth(...)),
+            new TwigFunction('calendr_week', $this->getWeek(...)),
+            new TwigFunction('calendr_day', $this->getDay(...)),
+            new TwigFunction('calendr_events', $this->getEvents(...)),
         ];
     }
 

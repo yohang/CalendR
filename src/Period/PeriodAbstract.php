@@ -25,14 +25,11 @@ abstract class PeriodAbstract implements PeriodInterface
 
     protected \DateTimeInterface $end;
 
-    protected ?FactoryInterface $factory;
-
     /**
      * @throws Exception
      */
-    public function __construct(\DateTimeInterface $begin, ?FactoryInterface $factory = null)
+    public function __construct(\DateTimeInterface $begin, protected ?FactoryInterface $factory = null)
     {
-        $this->factory = $factory;
         if (!static::isValid($begin)) {
             throw $this->createInvalidException();
         }

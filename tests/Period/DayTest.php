@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Period;
 
+use CalendR\Period\Hour;
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotADay;
 use CalendR\Period\Factory;
@@ -186,7 +187,7 @@ class DayTest extends TestCase
 
         foreach ($day as $hourKey => $hour) {
             $this->assertTrue(is_int($hourKey) && $hourKey >= 0 && $hourKey < 24);
-            $this->assertInstanceOf('CalendR\\Period\\Hour', $hour);
+            $this->assertInstanceOf(Hour::class, $hour);
             $this->assertSame($start->format('Y-m-d H'), $hour->getBegin()->format('Y-m-d H'));
             $this->assertSame('00:00', $hour->getBegin()->format('i:s'));
 

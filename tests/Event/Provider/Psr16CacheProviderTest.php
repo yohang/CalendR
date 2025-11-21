@@ -26,7 +26,7 @@ class Psr16CacheProviderTest extends TestCase
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600);
     }
 
-    public function testItCallsProviderWhenNoCache()
+    public function testItCallsProviderWhenNoCache(): void
     {
         $events = [new Event('foo', new \DateTime, new \DateTime)];
         $begin  = new \DateTime;
@@ -42,7 +42,7 @@ class Psr16CacheProviderTest extends TestCase
         $this->cache
             ->expects($this->once())
             ->method('set')
-            ->with(md5(serialize(array($begin, $end, []))), $events, 3600)
+            ->with(md5(serialize([$begin, $end, []])), $events, 3600)
             ->will($this->returnValue(true));
 
         $this->provider
@@ -54,9 +54,9 @@ class Psr16CacheProviderTest extends TestCase
         $this->assertSame($events, $this->object->getEvents($begin, $end));
     }
 
-    public function testItCallsProviderWhenCache()
+    public function testItCallsProviderWhenCache(): void
     {
-        $events = array(new Event('foo', new \DateTime, new \DateTime));
+        $events = [new Event('foo', new \DateTime, new \DateTime)];
         $begin  = new \DateTime;
         $end    = clone $begin;
         $end->add(new \DateInterval('P1M'));
@@ -78,7 +78,7 @@ class Psr16CacheProviderTest extends TestCase
         $this->assertSame($events, $this->object->getEvents($begin, $end));
     }
 
-    public function testItUseNamespaceWhenCache()
+    public function testItUseNamespaceWhenCache(): void
     {
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600, 'ns');
 
@@ -101,7 +101,7 @@ class Psr16CacheProviderTest extends TestCase
         $this->object->getEvents($begin, $end);
     }
 
-    public function testItUseNamespaceWhenNoCache()
+    public function testItUseNamespaceWhenNoCache(): void
     {
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600, 'ns');
 

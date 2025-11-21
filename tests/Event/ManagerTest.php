@@ -37,7 +37,7 @@ class ManagerTest extends TestCase
         $basic2->add(new Event('event-2', new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-01-05')));
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $factory = $this->prophesize(FactoryInterface::class)->reveal();
 
@@ -72,9 +72,7 @@ class ManagerTest extends TestCase
             $this->object->find(new Month(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal()))
         );
 
-        $this->object->setCollectionInstantiator(function () {
-            return new Indexed;
-        });
+        $this->object->setCollectionInstantiator(fn(): Indexed => new Indexed);
 
         $this->assertInstanceOf(
             Indexed::class,

@@ -8,7 +8,7 @@ namespace CalendR\Period;
  * @author Zander Baldwin <mynameis@zande.rs>
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Second extends PeriodAbstract
+class Second extends PeriodAbstract implements \Stringable
 {
     public function getDatePeriod(): \DatePeriod
     {

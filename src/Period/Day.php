@@ -16,7 +16,7 @@ namespace CalendR\Period;
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Day extends PeriodAbstract implements \Iterator
+class Day extends PeriodAbstract implements \Iterator, \Stringable
 {
     public const MONDAY    = 1;
     public const TUESDAY   = 2;

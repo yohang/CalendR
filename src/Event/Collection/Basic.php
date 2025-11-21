@@ -32,7 +32,7 @@ class Basic implements CollectionInterface
     /**
      * @param EventInterface[] $events
      */
-    public function __construct(array $events = array())
+    public function __construct(array $events = [])
     {
         $this->events = $events;
     }
@@ -90,9 +90,9 @@ class Basic implements CollectionInterface
      *
      * @return EventInterface[]
      */
-    public function find($index)
+    public function find($index): array
     {
-        $result = array();
+        $result = [];
         foreach ($this->events as $event) {
             if ($index instanceof PeriodInterface && $index->containsEvent($event)) {
                 $result[] = $event;
@@ -104,10 +104,7 @@ class Basic implements CollectionInterface
         return $result;
     }
 
-    /**
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->events);
     }

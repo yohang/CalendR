@@ -11,6 +11,7 @@
 
 namespace CalendR\Event;
 
+use CalendR\Event\Collection\Basic;
 use CalendR\Event\Collection\CollectionInterface;
 use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Period\PeriodInterface;
@@ -43,9 +44,7 @@ class Manager
     {
         $this->collectionInstantiator = $instantiator;
         if (null === $instantiator) {
-            $this->collectionInstantiator = static function () {
-                return new Collection\Basic;
-            };
+            $this->collectionInstantiator = (static fn(): Basic => new Basic);
         }
 
         foreach ($providers as $name => $provider) {

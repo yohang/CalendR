@@ -11,6 +11,7 @@
 
 namespace CalendR\Test\Bridge\Symfony\Bundle;
 
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use CalendR\Bridge\Symfony\Bundle\CalendRBundle;
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\Compiler\EventProviderPass;
 use CalendR\Event\Provider\ProviderInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CalendRBundleTest extends TestCase
 {
-    public function testBuild()
+    public function testBuild(): void
     {
         $hasAutoconfiguration = method_exists(new ContainerBuilder, 'registerForAutoconfiguration');
 
@@ -32,7 +33,7 @@ class CalendRBundleTest extends TestCase
         $container->expects($this->once())->method('addCompilerPass')->with($this->isInstanceOf(EventProviderPass::class));
 
         if ($hasAutoconfiguration) {
-            $providerChildDefinition = $this->getMockBuilder('Symfony\Component\DependencyInjection\ChildDefinition')->disableOriginalConstructor()->getMock();
+            $providerChildDefinition = $this->getMockBuilder(ChildDefinition::class)->disableOriginalConstructor()->getMock();
             $providerChildDefinition->expects($this->once())->method('addTag')->with('calendr.event_provider');
             $container->expects($this->once())->method('registerForAutoconfiguration')->with(ProviderInterface::class)->willReturn($providerChildDefinition);
         }

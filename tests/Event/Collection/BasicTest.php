@@ -2,6 +2,9 @@
 
 namespace CalendR\Test\Event\Collection;
 
+use CalendR\Event\Collection\Basic;
+use CalendR\Period\FactoryInterface;
+use CalendR\Period\Day;
 use CalendR\Event\Collection;
 use CalendR\Event\Event;
 use CalendR\Period;
@@ -12,43 +15,43 @@ class BasicTest extends TestCase
 {
     use ProphecyTrait;
 
-    private static $events = array();
+    private static $events = [];
     /**
-     * @var \CalendR\Event\Collection\Basic
+     * @var Basic
      */
     private $collection;
 
     protected function setUp(): void
     {
-        $this->collection = new Collection\Basic(self::$events);
+        $this->collection = new Basic(self::$events);
     }
 
     public static function setUpBeforeClass(): void
     {
-        self::$events = array(
+        self::$events = [
             new Event('event-a', new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00')),
             new Event('event-b', new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00')),
             new Event('event-c', new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00')),
             new Event('event-d', new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00')),
             new Event('event-e', new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00')),
-        );
+        ];
     }
 
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertSame(5, count($this->collection));
     }
 
     public function getAddData()
     {
-        return array(
-            array(new Event('event-1',new \DateTime('2012-05-03T10:00:00'),new \DateTime('2012-05-03T18:00:00')), 6),
-            array(new Event('event-2',new \DateTime('2012-05-03T13:00:00'),new \DateTime('2012-05-03T16:00:00')), 7),
-            array(new Event('event-3',new \DateTime('2012-05-05T13:00:00'),new \DateTime('2012-05-05T16:00:00')), 8),
-        );
+        return [
+            [new Event('event-1',new \DateTime('2012-05-03T10:00:00'),new \DateTime('2012-05-03T18:00:00')), 6],
+            [new Event('event-2',new \DateTime('2012-05-03T13:00:00'),new \DateTime('2012-05-03T16:00:00')), 7],
+            [new Event('event-3',new \DateTime('2012-05-05T13:00:00'),new \DateTime('2012-05-05T16:00:00')), 8],
+        ];
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         foreach ($this->getAddData() as $data) {
             $this->collection->add($data[0]);
@@ -56,7 +59,7 @@ class BasicTest extends TestCase
         }
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         // Remove an event
         $this->collection->remove(self::$events[2]);
@@ -73,19 +76,19 @@ class BasicTest extends TestCase
 
     public function findProvider()
     {
-        $factory = $this->prophesize(Period\FactoryInterface::class)->reveal();
+        $factory = $this->prophesize(FactoryInterface::class)->reveal();
 
-        return array(
-            array(new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'),
-            array(new Period\Day(new \DateTime('2012-05-09'), $factory), 1, 'event-a'),
-            array(new Period\Day(new \DateTime('2011-05-09'), $factory), 0, null),
-        );
+        return [
+            [new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'],
+            [new Day(new \DateTime('2012-05-09'), $factory), 1, 'event-a'],
+            [new Day(new \DateTime('2011-05-09'), $factory), 0, null],
+        ];
     }
 
     /**
      * @dataProvider findProvider
      */
-    public function testFind($index, $count, $eventUid)
+    public function testFind($index, $count, $eventUid): void
     {
         $events = $this->collection->find($index);
         $this->assertSame($count, count($events));
@@ -97,12 +100,12 @@ class BasicTest extends TestCase
     /**
      * @dataProvider findProvider
      */
-    public function testHas($index, $count)
+    public function testHas($index, $count): void
     {
         $this->assertSame($count > 0, $this->collection->has($index));
     }
 
-    public function testAll()
+    public function testAll(): void
     {
         $index = ord('a');
         foreach ($this->collection->all() as $event) {

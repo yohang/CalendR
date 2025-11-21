@@ -24,15 +24,11 @@ class Event extends AbstractEvent
 
     protected \DateTimeInterface $end;
 
-    protected string $uid;
-
-    public function __construct($uid, \DateTimeInterface $start, \DateTimeInterface $end)
+    public function __construct(protected string $uid, \DateTimeInterface $start, \DateTimeInterface $end)
     {
         if (1 === $start->diff($end)->invert) {
             throw new \InvalidArgumentException('Events usually start before they end');
         }
-
-        $this->uid   = $uid;
         $this->begin = clone $start;
         $this->end   = clone $end;
     }

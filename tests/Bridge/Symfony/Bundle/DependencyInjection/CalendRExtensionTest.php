@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CalendRExtensionTest extends TestCase
 {
-    public function testExtension()
+    public function testExtension(): void
     {
         $config    = [];
         $container = new ContainerBuilder();

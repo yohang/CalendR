@@ -11,6 +11,8 @@
 
 namespace CalendR\Period;
 
+use CalendR\Period\Exception\NotImplemented;
+
 /**
  * Represents a Range.
  *
@@ -60,6 +62,6 @@ class Range extends PeriodAbstract
      */
     public static function getDateInterval(): \DateInterval
     {
-        throw new Exception\NotImplemented('Range period doesn\'t support getDateInterval().');
+        throw new NotImplemented('Range period doesn\'t support getDateInterval().');
     }
 }

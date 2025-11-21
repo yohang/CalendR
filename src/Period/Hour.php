@@ -9,7 +9,7 @@ use CalendR\Period\Exception\NotAnHour;
  * @author Zander Baldwin <mynameis@zande.rs>
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Hour extends PeriodAbstract implements \Iterator
+class Hour extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;
 

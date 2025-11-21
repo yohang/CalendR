@@ -56,9 +56,7 @@ class Indexed implements CollectionInterface
         if (is_callable($callable)) {
             $this->indexFunction = $callable;
         } else {
-            $this->indexFunction = static function (\DateTimeInterface $dateTime) {
-                return $dateTime->format('Y-m-d');
-            };
+            $this->indexFunction = (static fn(\DateTimeInterface $dateTime): string => $dateTime->format('Y-m-d'));
         }
 
         foreach ($events as $event) {

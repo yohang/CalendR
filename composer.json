@@ -32,7 +32,8 @@
         "twig/twig": "^3.3.2",
         "phpspec/prophecy-phpunit": "^2.3.0",
         "symfony/cache": ">=5.3,<8.0",
-        "symfony/http-kernel": ">=5.3,<8.0"
+        "symfony/http-kernel": ">=5.3,<8.0",
+        "rector/rector": "^2.2"
     },
     "autoload": {
         "psr-4": {

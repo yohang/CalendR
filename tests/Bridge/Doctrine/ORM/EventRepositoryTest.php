@@ -2,6 +2,7 @@
 
 namespace CalendR\Test\Bridge\Doctrine\ORM;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use CalendR\Event\Event;
 use CalendR\Test\Stubs\EventRepository;
 use Doctrine\ORM\AbstractQuery;
@@ -16,11 +17,11 @@ class EventRepositoryTest extends TestCase
 {
     protected EventRepository $repo;
 
-    protected EntityManagerInterface $em;
+    protected MockObject $em;
 
-    protected ClassMetadata $classMetadata;
+    protected MockObject $classMetadata;
 
-    protected QueryBuilder $qb;
+    protected MockObject $qb;
 
     public function setUp(): void
     {

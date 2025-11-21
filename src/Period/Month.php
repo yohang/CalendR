@@ -7,7 +7,7 @@ namespace CalendR\Period;
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Month extends PeriodAbstract implements \Iterator
+class Month extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;
 

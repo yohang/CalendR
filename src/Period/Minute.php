@@ -8,7 +8,7 @@ namespace CalendR\Period;
  * @author Zander Baldwin <mynameis@zande.rs>
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Minute extends PeriodAbstract implements \Iterator
+class Minute extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;
 

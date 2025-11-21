@@ -11,6 +11,8 @@
 
 namespace CalendR\Event\Provider;
 
+use CalendR\Event\EventInterface;
+
 /**
  * Base interface for event providers.
  *
@@ -26,7 +28,7 @@ interface ProviderInterface
      * @param \DateTimeInterface $end
      * @param array $options
      *
-     * @return \CalendR\Event\EventInterface[]
+     * @return EventInterface[]
      */
     public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array;
 }

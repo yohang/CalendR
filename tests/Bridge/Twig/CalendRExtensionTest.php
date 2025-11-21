@@ -22,7 +22,7 @@ class CalendRExtensionTest extends TestCase
 {
     protected CalendRExtension $object;
 
-    protected Calendar $calendar;
+    protected MockObject $calendar;
 
     protected function setUp(): void
     {
@@ -34,7 +34,7 @@ class CalendRExtensionTest extends TestCase
     {
 
         $functions = array_map(
-            static function (TwigFunction $fn) { return $fn->getName(); },
+            static fn(TwigFunction $fn): string => $fn->getName(),
             $this->object->getFunctions()
         );
 
@@ -45,7 +45,7 @@ class CalendRExtensionTest extends TestCase
         $this->assertContains('calendr_events', $functions);
     }
 
-    public function testItCallsCalendarFunctions()
+    public function testItCallsCalendarFunctions(): void
     {
         $period = $this->getMockBuilder(Year::class)->disableOriginalConstructor()->getMock();
         $this->calendar

@@ -233,7 +233,7 @@ class HourTest extends TestCase
         $i = 0;
         foreach ($hour as $minuteKey => $minute) {
             $this->assertTrue(is_int($minuteKey) && $minuteKey >= 0 && $minuteKey < 60);
-            $this->assertInstanceOf('CalendR\\Period\\Minute', $minute);
+            $this->assertInstanceOf(Minute::class, $minute);
             $this->assertSame($start->format('Y-m-d H:i'), $minute->getBegin()->format('Y-m-d H:i'));
             $this->assertSame('00', $minute->getBegin()->format('s'));
 
