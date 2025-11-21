@@ -6,7 +6,7 @@ namespace CalendR\Period;
 
 use CalendR\Period\Exception\NotAnHour;
 
-class Hour extends PeriodAbstract implements \IteratorAggregate, \Stringable
+class Hour extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
     public function getDatePeriod(): \DatePeriod
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
-class Week extends PeriodAbstract implements \IteratorAggregate, \Stringable
+class Week extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
     public function getNumber(): int
     {

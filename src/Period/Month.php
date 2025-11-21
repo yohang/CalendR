@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
-class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable
+class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
     public function getDatePeriod(): \DatePeriod
     {

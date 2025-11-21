@@ -79,7 +79,7 @@ final class WeekTest extends TestCase
 
         $i = 0;
         foreach ($week as $dayKey => $day) {
-            $this->assertGreaterThan(0, preg_match('/^\\d{2}\\-\\d{2}\\-\\d{4}$/', $dayKey));
+            $this->assertGreaterThan(0, preg_match('/^\\d{2}\\-\\d{2}\\-\\d{4}$/', (string) $dayKey));
             $this->assertSame($start->format('d-m-Y'), $day->getBegin()->format('d-m-Y'));
 
             $start = $start->add(new \DateInterval('P1D'));
