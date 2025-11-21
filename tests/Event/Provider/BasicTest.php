@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Provider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Event\Event;
 use CalendR\Event\Provider\Basic;
 use PHPUnit\Framework\TestCase;
@@ -42,9 +43,7 @@ final class BasicTest extends TestCase
         $this->assertSame($events, $this->object->all());
     }
 
-    /**
-     * @dataProvider getEventsProvider
-     */
+    #[DataProvider('getEventsProvider')]
     public function testGetEvents(\DateTime $begin, \DateTime $end, array $expectedEvents): void
     {
         foreach ($this->getSomeEvents() as $event) {

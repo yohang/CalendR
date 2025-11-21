@@ -1,23 +1,11 @@
 <?php
 
-/*
- * This file has been added to CalendR, a Fréquence web project.
- *
- * (c) 2012 Ingewikkeld/Stefan Koopmanschap
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Period;
 
 use CalendR\Period\Exception\NotImplemented;
 
-/**
- * Represents a Range.
- *
- * @author Stefan Koopmanschap <left@leftontheweb.com>
- */
 class Range extends PeriodAbstract
 {
     public function __construct(\DateTimeInterface $begin, \DateTimeInterface $end, ?FactoryInterface $factory = null)

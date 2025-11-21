@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Collection;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Event\Collection\Basic;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Day;
@@ -80,9 +81,7 @@ final class BasicTest extends TestCase
         yield [new Day(new \DateTime('2011-05-09')), 0, null];
     }
 
-    /**
-     * @dataProvider findProvider
-     */
+    #[DataProvider('findProvider')]
     public function testFind(\DateTime|Day $index, int $count, ?string $eventUid): void
     {
         $events = $this->collection->find($index);
@@ -92,9 +91,7 @@ final class BasicTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider findProvider
-     */
+    #[DataProvider('findProvider')]
     public function testHas(\DateTime|Day $index, int $count): void
     {
         $this->assertSame($count > 0, $this->collection->has($index));

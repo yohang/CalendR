@@ -1,15 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
 use CalendR\Period\Exception\NotAnHour;
 
-/**
- * Represents an hour.
- *
- * @author Zander Baldwin <mynameis@zande.rs>
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Hour extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;

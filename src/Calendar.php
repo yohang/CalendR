@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR;
 
 use CalendR\Period\Year;
@@ -64,7 +66,7 @@ class Calendar
         $factory = $this->getFactory();
 
         if (!$yearOrStart instanceof \DateTimeInterface) {
-            $yearOrStart = new \DateTimeImmutable(sprintf('%s-W%s', $yearOrStart, str_pad((string) $week, 2, 0, STR_PAD_LEFT)));
+            $yearOrStart = new \DateTimeImmutable(sprintf('%s-W%s', $yearOrStart, str_pad((string) $week, 2, '0', STR_PAD_LEFT)));
         }
 
         return $factory->createWeek($factory->findFirstDayOfWeek($yearOrStart));

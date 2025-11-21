@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\PHPUnit\AnnotationsToAttributes\Rector\ClassMethod\DataProviderAnnotationToAttributeRector;
+use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -17,4 +19,8 @@ return RectorConfig::configure()
         codeQuality: true,
         typeDeclarations: true,
         phpunitCodeQuality: true,
-    );
+    )
+    ->withRules([
+        DataProviderAnnotationToAttributeRector::class,
+        DeclareStrictTypesRector::class
+    ]);

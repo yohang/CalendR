@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAYear;
 use CalendR\Period\Factory;
@@ -55,9 +56,7 @@ final class YearTest extends TestCase
         yield [new \DateTime('2013-01-01'), new \DateTime('2013-01-01'), new \DateTime('2014-01-01')];
     }
 
-    /**
-     * @dataProvider providerContains
-     */
+    #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -66,9 +65,7 @@ final class YearTest extends TestCase
         $this->assertFalse($year->contains($notContain));
     }
 
-    /**
-     * @dataProvider providerContains
-     */
+    #[DataProvider('providerContains')]
     public function testIncludes(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -77,9 +74,7 @@ final class YearTest extends TestCase
         $this->assertFalse($year->includes(new Day($notContain, $this->prophesize(FactoryInterface::class)->reveal())));
     }
 
-    /**
-     * @dataProvider providerConstructInvalid
-     */
+    #[DataProvider('providerConstructInvalid')]
     public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotAYear::class);
@@ -87,9 +82,7 @@ final class YearTest extends TestCase
         new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
-    /**
-     * @dataProvider providerConstructValid
-     */
+    #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
         $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());

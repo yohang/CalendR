@@ -1,13 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
-/**
- * Represents a second.
- *
- * @author Zander Baldwin <mynameis@zande.rs>
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Second extends PeriodAbstract implements \Stringable
 {
     public function getDatePeriod(): \DatePeriod

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\DayOfWeek;
 use CalendR\Period\Exception\NotAMonth;
 use CalendR\Period\Factory;
@@ -62,9 +63,7 @@ final class MonthTest extends TestCase
         yield [new Month(new \DateTime('2013-09-01'), new Factory(DayOfWeek::SUNDAY)), '2013-09-01', '2013-10-05'];
     }
 
-    /**
-     * @dataProvider providerContains
-     */
+    #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $month = new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -73,25 +72,19 @@ final class MonthTest extends TestCase
         $this->assertFalse($month->contains($notContain));
     }
 
-    /**
-     * @dataProvider providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek
-     */
+    #[DataProvider('providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek')]
     public function testGetFirstDayOfFirstWeek(Month $month, string $firstDay): void
     {
         $this->assertSame($firstDay, $month->getFirstDayOfFirstWeek()->format('Y-m-d'));
     }
 
-    /**
-     * @dataProvider providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek
-     */
+    #[DataProvider('providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek')]
     public function testGetLastDayOfLastWeek(Month $month, string $firstDay, string $lastDay): void
     {
         $this->assertSame($lastDay, $month->getLastDayOfLastWeek()->format('Y-m-d'));
     }
 
-    /**
-     * @dataProvider providerConstructInvalid
-     */
+    #[DataProvider('providerConstructInvalid')]
     public function testConstructInvalid(\DateTimeImmutable $start): void
     {
         $this->expectException(NotAMonth::class);
@@ -99,9 +92,7 @@ final class MonthTest extends TestCase
         new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
-    /**
-     * @dataProvider providerConstructValid
-     */
+    #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeImmutable $start): void
     {
         $month = new Month($start, $this->prophesize(FactoryInterface::class)->reveal());

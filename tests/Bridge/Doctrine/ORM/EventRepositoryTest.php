@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Bridge\Doctrine\ORM;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use CalendR\Event\Event;
 use CalendR\Test\Stubs\EventRepository;
@@ -46,9 +47,7 @@ final class EventRepositoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getEventsProvider
-     */
+    #[DataProvider('getEventsProvider')]
     public function testGetEvents(string $begin, string $end, array $providedEvents): void
     {
         $expr  = $this->createMock(Expr::class);

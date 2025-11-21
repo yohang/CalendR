@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Calendar;
 use CalendR\DayOfWeek;
 use CalendR\Event\Collection\Basic;
@@ -121,9 +122,7 @@ final class CalendarTest extends TestCase
         $this->assertSame(DayOfWeek::SUNDAY, $calendar->getFirstWeekday());
     }
 
-    /**
-     * @dataProvider weekAndWeekdayProvider
-     */
+    #[DataProvider('weekAndWeekdayProvider')]
     public function testGetWeekWithWeekdayConfiguration(int $year, int $week, DayOfWeek $weekday, string $day): void
     {
         $calendar = new Calendar();

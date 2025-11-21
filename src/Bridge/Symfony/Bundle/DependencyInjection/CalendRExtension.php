@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Bridge\Symfony\Bundle\DependencyInjection;
 
 use CalendR\Calendar;

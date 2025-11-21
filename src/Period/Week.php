@@ -1,19 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
-/**
- * Represents a week.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Week extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;
 
     public function getNumber(): int
     {
-        return $this->begin->format('W');
+        return (int) $this->begin->format('W');
     }
 
     public function getDatePeriod(): \DatePeriod

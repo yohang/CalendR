@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Exception\NotImplemented;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Range;
@@ -26,9 +27,7 @@ final class RangeTest extends TestCase
         yield [new \DateTime('2013-02-02'), new \DateTime('2013-02-09'), new \DateTime('2013-02-02'), new \DateTime('2013-02-09')];
     }
 
-    /**
-     * @dataProvider providerContains
-     */
+    #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $begin, \DateTimeInterface $end, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $range = new Range($begin, $end, $this->prophesize(FactoryInterface::class)->reveal());

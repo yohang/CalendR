@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Calendar;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
@@ -91,9 +92,7 @@ final class FactoryTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider providerGetFirstMondayAndLastSunday
-     */
+    #[DataProvider('providerGetFirstMondayAndLastSunday')]
     public function testFindFirstDayOfWeek(Month $month, string $firstDay): void
     {
         $this->assertSame(

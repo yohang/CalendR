@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Exception\NotAMinute;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
@@ -38,9 +39,7 @@ final class MinuteTest extends TestCase
         yield [new \DateTime('2013-07-13 00:00:00')];
     }
 
-    /**
-     * @dataProvider providerConstructInvalid
-     */
+    #[DataProvider('providerConstructInvalid')]
     public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotAMinute::class);
@@ -48,9 +47,7 @@ final class MinuteTest extends TestCase
         new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
-    /**
-     * @dataProvider providerConstructValid
-     */
+    #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
         $minute = new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -92,9 +89,7 @@ final class MinuteTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providerContains
-     */
+    #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $minute = new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -170,9 +165,7 @@ final class MinuteTest extends TestCase
         $this->assertFalse(Minute::isValid(new \DateTime('2014-03-05 18:36:15')));
     }
 
-    /**
-     * @dataProvider providerIncludes
-     */
+    #[DataProvider('providerIncludes')]
     public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
         $minute = new Minute($begin, $this->prophesize(FactoryInterface::class)->reveal());

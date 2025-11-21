@@ -1,24 +1,11 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Event\Provider;
 
 use CalendR\Event\EventInterface;
 
-/**
- * Basic event provider.
- * Add and retrieve events like with an array.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Basic implements ProviderInterface, \IteratorAggregate, \Countable
 {
     /**
@@ -43,17 +30,12 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
         return $events;
     }
 
-    /**
-     * Adds an event to the provider.
-     */
     public function add(EventInterface $event): void
     {
         $this->events[] = $event;
     }
 
     /**
-     * Returns all events.
-     *
      * @return EventInterface[]
      */
     public function all(): array
@@ -61,17 +43,11 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
         return $this->events;
     }
 
-    /**
-     * Retrieve an external iterator.
-     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->events);
     }
 
-    /**
-     * The return value is cast to an integer.
-     */
     public function count(): int
     {
         return count($this->events);

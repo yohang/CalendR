@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Hour;
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotADay;
@@ -36,9 +37,7 @@ final class DayTest extends TestCase
         yield [new \DateTime('2013-07-13 00:00:00')];
     }
 
-    /**
-     * @dataProvider providerConstructInvalid
-     */
+    #[DataProvider('providerConstructInvalid')]
     public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotADay::class);
@@ -46,9 +45,7 @@ final class DayTest extends TestCase
         new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
     }
 
-    /**
-     * @dataProvider providerConstructValid
-     */
+    #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
         $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -68,9 +65,7 @@ final class DayTest extends TestCase
         yield [new \DateTime('2013-02-02'), new \DateTime('2013-02-02'), new \DateTime('2013-02-03')];
     }
 
-    /**
-     * @dataProvider providerContains
-     */
+    #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -135,9 +130,7 @@ final class DayTest extends TestCase
         $this->assertFalse(Day::isValid(new \DateTimeImmutable('2013-05-01 00:00:01')));
     }
 
-    /**
-     * @dataProvider includesDataProvider
-     */
+    #[DataProvider('includesDataProvider')]
     public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
         $day = new Day($begin, $this->prophesize(FactoryInterface::class)->reveal());

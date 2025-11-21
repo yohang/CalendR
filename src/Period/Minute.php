@@ -1,13 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
-/**
- * Represents a minute.
- *
- * @author Zander Baldwin <mynameis@zande.rs>
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Minute extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;

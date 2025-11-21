@@ -1,12 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
-/**
- * Represents a Month.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Month extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;
@@ -33,7 +30,7 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
 
     /**
      * Returns the first day of the first week of month.
-     * First day of week is configurable via {@link Factory:setOption()}.
+     * First day of week is configurable via {@link Factory}.
      */
     public function getFirstDayOfFirstWeek(): \DateTimeInterface
     {
@@ -51,7 +48,7 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
 
     /**
      * Returns the last day of last week of month
-     * First day of week is configurable via {@link Factory::setOption()}.
+     * First day of week is configurable via {@link Factory}.
      */
     public function getLastDayOfLastWeek(): \DateTimeInterface
     {
@@ -80,7 +77,7 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
 
     public function key(): int
     {
-        return $this->current->getBegin()->format('W');
+        return (int)$this->current->getBegin()->format('W');
     }
 
     public function valid(): bool
@@ -94,9 +91,6 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
         $this->next();
     }
 
-    /**
-     * Returns the month name (probably in english).
-     */
     public function __toString(): string
     {
         return $this->format('F');

@@ -33,7 +33,7 @@ class Day extends PeriodAbstract implements \Iterator, \Stringable
 
     public function key(): int
     {
-        return (int)$this->current->getBegin()->format('G');
+        return (int) $this->current->getBegin()->format('G');
     }
 
     public function valid(): bool

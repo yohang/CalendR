@@ -1,12 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
-/**
- * Represents a year.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Year extends PeriodAbstract implements \Iterator, \Stringable
 {
     private ?PeriodInterface $current = null;
@@ -40,7 +37,7 @@ class Year extends PeriodAbstract implements \Iterator, \Stringable
 
     public function key(): int
     {
-        return $this->current->getBegin()->format('m');
+        return (int)$this->current->getBegin()->format('m');
     }
 
     public function valid(): bool

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Week;
@@ -46,9 +47,7 @@ final class WeekTest extends TestCase
         yield [new \DateTime('2011-12-26'), 52];
     }
 
-    /**
-     * @dataProvider providerContains
-     */
+    #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -57,9 +56,7 @@ final class WeekTest extends TestCase
         $this->assertFalse($week->contains($notContain));
     }
 
-    /**
-     * @dataProvider providerNumber
-     */
+    #[DataProvider('providerNumber')]
     public function testNumber(\DateTimeInterface $start, int $number): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
@@ -67,9 +64,7 @@ final class WeekTest extends TestCase
         $this->assertSame($week->getNumber(), $number);
     }
 
-    /**
-     * @dataProvider providerConstructValid
-     */
+    #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
