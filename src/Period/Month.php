@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
-class Month extends PeriodAbstract implements \Iterator, \Stringable
+class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable
 {
-    private ?PeriodInterface $current = null;
-
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
@@ -57,38 +55,14 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
         return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }
 
-    public function current(): ?PeriodInterface
+    public function getIterator(): \Generator
     {
-        return $this->current;
-    }
+        $current = $this->getFactory()->createWeek($this->getFirstDayOfFirstWeek());
+        while ($this->getExtendedMonth()->contains($current->getBegin())) {
+            yield (int) $current->getBegin()->format('W') => $current;
 
-    public function next(): void
-    {
-        if (!$this->valid()) {
-            $this->current = $this->getFactory()->createWeek($this->getFirstDayOfFirstWeek());
-        } else {
-            $this->current = $this->current->getNext();
-
-            if ($this->current->getBegin()->format('m') !== $this->begin->format('m')) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
-    }
-
-    public function key(): int
-    {
-        return (int) $this->current->getBegin()->format('W');
-    }
-
-    public function valid(): bool
-    {
-        return $this->current() instanceof PeriodInterface;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
     }
 
     public function __toString(): string

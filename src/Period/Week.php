@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
-class Week extends PeriodAbstract implements \Iterator, \Stringable
+class Week extends PeriodAbstract implements \IteratorAggregate, \Stringable
 {
-    private ?PeriodInterface $current = null;
-
     public function getNumber(): int
     {
         return (int) $this->begin->format('W');
@@ -18,47 +16,24 @@ class Week extends PeriodAbstract implements \Iterator, \Stringable
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
-    public static function isValid(\DateTimeInterface $start): bool
+    public function getIterator(): \Generator
     {
-        return '00:00:00' === $start->format('H:i:s');
-    }
+        $current = $this->factory->createDay($this->begin);
+        while ($this->contains($current->getBegin())) {
+            yield $current->getBegin()->format('d-m-Y') => $current;
 
-    public function current(): PeriodInterface
-    {
-        return $this->current;
-    }
-
-    public function next(): void
-    {
-        if (!$this->valid()) {
-            $this->current = $this->getFactory()->createDay($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
-    }
-
-    public function key(): string
-    {
-        return $this->current->getBegin()->format('d-m-Y');
-    }
-
-    public function valid(): bool
-    {
-        return $this->current instanceof PeriodInterface;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
     }
 
     public function __toString(): string
     {
         return $this->format('W');
+    }
+
+    public static function isValid(\DateTimeInterface $start): bool
+    {
+        return '00:00:00' === $start->format('H:i:s');
     }
 
     public static function getDateInterval(): \DateInterval

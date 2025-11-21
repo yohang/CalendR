@@ -6,10 +6,8 @@ namespace CalendR\Period;
 
 use CalendR\Period\Exception\NotAnHour;
 
-class Hour extends PeriodAbstract implements \Iterator, \Stringable
+class Hour extends PeriodAbstract implements \IteratorAggregate, \Stringable
 {
-    private ?PeriodInterface $current = null;
-
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('PT1M'), $this->end);
@@ -20,37 +18,14 @@ class Hour extends PeriodAbstract implements \Iterator, \Stringable
         return '00:00' === $start->format('i:s');
     }
 
-    public function current(): ?PeriodInterface
+    public function getIterator(): \Generator
     {
-        return $this->current;
-    }
+        $current = $this->getFactory()->createMinute($this->begin);
+        while ($this->contains($current->getBegin())) {
+            yield $current;
 
-    public function next(): void
-    {
-        if (!$this->current instanceof PeriodInterface) {
-            $this->current = $this->getFactory()->createMinute($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
-    }
-
-    public function key(): int
-    {
-        return (int) $this->current->getBegin()->format('G');
-    }
-
-    public function valid(): bool
-    {
-        return $this->current instanceof PeriodInterface;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
     }
 
     public function __toString(): string

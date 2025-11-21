@@ -4,48 +4,21 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
-class Day extends PeriodAbstract implements \Iterator, \Stringable
+class Day extends PeriodAbstract implements \IteratorAggregate, \Stringable
 {
-    private ?PeriodInterface $current = null;
-
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
-    public function current(): ?PeriodInterface
+    public function getIterator(): \Generator
     {
-        return $this->current;
-    }
+        $current = $this->getFactory()->createHour($this->begin);
+        while ($this->contains($current->getBegin())) {
+            yield (int) $current->getBegin()->format('G') => $current;
 
-    public function next(): void
-    {
-        if (!$this->current instanceof PeriodInterface) {
-            $this->current = $this->getFactory()->createHour($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
-    }
-
-    public function key(): int
-    {
-        return (int) $this->current->getBegin()->format('G');
-    }
-
-    public function valid(): bool
-    {
-        return $this->current instanceof PeriodInterface;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-
-        $this->next();
     }
 
     public function __toString(): string

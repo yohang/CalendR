@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
-class Year extends PeriodAbstract implements \Iterator, \Stringable
+class Year extends PeriodAbstract implements \IteratorAggregate, \Stringable
 {
-    private ?PeriodInterface $current = null;
-
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
@@ -18,37 +16,14 @@ class Year extends PeriodAbstract implements \Iterator, \Stringable
         return '01-01 00:00:00' === $start->format('d-m H:i:s');
     }
 
-    public function current(): PeriodInterface
+    public function getIterator(): \Generator
     {
-        return $this->current;
-    }
+        $current = $this->getFactory()->createMonth($this->begin);
+        while ($this->contains($current->getBegin())) {
+            yield (int) $current->getBegin()->format('m') => $current;
 
-    public function next(): void
-    {
-        if (!$this->current instanceof PeriodInterface) {
-            $this->current = $this->getFactory()->createMonth($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
-    }
-
-    public function key(): int
-    {
-        return (int) $this->current->getBegin()->format('m');
-    }
-
-    public function valid(): bool
-    {
-        return $this->current instanceof PeriodInterface;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
     }
 
     public function __toString(): string
