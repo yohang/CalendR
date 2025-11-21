@@ -203,35 +203,34 @@ final class MinuteTest extends TestCase
         $this->assertFalse($otherMinute->isCurrent());
     }
 
-    public function providerIncludes(): \Iterator
+    public static function providerIncludes(): \Iterator
     {
-        $factory = $this->prophesize(FactoryInterface::class)->reveal();
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), true, false];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), true, false];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), false, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00'), $factory), true, false];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00'), $factory), false, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:00'), $factory), true, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:34'), $factory), false, false];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00'), $factory), true, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00'), $factory), false, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), true, true];
-        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), false, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), true, false];
-        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), true, false];
-        yield [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), false, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), true, false];
-        yield [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), false, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:00'), $factory), true, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34'), $factory), false, false];
-        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), true, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), false, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), true, true];
-        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01')), true, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01')), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01')), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01')), true, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01')), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00')), true, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00')), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:00')), true, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:34')), false, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00')), true, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00')), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30')), true, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01')), true, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01')), true, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00')), true, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:00')), true, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34')), false, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00')), true, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30')), true, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30')), false, true];
     }
 
     public function testIteration(): void

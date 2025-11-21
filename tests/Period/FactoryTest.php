@@ -113,7 +113,7 @@ final class FactoryTest extends TestCase
         yield [$factory->getMonth(2012, 12), '2012-11-26'];
     }
 
-    protected function getDefaultOptionsFactory(): FactoryInterface
+    protected function getDefaultOptionsFactory(): Factory
     {
         return new Factory();
     }

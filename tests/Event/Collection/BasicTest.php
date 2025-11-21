@@ -73,12 +73,11 @@ final class BasicTest extends TestCase
         $this->assertCount(3, $this->collection);
     }
 
-    public function findProvider(): \Iterator
+    public static function findProvider(): \Iterator
     {
-        $factory = $this->prophesize(FactoryInterface::class)->reveal();
         yield [new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'];
-        yield [new Day(new \DateTime('2012-05-09'), $factory), 1, 'event-a'];
-        yield [new Day(new \DateTime('2011-05-09'), $factory), 0, null];
+        yield [new Day(new \DateTime('2012-05-09')), 1, 'event-a'];
+        yield [new Day(new \DateTime('2011-05-09')), 0, null];
     }
 
     /**

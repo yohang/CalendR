@@ -10,15 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 final class BasicTest extends TestCase
 {
-    /**
-     * @var Basic
-     */
-    protected $object;
+    protected Basic $object;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp(): void
     {
         $this->object = new Basic();
@@ -49,14 +42,6 @@ final class BasicTest extends TestCase
         $this->assertSame($events, $this->object->all());
     }
 
-    public function getEventsProvider(): \Iterator
-    {
-        yield [new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), [1, 3, 4]];
-        yield [new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), [2]];
-        yield [new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), [5]];
-        yield [new \DateTime('2015-12-27T00:00'), new \DateTime('2015-12-28T00:00'), []];
-    }
-
     /**
      * @dataProvider getEventsProvider
      */
@@ -68,7 +53,7 @@ final class BasicTest extends TestCase
 
         $events = $this->object->getEvents($begin, $end);
         $this->assertCount(count($expectedEvents), $events);
-        foreach ($events as $i => $event) {
+        foreach (array_keys($events) as $i) {
             $this->assertSame('event-'.$expectedEvents[$i], $events[$i]->getUid());
         }
     }
@@ -81,5 +66,13 @@ final class BasicTest extends TestCase
     public function testGetIterator(): void
     {
         $this->assertInstanceOf('Iterator', $this->object->getIterator());
+    }
+
+    public static function getEventsProvider(): \Iterator
+    {
+        yield [new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), [1, 3, 4]];
+        yield [new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), [2]];
+        yield [new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), [5]];
+        yield [new \DateTime('2015-12-27T00:00'), new \DateTime('2015-12-28T00:00'), []];
     }
 }

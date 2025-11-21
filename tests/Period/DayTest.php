@@ -160,15 +160,14 @@ final class DayTest extends TestCase
         $this->assertFalse($otherDay->isCurrent());
     }
 
-    public function includesDataProvider(): \Iterator
+    public static function includesDataProvider(): \Iterator
     {
-        $factory = $this->prophesize(FactoryInterface::class)->reveal();
-        yield [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), true, false];
-        yield [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true];
-        yield [new \DateTimeImmutable('2013-09-01'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), true, true];
-        yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), true, false];
-        yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), false, true];
-        yield [new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01'), $factory), true, true];
+        yield [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01')), true, false];
+        yield [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01')), false, true];
+        yield [new \DateTimeImmutable('2013-09-01'), new Day(new \DateTimeImmutable('2013-09-01')), true, true];
+        yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), true, false];
+        yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), false, true];
+        yield [new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01')), true, true];
     }
 
     public function testIteration(): void
