@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Exception\NotAMinute;
@@ -14,30 +16,26 @@ use CalendR\Period\Year;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class MinuteTest extends TestCase
+final class MinuteTest extends TestCase
 {
     use ProphecyTrait;
 
-    public static function providerConstructInvalid(): array
+    public static function providerConstructInvalid(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2014-12-10 17:30:34')],
-            [new \DateTimeImmutable('2014-12-10 00:00:01')],
-            [new \DateTime('2014-12-10 17:30:34')],
-            [new \DateTime('2014-12-10 00:00:01')],
-        ];
+        yield [new \DateTimeImmutable('2014-12-10 17:30:34')];
+        yield [new \DateTimeImmutable('2014-12-10 00:00:01')];
+        yield [new \DateTime('2014-12-10 17:30:34')];
+        yield [new \DateTime('2014-12-10 00:00:01')];
     }
 
-    public static function providerConstructValid(): array
+    public static function providerConstructValid(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2012-01-03')],
-            [new \DateTimeImmutable('2011-12-10 17:45')],
-            [new \DateTimeImmutable('2013-07-13 00:00:00')],
-            [new \DateTime('2012-01-03')],
-            [new \DateTime('2011-12-10 17:45')],
-            [new \DateTime('2013-07-13 00:00:00')],
-        ];
+        yield [new \DateTimeImmutable('2012-01-03')];
+        yield [new \DateTimeImmutable('2011-12-10 17:45')];
+        yield [new \DateTimeImmutable('2013-07-13 00:00:00')];
+        yield [new \DateTime('2012-01-03')];
+        yield [new \DateTime('2011-12-10 17:45')];
+        yield [new \DateTime('2013-07-13 00:00:00')];
     }
 
     /**
@@ -60,39 +58,37 @@ class MinuteTest extends TestCase
         $this->assertInstanceOf(Minute::class, $minute);
     }
 
-    public static function providerContains(): array
+    public static function providerContains(): \Iterator
     {
-        return [
-            [
-                new \DateTimeImmutable('2012-01-02'),
-                new \DateTimeImmutable('2012-01-02'),
-                new \DateTimeImmutable('2012-01-03'),
-            ],
-            [
-                new \DateTimeImmutable('2012-01-02'),
-                new \DateTimeImmutable('2012-01-02 00:00:34'),
-                new \DateTimeImmutable('2012-01-02 00:01:00'),
-            ],
-            [
-                new \DateTimeImmutable('2012-05-30 05:23'),
-                new \DateTimeImmutable('2012-05-30 05:23:23'),
-                new \DateTimeImmutable('2012-05-30'),
-            ],
-            [
-                new \DateTime('2012-01-02'),
-                new \DateTime('2012-01-02'),
-                new \DateTime('2012-01-03'),
-            ],
-            [
-                new \DateTime('2012-01-02'),
-                new \DateTime('2012-01-02 00:00:34'),
-                new \DateTime('2012-01-02 00:01:00'),
-            ],
-            [
-                new \DateTime('2012-05-30 05:23'),
-                new \DateTime('2012-05-30 05:23:23'),
-                new \DateTime('2012-05-30'),
-            ],
+        yield [
+            new \DateTimeImmutable('2012-01-02'),
+            new \DateTimeImmutable('2012-01-02'),
+            new \DateTimeImmutable('2012-01-03'),
+        ];
+        yield [
+            new \DateTimeImmutable('2012-01-02'),
+            new \DateTimeImmutable('2012-01-02 00:00:34'),
+            new \DateTimeImmutable('2012-01-02 00:01:00'),
+        ];
+        yield [
+            new \DateTimeImmutable('2012-05-30 05:23'),
+            new \DateTimeImmutable('2012-05-30 05:23:23'),
+            new \DateTimeImmutable('2012-05-30'),
+        ];
+        yield [
+            new \DateTime('2012-01-02'),
+            new \DateTime('2012-01-02'),
+            new \DateTime('2012-01-03'),
+        ];
+        yield [
+            new \DateTime('2012-01-02'),
+            new \DateTime('2012-01-02 00:00:34'),
+            new \DateTime('2012-01-02 00:01:00'),
+        ];
+        yield [
+            new \DateTime('2012-05-30 05:23'),
+            new \DateTime('2012-05-30 05:23:23'),
+            new \DateTime('2012-05-30'),
         ];
     }
 
@@ -110,25 +106,25 @@ class MinuteTest extends TestCase
     public function testGetNext(): void
     {
         $minute = new Minute(new \DateTimeImmutable('2012-01-01 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-01-01 05:01', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
+        $this->assertSame('2012-01-01 05:01', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
 
         $minute = new Minute(new \DateTimeImmutable('2012-01-31 14:59'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-01-31 15:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
+        $this->assertSame('2012-01-31 15:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
 
         $minute = new Minute(new \DateTimeImmutable('2013-02-28 23:59'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2013-03-01 00:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
+        $this->assertSame('2013-03-01 00:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
     }
 
     public function testGetPrevious(): void
     {
         $minute = new Minute(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2011-12-31 23:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
+        $this->assertSame('2011-12-31 23:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
 
         $minute = new Minute(new \DateTimeImmutable('2012-01-31 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-01-31 04:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
+        $this->assertSame('2012-01-31 04:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
 
         $minute = new Minute(new \DateTimeImmutable('2012-01-31 05:25'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-01-31 05:24', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
+        $this->assertSame('2012-01-31 05:24', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
     }
 
     public function testGetDatePeriod(): void
@@ -137,7 +133,7 @@ class MinuteTest extends TestCase
         $i      = 0;
         foreach ($minute->getDatePeriod() as $DateTimeImmutable) {
             $i++;
-            $this->assertEquals('2012-01-31 13:12', $DateTimeImmutable->format('Y-m-d H:i'));
+            $this->assertSame('2012-01-31 13:12', $DateTimeImmutable->format('Y-m-d H:i'));
         }
 
         $this->assertSame(60, $i);
@@ -207,38 +203,35 @@ class MinuteTest extends TestCase
         $this->assertFalse($otherMinute->isCurrent());
     }
 
-    public function providerIncludes(): array
+    public function providerIncludes(): \Iterator
     {
         $factory = $this->prophesize(FactoryInterface::class)->reveal();
-
-        return [
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), true, false],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), true, false],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), false, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00'), $factory), true, false],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00'), $factory), false, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:00'), $factory), true, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:34'), $factory), false, false],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00'), $factory), true, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00'), $factory), false, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), true, true],
-            [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), false, true],
-            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), true, false],
-            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
-            [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
-            [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), true, false],
-            [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), false, true],
-            [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), true, false],
-            [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), false, true],
-            [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:00'), $factory), true, true],
-            [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34'), $factory), false, false],
-            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), true, true],
-            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), false, true],
-            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), true, true],
-            [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), false, true],
-        ];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), true, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), true, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00'), $factory), true, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Hour(new \DateTimeImmutable('2013-09-01 12:00'), $factory), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:00'), $factory), true, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Minute(new \DateTimeImmutable('2013-09-01 12:34'), $factory), false, false];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00'), $factory), true, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:00'), $factory), false, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), true, true];
+        yield [new \DateTimeImmutable('2013-09-01 12:00'), new Second(new \DateTimeImmutable('2013-09-01 12:00:30'), $factory), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), true, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Year(new \DateTime('2013-01-01'), $factory), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), true, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Day(new \DateTime('2013-09-01'), $factory), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), true, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Hour(new \DateTime('2013-09-01 12:00'), $factory), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:00'), $factory), true, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34'), $factory), false, false];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), true, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00'), $factory), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), true, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:30'), $factory), false, true];
     }
 
     public function testIteration(): void
@@ -256,6 +249,6 @@ class MinuteTest extends TestCase
             $i++;
         }
 
-        $this->assertEquals($i, 60);
+        $this->assertSame(60, $i);
     }
 }

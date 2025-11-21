@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Event\Provider;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -8,7 +10,7 @@ use CalendR\Event\EventInterface;
 use CalendR\Event\Provider\Aggregate;
 use PHPUnit\Framework\TestCase;
 
-class AggregateTest extends TestCase
+final class AggregateTest extends TestCase
 {
     /**
      * @var Aggregate
@@ -31,8 +33,8 @@ class AggregateTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->provider1 = $this->getMockBuilder(ProviderInterface::class)->getMock();
-        $this->provider2 = $this->getMockBuilder(ProviderInterface::class)->getMock();
+        $this->provider1 = $this->createMock(ProviderInterface::class);
+        $this->provider2 = $this->createMock(ProviderInterface::class);
         $this->object    = new Aggregate([$this->provider1]);
     }
 
@@ -50,11 +52,11 @@ class AggregateTest extends TestCase
     {
         $begin  = new \DateTime;
         $end    = new \DateTime;
-        $event1 = $this->getMockBuilder(EventInterface::class)->getMock();
-        $event2 = $this->getMockBuilder(EventInterface::class)->getMock();
+        $event1 = $this->createMock(EventInterface::class);
+        $event2 = $this->createMock(EventInterface::class);
 
-        $this->provider1->expects($this->once())->method('getEvents')->with($begin, $end)->will($this->returnValue([$event1]));
-        $this->provider2->expects($this->once())->method('getEvents')->with($begin, $end)->will($this->returnValue([$event2]));
+        $this->provider1->expects($this->once())->method('getEvents')->with($begin, $end)->willReturn([$event1]);
+        $this->provider2->expects($this->once())->method('getEvents')->with($begin, $end)->willReturn([$event2]);
 
         $this->object->add($this->provider2);
 

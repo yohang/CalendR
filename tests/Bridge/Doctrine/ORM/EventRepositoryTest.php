@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Bridge\Doctrine\ORM;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -13,37 +15,33 @@ use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 use Doctrine\ORM\Query\Expr;
 
-class EventRepositoryTest extends TestCase
+final class EventRepositoryTest extends TestCase
 {
     protected EventRepository $repo;
 
     protected MockObject $em;
 
-    protected MockObject $classMetadata;
-
     protected MockObject $qb;
 
     public function setUp(): void
     {
-        $this->em            = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
-        $this->classMetadata = $this->getMockBuilder(ClassMetadata::class)->setConstructorArgs(['Event'])->getMock();
-        $this->qb            = $this->getMockBuilder(QueryBuilder::class)->disableOriginalConstructor()->getMock();
+        $this->em            = $this->createMock(EntityManagerInterface::class);
+        $classMetadata = $this->getMockBuilder(ClassMetadata::class)->setConstructorArgs(['Event'])->getMock();
+        $this->qb            = $this->createMock(QueryBuilder::class);
 
-        $this->repo          = new EventRepository($this->em, $this->classMetadata);
+        $this->repo          = new EventRepository($this->em, $classMetadata);
     }
 
-    public static function getEventsProvider(): array
+    public static function getEventsProvider(): \Iterator
     {
-        return [
+        yield [
+            '2012-01-01',
+            '2012-01-05',
             [
-                '2012-01-01',
-                '2012-01-05',
-                [
-                    new Event('event_during_begin', new \DateTime('2011-12-25'), new \DateTime('2012-01-01')),
-                    new Event('event_during_end', new \DateTime('2012-01-04'), new \DateTime('2012-01-06')),
-                    new Event('event_during_period', new \DateTime('2012-01-03'), new \DateTime('2012-01-04')),
-                    new Event('event_around_period', new \DateTime('2011-12-25'), new \DateTime('2012-01-06')),
-                ],
+                new Event('event_during_begin', new \DateTime('2011-12-25'), new \DateTime('2012-01-01')),
+                new Event('event_during_end', new \DateTime('2012-01-04'), new \DateTime('2012-01-06')),
+                new Event('event_during_period', new \DateTime('2012-01-03'), new \DateTime('2012-01-04')),
+                new Event('event_around_period', new \DateTime('2011-12-25'), new \DateTime('2012-01-06')),
             ],
         ];
     }
@@ -53,7 +51,7 @@ class EventRepositoryTest extends TestCase
      */
     public function testGetEvents(string $begin, string $end, array $providedEvents): void
     {
-        $expr  = $this->getMockBuilder(Expr::class)->getMock();
+        $expr  = $this->createMock(Expr::class);
         $query = $this->getMockBuilder((new \ReflectionClass(Query::class))->isFinal() ? AbstractQuery::class : Query::class)
                       ->disableOriginalConstructor()
                       ->onlyMethods(['_doExecute', 'getSQL', 'execute', 'getResult'])

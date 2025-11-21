@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
@@ -11,61 +13,53 @@ use CalendR\Period\Week;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class MonthTest extends TestCase
+final class MonthTest extends TestCase
 {
     use ProphecyTrait;
 
-    public static function providerConstructInvalid(): array
+    public static function providerConstructInvalid(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2012-01-03')],
-            [new \DateTimeImmutable('2014-12-10')],
-        ];
+        yield [new \DateTimeImmutable('2012-01-03')];
+        yield [new \DateTimeImmutable('2014-12-10')];
     }
 
-    public static function providerConstructValid(): array
+    public static function providerConstructValid(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2012-01-01')],
-            [new \DateTimeImmutable('2011-01-01')],
-            [new \DateTimeImmutable('2013-04-01')],
-        ];
+        yield [new \DateTimeImmutable('2012-01-01')];
+        yield [new \DateTimeImmutable('2011-01-01')];
+        yield [new \DateTimeImmutable('2013-04-01')];
     }
 
-    public static function providerContains(): array
+    public static function providerContains(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-02-09')],
-            [new \DateTimeImmutable('2011-02-01'), new \DateTimeImmutable('2011-02-09'), new \DateTimeImmutable('2012-03-19')],
-            [new \DateTimeImmutable('2012-09-01'), new \DateTimeImmutable('2012-09-09'), new \DateTimeImmutable('2011-09-01')],
-            [new \DateTimeImmutable('2013-09-01'), new \DateTimeImmutable('2013-09-01'), new \DateTimeImmutable('2013-10-01')],
-            [new \DateTime('2012-01-01'), new \DateTime('2012-01-04'), new \DateTime('2012-02-09')],
-            [new \DateTime('2011-02-01'), new \DateTime('2011-02-09'), new \DateTime('2012-03-19')],
-            [new \DateTime('2012-09-01'), new \DateTime('2012-09-09'), new \DateTime('2011-09-01')],
-            [new \DateTime('2013-09-01'), new \DateTime('2013-09-01'), new \DateTime('2013-10-01')],
-        ];
+        yield [new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-02-09')];
+        yield [new \DateTimeImmutable('2011-02-01'), new \DateTimeImmutable('2011-02-09'), new \DateTimeImmutable('2012-03-19')];
+        yield [new \DateTimeImmutable('2012-09-01'), new \DateTimeImmutable('2012-09-09'), new \DateTimeImmutable('2011-09-01')];
+        yield [new \DateTimeImmutable('2013-09-01'), new \DateTimeImmutable('2013-09-01'), new \DateTimeImmutable('2013-10-01')];
+        yield [new \DateTime('2012-01-01'), new \DateTime('2012-01-04'), new \DateTime('2012-02-09')];
+        yield [new \DateTime('2011-02-01'), new \DateTime('2011-02-09'), new \DateTime('2012-03-19')];
+        yield [new \DateTime('2012-09-01'), new \DateTime('2012-09-09'), new \DateTime('2011-09-01')];
+        yield [new \DateTime('2013-09-01'), new \DateTime('2013-09-01'), new \DateTime('2013-10-01')];
     }
 
-    public static function providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek(): array
+    public static function providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek(): \Iterator
     {
-        return [
-            [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'],
-            [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'],
-            [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'],
-            [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'],
-            [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'],
-            [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'],
-            [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'],
-            [new Month(new \DateTimeImmutable('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'],
-            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'],
-            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'],
-            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'],
-            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'],
-            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'],
-            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'],
-            [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'],
-            [new Month(new \DateTime('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'],
-        ];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'];
+        yield [new Month(new \DateTimeImmutable('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'];
+        yield [new Month(new \DateTimeImmutable('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::MONDAY])), '2013-04-29', '2013-06-02'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::TUESDAY])), '2013-04-30', '2013-06-03'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::WEDNESDAY])), '2013-05-01', '2013-06-04'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::THURSDAY])), '2013-04-25', '2013-06-05'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::FRIDAY])), '2013-04-26', '2013-06-06'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SATURDAY])), '2013-04-27', '2013-05-31'];
+        yield [new Month(new \DateTime('2013-05-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-04-28', '2013-06-01'];
+        yield [new Month(new \DateTime('2013-09-01'), new Factory(['first_weekday' => Day::SUNDAY])), '2013-09-01', '2013-10-05'];
     }
 
     /**
@@ -135,7 +129,7 @@ class MonthTest extends TestCase
             }
         }
 
-        $this->assertEquals(31, $i);
+        $this->assertSame(31, $i);
     }
 
     public function testToString(): void
@@ -163,19 +157,19 @@ class MonthTest extends TestCase
     public function testGetNext(): void
     {
         $month = new Month(new \DateTimeImmutable('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-02-01', $month->getNext()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2012-02-01', $month->getNext()->getBegin()->format('Y-m-d'));
 
         $month = new Month(new \DateTimeImmutable('2012-12-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2013-01-01', $month->getNext()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2013-01-01', $month->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious(): void
     {
         $month = new Month(new \DateTimeImmutable('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2011-12-01', $month->getPrevious()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2011-12-01', $month->getPrevious()->getBegin()->format('Y-m-d'));
 
         $month = new Month(new \DateTimeImmutable('2012-03-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-02-01', $month->getPrevious()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2012-02-01', $month->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod(): void
@@ -184,7 +178,7 @@ class MonthTest extends TestCase
         $month = new Month($date, $this->prophesize(FactoryInterface::class)->reveal());
 
         foreach ($month->getDatePeriod() as $DateTimeImmutable) {
-            $this->assertEquals($date->format('Y-m-d'), $DateTimeImmutable->format('Y-m-d'));
+            $this->assertSame($date->format('Y-m-d'), $DateTimeImmutable->format('Y-m-d'));
             $date = $date->add(new \DateInterval('P1D'));
         }
     }

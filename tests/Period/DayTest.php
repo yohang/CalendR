@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Hour;
@@ -12,30 +14,26 @@ use CalendR\Period\Year;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class DayTest extends TestCase
+final class DayTest extends TestCase
 {
     use ProphecyTrait;
 
-    public static function providerConstructInvalid(): array
+    public static function providerConstructInvalid(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2014-12-10 17:30')],
-            [new \DateTimeImmutable('2014-12-10 00:00:01')],
-            [new \DateTime('2014-12-10 17:30')],
-            [new \DateTime('2014-12-10 00:00:01')],
-        ];
+        yield [new \DateTimeImmutable('2014-12-10 17:30')];
+        yield [new \DateTimeImmutable('2014-12-10 00:00:01')];
+        yield [new \DateTime('2014-12-10 17:30')];
+        yield [new \DateTime('2014-12-10 00:00:01')];
     }
 
-    public static function providerConstructValid(): array
+    public static function providerConstructValid(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2012-01-03')],
-            [new \DateTimeImmutable('2011-12-10')],
-            [new \DateTimeImmutable('2013-07-13 00:00:00')],
-            [new \DateTime('2012-01-03')],
-            [new \DateTime('2011-12-10')],
-            [new \DateTime('2013-07-13 00:00:00')],
-        ];
+        yield [new \DateTimeImmutable('2012-01-03')];
+        yield [new \DateTimeImmutable('2011-12-10')];
+        yield [new \DateTimeImmutable('2013-07-13 00:00:00')];
+        yield [new \DateTime('2012-01-03')];
+        yield [new \DateTime('2011-12-10')];
+        yield [new \DateTime('2013-07-13 00:00:00')];
     }
 
     /**
@@ -58,18 +56,16 @@ class DayTest extends TestCase
         $this->assertInstanceOf(Day::class, $day);
     }
 
-    public static function providerContains(): array
+    public static function providerContains(): \Iterator
     {
-        return [
-            [new \DateTimeImmutable('2012-01-02'), new \DateTimeImmutable('2012-01-02 00:01'), new \DateTimeImmutable('2012-01-03')],
-            [new \DateTimeImmutable('2012-05-30'), new \DateTimeImmutable('2012-05-30 12:25'), new \DateTimeImmutable('2012-05-29')],
-            [new \DateTimeImmutable('2012-09-09'), new \DateTimeImmutable('2012-09-09 23:59'), new \DateTimeImmutable('2011-09-09')],
-            [new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-03')],
-            [new \DateTime('2012-01-02'), new \DateTime('2012-01-02 00:01'), new \DateTime('2012-01-03')],
-            [new \DateTime('2012-05-30'), new \DateTime('2012-05-30 12:25'), new \DateTime('2012-05-29')],
-            [new \DateTime('2012-09-09'), new \DateTime('2012-09-09 23:59'), new \DateTime('2011-09-09')],
-            [new \DateTime('2013-02-02'), new \DateTime('2013-02-02'), new \DateTime('2013-02-03')],
-        ];
+        yield [new \DateTimeImmutable('2012-01-02'), new \DateTimeImmutable('2012-01-02 00:01'), new \DateTimeImmutable('2012-01-03')];
+        yield [new \DateTimeImmutable('2012-05-30'), new \DateTimeImmutable('2012-05-30 12:25'), new \DateTimeImmutable('2012-05-29')];
+        yield [new \DateTimeImmutable('2012-09-09'), new \DateTimeImmutable('2012-09-09 23:59'), new \DateTimeImmutable('2011-09-09')];
+        yield [new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-02'), new \DateTimeImmutable('2013-02-03')];
+        yield [new \DateTime('2012-01-02'), new \DateTime('2012-01-02 00:01'), new \DateTime('2012-01-03')];
+        yield [new \DateTime('2012-05-30'), new \DateTime('2012-05-30 12:25'), new \DateTime('2012-05-29')];
+        yield [new \DateTime('2012-09-09'), new \DateTime('2012-09-09 23:59'), new \DateTime('2011-09-09')];
+        yield [new \DateTime('2013-02-02'), new \DateTime('2013-02-02'), new \DateTime('2013-02-03')];
     }
 
     /**
@@ -86,19 +82,19 @@ class DayTest extends TestCase
     public function testGetNext(): void
     {
         $day = new Day(new \DateTimeImmutable('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-01-02', $day->getNext()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2012-01-02', $day->getNext()->getBegin()->format('Y-m-d'));
 
         $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-02-01', $day->getNext()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2012-02-01', $day->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious(): void
     {
         $day = new Day(new \DateTimeImmutable('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2011-12-31', $day->getPrevious()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2011-12-31', $day->getPrevious()->getBegin()->format('Y-m-d'));
 
         $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertEquals('2012-01-30', $day->getPrevious()->getBegin()->format('Y-m-d'));
+        $this->assertSame('2012-01-30', $day->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod(): void
@@ -106,7 +102,7 @@ class DayTest extends TestCase
         $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
 
         foreach ($day->getDatePeriod() as $dateTime) {
-            $this->assertEquals('2012-01-31', $dateTime->format('Y-m-d'));
+            $this->assertSame('2012-01-31', $dateTime->format('Y-m-d'));
         }
     }
 
@@ -164,18 +160,15 @@ class DayTest extends TestCase
         $this->assertFalse($otherDay->isCurrent());
     }
 
-    public function includesDataProvider(): array
+    public function includesDataProvider(): \Iterator
     {
         $factory = $this->prophesize(FactoryInterface::class)->reveal();
-
-        return [
-            [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), true, false],
-            [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true],
-            [new \DateTimeImmutable('2013-09-01'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), true, true],
-            [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), true, false],
-            [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), false, true],
-            [new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01'), $factory), true, true],
-        ];
+        yield [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), true, false];
+        yield [new \DateTimeImmutable('2013-09-01'), new Year(new \DateTimeImmutable('2013-01-01'), $factory), false, true];
+        yield [new \DateTimeImmutable('2013-09-01'), new Day(new \DateTimeImmutable('2013-09-01'), $factory), true, true];
+        yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), true, false];
+        yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01'), $factory), false, true];
+        yield [new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01'), $factory), true, true];
     }
 
     public function testIteration(): void
@@ -195,6 +188,6 @@ class DayTest extends TestCase
             $i++;
         }
 
-        $this->assertEquals(24, $i);
+        $this->assertSame(24, $i);
     }
 }

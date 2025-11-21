@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Event\Provider;
 
 use CalendR\Event\Event;
 use CalendR\Event\Provider\Basic;
 use PHPUnit\Framework\TestCase;
 
-class BasicTest extends TestCase
+final class BasicTest extends TestCase
 {
     /**
      * @var Basic
@@ -38,23 +40,21 @@ class BasicTest extends TestCase
         $i      = 0;
         $events = $this->getSomeEvents();
 
-        $this->assertSame(0, count($this->object));
+        $this->assertCount(0, $this->object);
         foreach ($events as $event) {
             $this->object->add($event);
-            $this->assertSame(++$i, count($this->object));
+            $this->assertCount(++$i, $this->object);
         }
 
         $this->assertSame($events, $this->object->all());
     }
 
-    public function getEventsProvider(): array
+    public function getEventsProvider(): \Iterator
     {
-        return [
-            [new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), [1, 3, 4]],
-            [new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), [2]],
-            [new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), [5]],
-            [new \DateTime('2015-12-27T00:00'), new \DateTime('2015-12-28T00:00'), []],
-        ];
+        yield [new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), [1, 3, 4]];
+        yield [new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), [2]];
+        yield [new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), [5]];
+        yield [new \DateTime('2015-12-27T00:00'), new \DateTime('2015-12-28T00:00'), []];
     }
 
     /**

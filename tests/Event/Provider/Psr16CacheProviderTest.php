@@ -11,7 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 
-class Psr16CacheProviderTest extends TestCase
+final class Psr16CacheProviderTest extends TestCase
 {
     protected Psr16CacheProvider $object;
 
@@ -37,19 +37,19 @@ class Psr16CacheProviderTest extends TestCase
             ->expects($this->once())
             ->method('has')
             ->with(md5(serialize([$begin, $end, []])))
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->cache
             ->expects($this->once())
             ->method('set')
             ->with(md5(serialize([$begin, $end, []])), $events, 3600)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->provider
             ->expects($this->once())
             ->method('getEvents')
             ->with($begin, $end, [])
-            ->will($this->returnValue($events));
+            ->willReturn($events);
 
         $this->assertSame($events, $this->object->getEvents($begin, $end));
     }

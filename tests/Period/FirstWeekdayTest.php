@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
@@ -9,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class FirstWeekdayTest extends TestCase
+final class FirstWeekdayTest extends TestCase
 {
     public function testIterateOnMonth(): void
     {

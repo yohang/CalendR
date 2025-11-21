@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Bridge\Twig;
 
 use CalendR\Bridge\Twig\CalendRExtension;
@@ -18,7 +20,7 @@ use Twig\TwigFunction;
 /**
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class CalendRExtensionTest extends TestCase
+final class CalendRExtensionTest extends TestCase
 {
     protected CalendRExtension $object;
 
@@ -26,7 +28,7 @@ class CalendRExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->calendar = $this->getMockBuilder(Calendar::class)->getMock();
+        $this->calendar = $this->createMock(Calendar::class);
         $this->object   = new CalendRExtension($this->calendar);
     }
 
@@ -47,7 +49,7 @@ class CalendRExtensionTest extends TestCase
 
     public function testItCallsCalendarFunctions(): void
     {
-        $period = $this->getMockBuilder(Year::class)->disableOriginalConstructor()->getMock();
+        $period = $this->createMock(Year::class);
         $this->calendar
             ->expects($this->once())
             ->method('getYear')
@@ -56,7 +58,7 @@ class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getYear(2021));
 
-        $period = $this->getMockBuilder(Month::class)->disableOriginalConstructor()->getMock();
+        $period = $this->createMock(Month::class);
         $this->calendar
             ->expects($this->once())
             ->method('getMonth')
@@ -65,7 +67,7 @@ class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getMonth(2021, 12));
 
-        $period = $this->getMockBuilder(Week::class)->disableOriginalConstructor()->getMock();
+        $period = $this->createMock(Week::class);
         $this->calendar
             ->expects($this->once())
             ->method('getWeek')
@@ -74,7 +76,7 @@ class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getWeek(2021, 22));
 
-        $period = $this->getMockBuilder(Day::class)->disableOriginalConstructor()->getMock();
+        $period = $this->createMock(Day::class);
         $this->calendar
             ->expects($this->once())
             ->method('getDay')
@@ -83,8 +85,8 @@ class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getDay(1988, 11, 12));
 
-        $events = new Basic([$this->getMockBuilder(EventInterface::class)->getMock()]);
-        $period = $this->getMockBuilder(PeriodInterface::class)->getMock();
+        $events = new Basic([$this->createMock(EventInterface::class)]);
+        $period = $this->createMock(PeriodInterface::class);
         $this->calendar
             ->expects($this->once())
             ->method('getEvents')

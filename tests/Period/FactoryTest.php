@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
@@ -26,7 +28,7 @@ use CalendR\Period\Range;
 /**
  * @author Yohan Giarelli <yohan@giarel.li>
  */
-class FactoryTest extends TestCase
+final class FactoryTest extends TestCase
 {
     public function testCreateSecond(): void
     {
@@ -143,18 +145,15 @@ class FactoryTest extends TestCase
         );
     }
 
-    public static function providerGetFirstMondayAndLastSunday(): array
+    public static function providerGetFirstMondayAndLastSunday(): \Iterator
     {
         $factory = new Calendar();
-
-        return [
-            [$factory->getMonth(2012, 1), '2011-12-26'],
-            [$factory->getMonth(2012, 2), '2012-01-30'],
-            [$factory->getMonth(2012, 3), '2012-02-27'],
-            [$factory->getMonth(2012, 9), '2012-08-27'],
-            [$factory->getMonth(2012, 10), '2012-10-01'],
-            [$factory->getMonth(2012, 12), '2012-11-26'],
-        ];
+        yield [$factory->getMonth(2012, 1), '2011-12-26'];
+        yield [$factory->getMonth(2012, 2), '2012-01-30'];
+        yield [$factory->getMonth(2012, 3), '2012-02-27'];
+        yield [$factory->getMonth(2012, 9), '2012-08-27'];
+        yield [$factory->getMonth(2012, 10), '2012-10-01'];
+        yield [$factory->getMonth(2012, 12), '2012-11-26'];
     }
 
     protected function getDefaultOptionsFactory(): FactoryInterface

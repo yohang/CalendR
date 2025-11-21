@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CalendR, a Fréquence web project.
  *
@@ -8,7 +10,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace CalendR\Test\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\Compiler\EventProviderPass;
@@ -20,13 +21,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EventProviderPassTest extends TestCase
+final class EventProviderPassTest extends TestCase
 {
     use ProphecyTrait;
 
     public function testProcess(): void
     {
-        $eventManagerDefinition = $this->getMockBuilder(Definition::class)->getMock();
+        $eventManagerDefinition = $this->createMock(Definition::class);
         $containerBuilder       = $this->getMockBuilder(ContainerBuilder::class)->onlyMethods(['findTaggedServiceIds', 'getDefinition'])->getMock();
         $containerBuilder->expects($this->once())->method('getDefinition')->with(Manager::class)->willReturn($eventManagerDefinition);
         $containerBuilder

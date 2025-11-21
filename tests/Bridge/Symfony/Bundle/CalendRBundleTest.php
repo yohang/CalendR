@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of CalendR, a Fréquence web project.
  *
@@ -8,7 +10,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace CalendR\Test\Bridge\Symfony\Bundle;
 
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -19,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class CalendRBundleTest extends TestCase
+final class CalendRBundleTest extends TestCase
 {
     public function testBuild(): void
     {
@@ -33,7 +34,7 @@ class CalendRBundleTest extends TestCase
         $container->expects($this->once())->method('addCompilerPass')->with($this->isInstanceOf(EventProviderPass::class));
 
         if ($hasAutoconfiguration) {
-            $providerChildDefinition = $this->getMockBuilder(ChildDefinition::class)->disableOriginalConstructor()->getMock();
+            $providerChildDefinition = $this->createMock(ChildDefinition::class);
             $providerChildDefinition->expects($this->once())->method('addTag')->with('calendr.event_provider');
             $container->expects($this->once())->method('registerForAutoconfiguration')->with(ProviderInterface::class)->willReturn($providerChildDefinition);
         }

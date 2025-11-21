@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Bridge\Symfony\Bundle\DependencyInjection;
 
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\CalendRExtension;
@@ -8,7 +10,7 @@ use CalendR\Event\Manager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CalendRExtensionTest extends TestCase
+final class CalendRExtensionTest extends TestCase
 {
     public function testExtension(): void
     {

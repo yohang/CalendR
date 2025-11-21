@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test;
 
 use CalendR\Test\Stubs\Event;
@@ -115,29 +117,25 @@ class BaseDoctrine2TestCase extends TestCase
                ->method('getRepositoryFactory')
                ->willReturn(new DefaultRepositoryFactory);
 
-        $config->expects($this->any())
+        $config
                ->method('getDefaultQueryHints')
                ->willReturn([]);
 
         $mappingDriver = $this->getMetadataDriverImplementation();
 
         $config
-            ->expects($this->any())
             ->method('getMetadataDriverImpl')
             ->willReturn($mappingDriver);
 
         $config
-            ->expects($this->any())
             ->method('getDefaultRepositoryClassName')
             ->willReturn(EntityRepository::class);
 
         $config
-            ->expects($this->any())
             ->method('getQuoteStrategy')
             ->willReturn(new DefaultQuoteStrategy());
 
         $config
-            ->expects($this->any())
             ->method('getNamingStrategy')
             ->willReturn(new DefaultNamingStrategy());
 

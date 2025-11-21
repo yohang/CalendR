@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Event\Collection;
 
 use CalendR\Event\Collection\Basic;
@@ -11,7 +13,7 @@ use CalendR\Period;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class BasicTest extends TestCase
+final class BasicTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -36,7 +38,7 @@ class BasicTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertSame(5, count($this->collection));
+        $this->assertCount(5, $this->collection);
     }
 
     public function getAddData(): array
@@ -52,7 +54,7 @@ class BasicTest extends TestCase
     {
         foreach ($this->getAddData() as $data) {
             $this->collection->add($data[0]);
-            $this->assertSame($data[1], count($this->collection));
+            $this->assertCount($data[1], $this->collection);
         }
     }
 
@@ -60,26 +62,23 @@ class BasicTest extends TestCase
     {
         // Remove an event
         $this->collection->remove(self::$events[2]);
-        $this->assertSame(4, count($this->collection));
+        $this->assertCount(4, $this->collection);
 
         // Remove the same event, nothing should happen
         $this->collection->remove(self::$events[2]);
-        $this->assertSame(4, count($this->collection));
+        $this->assertCount(4, $this->collection);
 
         // Remove an other event
         $this->collection->remove(self::$events[4]);
-        $this->assertSame(3, count($this->collection));
+        $this->assertCount(3, $this->collection);
     }
 
-    public function findProvider(): array
+    public function findProvider(): \Iterator
     {
         $factory = $this->prophesize(FactoryInterface::class)->reveal();
-
-        return [
-            [new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'],
-            [new Day(new \DateTime('2012-05-09'), $factory), 1, 'event-a'],
-            [new Day(new \DateTime('2011-05-09'), $factory), 0, null],
-        ];
+        yield [new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'];
+        yield [new Day(new \DateTime('2012-05-09'), $factory), 1, 'event-a'];
+        yield [new Day(new \DateTime('2011-05-09'), $factory), 0, null];
     }
 
     /**
@@ -88,7 +87,7 @@ class BasicTest extends TestCase
     public function testFind(\DateTime|Day $index, int $count, ?string $eventUid): void
     {
         $events = $this->collection->find($index);
-        $this->assertSame($count, count($events));
+        $this->assertCount($count, $events);
         if ($count > 0) {
             $this->assertSame($eventUid, $events[0]->getUid());
         }
@@ -108,6 +107,6 @@ class BasicTest extends TestCase
         foreach ($this->collection->all() as $event) {
             $this->assertSame('event-'.chr($index++), $event->getUid());
         }
-        $this->assertSame(count($this->collection), count($this->collection->all()));
+        $this->assertCount(count($this->collection), $this->collection->all());
     }
 }

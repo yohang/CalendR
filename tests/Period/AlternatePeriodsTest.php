@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
@@ -14,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use CalendR\Test\Fixtures\Period\Day;
 use CalendR\Test\Fixtures\Period\Range;
 
-class AlternatePeriodsTest extends TestCase
+final class AlternatePeriodsTest extends TestCase
 {
     protected array $options = [
         'day_class'   => Day::class,
@@ -58,25 +60,21 @@ class AlternatePeriodsTest extends TestCase
     public function testCalendarGetOption(): void
     {
         $calendar = new Calendar();
-        $this->assertEquals(1, $calendar->getFactory()->getFirstWeekday());
+        $this->assertSame(1, $calendar->getFactory()->getFirstWeekday());
         $calendar->setFactory(new Factory(['first_weekday' => 0]));
-        $this->assertEquals(0, $calendar->getFactory()->getFirstWeekday());
+        $this->assertSame(0, $calendar->getFactory()->getFirstWeekday());
     }
 
     public function testYear(): void
     {
         $year = new Year(new \DateTimeImmutable('2013-01-01'), new Factory($this->options));
-        foreach ($year as $month) {
-            $this->assertInstanceOf(FixtureMonth::class, $month);
-        }
+        $this->assertContainsOnlyInstancesOf(FixtureMonth::class, $year);
     }
 
     public function testMonth(): void
     {
         $month = new Month(new \DateTimeImmutable('2013-01-01'), new Factory($this->options));
-        foreach ($month as $week) {
-            $this->assertInstanceOf(FixtureWeek::class, $week);
-        }
+        $this->assertContainsOnlyInstancesOf(FixtureWeek::class, $month);
         $days = $month->getDays();
         $this->assertInstanceOf(Day::class, $days[0]);
         $this->assertInstanceOf(Range::class, $month->getExtendedMonth());
@@ -85,8 +83,6 @@ class AlternatePeriodsTest extends TestCase
     public function testWeek(): void
     {
         $week = new Week(new \DateTimeImmutable('2013W01'), new Factory($this->options));
-        foreach ($week as $day) {
-            $this->assertInstanceOf(Day::class, $day);
-        }
+        $this->assertContainsOnlyInstancesOf(Day::class, $week);
     }
 }

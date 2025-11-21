@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Event;
 
 use CalendR\Event\Collection\Basic as BasicCollection;
@@ -17,7 +19,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * Test class for Manager.
  */
-class ManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
     use ProphecyTrait;
 
