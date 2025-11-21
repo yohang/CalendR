@@ -51,7 +51,7 @@ interface PeriodInterface
     public function getDatePeriod(): \DatePeriod;
 
     /**
-     * Checks if a period is equals to an other.
+     * Checks if a period is equals to another.
      */
     public function equals(PeriodInterface $period): bool;
 
@@ -63,7 +63,7 @@ interface PeriodInterface
 
     /**
      * Returns if $event is during this period.
-     * Non strict. Must return true if :
+     * Non-strict. Must return true if :
      *  * Event is during period
      *  * Period is during event
      *  * Event begin is during Period
