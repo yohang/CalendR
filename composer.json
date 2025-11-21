@@ -23,7 +23,7 @@
     "require-dev": {
         "doctrine/common": "^3.1.2",
         "doctrine/orm": "^2.9.3|^3.0.0",
-        "phpunit/phpunit": "^9.6.22|^10.5.40",
+        "phpunit/phpunit": "^10.5.40",
         "psr/simple-cache": ">=0.2.0,<4",
         "symfony/dependency-injection": ">=4.4,<8.0",
         "symfony/config": ">=4.4,<8.0",
