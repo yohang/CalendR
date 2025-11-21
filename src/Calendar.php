@@ -34,7 +34,7 @@ class Calendar
 
     public function getEventManager(): Manager
     {
-        if (null === $this->eventManager) {
+        if (!$this->eventManager instanceof Manager) {
             $this->eventManager = new Manager();
         }
 
@@ -123,25 +123,19 @@ class Calendar
 
     public function getFactory(): FactoryInterface
     {
-        if (null === $this->factory) {
+        if (!$this->factory instanceof FactoryInterface) {
             $this->factory = new Factory();
         }
 
         return $this->factory;
     }
 
-    /**
-     * @param int $firstWeekday
-     */
-    public function setFirstWeekday($firstWeekday)
+    public function setFirstWeekday(int $firstWeekday): void
     {
         $this->getFactory()->setFirstWeekday($firstWeekday);
     }
 
-    /**
-     * @return int
-     */
-    public function getFirstWeekday()
+    public function getFirstWeekday(): int
     {
         return $this->factory->getFirstWeekday();
     }

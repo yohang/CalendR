@@ -10,8 +10,11 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
     ])
     ->withPhpSets(php82: true)
-    ->withTypeCoverageLevel(10)
-    ->withDeadCodeLevel(10)
-    ->withCodeQualityLevel(10)
     ->withImportNames(importShortClasses: false)
-    ->withComposerBased();
+    ->withComposerBased()
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true,
+        typeDeclarations: true,
+        phpunitCodeQuality: true,
+    );

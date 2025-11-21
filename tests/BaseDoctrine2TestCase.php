@@ -144,7 +144,7 @@ class BaseDoctrine2TestCase extends TestCase
         return $config;
     }
 
-    public static function getStubEvents()
+    public static function getStubEvents(): array
     {
         return [];
     }

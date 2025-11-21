@@ -71,7 +71,7 @@ class MonthTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $month = new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -82,7 +82,7 @@ class MonthTest extends TestCase
     /**
      * @dataProvider providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek
      */
-    public function testGetFirstDayOfFirstWeek(Month $month, $firstDay): void
+    public function testGetFirstDayOfFirstWeek(Month $month, string $firstDay): void
     {
         $this->assertSame($firstDay, $month->getFirstDayOfFirstWeek()->format('Y-m-d'));
     }
@@ -90,7 +90,7 @@ class MonthTest extends TestCase
     /**
      * @dataProvider providerGetFirstDayOfFirstWeekAndLastDayOfLastWeek
      */
-    public function testGetLastDayOfLastWeek(Month $month, $firstDay, $lastDay): void
+    public function testGetLastDayOfLastWeek(Month $month, string $firstDay, string $lastDay): void
     {
         $this->assertSame($lastDay, $month->getLastDayOfLastWeek()->format('Y-m-d'));
     }
@@ -98,7 +98,7 @@ class MonthTest extends TestCase
     /**
      * @dataProvider providerConstructInvalid
      */
-    public function testConstructInvalid($start): void
+    public function testConstructInvalid(\DateTimeImmutable $start): void
     {
         $this->expectException(NotAMonth::class);
 
@@ -108,7 +108,7 @@ class MonthTest extends TestCase
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start): void
+    public function testConstructValid(\DateTimeImmutable $start): void
     {
         $month = new Month($start, $this->prophesize(FactoryInterface::class)->reveal());
 

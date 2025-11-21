@@ -121,7 +121,7 @@ class CalendarTest extends TestCase
     /**
      * @dataProvider weekAndWeekdayProvider
      */
-    public function testGetWeekWithWeekdayConfiguration($year, $week, $weekday, $day): void
+    public function testGetWeekWithWeekdayConfiguration(int $year, int $week, int $weekday, string $day): void
     {
         $calendar = new Calendar;
         $calendar->getFactory()->setFirstWeekday($weekday);

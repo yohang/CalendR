@@ -85,7 +85,7 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
 
     public function valid(): bool
     {
-        return null !== $this->current();
+        return $this->current() instanceof PeriodInterface;
     }
 
     public function rewind(): void

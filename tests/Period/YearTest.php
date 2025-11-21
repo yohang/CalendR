@@ -62,7 +62,7 @@ class YearTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -73,7 +73,7 @@ class YearTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testIncludes($start, $contain, $notContain): void
+    public function testIncludes(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -84,7 +84,7 @@ class YearTest extends TestCase
     /**
      * @dataProvider providerConstructInvalid
      */
-    public function testConstructInvalid($start): void
+    public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotAYear::class);
 
@@ -94,7 +94,7 @@ class YearTest extends TestCase
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start): void
+    public function testConstructValid(\DateTimeInterface $start): void
     {
         $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
 

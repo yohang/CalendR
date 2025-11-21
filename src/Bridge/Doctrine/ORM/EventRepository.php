@@ -49,7 +49,6 @@ trait EventRepository
     /**
      * @param \DateTime $begin
      * @param \DateTime $end
-     * @param array $options
      *
      * @return array<EventInterface>
      */

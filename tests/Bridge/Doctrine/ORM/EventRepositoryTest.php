@@ -51,7 +51,7 @@ class EventRepositoryTest extends TestCase
     /**
      * @dataProvider getEventsProvider
      */
-    public function testGetEvents($begin, $end, array $providedEvents): void
+    public function testGetEvents(string $begin, string $end, array $providedEvents): void
     {
         $expr  = $this->getMockBuilder(Expr::class)->getMock();
         $query = $this->getMockBuilder((new \ReflectionClass(Query::class))->isFinal() ? AbstractQuery::class : Query::class)

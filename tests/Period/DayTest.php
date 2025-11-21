@@ -41,7 +41,7 @@ class DayTest extends TestCase
     /**
      * @dataProvider providerConstructInvalid
      */
-    public function testConstructInvalid($start): void
+    public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotADay::class);
 
@@ -51,7 +51,7 @@ class DayTest extends TestCase
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start): void
+    public function testConstructValid(\DateTimeInterface $start): void
     {
         $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -75,7 +75,7 @@ class DayTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -142,7 +142,7 @@ class DayTest extends TestCase
     /**
      * @dataProvider includesDataProvider
      */
-    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, $strict, $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
         $day = new Day($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $day->includes($period, $strict));

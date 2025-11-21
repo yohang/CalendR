@@ -39,20 +39,16 @@ class Basic implements CollectionInterface
 
     /**
      * Adds an event to the collection.
-     *
-     * @param EventInterface $event
      */
-    public function add(EventInterface $event)
+    public function add(EventInterface $event): void
     {
         $this->events[] = $event;
     }
 
     /**
      * Removes an event from the collection.
-     *
-     * @param EventInterface $event
      */
-    public function remove(EventInterface $event)
+    public function remove(EventInterface $event): void
     {
         foreach ($this->events as $key => $internalEvent) {
             if ($event->getUid() === $internalEvent->getUid()) {
@@ -75,10 +71,8 @@ class Basic implements CollectionInterface
      * Returns if there is events corresponding to $index period.
      *
      * @param mixed $index
-     *
-     * @return bool
      */
-    public function has($index)
+    public function has($index): bool
     {
         return count($this->find($index)) > 0;
     }

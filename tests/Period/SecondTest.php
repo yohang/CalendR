@@ -39,7 +39,7 @@ class SecondTest extends TestCase
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start): void
+    public function testConstructValid(\DateTimeInterface $start): void
     {
         $second = new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -49,7 +49,7 @@ class SecondTest extends TestCase
     /**
      * @dataProvider providerConstructInvalid
      */
-    public function testConstructInvalid($start): void
+    public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotASecond::class);
 
@@ -95,7 +95,7 @@ class SecondTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $second = new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertTrue($second->contains($contain));
@@ -174,7 +174,7 @@ class SecondTest extends TestCase
     /**
      * @dataProvider providerIncludes
      */
-    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, $strict, $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
         $second = new Second($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $second->includes($period, $strict));

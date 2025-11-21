@@ -52,7 +52,7 @@ abstract class PeriodAbstract implements PeriodInterface
 
     public function includes(PeriodInterface $period, bool $strict = true): bool
     {
-        if (true === $strict) {
+        if ($strict) {
             return $this->getBegin() <= $period->getBegin() && $this->getEnd() >= $period->getEnd();
         }
 
@@ -118,7 +118,7 @@ abstract class PeriodAbstract implements PeriodInterface
 
     public function getFactory(): FactoryInterface
     {
-        if (null === $this->factory) {
+        if (!$this->factory instanceof FactoryInterface) {
             $this->factory = new Factory();
         }
 

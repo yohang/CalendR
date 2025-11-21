@@ -43,7 +43,7 @@ class HourTest extends TestCase
     /**
      * @dataProvider providerConstructInvalid
      */
-    public function testConstructInvalid($start): void
+    public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotAnHour::class);
 
@@ -99,7 +99,7 @@ class HourTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $hour = new Hour($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -174,7 +174,7 @@ class HourTest extends TestCase
     /**
      * @dataProvider includesDataProvider
      */
-    public function testIncludes(\DateTimeInterface  $begin, PeriodInterface $period, $strict, $result): void
+    public function testIncludes(\DateTimeInterface  $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
         $hour = new Hour($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $hour->includes($period, $strict));

@@ -38,7 +38,6 @@ class Manager
 
     /**
      * @param iterable<ProviderInterface> $providers
-     * @param ?callable $instantiator
      */
     public function __construct(iterable $providers = [], ?callable $instantiator = null)
     {

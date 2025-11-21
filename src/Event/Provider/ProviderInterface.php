@@ -24,9 +24,6 @@ interface ProviderInterface
      * Return events that matches to $begin && $end
      * $end date should be exclude.
      *
-     * @param \DateTimeInterface $begin
-     * @param \DateTimeInterface $end
-     * @param array $options
      *
      * @return EventInterface[]
      */

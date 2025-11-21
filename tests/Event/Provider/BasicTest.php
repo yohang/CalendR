@@ -22,7 +22,7 @@ class BasicTest extends TestCase
         $this->object = new Basic();
     }
 
-    public function getSomeEvents()
+    public function getSomeEvents(): array
     {
         return [
             new Event('event-1', new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-01T21:30')),
@@ -47,7 +47,7 @@ class BasicTest extends TestCase
         $this->assertSame($events, $this->object->all());
     }
 
-    public function getEventsProvider()
+    public function getEventsProvider(): array
     {
         return [
             [new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), [1, 3, 4]],
@@ -60,7 +60,7 @@ class BasicTest extends TestCase
     /**
      * @dataProvider getEventsProvider
      */
-    public function testGetEvents($begin, $end, array $expectedEvents): void
+    public function testGetEvents(\DateTime $begin, \DateTime $end, array $expectedEvents): void
     {
         foreach ($this->getSomeEvents() as $event) {
             $this->object->add($event);

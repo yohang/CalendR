@@ -28,7 +28,7 @@ class Year extends PeriodAbstract implements \Iterator, \Stringable
 
     public function next(): void
     {
-        if (null === $this->current) {
+        if (!$this->current instanceof PeriodInterface) {
             $this->current = $this->getFactory()->createMonth($this->begin);
         } else {
             $this->current = $this->current->getNext();
@@ -45,7 +45,7 @@ class Year extends PeriodAbstract implements \Iterator, \Stringable
 
     public function valid(): bool
     {
-        return null !== $this->current;
+        return $this->current instanceof PeriodInterface;
     }
 
     public function rewind(): void

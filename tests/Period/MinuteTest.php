@@ -43,7 +43,7 @@ class MinuteTest extends TestCase
     /**
      * @dataProvider providerConstructInvalid
      */
-    public function testConstructInvalid($start): void
+    public function testConstructInvalid(\DateTimeInterface $start): void
     {
         $this->expectException(NotAMinute::class);
 
@@ -53,7 +53,7 @@ class MinuteTest extends TestCase
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start): void
+    public function testConstructValid(\DateTimeInterface $start): void
     {
         $minute = new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -99,7 +99,7 @@ class MinuteTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $minute = new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -177,7 +177,7 @@ class MinuteTest extends TestCase
     /**
      * @dataProvider providerIncludes
      */
-    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, $strict, $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
         $minute = new Minute($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $minute->includes($period, $strict));

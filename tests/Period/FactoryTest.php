@@ -135,7 +135,7 @@ class FactoryTest extends TestCase
     /**
      * @dataProvider providerGetFirstMondayAndLastSunday
      */
-    public function testFindFirstDayOfWeek(Month $month, $firstDay): void
+    public function testFindFirstDayOfWeek(Month $month, string $firstDay): void
     {
         $this->assertSame(
             $firstDay,

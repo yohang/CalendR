@@ -29,7 +29,7 @@ class RangeTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($begin, $end, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $begin, \DateTimeInterface $end, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $range = new Range($begin, $end, $this->prophesize(FactoryInterface::class)->reveal());
 

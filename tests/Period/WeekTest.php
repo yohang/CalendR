@@ -53,7 +53,7 @@ class WeekTest extends TestCase
     /**
      * @dataProvider providerContains
      */
-    public function testContains($start, $contain, $notContain): void
+    public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -64,7 +64,7 @@ class WeekTest extends TestCase
     /**
      * @dataProvider providerNumber
      */
-    public function testNumber($start, $number): void
+    public function testNumber(\DateTimeInterface $start, int $number): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 
@@ -74,7 +74,7 @@ class WeekTest extends TestCase
     /**
      * @dataProvider providerConstructValid
      */
-    public function testConstructValid($start): void
+    public function testConstructValid(\DateTimeInterface $start): void
     {
         $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
 

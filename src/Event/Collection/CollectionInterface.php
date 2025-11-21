@@ -20,15 +20,11 @@ interface CollectionInterface extends \Countable
 {
     /**
      * Adds an event to the collection.
-     *
-     * @param EventInterface $event
      */
     public function add(EventInterface $event);
 
     /**
      * Removes an event from the collection.
-     *
-     * @param EventInterface $event
      */
     public function remove(EventInterface $event);
 

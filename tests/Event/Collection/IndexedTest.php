@@ -15,11 +15,8 @@ class IndexedTest extends TestCase
 {
     use ProphecyTrait;
 
-    private static $events = [];
-    /**
-     * @var Indexed
-     */
-    private $collection;
+    private static array $events = [];
+    private Indexed $collection;
 
     protected function setUp(): void
     {
@@ -42,7 +39,7 @@ class IndexedTest extends TestCase
         $this->assertSame(5, count($this->collection));
     }
 
-    public function getAddData()
+    public function getAddData(): array
     {
         return [
             [new Event('event-1',new \DateTime('2012-05-03T10:00:00'),new \DateTime('2012-05-03T18:00:00')), 6],
@@ -74,7 +71,7 @@ class IndexedTest extends TestCase
         $this->assertSame(3, count($this->collection));
     }
 
-    public function findProvider()
+    public function findProvider(): array
     {
         $factory = $this->prophesize(FactoryInterface::class)->reveal();
 
@@ -89,7 +86,7 @@ class IndexedTest extends TestCase
     /**
      * @dataProvider findProvider
      */
-    public function testFind($index, $count, $eventUid): void
+    public function testFind(string|\DateTime|Day $index, int $count, ?string $eventUid): void
     {
         $events = $this->collection->find($index);
         $this->assertSame($count, count($events));
@@ -101,7 +98,7 @@ class IndexedTest extends TestCase
     /**
      * @dataProvider findProvider
      */
-    public function testHas($index, $count): void
+    public function testHas(string|\DateTime|Day $index, int $count): void
     {
         $this->assertSame($count > 0, $this->collection->has($index));
     }

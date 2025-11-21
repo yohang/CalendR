@@ -23,11 +23,7 @@ class Week extends PeriodAbstract implements \Iterator, \Stringable
 
     public static function isValid(\DateTimeInterface $start): bool
     {
-        if ($start->format('H:i:s') !== '00:00:00') {
-            return false;
-        }
-
-        return true;
+        return $start->format('H:i:s') === '00:00:00';
     }
 
     public function current(): PeriodInterface
@@ -54,7 +50,7 @@ class Week extends PeriodAbstract implements \Iterator, \Stringable
 
     public function valid(): bool
     {
-        return null !== $this->current;
+        return $this->current instanceof PeriodInterface;
     }
 
     public function rewind(): void

@@ -29,7 +29,7 @@ class Minute extends PeriodAbstract implements \Iterator, \Stringable
 
     public function next(): void
     {
-        if (null === $this->current) {
+        if (!$this->current instanceof PeriodInterface) {
             $this->current = $this->getFactory()->createSecond($this->begin);
         } else {
             $this->current = $this->current->getNext();
@@ -46,7 +46,7 @@ class Minute extends PeriodAbstract implements \Iterator, \Stringable
 
     public function valid(): bool
     {
-        return null !== $this->current;
+        return $this->current instanceof PeriodInterface;
     }
 
     public function rewind(): void

@@ -77,7 +77,7 @@ class Factory implements FactoryInterface
 
     protected function resolveOptions(array $options): array
     {
-        if (null === $this->resolver) {
+        if (!$this->resolver instanceof OptionsResolver) {
             $this->resolver = new OptionsResolver();
             $this->resolver->setDefaults(
                 [
@@ -119,8 +119,7 @@ class Factory implements FactoryInterface
     {
         $day   = clone $dateTime;
         $delta = ((int)$day->format('w') - $this->getFirstWeekday() + 7) % 7;
-        $day   = $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
 
-        return $day;
+        return $day->sub(new \DateInterval(sprintf('P%sD', $delta)));
     }
 }
