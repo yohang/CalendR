@@ -11,14 +11,14 @@
 
 namespace CalendR\Event\Provider;
 
-use Doctrine\Common\Cache\Cache as CacheInterface;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Cache the result of a provider.
  *
  * @author Yohan Giarelli <yohan@frequence-web.fr>
  */
-class Cache implements ProviderInterface
+class Psr16CacheProvider implements ProviderInterface
 {
     protected CacheInterface $cache;
 
@@ -44,12 +44,12 @@ class Cache implements ProviderInterface
             $cacheKey = $this->namespace . '.' . $cacheKey;
         }
 
-        if ($this->cache->contains($cacheKey)) {
-            return $this->cache->fetch($cacheKey);
+        if ($this->cache->has($cacheKey)) {
+            return $this->cache->get($cacheKey);
         }
 
         $events = $this->provider->getEvents($begin, $end, $options);
-        $this->cache->save($cacheKey, $events, $this->lifetime);
+        $this->cache->set($cacheKey, $events, $this->lifetime);
 
         return $events;
     }
