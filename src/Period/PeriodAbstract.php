@@ -37,7 +37,7 @@ abstract class PeriodAbstract implements PeriodInterface
         }
 
         $this->begin = clone $begin;
-        $this->end   = (clone $begin)->add($this->getDateInterval());
+        $this->end = (clone $begin)->add($this->getDateInterval());
     }
 
     public function contains(\DateTimeInterface $date): bool
@@ -48,8 +48,8 @@ abstract class PeriodAbstract implements PeriodInterface
     public function equals(PeriodInterface $period): bool
     {
         return
-            $period instanceof static &&
-            $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s');
+            $period instanceof static
+            && $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s');
     }
 
     public function includes(PeriodInterface $period, bool $strict = true): bool
@@ -59,20 +59,20 @@ abstract class PeriodAbstract implements PeriodInterface
         }
 
         return
-            $this->includes($period, true) ||
-            $period->includes($this, true) ||
-            $this->contains($period->getBegin()) ||
-            $this->contains($period->getEnd())
+            $this->includes($period, true)
+            || $period->includes($this, true)
+            || $this->contains($period->getBegin())
+            || $this->contains($period->getEnd())
         ;
     }
 
     public function containsEvent(EventInterface $event): bool
     {
         return
-            $event->containsPeriod($this) ||
-            $event->isDuring($this) ||
-            $this->contains($event->getBegin()) ||
-            ($event->getEnd() && $this->contains($event->getEnd())  && $event->getEnd()->format('c') !== $this->begin->format('c'))
+            $event->containsPeriod($this)
+            || $event->isDuring($this)
+            || $this->contains($event->getBegin())
+            || ($event->getEnd() && $this->contains($event->getEnd()) && $event->getEnd()->format('c') !== $this->begin->format('c'))
         ;
     }
 
@@ -87,8 +87,6 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     public function getNext(): PeriodInterface
@@ -97,8 +95,6 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     public function getPrevious(): PeriodInterface
@@ -129,7 +125,7 @@ abstract class PeriodAbstract implements PeriodInterface
 
     protected function createInvalidException(): Exception
     {
-        $class = 'CalendR\Period\Exception\NotA' . (new \ReflectionClass($this))->getShortName();
+        $class = 'CalendR\Period\Exception\NotA'.(new \ReflectionClass($this))->getShortName();
 
         return new $class();
     }

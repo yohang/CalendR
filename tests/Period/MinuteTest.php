@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
+use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAMinute;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
-use CalendR\Period\Second;
-use CalendR\Period\Minute;
 use CalendR\Period\Hour;
-use CalendR\Period\Day;
+use CalendR\Period\Minute;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\Second;
 use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -125,9 +125,9 @@ final class MinuteTest extends TestCase
     public function testGetDatePeriod(): void
     {
         $minute = new Minute(new \DateTimeImmutable('2012-01-31 13:12'), $this->prophesize(FactoryInterface::class)->reveal());
-        $i      = 0;
+        $i = 0;
         foreach ($minute->getDatePeriod() as $DateTimeImmutable) {
-            $i++;
+            ++$i;
             $this->assertSame('2012-01-31 13:12', $DateTimeImmutable->format('Y-m-d H:i'));
         }
 
@@ -137,10 +137,10 @@ final class MinuteTest extends TestCase
     public function testCurrentMinute(): void
     {
         $currentDateTimeImmutable = new \DateTimeImmutable();
-        $otherDateTimeImmutable   = (clone $currentDateTimeImmutable)->add(new \DateInterval('PT5M'));
+        $otherDateTimeImmutable = (clone $currentDateTimeImmutable)->add(new \DateInterval('PT5M'));
 
         $currentMinute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherMinute   = $currentMinute->getNext();
+        $otherMinute = $currentMinute->getNext();
 
         $this->assertTrue($currentMinute->contains($currentDateTimeImmutable));
         $this->assertFalse($currentMinute->contains($otherDateTimeImmutable));
@@ -150,7 +150,7 @@ final class MinuteTest extends TestCase
     public function testToString(): void
     {
         $minute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertSame($minute->getBegin()->format('i'), (string)$minute);
+        $this->assertSame($minute->getBegin()->format('i'), (string) $minute);
     }
 
     public function testIsValid(): void
@@ -184,13 +184,13 @@ final class MinuteTest extends TestCase
     public function testIsCurrent(): void
     {
         $currentMinute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherMinute   = new Minute(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherMinute = new Minute(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($currentMinute->isCurrent());
         $this->assertFalse($otherMinute->isCurrent());
 
         $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherMinute   = new Minute(new \DateTime('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherMinute = new Minute(new \DateTime('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($currentMinute->isCurrent());
         $this->assertFalse($otherMinute->isCurrent());
@@ -228,17 +228,17 @@ final class MinuteTest extends TestCase
 
     public function testIteration(): void
     {
-        $start  = new \DateTimeImmutable('2012-01-15 15:47');
+        $start = new \DateTimeImmutable('2012-01-15 15:47');
         $minute = new Minute($start, new Factory());
 
         $i = 0;
         foreach ($minute as $secondKey => $second) {
-            $this->assertTrue(is_int($secondKey) && $secondKey >= 0 && $secondKey < 60);
+            $this->assertTrue(\is_int($secondKey) && $secondKey >= 0 && $secondKey < 60);
             $this->assertInstanceOf(Second::class, $second);
             $this->assertSame($start->format('Y-m-d H:i:s'), $second->getBegin()->format('Y-m-d H:i:s'));
 
             $start = $start->add(new \DateInterval('PT1S'));
-            $i++;
+            ++$i;
         }
 
         $this->assertSame(60, $i);

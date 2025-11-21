@@ -19,20 +19,18 @@ use CalendR\Period\PeriodInterface;
 /**
  * Basic event collection.
  * Juste stores event as an array, and iterate over the array for retrieving.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Basic implements CollectionInterface
+class Basic implements CollectionInterface, \IteratorAggregate
 {
     /**
      * The events.
      *
-     * @var EventInterface[]
+     * @var list<EventInterface>
      */
-    protected $events;
+    protected array $events;
 
     /**
-     * @param EventInterface[] $events
+     * @param list<EventInterface> $events
      */
     public function __construct(array $events = [])
     {
@@ -53,7 +51,7 @@ class Basic implements CollectionInterface
     public function remove(EventInterface $event): void
     {
         foreach ($this->events as $key => $internalEvent) {
-            if ($event->getUid() === $internalEvent->getUid()) {
+            if ($event->isEqualTo($internalEvent)) {
                 unset($this->events[$key]);
             }
         }
@@ -64,29 +62,25 @@ class Basic implements CollectionInterface
      *
      * @return EventInterface[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->events;
     }
 
     /**
      * Returns if there is events corresponding to $index period.
-     *
-     * @param mixed $index
      */
-    public function has($index): bool
+    public function has(mixed $index): bool
     {
-        return count($this->find($index)) > 0;
+        return \count($this->find($index)) > 0;
     }
 
     /**
      * Find events in the collection.
      *
-     * @param mixed $index
-     *
      * @return EventInterface[]
      */
-    public function find($index): array
+    public function find(mixed $index): array
     {
         $result = [];
         foreach ($this->events as $event) {
@@ -102,6 +96,11 @@ class Basic implements CollectionInterface
 
     public function count(): int
     {
-        return count($this->events);
+        return \count($this->events);
+    }
+
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->events);
     }
 }

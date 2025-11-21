@@ -20,7 +20,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 
 final class EventProviderPassTest extends TestCase
 {
@@ -29,7 +28,7 @@ final class EventProviderPassTest extends TestCase
     public function testProcess(): void
     {
         $eventManagerDefinition = $this->createMock(Definition::class);
-        $containerBuilder       = $this->getMockBuilder(ContainerBuilder::class)->onlyMethods(['findTaggedServiceIds', 'getDefinition'])->getMock();
+        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)->onlyMethods(['findTaggedServiceIds', 'getDefinition'])->getMock();
         $containerBuilder->expects($this->once())->method('getDefinition')->with(Manager::class)->willReturn($eventManagerDefinition);
         $containerBuilder
             ->expects($this->once())

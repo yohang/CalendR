@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace CalendR\Event\Collection;
 
 use CalendR\Event\EventInterface;
@@ -18,7 +9,7 @@ use CalendR\Event\EventInterface;
 /**
  * Represents an event collection.
  */
-interface CollectionInterface extends \Countable
+interface CollectionInterface extends \Countable, \Traversable
 {
     /**
      * Adds an event to the collection.
@@ -33,25 +24,19 @@ interface CollectionInterface extends \Countable
     /**
      * Return all events;.
      *
-     * @return EventInterface[]
+     * @return list<EventInterface>
      */
-    public function all();
+    public function all(): array;
 
     /**
      * Returns if there is events corresponding to $index period.
-     *
-     * @param mixed $index
-     *
-     * @return bool
      */
-    public function has($index);
+    public function has(mixed $index): bool;
 
     /**
      * Find events in the collection.
      *
-     * @param mixed $index
-     *
-     * @return EventInterface[]
+     * @return list<EventInterface>
      */
-    public function find($index);
+    public function find(mixed $index): array;
 }

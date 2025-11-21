@@ -21,16 +21,16 @@ final class Psr16CacheProviderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->cache    = $this->createMock(CacheInterface::class);
+        $this->cache = $this->createMock(CacheInterface::class);
         $this->provider = $this->createMock(ProviderInterface::class);
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600);
     }
 
     public function testItCallsProviderWhenNoCache(): void
     {
-        $events = [new Event('foo', new \DateTime(), new \DateTime())];
-        $begin  = new \DateTime();
-        $end    = clone $begin;
+        $events = [new Event(new \DateTime(), new \DateTime(), 'foo')];
+        $begin = new \DateTime();
+        $end = clone $begin;
         $end->add(new \DateInterval('P1M'));
 
         $this->cache
@@ -56,9 +56,9 @@ final class Psr16CacheProviderTest extends TestCase
 
     public function testItCallsProviderWhenCache(): void
     {
-        $events = [new Event('foo', new \DateTime(), new \DateTime())];
-        $begin  = new \DateTime();
-        $end    = clone $begin;
+        $events = [new Event(new \DateTime(), new \DateTime(), 'foo')];
+        $begin = new \DateTime();
+        $end = clone $begin;
         $end->add(new \DateInterval('P1M'));
 
         $this->cache
@@ -82,8 +82,8 @@ final class Psr16CacheProviderTest extends TestCase
     {
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600, 'ns');
 
-        $begin  = new \DateTime();
-        $end    = clone $begin;
+        $begin = new \DateTime();
+        $end = clone $begin;
         $end->add(new \DateInterval('P1M'));
 
         $this->cache
@@ -105,8 +105,8 @@ final class Psr16CacheProviderTest extends TestCase
     {
         $this->object = new Psr16CacheProvider($this->cache, $this->provider, 3600, 'ns');
 
-        $begin  = new \DateTime();
-        $end    = clone $begin;
+        $begin = new \DateTime();
+        $end = clone $begin;
         $end->add(new \DateInterval('P1M'));
 
         $this->provider

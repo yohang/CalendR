@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Provider;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Event\Event;
 use CalendR\Event\Provider\Basic;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class BasicTest extends TestCase
@@ -21,17 +21,17 @@ final class BasicTest extends TestCase
     public function getSomeEvents(): array
     {
         return [
-            new Event('event-1', new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-01T21:30')),
-            new Event('event-2', new \DateTime('2011-01-01T20:30'), new \DateTime('2012-01-01T01:30')),
-            new Event('event-3', new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T21:30')),
-            new Event('event-4', new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T00:00')),
-            new Event('event-5', new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-29T00:00')),
+            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-01T21:30'), 'event-1'),
+            new Event(new \DateTime('2011-01-01T20:30'), new \DateTime('2012-01-01T01:30'), 'event-2'),
+            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T21:30'), 'event-3'),
+            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T00:00'), 'event-4'),
+            new Event(new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-29T00:00'), 'event-5'),
         ];
     }
 
     public function testAddAndCount(): void
     {
-        $i      = 0;
+        $i = 0;
         $events = $this->getSomeEvents();
 
         $this->assertCount(0, $this->object);
@@ -51,7 +51,7 @@ final class BasicTest extends TestCase
         }
 
         $events = $this->object->getEvents($begin, $end);
-        $this->assertCount(count($expectedEvents), $events);
+        $this->assertCount(\count($expectedEvents), $events);
         foreach (array_keys($events) as $i) {
             $this->assertSame('event-'.$expectedEvents[$i], $events[$i]->getUid());
         }

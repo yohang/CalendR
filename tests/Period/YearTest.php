@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAYear;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
+use CalendR\Period\Month;
 use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use CalendR\Period\Month;
 
 final class YearTest extends TestCase
 {
@@ -93,13 +93,13 @@ final class YearTest extends TestCase
     public function testToString(): void
     {
         $year = new Year(new \DateTime('2014-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertSame('2014', (string)$year);
+        $this->assertSame('2014', (string) $year);
     }
 
     public function testIteration(): void
     {
         $start = new \DateTime('2012-01');
-        $year  = new Year($start, new Factory());
+        $year = new Year($start, new Factory());
 
         $i = 0;
 
@@ -108,7 +108,7 @@ final class YearTest extends TestCase
             $this->assertInstanceOf(Month::class, $month);
             $this->assertSame($start->format('d-m-Y'), $month->getBegin()->format('d-m-Y'));
             $start = $start->add(new \DateInterval('P1M'));
-            $i++;
+            ++$i;
         }
 
         $this->assertSame(12, $i);

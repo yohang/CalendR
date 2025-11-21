@@ -29,12 +29,11 @@ final class CalendRExtensionTest extends TestCase
     protected function setUp(): void
     {
         $this->calendar = $this->createMock(Calendar::class);
-        $this->object   = new CalendRExtension($this->calendar);
+        $this->object = new CalendRExtension($this->calendar);
     }
 
     public function testItReturnsFunctionNames(): void
     {
-
         $functions = array_map(
             static fn (TwigFunction $fn): string => $fn->getName(),
             $this->object->getFunctions()

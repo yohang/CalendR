@@ -14,7 +14,7 @@ final class CalendRExtensionTest extends TestCase
 {
     public function testExtension(): void
     {
-        $config    = [];
+        $config = [];
         $container = new ContainerBuilder();
         (new CalendRExtension())->load($config, $container);
 

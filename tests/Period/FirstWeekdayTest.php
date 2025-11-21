@@ -6,7 +6,6 @@ namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
 use CalendR\DayOfWeek;
-use CalendR\Period\Day;
 use PHPUnit\Framework\TestCase;
 
 final class FirstWeekdayTest extends TestCase

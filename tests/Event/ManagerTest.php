@@ -4,39 +4,30 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event;
 
-use CalendR\Event\Collection\Basic as BasicCollection;
-use CalendR\Event\Collection\Indexed;
+use CalendR\Event\Event;
 use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Event\Manager;
-use CalendR\Event\Event;
+use CalendR\Event\Provider\Basic;
 use CalendR\Period\Day;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
-use CalendR\Event\Provider\Basic;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * Test class for Manager.
- */
 final class ManagerTest extends TestCase
 {
     use ProphecyTrait;
 
     protected Manager $object;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp(): void
     {
-        $basic1       = new Basic();
-        $basic2       = new Basic();
+        $basic1 = new Basic();
+        $basic2 = new Basic();
         $this->object = new Manager(['basic-1' => $basic1, 'basic-2' => $basic2]);
 
-        $basic1->add(new Event('event-1', new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03')));
-        $basic2->add(new Event('event-2', new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-01-05')));
+        $basic1->add(new Event(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), 'event-1'));
+        $basic2->add(new Event(new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-01-05'), 'event-2'));
     }
 
     public function testFind(): void
@@ -65,21 +56,6 @@ final class ManagerTest extends TestCase
             new Month(new \DateTimeImmutable('2012-01-01'), $factory),
             ['providers' => []]
         ));
-    }
-
-    public function testCollectionInstatiator(): void
-    {
-        $this->assertInstanceOf(
-            BasicCollection::class,
-            $this->object->find(new Month(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal()))
-        );
-
-        $this->object->setCollectionInstantiator(fn (): Indexed => new Indexed());
-
-        $this->assertInstanceOf(
-            Indexed::class,
-            $this->object->find(new Month(new \DateTimeImmutable('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal()))
-        );
     }
 
     public function testFindWithoutProvider(): void

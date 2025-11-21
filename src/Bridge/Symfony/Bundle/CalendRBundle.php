@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * The Symfony Bundle
+ * The Symfony Bundle.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Provider;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use CalendR\Event\Provider\ProviderInterface;
 use CalendR\Event\EventInterface;
 use CalendR\Event\Provider\Aggregate;
+use CalendR\Event\Provider\ProviderInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class AggregateTest extends TestCase
@@ -35,14 +35,14 @@ final class AggregateTest extends TestCase
     {
         $this->provider1 = $this->createMock(ProviderInterface::class);
         $this->provider2 = $this->createMock(ProviderInterface::class);
-        $this->object    = new Aggregate([$this->provider1]);
+        $this->object = new Aggregate([$this->provider1]);
     }
 
     public function testAdd(): void
     {
         $this->object->add($this->provider2);
 
-        $reflectionClass   = new \ReflectionClass($this->object);
+        $reflectionClass = new \ReflectionClass($this->object);
         $providersProperty = $reflectionClass->getProperty('providers');
 
         $this->assertCount(2, $providersProperty->getValue($this->object));
@@ -50,8 +50,8 @@ final class AggregateTest extends TestCase
 
     public function testGetEvents(): void
     {
-        $begin  = new \DateTime();
-        $end    = new \DateTime();
+        $begin = new \DateTime();
+        $end = new \DateTime();
         $event1 = $this->createMock(EventInterface::class);
         $event2 = $this->createMock(EventInterface::class);
 

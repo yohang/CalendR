@@ -17,7 +17,7 @@ class Psr16CacheProvider implements ProviderInterface
         $cacheKey = md5(serialize([$begin, $end, $options]));
 
         if (null !== $this->namespace) {
-            $cacheKey = $this->namespace . '.' . $cacheKey;
+            $cacheKey = $this->namespace.'.'.$cacheKey;
         }
 
         if ($this->cache->has($cacheKey)) {

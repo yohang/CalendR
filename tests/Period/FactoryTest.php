@@ -4,27 +4,18 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Calendar;
-use CalendR\Period\Factory;
-use CalendR\Period\FactoryInterface;
-use CalendR\Period\Month;
-use CalendR\Test\Fixtures\Period\Day as FixtureDay;
-use CalendR\Test\Fixtures\Period\Hour as FixtureHour;
-use CalendR\Test\Fixtures\Period\Minute as FixtureMinute;
-use CalendR\Test\Fixtures\Period\Month as FixtureMonth;
-use CalendR\Test\Fixtures\Period\Range as FixtureRange;
-use CalendR\Test\Fixtures\Period\Second as FixtureSecond;
-use CalendR\Test\Fixtures\Period\Week as FixtureWeek;
-use CalendR\Test\Fixtures\Period\Year as FixtureYear;
-use PHPUnit\Framework\TestCase;
-use CalendR\Period\Second;
-use CalendR\Period\Minute;
-use CalendR\Period\Hour;
 use CalendR\Period\Day;
+use CalendR\Period\Factory;
+use CalendR\Period\Hour;
+use CalendR\Period\Minute;
+use CalendR\Period\Month;
+use CalendR\Period\Range;
+use CalendR\Period\Second;
 use CalendR\Period\Week;
 use CalendR\Period\Year;
-use CalendR\Period\Range;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 final class FactoryTest extends TestCase
 {

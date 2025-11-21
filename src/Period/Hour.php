@@ -17,7 +17,7 @@ class Hour extends PeriodAbstract implements \Iterator, \Stringable
 
     public static function isValid(\DateTimeInterface $start): bool
     {
-        return $start->format('i:s') === '00:00';
+        return '00:00' === $start->format('i:s');
     }
 
     public function current(): ?PeriodInterface

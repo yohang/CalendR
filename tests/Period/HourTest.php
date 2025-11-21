@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
+use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAnHour;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
-use CalendR\Period\Second;
-use CalendR\Period\Minute;
 use CalendR\Period\Hour;
-use CalendR\Period\Day;
+use CalendR\Period\Minute;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\Second;
 use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -128,7 +128,7 @@ final class HourTest extends TestCase
 
         $i = 0;
         foreach ($hour->getDatePeriod() as $DateTimeImmutable) {
-            $i++;
+            ++$i;
             $this->assertSame('2012-01-31 13', $DateTimeImmutable->format('Y-m-d H'));
         }
 
@@ -138,10 +138,10 @@ final class HourTest extends TestCase
     public function testCurrentHour(): void
     {
         $currentDateTimeImmutable = new \DateTimeImmutable();
-        $otherDateTimeImmutable   = (clone $currentDateTimeImmutable)->add(new \DateInterval('PT5H'));
+        $otherDateTimeImmutable = (clone $currentDateTimeImmutable)->add(new \DateInterval('PT5H'));
 
         $currentHour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherHour   = $currentHour->getNext();
+        $otherHour = $currentHour->getNext();
 
         $this->assertTrue($currentHour->contains($currentDateTimeImmutable));
         $this->assertFalse($currentHour->contains($otherDateTimeImmutable));
@@ -151,7 +151,7 @@ final class HourTest extends TestCase
     public function testToString(): void
     {
         $hour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertSame($hour->getBegin()->format('G'), (string)$hour);
+        $this->assertSame($hour->getBegin()->format('G'), (string) $hour);
     }
 
     public function testIsValid(): void
@@ -163,7 +163,7 @@ final class HourTest extends TestCase
     }
 
     #[DataProvider('includesDataProvider')]
-    public function testIncludes(\DateTimeInterface  $begin, PeriodInterface $period, bool $strict, bool $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
         $hour = new Hour($begin, $this->prophesize(FactoryInterface::class)->reveal());
         $this->assertSame($result, $hour->includes($period, $strict));
@@ -178,7 +178,7 @@ final class HourTest extends TestCase
     public function testIsCurrent(): void
     {
         $currentHour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherHour   = new Hour(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherHour = new Hour(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($currentHour->isCurrent());
         $this->assertFalse($otherHour->isCurrent());
@@ -213,17 +213,17 @@ final class HourTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15 13:00');
-        $hour  = new Hour($start, new Factory());
+        $hour = new Hour($start, new Factory());
 
         $i = 0;
         foreach ($hour as $minuteKey => $minute) {
-            $this->assertTrue(is_int($minuteKey) && $minuteKey >= 0 && $minuteKey < 60);
+            $this->assertTrue(\is_int($minuteKey) && $minuteKey >= 0 && $minuteKey < 60);
             $this->assertInstanceOf(Minute::class, $minute);
             $this->assertSame($start->format('Y-m-d H:i'), $minute->getBegin()->format('Y-m-d H:i'));
             $this->assertSame('00', $minute->getBegin()->format('s'));
 
             $start = $start->add(new \DateInterval('PT1M'));
-            $i++;
+            ++$i;
         }
 
         $this->assertSame(60, $i);

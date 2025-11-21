@@ -8,8 +8,8 @@ use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
+        __DIR__.'/src',
+        __DIR__.'/tests',
     ])
     ->withPhpSets(php82: true)
     ->withImportNames(importShortClasses: false)
@@ -22,5 +22,5 @@ return RectorConfig::configure()
     )
     ->withRules([
         DataProviderAnnotationToAttributeRector::class,
-        DeclareStrictTypesRector::class
+        DeclareStrictTypesRector::class,
     ]);

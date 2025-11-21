@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Exception\NotImplemented;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Range;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 

@@ -2,49 +2,38 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace CalendR\Event;
 
 use CalendR\Event\Collection\Basic;
 use CalendR\Event\Collection\CollectionInterface;
 use CalendR\Event\Exception\NoProviderFound;
-use CalendR\Period\PeriodInterface;
 use CalendR\Event\Provider\ProviderInterface;
+use CalendR\Period\PeriodInterface;
 
-/**
- * Manage events and providers.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
- */
 class Manager
 {
     /**
-     * @var ProviderInterface[]
+     * @var list<ProviderInterface>
      */
     protected array $providers = [];
 
     /**
      * The callable used to instantiate the event collection.
      *
-     * @var callable
+     * @var callable():CollectionInterface
      */
     protected $collectionInstantiator;
 
     /**
-     * @param iterable<ProviderInterface> $providers
+     * @param iterable<ProviderInterface>         $providers
+     * @param callable():CollectionInterface|null $collectionInstantiator
      */
-    public function __construct(iterable $providers = [], ?callable $instantiator = null)
-    {
-        $this->collectionInstantiator = $instantiator;
-        if (null === $instantiator) {
+    public function __construct(
+        iterable $providers = [],
+        ?callable $collectionInstantiator = null,
+    ) {
+        $this->collectionInstantiator = $collectionInstantiator;
+        if (null === $collectionInstantiator) {
             $this->collectionInstantiator = (static fn (): Basic => new Basic());
         }
 
@@ -60,20 +49,21 @@ class Manager
      */
     public function find(PeriodInterface $period, array $options = []): CollectionInterface
     {
-        if (0 === count($this->providers)) {
+        if (0 === \count($this->providers)) {
             throw new NoProviderFound();
         }
 
         // Check if there's a provider option provided, used to filter the used providers
         $providers = $options['providers'] ?? [];
-        if (!is_array($providers)) {
+        if (!\is_array($providers)) {
             $providers = [$providers];
         }
 
         // Instantiate an event collection
-        $collection = call_user_func($this->collectionInstantiator);
+        $collectionInstantiator = $this->collectionInstantiator;
+        $collection = $collectionInstantiator();
         foreach ($this->providers as $name => $provider) {
-            if (count($providers) > 0 && !in_array($name, $providers, true)) {
+            if (\count($providers) > 0 && !\in_array($name, $providers, true)) {
                 continue;
             }
 
@@ -88,27 +78,8 @@ class Manager
         return $collection;
     }
 
-    /**
-     * Adds a provider to the provider stack.
-     */
     public function addProvider(string $name, ProviderInterface $provider): void
     {
         $this->providers[$name] = $provider;
-    }
-
-    /**
-     * Sets the callable used to instantiate the event collection.
-     */
-    public function setCollectionInstantiator(callable $collectionInstantiator): void
-    {
-        $this->collectionInstantiator = $collectionInstantiator;
-    }
-
-    /**
-     * @return ProviderInterface[]
-     */
-    public function getProviders(): array
-    {
-        return $this->providers;
     }
 }

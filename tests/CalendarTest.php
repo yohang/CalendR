@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace CalendR\Test;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Calendar;
 use CalendR\DayOfWeek;
 use CalendR\Event\Collection\Basic;
-use CalendR\Period\Day;
-use PHPUnit\Framework\TestCase;
 use CalendR\Event\EventInterface;
-use CalendR\Period\PeriodInterface;
 use CalendR\Event\Manager;
+use CalendR\Period\Day;
 use CalendR\Period\FactoryInterface;
-use CalendR\Period\Second;
-use CalendR\Period\Minute;
 use CalendR\Period\Hour;
-use CalendR\Period\Week;
+use CalendR\Period\Minute;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodInterface;
+use CalendR\Period\Second;
+use CalendR\Period\Week;
 use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 final class CalendarTest extends TestCase
 {
@@ -102,9 +102,9 @@ final class CalendarTest extends TestCase
 
     public function testGetEvents(): void
     {
-        $em       = $this->createMock(Manager::class);
-        $period   = $this->createMock(PeriodInterface::class);
-        $events   = new Basic([$this->createMock(EventInterface::class)]);
+        $em = $this->createMock(Manager::class);
+        $period = $this->createMock(PeriodInterface::class);
+        $events = new Basic([$this->createMock(EventInterface::class)]);
         $calendar = new Calendar();
         $calendar->setEventManager($em);
         $em->expects($this->once())->method('find')->with($period, [])->willReturn($events);
@@ -115,7 +115,7 @@ final class CalendarTest extends TestCase
     public function testGetFirstWeekday(): void
     {
         $calendar = new Calendar();
-        $factory  = $this->createMock(FactoryInterface::class);
+        $factory = $this->createMock(FactoryInterface::class);
         $calendar->setFactory($factory);
         $factory->expects($this->once())->method('getFirstWeekday')->willReturn(DayOfWeek::SUNDAY);
 

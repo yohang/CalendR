@@ -40,12 +40,12 @@ interface PeriodInterface
     /**
      * Gets the next period of the same type.
      */
-    public function getNext(): PeriodInterface;
+    public function getNext(): self;
 
     /**
      * Gets the previous period of the same type.
      */
-    public function getPrevious(): PeriodInterface;
+    public function getPrevious(): self;
 
     /**
      * Returns the period as a DatePeriod.
@@ -55,13 +55,13 @@ interface PeriodInterface
     /**
      * Checks if a period is equals to another.
      */
-    public function equals(PeriodInterface $period): bool;
+    public function equals(self $period): bool;
 
     /**
      * Returns true if the period include the other period
      * given as argument.
      */
-    public function includes(PeriodInterface $period, bool $strict = true): bool;
+    public function includes(self $period, bool $strict = true): bool;
 
     /**
      * Returns if $event is during this period.

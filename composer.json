@@ -18,7 +18,6 @@
     ],
     "require": {
         "php": ">=8.2",
-        "symfony/options-resolver": ">=4.4,<8.0"
     },
     "require-dev": {
         "doctrine/common": "^3.1.2",

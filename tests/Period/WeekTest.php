@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Week;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -75,7 +75,7 @@ final class WeekTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-W01');
-        $week  = new Week($start, new Factory());
+        $week = new Week($start, new Factory());
 
         $i = 0;
         foreach ($week as $dayKey => $day) {
@@ -84,7 +84,7 @@ final class WeekTest extends TestCase
 
             $start = $start->add(new \DateInterval('P1D'));
 
-            $i++;
+            ++$i;
         }
 
         $this->assertSame(7, $i);
@@ -106,6 +106,6 @@ final class WeekTest extends TestCase
         $date = new \DateTimeImmutable(date('Y-\\WW'));
         $week = new Week($date, $this->prophesize(FactoryInterface::class)->reveal());
 
-        $this->assertSame($date->format('W'), (string)$week);
+        $this->assertSame($date->format('W'), (string) $week);
     }
 }

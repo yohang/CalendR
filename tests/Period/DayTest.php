@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use CalendR\Period\Hour;
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotADay;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
+use CalendR\Period\Hour;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -104,10 +104,10 @@ final class DayTest extends TestCase
     public function testCurrentDay(): void
     {
         $currentDate = new \DateTimeImmutable();
-        $otherDate   = (clone $currentDate)->add(new \DateInterval('P5D'));
+        $otherDate = (clone $currentDate)->add(new \DateInterval('P5D'));
 
         $currentDay = new Day(new \DateTimeImmutable(date('Y-m-d')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherDay   = $currentDay->getNext();
+        $otherDay = $currentDay->getNext();
 
         $this->assertTrue($currentDay->contains($currentDate));
         $this->assertFalse($currentDay->contains($otherDate));
@@ -117,7 +117,7 @@ final class DayTest extends TestCase
     public function testToString(): void
     {
         $day = new Day(new \DateTimeImmutable(date('Y-m-d')), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertSame($day->getBegin()->format('l'), (string)$day);
+        $this->assertSame($day->getBegin()->format('l'), (string) $day);
     }
 
     public function testIsValid(): void
@@ -147,7 +147,7 @@ final class DayTest extends TestCase
     public function testIsCurrent(): void
     {
         $currentDay = new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherDay   = new Day(new \DateTimeImmutable('1988-11-12'), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherDay = new Day(new \DateTimeImmutable('1988-11-12'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($currentDay->isCurrent());
         $this->assertFalse($otherDay->isCurrent());
@@ -166,18 +166,18 @@ final class DayTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15');
-        $day   = new Day($start, new Factory());
+        $day = new Day($start, new Factory());
 
         $i = 0;
 
         foreach ($day as $hourKey => $hour) {
-            $this->assertTrue(is_int($hourKey) && $hourKey >= 0 && $hourKey < 24);
+            $this->assertTrue(\is_int($hourKey) && $hourKey >= 0 && $hourKey < 24);
             $this->assertInstanceOf(Hour::class, $hour);
             $this->assertSame($start->format('Y-m-d H'), $hour->getBegin()->format('Y-m-d H'));
             $this->assertSame('00:00', $hour->getBegin()->format('i:s'));
 
             $start = $start->add(new \DateInterval('PT1H'));
-            $i++;
+            ++$i;
         }
 
         $this->assertSame(24, $i);

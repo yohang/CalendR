@@ -18,10 +18,10 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
         $events = [];
         foreach ($this->events as $event) {
             if (
-                ($event->getBegin() >= $begin && $event->getBegin() < $end) ||
-                ($event->getEnd() > $begin && $event->getEnd() <= $end) ||
-                ($begin <= $event->getBegin() && $event->getEnd() <= $end) ||
-                ($event->getBegin() <= $begin && $end <= $event->getEnd())
+                ($event->getBegin() >= $begin && $event->getBegin() < $end)
+                || ($event->getEnd() > $begin && $event->getEnd() <= $end)
+                || ($begin <= $event->getBegin() && $event->getEnd() <= $end)
+                || ($event->getBegin() <= $begin && $end <= $event->getEnd())
             ) {
                 $events[] = $event;
             }
@@ -50,6 +50,6 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
 
     public function count(): int
     {
-        return count($this->events);
+        return \count($this->events);
     }
 }

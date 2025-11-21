@@ -11,8 +11,8 @@ class Range extends PeriodAbstract
     public function __construct(\DateTimeInterface $begin, \DateTimeInterface $end, ?FactoryInterface $factory = null)
     {
         $this->factory = $factory;
-        $this->begin   = clone $begin;
-        $this->end     = clone $end;
+        $this->begin = clone $begin;
+        $this->end = clone $end;
     }
 
     public static function isValid(\DateTimeInterface $start): bool
@@ -20,20 +20,20 @@ class Range extends PeriodAbstract
         return true;
     }
 
-    public function getNext(): Range
+    public function getNext(): self
     {
-        $diff  = $this->begin->diff($this->end);
+        $diff = $this->begin->diff($this->end);
         $begin = (clone $this->begin)->add($diff);
-        $end   = (clone $this->end)->add($diff);
+        $end = (clone $this->end)->add($diff);
 
         return new self($begin, $end, $this->factory);
     }
 
-    public function getPrevious(): Range
+    public function getPrevious(): self
     {
-        $diff  = $this->begin->diff($this->end);
+        $diff = $this->begin->diff($this->end);
         $begin = (clone $this->begin)->sub($diff);
-        $end   = (clone $this->end)->sub($diff);
+        $end = (clone $this->end)->sub($diff);
 
         return new self($begin, $end, $this->factory);
     }
@@ -44,9 +44,7 @@ class Range extends PeriodAbstract
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @throws Exception\NotImplemented
+     * @throws NotImplemented
      */
     public static function getDateInterval(): \DateInterval
     {

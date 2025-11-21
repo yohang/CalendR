@@ -77,7 +77,7 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
 
     public function key(): int
     {
-        return (int)$this->current->getBegin()->format('W');
+        return (int) $this->current->getBegin()->format('W');
     }
 
     public function valid(): bool
@@ -98,7 +98,7 @@ class Month extends PeriodAbstract implements \Iterator, \Stringable
 
     public static function isValid(\DateTimeInterface $start): bool
     {
-        return $start->format('d H:i:s') === '01 00:00:00';
+        return '01 00:00:00' === $start->format('d H:i:s');
     }
 
     public static function getDateInterval(): \DateInterval

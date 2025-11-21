@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Bridge\Symfony\Bundle;
 
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use CalendR\Bridge\Symfony\Bundle\CalendRBundle;
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\Compiler\EventProviderPass;
 use CalendR\Event\Provider\ProviderInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

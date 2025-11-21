@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Collection;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\Event\Collection\Indexed;
-use CalendR\Period\FactoryInterface;
-use CalendR\Period\Day;
-use CalendR\Event\Collection;
 use CalendR\Event\Event;
-use CalendR\Period;
+use CalendR\Period\Day;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -29,11 +26,11 @@ final class IndexedTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$events = [
-            new Event('event-a', new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00')),
-            new Event('event-b', new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00')),
-            new Event('event-c', new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00')),
-            new Event('event-d', new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00')),
-            new Event('event-e', new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00')),
+            new Event(new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00'), 'event-a'),
+            new Event(new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00'), 'event-b'),
+            new Event(new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00'), 'event-c'),
+            new Event(new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00'), 'event-d'),
+            new Event(new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00'), 'event-e'),
         ];
     }
 
@@ -45,9 +42,9 @@ final class IndexedTest extends TestCase
     public function getAddData(): array
     {
         return [
-            [new Event('event-1', new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00')), 6],
-            [new Event('event-2', new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00')), 7],
-            [new Event('event-3', new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00')), 8],
+            [new Event(new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00'), 'event-1'), 6],
+            [new Event(new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00'), 'event-2'), 7],
+            [new Event(new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00'), 'event-3'), 8],
         ];
     }
 
@@ -100,10 +97,10 @@ final class IndexedTest extends TestCase
 
     public function testAll(): void
     {
-        $index = ord('a');
+        $index = \ord('a');
         foreach ($this->collection->all() as $event) {
-            $this->assertSame('event-'.chr($index++), $event->getUid());
+            $this->assertSame('event-'.\chr($index++), $event->getUid());
         }
-        $this->assertCount(count($this->collection), $this->collection->all());
+        $this->assertCount(\count($this->collection), $this->collection->all());
     }
 }

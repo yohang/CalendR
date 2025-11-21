@@ -6,11 +6,13 @@ namespace CalendR\Test;
 
 use CalendR\Test\Stubs\Event;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\DefaultQuoteStrategy;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -19,9 +21,6 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\ClassMetadataFactory;
 
 /**
  * @test
@@ -65,7 +64,7 @@ class BaseDoctrine2TestCase extends TestCase
     }
 
     /**
-     * Creates default mapping driver
+     * Creates default mapping driver.
      */
     protected function getMetadataDriverImplementation(): MappingDriver
     {
@@ -73,20 +72,20 @@ class BaseDoctrine2TestCase extends TestCase
     }
 
     /**
-     * Return a Mock config. Come from the Gedmo's Doctrine Extensions test suite
+     * Return a Mock config. Come from the Gedmo's Doctrine Extensions test suite.
      */
     protected function getMockAnnotatedConfig(): Configuration
     {
         // We need to mock every method except the ones which
         // handle the filters
         $configurationClass = Configuration::class;
-        $refl               = new \ReflectionClass($configurationClass);
-        $methods            = $refl->getMethods();
+        $refl = new \ReflectionClass($configurationClass);
+        $methods = $refl->getMethods();
 
         $mockMethods = [];
 
         foreach ($methods as $method) {
-            if ($method->name !== 'addFilter' && $method->name !== 'getFilterClassName') {
+            if ('addFilter' !== $method->name && 'getFilterClassName' !== $method->name) {
                 $mockMethods[] = $method->name;
             }
         }
@@ -96,7 +95,7 @@ class BaseDoctrine2TestCase extends TestCase
         $config
             ->expects($this->once())
             ->method('getProxyDir')
-            ->willReturn(__DIR__ . '/../../temp');
+            ->willReturn(__DIR__.'/../../temp');
 
         $config
             ->expects($this->once())

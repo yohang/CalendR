@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
+use CalendR\Period\Day;
 use CalendR\Period\Exception\NotASecond;
 use CalendR\Period\FactoryInterface;
-use CalendR\Period\Second;
-use CalendR\Period\Minute;
 use CalendR\Period\Hour;
-use CalendR\Period\Day;
+use CalendR\Period\Minute;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\Second;
 use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -123,7 +123,7 @@ final class SecondTest extends TestCase
 
         $i = 0;
         foreach ($second->getDatePeriod() as $dateTime) {
-            $i++;
+            ++$i;
             $this->assertSame('2012-01-31 13:12:27', $dateTime->format('Y-m-d H:i:s'));
         }
 
@@ -133,10 +133,10 @@ final class SecondTest extends TestCase
     public function testCurrentSecond(): void
     {
         $currentDateTime = new \DateTimeImmutable();
-        $otherDateTime   = (clone $currentDateTime)->add(new \DateInterval('PT5S'));
+        $otherDateTime = (clone $currentDateTime)->add(new \DateInterval('PT5S'));
 
         $currentSecond = new Second(new \DateTimeImmutable($currentDateTime->format('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherSecond   = $currentSecond->getNext();
+        $otherSecond = $currentSecond->getNext();
 
         $this->assertTrue($currentSecond->contains($currentDateTime));
         $this->assertFalse($currentSecond->contains($otherDateTime));
@@ -146,7 +146,7 @@ final class SecondTest extends TestCase
     public function testToString(): void
     {
         $second = new Second(new \DateTimeImmutable(date('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
-        $this->assertSame($second->getBegin()->format('s'), (string)$second);
+        $this->assertSame($second->getBegin()->format('s'), (string) $second);
     }
 
     public function testIsValid(): void
@@ -178,7 +178,7 @@ final class SecondTest extends TestCase
     public function testIsCurrent(): void
     {
         $currentSecond = new Second(new \DateTime(date('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherSecond   = new Second(new \DateTime('1988-11-12 16:00:50'), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherSecond = new Second(new \DateTime('1988-11-12 16:00:50'), $this->prophesize(FactoryInterface::class)->reveal());
 
         $this->assertTrue($currentSecond->isCurrent());
         $this->assertFalse($otherSecond->isCurrent());

@@ -26,7 +26,6 @@ interface ProviderInterface
      * Return events that matches to $begin && $end
      * $end date should be exclude.
      *
-     *
      * @return EventInterface[]
      */
     public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array;

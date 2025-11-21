@@ -6,7 +6,6 @@ namespace CalendR\Bridge\Twig;
 
 use CalendR\Calendar;
 use CalendR\Event\Collection\CollectionInterface;
-use CalendR\Event\EventInterface;
 use CalendR\Period\Day;
 use CalendR\Period\Month;
 use CalendR\Period\PeriodInterface;
@@ -16,7 +15,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Extension for using periods and events from Twig
+ * Extension for using periods and events from Twig.
  *
  * @author Yohan Giarelli <yohan@giarel.li>
  */

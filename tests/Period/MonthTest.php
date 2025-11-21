@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use CalendR\DayOfWeek;
 use CalendR\Period\Exception\NotAMonth;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
 use CalendR\Period\Week;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -115,7 +115,7 @@ final class MonthTest extends TestCase
                 if ($month->contains($day->getBegin())) {
                     $this->assertSame($start->format('d-m-Y'), $day->getBegin()->format('d-m-Y'));
                     $start = $start->add(new \DateInterval('P1D'));
-                    $i++;
+                    ++$i;
                 }
             }
         }
@@ -125,16 +125,16 @@ final class MonthTest extends TestCase
 
     public function testToString(): void
     {
-        $date  = new \DateTimeImmutable('2014-02-01');
+        $date = new \DateTimeImmutable('2014-02-01');
         $month = new Month($date, $this->prophesize(FactoryInterface::class)->reveal());
 
-        $this->assertSame($date->format('F'), (string)$month);
+        $this->assertSame($date->format('F'), (string) $month);
     }
 
     public function testGetDays(): void
     {
         $month = new Month(new \DateTimeImmutable('2012-01-01'), new Factory());
-        $days  = $month->getDays();
+        $days = $month->getDays();
 
         $this->assertCount(31, $days);
 
@@ -165,7 +165,7 @@ final class MonthTest extends TestCase
 
     public function testGetDatePeriod(): void
     {
-        $date  = new \DateTimeImmutable('2012-01-01');
+        $date = new \DateTimeImmutable('2012-01-01');
         $month = new Month($date, $this->prophesize(FactoryInterface::class)->reveal());
 
         foreach ($month->getDatePeriod() as $DateTimeImmutable) {
@@ -177,10 +177,10 @@ final class MonthTest extends TestCase
     public function testIsCurrent(): void
     {
         $currentDate = new \DateTimeImmutable();
-        $otherDate   = (clone $currentDate)->add(new \DateInterval('P5M'));
+        $otherDate = (clone $currentDate)->add(new \DateInterval('P5M'));
 
-        $currentMonth = new Month(new \DateTimeImmutable(date('Y-m') . '-01'), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherMonth   = $currentMonth->getNext();
+        $currentMonth = new Month(new \DateTimeImmutable(date('Y-m').'-01'), $this->prophesize(FactoryInterface::class)->reveal());
+        $otherMonth = $currentMonth->getNext();
 
         $this->assertTrue($currentMonth->contains($currentDate));
         $this->assertFalse($currentMonth->contains($otherDate));
