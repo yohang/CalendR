@@ -12,25 +12,12 @@ use PHPUnit\Framework\TestCase;
 
 final class AggregateTest extends TestCase
 {
-    /**
-     * @var Aggregate
-     */
-    protected $object;
+    protected Aggregate $object;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected MockObject $provider1;
+    protected ProviderInterface&MockObject $provider1;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected MockObject $provider2;
+    protected ProviderInterface&MockObject $provider2;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp(): void
     {
         $this->provider1 = $this->createMock(ProviderInterface::class);

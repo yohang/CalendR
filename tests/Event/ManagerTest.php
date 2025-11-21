@@ -23,8 +23,8 @@ final class ManagerTest extends TestCase
     protected function setUp(): void
     {
         $basic1 = new Basic();
-        $basic2 = new Basic();
-        $this->object = new Manager(['basic-1' => $basic1, 'basic-2' => $basic2]);
+        $this->object = new Manager(['basic-1' => $basic1]);
+        $this->object->addProvider('basic-2', $basic2 = new Basic());
 
         $basic1->add(new Event(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), 'event-1'));
         $basic2->add(new Event(new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-01-05'), 'event-2'));

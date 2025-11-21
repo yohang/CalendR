@@ -69,4 +69,19 @@ final class EventRepositoryTest extends TestCase
         $events = $this->repo->getEvents(new \DateTimeImmutable($begin), new \DateTimeImmutable($end));
         $this->assertSame($providedEvents, $events);
     }
+
+    #[DataProvider('getEventsProvider')]
+    public function getEventsQueryBuilder(string $begin, string $end): void
+    {
+        $expr = $this->createMock(Expr::class);
+        $this->em->expects($this->once())->method('createQueryBuilder')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('select')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('from')->willReturn($this->qb);
+        $this->qb->expects($this->once())->method('andWhere')->willReturn($this->qb);
+        $this->qb->expects($this->atLeastOnce())->method('expr')->willReturn($expr);
+        $expr->expects($this->once())->method('orX');
+        $expr->expects($this->exactly(4))->method('andX');
+
+        $events = $this->repo->getEventsQueryBuilder(new \DateTimeImmutable($begin), new \DateTimeImmutable($end));
+    }
 }

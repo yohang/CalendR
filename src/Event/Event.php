@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace CalendR\Event;
 
+use CalendR\Event\Exception\InvalidEvent;
+
 /**
  * Concrete implementation of AbstractEvent and in fact EventInterface.
  *
  * In most case, you'd better to implement your own events
  */
-class Event extends AbstractEvent
+final class Event extends AbstractEvent
 {
     protected \DateTimeInterface $begin;
 
@@ -23,8 +25,9 @@ class Event extends AbstractEvent
         ?string $uid = null,
     ) {
         if (1 === $start->diff($end)->invert) {
-            throw new \InvalidArgumentException('Events usually start before they end');
+            throw new InvalidEvent('Events usually start before they end');
         }
+
         $this->begin = clone $start;
         $this->end = clone $end;
         $this->uid = $uid ?? uniqid('event_', true);
