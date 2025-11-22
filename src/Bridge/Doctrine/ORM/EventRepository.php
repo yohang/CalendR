@@ -45,8 +45,6 @@ trait EventRepository
         return $this->createQueryBuilder('evt');
     }
 
-    abstract public function createQueryBuilder(string $alias, string|null $indexBy = null): QueryBuilder;
-
     abstract public function getBeginFieldName(): string;
 
     abstract public function getEndFieldName(): string;

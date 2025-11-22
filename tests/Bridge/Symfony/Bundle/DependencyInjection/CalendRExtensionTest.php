@@ -10,7 +10,7 @@ use CalendR\Calendar;
 use CalendR\DayOfWeek;
 use CalendR\Event\Manager;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -52,7 +52,9 @@ final class CalendRExtensionTest extends TestCase
             ->method('addMethodCall')
             ->with('setFirstWeekday', [DayOfWeek::FRIDAY]);
 
-        $configs = ['calendr' => ['periods' => ['default_first_weekday' => DayOfWeek::FRIDAY]]];
+        $symfonyHasEnum = method_exists(EnumNodeDefinition::class, 'enumFqcn');
+
+        $configs = ['calendr' => ['periods' => ['default_first_weekday' => $symfonyHasEnum ? DayOfWeek::FRIDAY : DayOfWeek::FRIDAY->value]]];
 
         $extension = new CalendRExtension();
         $extension->load($configs, $containerBuilder);
