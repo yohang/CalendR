@@ -32,6 +32,7 @@ class Aggregate implements ProviderInterface
         $this->providers[] = $provider;
     }
 
+    #[\Override]
     public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
         $events = [];

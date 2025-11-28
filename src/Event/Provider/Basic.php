@@ -6,6 +6,9 @@ namespace CalendR\Event\Provider;
 
 use CalendR\Event\EventInterface;
 
+/**
+ * @implements \IteratorAggregate<int, EventInterface>
+ */
 class Basic implements ProviderInterface, \IteratorAggregate, \Countable
 {
     /**
@@ -13,6 +16,7 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
      */
     protected array $events = [];
 
+    #[\Override]
     public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
         $events = [];
@@ -43,11 +47,13 @@ class Basic implements ProviderInterface, \IteratorAggregate, \Countable
         return $this->events;
     }
 
+    #[\Override]
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->events);
     }
 
+    #[\Override]
     public function count(): int
     {
         return \count($this->events);

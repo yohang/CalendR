@@ -1,5 +1,5 @@
 test:
-	./vendor/bin/phpunit tests --colors --coverage-text --whitelist=src --coverage-clover=build/coverage/clover.xml
+	dagger call test -q
 
 test-all:
-	dagger call test-all
+	dagger call test-all -q

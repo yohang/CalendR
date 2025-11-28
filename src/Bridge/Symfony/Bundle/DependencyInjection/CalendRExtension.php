@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CalendRExtension extends Extension
 {
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);

@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
+/**
+ * @implements \IteratorAggregate<int, Week>
+ * @implements IterablePeriod<int, Week>
+ */
 class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
+    #[\Override]
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
@@ -55,6 +60,7 @@ class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, I
         return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }
 
+    #[\Override]
     public function getIterator(): \Generator
     {
         $current = $this->getFactory()->createWeek($this->getFirstDayOfFirstWeek());
@@ -65,16 +71,19 @@ class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, I
         }
     }
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->format('F');
     }
 
+    #[\Override]
     public static function isValid(\DateTimeInterface $start): bool
     {
         return '01 00:00:00' === $start->format('d H:i:s');
     }
 
+    #[\Override]
     public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('P1M');

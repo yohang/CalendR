@@ -33,11 +33,13 @@ final class Event extends AbstractEvent
         $this->uid = $uid ?? uniqid('event_', true);
     }
 
+    #[\Override]
     public function getBegin(): \DateTimeInterface
     {
         return $this->begin;
     }
 
+    #[\Override]
     public function getEnd(): \DateTimeInterface
     {
         return $this->end;
@@ -48,6 +50,7 @@ final class Event extends AbstractEvent
         return $this->uid;
     }
 
+    #[\Override]
     public function isEqualTo(EventInterface $event): bool
     {
         if (!$event instanceof self) {

@@ -12,6 +12,7 @@ class Psr16CacheProvider implements ProviderInterface
     {
     }
 
+    #[\Override]
     public function getEvents(\DateTimeInterface $begin, \DateTimeInterface $end, array $options = []): array
     {
         $cacheKey = md5(serialize([$begin, $end, $options]));

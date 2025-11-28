@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace CalendR\Event\Collection;
 
 use CalendR\Event\EventInterface;
@@ -18,7 +9,10 @@ use CalendR\Period\PeriodInterface;
 
 /**
  * Basic event collection.
- * Juste stores event as an array, and iterate over the array for retrieving.
+ * Juste stores an event as an array and iterates over the array for retrieving.
+ *
+ * @implements \IteratorAggregate<int, EventInterface>
+ * @implements CollectionInterface<int>
  */
 class Basic implements CollectionInterface, \IteratorAggregate
 {
@@ -26,24 +20,17 @@ class Basic implements CollectionInterface, \IteratorAggregate
      * @param list<EventInterface> $events
      */
     public function __construct(
-        /**
-         * The events.
-         */
         protected array $events = [],
     ) {
     }
 
-    /**
-     * Adds an event to the collection.
-     */
+    #[\Override]
     public function add(EventInterface $event): void
     {
         $this->events[] = $event;
     }
 
-    /**
-     * Removes an event from the collection.
-     */
+    #[\Override]
     public function remove(EventInterface $event): void
     {
         foreach ($this->events as $key => $internalEvent) {
@@ -54,10 +41,9 @@ class Basic implements CollectionInterface, \IteratorAggregate
     }
 
     /**
-     * Return all events;.
-     *
-     * @return EventInterface[]
+     * @return list<EventInterface>
      */
+    #[\Override]
     public function all(): array
     {
         return $this->events;
@@ -66,6 +52,7 @@ class Basic implements CollectionInterface, \IteratorAggregate
     /**
      * Returns if there is events corresponding to $index period.
      */
+    #[\Override]
     public function has(mixed $index): bool
     {
         return \count($this->find($index)) > 0;
@@ -76,6 +63,7 @@ class Basic implements CollectionInterface, \IteratorAggregate
      *
      * @return EventInterface[]
      */
+    #[\Override]
     public function find(mixed $index): array
     {
         $result = [];
@@ -90,11 +78,13 @@ class Basic implements CollectionInterface, \IteratorAggregate
         return $result;
     }
 
+    #[\Override]
     public function count(): int
     {
         return \count($this->events);
     }
 
+    #[\Override]
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->events);

@@ -23,6 +23,7 @@ final class CalendRExtension extends AbstractExtension
     /**
      * @return array<TwigFunction>
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return [

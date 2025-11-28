@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace CalendR;
 
-interface Exception
+interface Exception extends \Throwable
 {
 }

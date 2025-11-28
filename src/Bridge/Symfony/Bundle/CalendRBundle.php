@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class CalendRBundle extends Bundle
 {
+    #[\Override]
     public function build(ContainerBuilder $container): void
     {
         if (method_exists($container, 'registerForAutoconfiguration')) {

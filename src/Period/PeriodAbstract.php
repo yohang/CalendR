@@ -40,11 +40,13 @@ abstract class PeriodAbstract implements PeriodInterface
         $this->end = (clone $begin)->add($this->getDateInterval());
     }
 
+    #[\Override]
     public function contains(\DateTimeInterface $date): bool
     {
         return $this->begin <= $date && $date < $this->end;
     }
 
+    #[\Override]
     public function equals(PeriodInterface $period): bool
     {
         return
@@ -52,6 +54,7 @@ abstract class PeriodAbstract implements PeriodInterface
             && $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s');
     }
 
+    #[\Override]
     public function includes(PeriodInterface $period, bool $strict = true): bool
     {
         if ($strict) {
@@ -66,6 +69,7 @@ abstract class PeriodAbstract implements PeriodInterface
         ;
     }
 
+    #[\Override]
     public function containsEvent(EventInterface $event): bool
     {
         return
@@ -76,11 +80,13 @@ abstract class PeriodAbstract implements PeriodInterface
         ;
     }
 
+    #[\Override]
     public function format(string $format): string
     {
         return $this->begin->format($format);
     }
 
+    #[\Override]
     public function isCurrent(): bool
     {
         return $this->contains(new \DateTimeImmutable());
@@ -89,6 +95,7 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * @throws Exception
      */
+    #[\Override]
     public function getNext(): PeriodInterface
     {
         return new static($this->end, $this->factory);
@@ -97,6 +104,7 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * @throws Exception
      */
+    #[\Override]
     public function getPrevious(): PeriodInterface
     {
         $start = (clone $this->begin)->sub(static::getDateInterval());
@@ -104,11 +112,13 @@ abstract class PeriodAbstract implements PeriodInterface
         return new static($start, $this->factory);
     }
 
+    #[\Override]
     public function getBegin(): \DateTimeInterface
     {
         return clone $this->begin;
     }
 
+    #[\Override]
     public function getEnd(): \DateTimeInterface
     {
         return clone $this->end;

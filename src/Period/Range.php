@@ -15,11 +15,13 @@ class Range extends PeriodAbstract
         $this->end = clone $end;
     }
 
+    #[\Override]
     public static function isValid(\DateTimeInterface $start): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getNext(): self
     {
         $diff = $this->begin->diff($this->end);
@@ -29,6 +31,7 @@ class Range extends PeriodAbstract
         return new self($begin, $end, $this->factory);
     }
 
+    #[\Override]
     public function getPrevious(): self
     {
         $diff = $this->begin->diff($this->end);
@@ -38,6 +41,7 @@ class Range extends PeriodAbstract
         return new self($begin, $end, $this->factory);
     }
 
+    #[\Override]
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, $this->begin->diff($this->end), $this->end);
@@ -46,6 +50,7 @@ class Range extends PeriodAbstract
     /**
      * @throws NotImplemented
      */
+    #[\Override]
     public static function getDateInterval(): \DateInterval
     {
         throw new NotImplemented('Range period doesn\'t support getDateInterval().');
