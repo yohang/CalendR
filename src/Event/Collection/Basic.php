@@ -14,7 +14,7 @@ use CalendR\Period\PeriodInterface;
  * @implements \IteratorAggregate<int, EventInterface>
  * @implements CollectionInterface<int>
  */
-class Basic implements CollectionInterface, \IteratorAggregate
+final class Basic implements CollectionInterface, \IteratorAggregate
 {
     /**
      * @param list<EventInterface> $events
@@ -47,13 +47,13 @@ class Basic implements CollectionInterface, \IteratorAggregate
     }
 
     #[\Override]
-    public function has(mixed $index): bool
+    public function has(PeriodInterface|\DateTimeInterface|string $index): bool
     {
         return \count($this->find($index)) > 0;
     }
 
     #[\Override]
-    public function find(mixed $index): array
+    public function find(PeriodInterface|\DateTimeInterface|string $index): array
     {
         $result = [];
         foreach ($this->events as $event) {

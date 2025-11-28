@@ -9,7 +9,7 @@ use CalendR\Event\EventInterface;
 /**
  * @implements \IteratorAggregate<int, EventInterface>
  */
-class Basic implements ProviderInterface, \IteratorAggregate, \Countable
+final class Basic implements ProviderInterface, \IteratorAggregate, \Countable
 {
     /**
      * @var EventInterface[]

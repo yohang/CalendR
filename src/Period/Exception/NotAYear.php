@@ -6,6 +6,6 @@ namespace CalendR\Period\Exception;
 
 use CalendR\Exception;
 
-class NotAYear extends \InvalidArgumentException implements Exception
+final class NotAYear extends \InvalidArgumentException implements Exception
 {
 }

@@ -9,12 +9,7 @@ use CalendR\Event\Provider\ProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * The Symfony Bundle.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
- */
-class CalendRBundle extends Bundle
+final class CalendRBundle extends Bundle
 {
     #[\Override]
     public function build(ContainerBuilder $container): void

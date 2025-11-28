@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace CalendR\Event\Provider;
 
+use CalendR\Event\EventInterface;
 use Psr\SimpleCache\CacheInterface;
 
-class Psr16CacheProvider implements ProviderInterface
+final readonly class Psr16CacheProvider implements ProviderInterface
 {
-    public function __construct(protected CacheInterface $cache, protected ProviderInterface $provider, protected int $lifetime, protected ?string $namespace = null)
-    {
+    public function __construct(
+        protected CacheInterface $cache,
+        protected ProviderInterface $provider,
+        protected int $lifetime,
+        protected ?string $namespace = null,
+    ) {
     }
 
     #[\Override]
@@ -22,7 +27,10 @@ class Psr16CacheProvider implements ProviderInterface
         }
 
         if ($this->cache->has($cacheKey)) {
-            return $this->cache->get($cacheKey);
+            /** @var list<EventInterface> $result */
+            $result = $this->cache->get($cacheKey);
+
+            return $result;
         }
 
         $events = $this->provider->getEvents($begin, $end, $options);

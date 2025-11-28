@@ -86,6 +86,7 @@ abstract class PeriodAbstract implements PeriodInterface
 
     /**
      * @psalm-suppress UnsafeInstantiation
+     *
      * @throws Exception
      */
     #[\Override]
@@ -96,6 +97,7 @@ abstract class PeriodAbstract implements PeriodInterface
 
     /**
      * @psalm-suppress UnsafeInstantiation
+     *
      * @throws Exception|\DateInvalidOperationException
      */
     #[\Override]

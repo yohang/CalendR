@@ -10,6 +10,9 @@ use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Event\Provider\ProviderInterface;
 use CalendR\Period\PeriodInterface;
 
+/**
+ * @api
+ */
 class Manager
 {
     /**
@@ -25,7 +28,7 @@ class Manager
     protected $collectionInstantiator;
 
     /**
-     * @param iterable<ProviderInterface>         $providers
+     * @param iterable<string, ProviderInterface> $providers
      * @param callable():CollectionInterface|null $collectionInstantiator
      */
     public function __construct(
@@ -40,7 +43,9 @@ class Manager
     }
 
     /**
-     * find events that matches the given period (during or over).
+     * find events that match the given period (during or over).
+     *
+     * @param array{providers?: list<string>|string} $options
      *
      * @throws NoProviderFound
      */

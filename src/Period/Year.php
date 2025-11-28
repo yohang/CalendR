@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace CalendR\Period;
 
 /**
+ * @api
+ *
  * @implements \IteratorAggregate<int, Month>
  * @implements IterablePeriod<int, Month>
  */
-final class Year extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
+class Year extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
     #[\Override]
     public function getDatePeriod(): \DatePeriod

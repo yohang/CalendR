@@ -6,6 +6,6 @@ namespace CalendR\Event\Exception;
 
 use CalendR\Exception;
 
-class NoProviderFound extends \OutOfBoundsException implements Exception
+final class NoProviderFound extends \OutOfBoundsException implements Exception
 {
 }

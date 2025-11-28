@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CalendR\Event\Provider;
 
-class Aggregate implements ProviderInterface
+final class Aggregate implements ProviderInterface
 {
     /**
-     * @var ProviderInterface[]
+     * @var list<ProviderInterface>
      */
-    private array $providers;
+    private array $providers = [];
 
     /**
      * @param ProviderInterface[] $providers

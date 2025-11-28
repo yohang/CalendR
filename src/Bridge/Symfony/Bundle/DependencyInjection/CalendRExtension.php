@@ -18,6 +18,8 @@ final class CalendRExtension extends Extension
     {
         $configuration = $this->getConfiguration($configs, $container);
         \assert(null !== $configuration);
+
+        /** @var array{periods: array{default_first_weekday: DayOfWeek|int}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

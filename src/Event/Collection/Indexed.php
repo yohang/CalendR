@@ -19,7 +19,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
     /**
      * @var EventInterface[][]
      */
-    protected array $events;
+    protected array $events = [];
 
     /**
      * Event count.
@@ -37,19 +37,19 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
      *  }
      * ```
      *
-     * @var callable
+     * @var callable(\DateTimeInterface):string
      */
     protected $indexFunction;
 
     /**
-     * @param array<EventInterface> $events
+     * @param callable(\DateTimeInterface):string|null $callable
+     * @param array<EventInterface>                    $events
      */
     public function __construct(array $events = [], ?callable $callable = null)
     {
+        $this->indexFunction = (static fn (\DateTimeInterface $dateTime): string => $dateTime->format('Y-m-d'));
         if (\is_callable($callable)) {
             $this->indexFunction = $callable;
-        } else {
-            $this->indexFunction = (static fn (\DateTimeInterface $dateTime): string => $dateTime->format('Y-m-d'));
         }
 
         foreach ($events as $event) {
@@ -88,13 +88,13 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
     }
 
     #[\Override]
-    public function has($index): bool
+    public function has(PeriodInterface|\DateTimeInterface|string $index): bool
     {
         return 0 < \count($this->find($index));
     }
 
     #[\Override]
-    public function find($index): array
+    public function find(PeriodInterface|\DateTimeInterface|string $index): array
     {
         if ($index instanceof PeriodInterface) {
             $index = $index->getBegin();

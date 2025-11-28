@@ -48,7 +48,7 @@ final class CalendRExtensionTest extends TestCase
 
     public function testItCallsCalendarFunctions(): void
     {
-        $period = $this->createMock(Year::class);
+        $period = new Year(new \DateTimeImmutable('2025-01-01'));
         $this->calendar
             ->expects($this->once())
             ->method('getYear')
@@ -57,7 +57,7 @@ final class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getYear(2021));
 
-        $period = $this->createMock(Month::class);
+        $period = new Month(new \DateTimeImmutable('2025-01-01'));
         $this->calendar
             ->expects($this->once())
             ->method('getMonth')
@@ -66,7 +66,7 @@ final class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getMonth(2021, 12));
 
-        $period = $this->createMock(Week::class);
+        $period = new Week(new \DateTimeImmutable('2025-01-01'));
         $this->calendar
             ->expects($this->once())
             ->method('getWeek')
@@ -75,7 +75,7 @@ final class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getWeek(2021, 22));
 
-        $period = $this->createMock(Day::class);
+        $period = new Day(new \DateTimeImmutable('2025-01-01'));
         $this->calendar
             ->expects($this->once())
             ->method('getDay')

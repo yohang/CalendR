@@ -35,22 +35,22 @@ final class CalendRExtension extends AbstractExtension
         ];
     }
 
-    public function getYear($yearOrStart): Year
+    public function getYear(\DateTimeInterface|int $yearOrStart): Year
     {
         return $this->factory->getYear($yearOrStart);
     }
 
-    public function getMonth($yearOrStart, ?int $month = null): Month
+    public function getMonth(\DateTimeInterface|int $yearOrStart, ?int $month = null): Month
     {
         return $this->factory->getMonth($yearOrStart, $month);
     }
 
-    public function getWeek($yearOrStart, ?int $week = null): Week
+    public function getWeek(\DateTimeInterface|int $yearOrStart, ?int $week = null): Week
     {
         return $this->factory->getWeek($yearOrStart, $week);
     }
 
-    public function getDay($yearOrStart, ?int $month = null, ?int $day = null): Day
+    public function getDay(\DateTimeInterface|int $yearOrStart, ?int $month = null, ?int $day = null): Day
     {
         return $this->factory->getDay($yearOrStart, $month, $day);
     }
