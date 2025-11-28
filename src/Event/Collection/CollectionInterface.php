@@ -10,6 +10,7 @@ use CalendR\Event\EventInterface;
  * Represents an event collection.
  *
  * @template TKey
+ *
  * @extends \Traversable<TKey, EventInterface>
  */
 interface CollectionInterface extends \Countable, \Traversable
