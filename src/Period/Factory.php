@@ -74,9 +74,9 @@ final class Factory implements FactoryInterface
     }
 
     #[\Override]
-    public function findFirstDayOfWeek(\DateTimeInterface $dateTime): \DateTimeInterface
+    public function findFirstDayOfWeek(\DateTimeInterface $dateTime): \DateTimeImmutable
     {
-        $day = clone $dateTime;
+        $day = \DateTimeImmutable::createFromInterface($dateTime);
         $delta = ((int) $day->format('w') - $this->getFirstWeekday()->value + 7) % 7;
 
         return $day->sub(new \DateInterval(\sprintf('P%sD', $delta)));

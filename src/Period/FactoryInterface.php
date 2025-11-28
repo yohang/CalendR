@@ -28,5 +28,5 @@ interface FactoryInterface
 
     public function getFirstWeekday(): DayOfWeek;
 
-    public function findFirstDayOfWeek(\DateTimeInterface $dateTime): \DateTimeInterface;
+    public function findFirstDayOfWeek(\DateTimeInterface $dateTime): \DateTimeImmutable;
 }

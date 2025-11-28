@@ -35,7 +35,7 @@ class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, I
      * Returns the first day of the first week of month.
      * First day of week is configurable via {@link Factory}.
      */
-    public function getFirstDayOfFirstWeek(): \DateTimeInterface
+    public function getFirstDayOfFirstWeek(): \DateTimeImmutable
     {
         return $this->getFactory()->findFirstDayOfWeek($this->begin);
     }
@@ -53,9 +53,9 @@ class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, I
      * Returns the last day of last week of month
      * First day of week is configurable via {@link Factory}.
      */
-    public function getLastDayOfLastWeek(): \DateTimeInterface
+    public function getLastDayOfLastWeek(): \DateTimeImmutable
     {
-        $lastDay = (clone $this->end)->sub(new \DateInterval('P1D'));
+        $lastDay = $this->end->sub(new \DateInterval('P1D'));
 
         return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }

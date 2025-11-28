@@ -28,11 +28,11 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
 
     /**
      * The function used to index events.
-     * Takes a \DateTime in parameter and must return an array index for this value.
+     * Takes a \DateTimeInterface in parameter and must return an array index for this value.
      *
-     * By default :
+     * By default:
      * ```php
-     *  function(\DateTime $dateTime) {
+     *  function(\DateTimeInterface $dateTime) {
      *      return $dateTime->format('Y-m-d');
      *  }
      * ```
@@ -73,9 +73,6 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
         ++$this->count;
     }
 
-    /**
-     * Removes an event from the collection.
-     */
     #[\Override]
     public function remove(EventInterface $event): void
     {
@@ -90,38 +87,25 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
         }
     }
 
-    /**
-     * Returns if we have events for the given index.
-     */
     #[\Override]
     public function has($index): bool
     {
         return 0 < \count($this->find($index));
     }
 
-    /**
-     * returns events.
-     *
-     * @return EventInterface[]
-     */
     #[\Override]
     public function find($index): array
     {
         if ($index instanceof PeriodInterface) {
             $index = $index->getBegin();
         }
-        if ($index instanceof \DateTime) {
-            $index = $this->computeIndex($index);
+        if ($index instanceof \DateTimeInterface) {
+            $index = $this->computeIndex(\DateTimeImmutable::createFromInterface($index));
         }
 
         return $this->events[$index] ?? [];
     }
 
-    /**
-     * Returns a flattened array of all events.
-     *
-     * @return EventInterface[]
-     */
     #[\Override]
     public function all(): array
     {
@@ -134,10 +118,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
         return $results;
     }
 
-    /**
-     * Computes event index.
-     */
-    private function computeIndex(EventInterface|\DateTimeInterface $toCompute): string
+    private function computeIndex(EventInterface|\DateTimeImmutable $toCompute): string
     {
         if ($toCompute instanceof EventInterface) {
             $toCompute = $toCompute->getBegin();

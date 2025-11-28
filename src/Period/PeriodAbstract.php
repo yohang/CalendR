@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace CalendR\Period;
 
 use CalendR\Event\EventInterface;
@@ -23,9 +14,9 @@ use CalendR\Exception;
  */
 abstract class PeriodAbstract implements PeriodInterface
 {
-    protected \DateTimeInterface $begin;
+    protected \DateTimeImmutable $begin;
 
-    protected \DateTimeInterface $end;
+    protected \DateTimeImmutable $end;
 
     /**
      * @throws Exception
@@ -36,8 +27,8 @@ abstract class PeriodAbstract implements PeriodInterface
             throw $this->createInvalidException();
         }
 
-        $this->begin = clone $begin;
-        $this->end = (clone $begin)->add($this->getDateInterval());
+        $this->begin = \DateTimeImmutable::createFromInterface($begin);
+        $this->end = $this->begin->add($this->getDateInterval());
     }
 
     #[\Override]
@@ -102,26 +93,26 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|\DateInvalidOperationException
      */
     #[\Override]
     public function getPrevious(): PeriodInterface
     {
-        $start = (clone $this->begin)->sub(static::getDateInterval());
+        $start = $this->begin->sub(static::getDateInterval());
 
         return new static($start, $this->factory);
     }
 
     #[\Override]
-    public function getBegin(): \DateTimeInterface
+    public function getBegin(): \DateTimeImmutable
     {
-        return clone $this->begin;
+        return $this->begin;
     }
 
     #[\Override]
-    public function getEnd(): \DateTimeInterface
+    public function getEnd(): \DateTimeImmutable
     {
-        return clone $this->end;
+        return $this->end;
     }
 
     public function getFactory(): FactoryInterface

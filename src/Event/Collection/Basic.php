@@ -40,29 +40,18 @@ class Basic implements CollectionInterface, \IteratorAggregate
         }
     }
 
-    /**
-     * @return list<EventInterface>
-     */
     #[\Override]
     public function all(): array
     {
         return $this->events;
     }
 
-    /**
-     * Returns if there is events corresponding to $index period.
-     */
     #[\Override]
     public function has(mixed $index): bool
     {
         return \count($this->find($index)) > 0;
     }
 
-    /**
-     * Find events in the collection.
-     *
-     * @return EventInterface[]
-     */
     #[\Override]
     public function find(mixed $index): array
     {

@@ -11,8 +11,8 @@ class Range extends PeriodAbstract
     public function __construct(\DateTimeInterface $begin, \DateTimeInterface $end, ?FactoryInterface $factory = null)
     {
         $this->factory = $factory;
-        $this->begin = clone $begin;
-        $this->end = clone $end;
+        $this->begin = \DateTimeImmutable::createFromInterface($begin);
+        $this->end = \DateTimeImmutable::createFromInterface($end);
     }
 
     #[\Override]
@@ -25,8 +25,8 @@ class Range extends PeriodAbstract
     public function getNext(): self
     {
         $diff = $this->begin->diff($this->end);
-        $begin = (clone $this->begin)->add($diff);
-        $end = (clone $this->end)->add($diff);
+        $begin = $this->begin->add($diff);
+        $end = $this->end->add($diff);
 
         return new self($begin, $end, $this->factory);
     }
@@ -35,8 +35,8 @@ class Range extends PeriodAbstract
     public function getPrevious(): self
     {
         $diff = $this->begin->diff($this->end);
-        $begin = (clone $this->begin)->sub($diff);
-        $end = (clone $this->end)->sub($diff);
+        $begin = $this->begin->sub($diff);
+        $end = $this->end->sub($diff);
 
         return new self($begin, $end, $this->factory);
     }
