@@ -6,7 +6,7 @@ namespace CalendR\Period;
 
 use CalendR\Period\Exception\NotImplemented;
 
-class Range extends PeriodAbstract
+final class Range extends PeriodAbstract
 {
     public function __construct(\DateTimeInterface $begin, \DateTimeInterface $end, ?FactoryInterface $factory = null)
     {

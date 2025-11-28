@@ -8,7 +8,7 @@ namespace CalendR\Period;
  * @implements \IteratorAggregate<int, Week>
  * @implements IterablePeriod<int, Week>
  */
-class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
+final class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
     #[\Override]
     public function getDatePeriod(): \DatePeriod

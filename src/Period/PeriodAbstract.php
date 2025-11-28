@@ -85,6 +85,7 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
+     * @psalm-suppress UnsafeInstantiation
      * @throws Exception
      */
     #[\Override]
@@ -94,6 +95,7 @@ abstract class PeriodAbstract implements PeriodInterface
     }
 
     /**
+     * @psalm-suppress UnsafeInstantiation
      * @throws Exception|\DateInvalidOperationException
      */
     #[\Override]
@@ -125,6 +127,9 @@ abstract class PeriodAbstract implements PeriodInterface
         return $this->factory;
     }
 
+    /**
+     * @psalm-suppress InvalidStringClass
+     */
     protected function createInvalidException(): Exception
     {
         $class = 'CalendR\Period\Exception\NotA'.(new \ReflectionClass($this))->getShortName();

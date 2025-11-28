@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Period;
 
-class Second extends PeriodAbstract implements \Stringable
+final class Second extends PeriodAbstract implements \Stringable
 {
     #[\Override]
     public function getDatePeriod(): \DatePeriod

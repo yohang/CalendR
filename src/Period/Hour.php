@@ -10,7 +10,7 @@ use CalendR\Period\Exception\NotAnHour;
  * @implements \IteratorAggregate<int, Minute>
  * @implements IterablePeriod<int, Minute>
  */
-class Hour extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
+final class Hour extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
     #[\Override]
     public function getDatePeriod(): \DatePeriod
