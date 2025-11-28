@@ -34,7 +34,7 @@
         "symfony/http-kernel": ">=5.3,<9.0",
         "rector/rector": "^2.2",
         "friendsofphp/php-cs-fixer": "^3.90",
-        "vimeo/psalm": "^7.0.0@dev",
+        "vimeo/psalm": "^6.13@dev",
         "infection/infection": "^0.31.9"
     },
     "autoload": {
