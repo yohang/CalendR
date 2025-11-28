@@ -24,7 +24,7 @@ class Week extends PeriodAbstract implements \IteratorAggregate, \Stringable, It
     #[\Override]
     public function getIterator(): \Generator
     {
-        $current = $this->factory->createDay($this->begin);
+        $current = $this->getFactory()->createDay($this->begin);
         while ($this->contains($current->getBegin())) {
             yield $current->getBegin()->format('d-m-Y') => $current;
 

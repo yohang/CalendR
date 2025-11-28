@@ -105,8 +105,7 @@ final class CalendarTest extends TestCase
         $em = $this->createMock(Manager::class);
         $period = $this->createMock(PeriodInterface::class);
         $events = new Basic([$this->createMock(EventInterface::class)]);
-        $calendar = new Calendar();
-        $calendar->setEventManager($em);
+        $calendar = new Calendar(eventManager: $em);
         $em->expects($this->once())->method('find')->with($period, [])->willReturn($events);
 
         $this->assertSame($events, $calendar->getEvents($period, []));
@@ -114,9 +113,8 @@ final class CalendarTest extends TestCase
 
     public function testGetFirstWeekday(): void
     {
-        $calendar = new Calendar();
         $factory = $this->createMock(FactoryInterface::class);
-        $calendar->setFactory($factory);
+        $calendar = new Calendar(factory: $factory);
         $factory->expects($this->once())->method('getFirstWeekday')->willReturn(DayOfWeek::SUNDAY);
 
         $this->assertSame(DayOfWeek::SUNDAY, $calendar->getFirstWeekday());

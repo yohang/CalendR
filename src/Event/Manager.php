@@ -13,7 +13,7 @@ use CalendR\Period\PeriodInterface;
 class Manager
 {
     /**
-     * @var list<ProviderInterface>
+     * @var array<string, ProviderInterface>
      */
     protected array $providers = [];
 
@@ -32,10 +32,7 @@ class Manager
         iterable $providers = [],
         ?callable $collectionInstantiator = null,
     ) {
-        $this->collectionInstantiator = $collectionInstantiator;
-        if (null === $collectionInstantiator) {
-            $this->collectionInstantiator = (static fn (): Basic => new Basic());
-        }
+        $this->collectionInstantiator = $collectionInstantiator ?? static fn (): Basic => new Basic();
 
         foreach ($providers as $name => $provider) {
             $this->addProvider($name, $provider);

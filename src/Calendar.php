@@ -20,27 +20,13 @@ use CalendR\Period\Year;
 
 /**
  * Factory class for calendar handling.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
  */
-class Calendar
+readonly class Calendar
 {
-    private ?Manager $eventManager = null;
-
-    protected ?FactoryInterface $factory = null;
-
-    public function setEventManager(Manager $eventManager): void
-    {
-        $this->eventManager = $eventManager;
-    }
-
-    public function getEventManager(): Manager
-    {
-        if (!$this->eventManager instanceof Manager) {
-            $this->eventManager = new Manager();
-        }
-
-        return $this->eventManager;
+    public function __construct(
+        protected FactoryInterface $factory = new Factory(),
+        private Manager $eventManager = new Manager(),
+    ) {
     }
 
     public function getYear($yearOrStart): Year
@@ -55,7 +41,7 @@ class Calendar
     public function getMonth($yearOrStart, ?int $month = null): Month
     {
         if (!$yearOrStart instanceof \DateTimeInterface) {
-            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-01', $yearOrStart, $month));
+            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-01', $yearOrStart, $month ?? ''));
         }
 
         return $this->getFactory()->createMonth($yearOrStart);
@@ -75,7 +61,7 @@ class Calendar
     public function getDay($yearOrStart, ?int $month = null, ?int $day = null): Day
     {
         if (!$yearOrStart instanceof \DateTimeInterface) {
-            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-%s', $yearOrStart, $month, $day));
+            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-%s', $yearOrStart, $month ?? '', $day ?? ''));
         }
 
         return $this->getFactory()->createDay($yearOrStart);
@@ -84,7 +70,7 @@ class Calendar
     public function getHour($yearOrStart, ?int $month = null, ?int $day = null, ?int $hour = null): Hour
     {
         if (!$yearOrStart instanceof \DateTimeInterface) {
-            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-%s %s:00', $yearOrStart, $month, $day, $hour));
+            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-%s %s:00', $yearOrStart, $month ?? '', $day ?? '', $hour ?? ''));
         }
 
         return $this->getFactory()->createHour($yearOrStart);
@@ -93,7 +79,7 @@ class Calendar
     public function getMinute($yearOrStart, $month = null, $day = null, $hour = null, $minute = null): Minute
     {
         if (!$yearOrStart instanceof \DateTimeInterface) {
-            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-%s %s:%s', $yearOrStart, $month, $day, $hour, $minute));
+            $yearOrStart = new \DateTimeImmutable(\sprintf('%s-%s-%s %s:%s', $yearOrStart, $month ?? '', $day ?? '', $hour ?? '', $minute ?? ''));
         }
 
         return $this->getFactory()->createMinute($yearOrStart);
@@ -103,7 +89,7 @@ class Calendar
     {
         if (!$yearOrStart instanceof \DateTimeInterface) {
             $yearOrStart = new \DateTimeImmutable(
-                \sprintf('%s-%s-%s %s:%s:%s', $yearOrStart, $month, $day, $hour, $minute, $second)
+                \sprintf('%s-%s-%s %s:%s:%s', $yearOrStart, $month ?? '', $day ?? '', $hour ?? '', $minute ?? '', $second ?? '')
             );
         }
 
@@ -118,18 +104,14 @@ class Calendar
         return $this->getEventManager()->find($period, $options);
     }
 
-    public function setFactory(FactoryInterface $factory): void
-    {
-        $this->factory = $factory;
-    }
-
     public function getFactory(): FactoryInterface
     {
-        if (!$this->factory instanceof FactoryInterface) {
-            $this->factory = new Factory();
-        }
-
         return $this->factory;
+    }
+
+    public function getEventManager(): Manager
+    {
+        return $this->eventManager;
     }
 
     public function setFirstWeekday(DayOfWeek $firstWeekday): void

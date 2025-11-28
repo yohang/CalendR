@@ -6,6 +6,7 @@ namespace CalendR\Period;
 
 use CalendR\Event\EventInterface;
 use CalendR\Exception;
+use CalendR\Period\Exception\NullFactory;
 
 /**
  * An abstract class that represent a date period and provide some base helpers.
@@ -67,7 +68,7 @@ abstract class PeriodAbstract implements PeriodInterface
             $event->containsPeriod($this)
             || $event->isDuring($this)
             || $this->contains($event->getBegin())
-            || ($event->getEnd() && $this->contains($event->getEnd()) && $event->getEnd()->format('c') !== $this->begin->format('c'))
+            || ($this->contains($event->getEnd()) && $event->getEnd()->format('c') !== $this->begin->format('c'))
         ;
     }
 
@@ -115,10 +116,10 @@ abstract class PeriodAbstract implements PeriodInterface
         return $this->end;
     }
 
-    public function getFactory(): FactoryInterface
+    protected function getFactory(): FactoryInterface
     {
-        if (!$this->factory instanceof FactoryInterface) {
-            $this->factory = new Factory();
+        if (null === $this->factory) {
+            throw new NullFactory();
         }
 
         return $this->factory;
@@ -127,7 +128,9 @@ abstract class PeriodAbstract implements PeriodInterface
     protected function createInvalidException(): Exception
     {
         $class = 'CalendR\Period\Exception\NotA'.(new \ReflectionClass($this))->getShortName();
+        $exception = new $class();
+        \assert($exception instanceof Exception);
 
-        return new $class();
+        return $exception;
     }
 }

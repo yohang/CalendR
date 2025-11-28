@@ -103,7 +103,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
             $index = $this->computeIndex(\DateTimeImmutable::createFromInterface($index));
         }
 
-        return $this->events[$index] ?? [];
+        return array_values($this->events[$index] ?? []);
     }
 
     #[\Override]
@@ -115,7 +115,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
             $results = array_merge($results, $events);
         }
 
-        return $results;
+        return array_values($results);
     }
 
     private function computeIndex(EventInterface|\DateTimeImmutable $toCompute): string

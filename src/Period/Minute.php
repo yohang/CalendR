@@ -19,11 +19,11 @@ class Minute extends PeriodAbstract implements \IteratorAggregate, \Stringable, 
     #[\Override]
     public function getIterator(): \Traversable
     {
-        $current = $this->factory->createSecond($this->begin);
+        $current = $this->getFactory()->createSecond($this->begin);
         while ($this->contains($current->getBegin())) {
             yield (int) $current->getBegin()->format('s') => $current;
 
-            $current = $this->factory->createSecond($current->getBegin()->modify('+1 second'));
+            $current = $this->getFactory()->createSecond($current->getBegin()->modify('+1 second'));
         }
     }
 
