@@ -21,7 +21,8 @@ final class Minute extends PeriodAbstract implements \IteratorAggregate, \String
     {
         $current = $this->getFactory()->createSecond($this->begin);
         while ($this->contains($current->getBegin())) {
-            yield (int) $current->getBegin()->format('s') => $current;
+            /* No need to explicit key as whe start to 0 */
+            yield $current;
 
             $current = $this->getFactory()->createSecond($current->getBegin()->modify('+1 second'));
         }

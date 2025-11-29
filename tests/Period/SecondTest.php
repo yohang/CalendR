@@ -163,9 +163,16 @@ final class SecondTest extends TestCase
     }
 
     #[DataProvider('providerIncludes')]
-    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, ?bool $strict, bool $result): void
     {
         $second = new Second($begin, $this->prophesize(FactoryInterface::class)->reveal());
+
+        if (null === $strict) {
+            $this->assertSame($result, $second->includes($period));
+
+            return;
+        }
+
         $this->assertSame($result, $second->includes($period, $strict));
     }
 
@@ -214,5 +221,6 @@ final class SecondTest extends TestCase
         yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:34:45')), false, false];
         yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00')), true, true];
         yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:00:00')), null, true];
     }
 }

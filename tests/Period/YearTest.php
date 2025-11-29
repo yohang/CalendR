@@ -104,7 +104,8 @@ final class YearTest extends TestCase
         $i = 0;
 
         foreach ($year as $monthKey => $month) {
-            $this->assertTrue(is_numeric($monthKey) && $monthKey > 0 && $monthKey <= 12);
+            $this->assertIsInt($monthKey);
+            $this->assertSame((int) $month->getBegin()->format('m'), $monthKey);
             $this->assertInstanceOf(Month::class, $month);
             $this->assertSame($start->format('d-m-Y'), $month->getBegin()->format('d-m-Y'));
             $start = $start->add(new \DateInterval('P1M'));

@@ -208,6 +208,7 @@ final class HourTest extends TestCase
         yield [new \DateTime('2013-09-01 12:00'), new Minute(new \DateTime('2013-09-01 12:34')), false, true];
         yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:34:45')), false, true];
         yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 12:34:45')), false, true];
+        yield [new \DateTime('2013-09-01 12:00'), new Second(new \DateTime('2013-09-01 13:00:00 ')), false, false];
     }
 
     public function testIteration(): void
@@ -217,7 +218,8 @@ final class HourTest extends TestCase
 
         $i = 0;
         foreach ($hour as $minuteKey => $minute) {
-            $this->assertTrue(\is_int($minuteKey) && $minuteKey >= 0 && $minuteKey < 60);
+            $this->assertIsInt($minuteKey);
+            $this->assertSame((int) $minute->getBegin()->format('i'), $minuteKey);
             $this->assertInstanceOf(Minute::class, $minute);
             $this->assertSame($start->format('Y-m-d H:i'), $minute->getBegin()->format('Y-m-d H:i'));
             $this->assertSame('00', $minute->getBegin()->format('s'));

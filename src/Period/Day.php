@@ -21,7 +21,8 @@ final class Day extends PeriodAbstract implements \IteratorAggregate, \Stringabl
     {
         $current = $this->getFactory()->createHour($this->begin);
         while ($this->contains($current->getBegin())) {
-            yield (int) $current->getBegin()->format('G') => $current;
+            /* No need to explicit key as whe start to 0 */
+            yield $current;
 
             $current = $current->getNext();
         }

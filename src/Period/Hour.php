@@ -29,6 +29,7 @@ final class Hour extends PeriodAbstract implements \IteratorAggregate, \Stringab
     {
         $current = $this->getFactory()->createMinute($this->begin);
         while ($this->contains($current->getBegin())) {
+            /* No need to explicit key as whe start to 0 */
             yield $current;
 
             $current = $current->getNext();

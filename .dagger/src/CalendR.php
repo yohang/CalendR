@@ -121,7 +121,7 @@ class CalendR
             ->withExec(['apt-get', 'install', '-y', 'git'])
             ->withDirectory('.git', $source->directory('.git'));
 
-        $exec = ['./vendor/bin/infection', '--threads=1', '--min-msi=85'];
+        $exec = ['./vendor/bin/infection', '--threads=1', '--min-msi=90'];
 
         if ($strykerDashboardApiKey && $githubActions) {
             $exec[] = '--logger-github=true';

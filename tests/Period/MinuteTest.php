@@ -233,7 +233,8 @@ final class MinuteTest extends TestCase
 
         $i = 0;
         foreach ($minute as $secondKey => $second) {
-            $this->assertTrue(\is_int($secondKey) && $secondKey >= 0 && $secondKey < 60);
+            $this->assertIsInt($secondKey);
+            $this->assertSame((int) $second->getBegin()->format('s'), $secondKey);
             $this->assertInstanceOf(Second::class, $second);
             $this->assertSame($start->format('Y-m-d H:i:s'), $second->getBegin()->format('Y-m-d H:i:s'));
 

@@ -19,7 +19,7 @@ trait EventTrait
 
     public function containsPeriod(PeriodInterface $period): bool
     {
-        return $this->contains($period->getBegin()) && $this->contains($period->getEnd());
+        return $this->getBegin() <= $period->getBegin() && $this->getEnd() >= $period->getEnd();
     }
 
     public function isDuring(PeriodInterface $period): bool

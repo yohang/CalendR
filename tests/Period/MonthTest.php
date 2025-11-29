@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CalendR\Test\Period;
 
 use CalendR\DayOfWeek;
+use CalendR\Event\Event;
+use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAMonth;
 use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
@@ -108,7 +110,8 @@ final class MonthTest extends TestCase
         $i = 0;
 
         foreach ($month as $weekKey => $week) {
-            $this->assertTrue(is_numeric($weekKey) && $weekKey > 0 && $weekKey < 54);
+            $this->assertIsInt($weekKey);
+            $this->assertSame((int) $week->getBegin()->format('W'), $weekKey);
             $this->assertInstanceOf(Week::class, $week);
 
             foreach ($week as $day) {
@@ -143,6 +146,20 @@ final class MonthTest extends TestCase
             $this->assertTrue($first->equals($day));
             $first = $first->getNext();
         }
+    }
+
+    public function testAbstractEqualsChecksType(): void
+    {
+        $this->assertFalse((new Month(new \DateTimeImmutable('2025-11-01')))->equals(new Day(new \DateTimeImmutable('2025-11-01'))));
+    }
+
+    public function testGetExtendedMonth(): void
+    {
+        $month = new Month(new \DateTimeImmutable('2025-11-01'), new Factory(DayOfWeek::MONDAY));
+
+        $extendedMonth = $month->getExtendedMonth();
+        $this->assertSame('2025-10-27', $extendedMonth->getBegin()->format('Y-m-d'));
+        $this->assertSame('2025-11-30', $extendedMonth->getEnd()->format('Y-m-d'));
     }
 
     public function testGetNext(): void
@@ -185,5 +202,26 @@ final class MonthTest extends TestCase
         $this->assertTrue($currentMonth->contains($currentDate));
         $this->assertFalse($currentMonth->contains($otherDate));
         $this->assertFalse($otherMonth->contains($currentDate));
+    }
+
+    #[DataProvider('providerItContainsEvent')]
+    public function testItContainsEvent(
+        string $month,
+        \DateTimeImmutable $eventBegin,
+        \DateTimeImmutable $eventEnd,
+        bool $expected,
+    ) {
+        $month = new Month(new \DateTimeImmutable($month));
+        $this->assertSame($expected, $month->containsEvent(new Event($eventBegin, $eventEnd)));
+    }
+
+    public static function providerItContainsEvent(): iterable
+    {
+        yield ['2025-11-01', new \DateTimeImmutable('2025-11-10'), new \DateTimeImmutable('2025-11-15'), true];
+        yield ['2025-11-01', new \DateTimeImmutable('2025-10-28'), new \DateTimeImmutable('2025-11-02'), true];
+        yield ['2025-11-01', new \DateTimeImmutable('2025-11-28'), new \DateTimeImmutable('2025-12-03'), true];
+        yield ['2025-11-01', new \DateTimeImmutable('2025-10-20'), new \DateTimeImmutable('2025-10-25'), false];
+        yield ['2025-11-01', new \DateTimeImmutable('2025-11-01'), new \DateTimeImmutable('2025-11-01'), true];
+        yield ['2025-11-01', new \DateTimeImmutable('2025-12-01'), new \DateTimeImmutable('2025-12-01'), false];
     }
 }

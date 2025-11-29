@@ -21,12 +21,7 @@ final class Basic implements ProviderInterface, \IteratorAggregate, \Countable
     {
         $events = [];
         foreach ($this->events as $event) {
-            if (
-                ($event->getBegin() >= $begin && $event->getBegin() < $end)
-                || ($event->getEnd() > $begin && $event->getEnd() <= $end)
-                || ($begin <= $event->getBegin() && $event->getEnd() <= $end)
-                || ($event->getBegin() <= $begin && $end <= $event->getEnd())
-            ) {
+            if ($event->getBegin() < $end && $event->getEnd() > $begin) {
                 $events[] = $event;
             }
         }

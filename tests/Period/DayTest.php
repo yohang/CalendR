@@ -10,6 +10,7 @@ use CalendR\Period\Factory;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Hour;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\Range;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -131,9 +132,16 @@ final class DayTest extends TestCase
     }
 
     #[DataProvider('includesDataProvider')]
-    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
+    public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, ?bool $strict, bool $result): void
     {
         $day = new Day($begin, $this->prophesize(FactoryInterface::class)->reveal());
+
+        if (null === $strict) {
+            $this->assertSame($result, $day->includes($period));
+
+            return;
+        }
+
         $this->assertSame($result, $day->includes($period, $strict));
     }
 
@@ -161,6 +169,9 @@ final class DayTest extends TestCase
         yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), true, false];
         yield [new \DateTime('2013-09-01'), new Year(new \DateTime('2013-01-01')), false, true];
         yield [new \DateTime('2013-09-01'), new Day(new \DateTime('2013-09-01')), true, true];
+        yield [new \DateTime('2013-09-01'), new Range(new \DateTime('2013-08-01'), new \DateTime('2013-10-01')), null, false];
+        yield [new \DateTime('2013-09-01'), new Range(new \DateTime('2013-08-01'), new \DateTime('2013-10-01')), true, false];
+        yield [new \DateTime('2013-09-01'), new Range(new \DateTime('2013-08-01'), new \DateTime('2013-10-01')), false, true];
     }
 
     public function testIteration(): void
@@ -171,7 +182,8 @@ final class DayTest extends TestCase
         $i = 0;
 
         foreach ($day as $hourKey => $hour) {
-            $this->assertTrue(\is_int($hourKey) && $hourKey >= 0 && $hourKey < 24);
+            $this->assertIsInt($hourKey);
+            $this->assertSame((int) $hour->getBegin()->format('H'), $hourKey);
             $this->assertInstanceOf(Hour::class, $hour);
             $this->assertSame($start->format('Y-m-d H'), $hour->getBegin()->format('Y-m-d H'));
             $this->assertSame('00:00', $hour->getBegin()->format('i:s'));
