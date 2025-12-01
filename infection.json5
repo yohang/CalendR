@@ -8,5 +8,10 @@
     "mutators": {
         "@default": true,
         "CastInt": false,
+    },
+    "logs": {
+        "stryker": {
+            report: "/.*/"
+        }
     }
 }

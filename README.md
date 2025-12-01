@@ -5,7 +5,7 @@
 CalendR provides a clean, immutable, and iterable API to manipulate time periods (Years, Months, Weeks, Days...) and manage associated events.
 
 [![CI Status](https://github.com/yohang/CalendR/actions/workflows/ci.yml/badge.svg)](https://github.com/yohang/CalendR/actions/workflows/ci.yml)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyohang%2FCalendR%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yohang/CalendR/master)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyohang%2FCalendR%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/yohang/CalendR/main)
 
 ## ✨ Features
 
