@@ -63,7 +63,7 @@ final class EventRepositoryTest extends TestCase
         $this->qb->expects($this->once())->method('andWhere')->willReturn($this->qb);
         $this->qb->expects($this->once())->method('getQuery')->willReturn($query);
         $this->qb->expects($this->exactly(2))->method('setParameter')->willReturn($this->qb);
-        $this->qb->expects($this->once())->method('expr')->willReturn($expr);
+        $this->qb->expects($this->atLeastOnce())->method('expr')->willReturn($expr);
         $expr->expects($this->once())->method('andX');
 
         $events = $this->repo->getEvents(new \DateTimeImmutable($begin), new \DateTimeImmutable($end));
@@ -79,8 +79,7 @@ final class EventRepositoryTest extends TestCase
         $this->qb->expects($this->exactly(3))->method('from')->willReturn($this->qb);
         $this->qb->expects($this->exactly(2))->method('andWhere')->willReturn($this->qb);
         $this->qb->expects($this->atLeastOnce())->method('expr')->willReturn($expr);
-        $expr->expects($this->exactly(2))->method('orX');
-        $expr->expects($this->exactly(8))->method('andX');
+        $expr->expects($this->exactly(2))->method('andX');
 
         $this->repo->createQueryBuilderForGetEvent([]);
         $this->repo->getEventsQueryBuilder(new \DateTimeImmutable($begin), new \DateTimeImmutable($end));

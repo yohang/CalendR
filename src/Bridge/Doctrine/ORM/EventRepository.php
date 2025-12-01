@@ -16,14 +16,11 @@ trait EventRepository
     {
         $qb = $this->createQueryBuilderForGetEvent($options);
 
-        $beginField = $this->getBeginFieldName();
-        $endField = $this->getEndFieldName();
-
         return $qb
             ->andWhere(
                 $qb->expr()->andX(
-                    "${beginField} < :end",
-                    "${endField} > :begin"
+                    $qb->expr()->lt($begin, ":end"),
+                    $qb->expr()->gt($end, ":begin"),
                 )
             )
             ->setParameter(':begin', $begin)
