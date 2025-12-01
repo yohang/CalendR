@@ -26,6 +26,7 @@ final class BasicTest extends TestCase
             new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T21:30'), 'event-3'),
             new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T00:00'), 'event-4'),
             new Event(new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-29T00:00'), 'event-5'),
+            new Event(new \DateTime('2025-11-01T00:00'), new \DateTime('2025-12-01T00:00'), 'event-6'),
         ];
     }
 
@@ -73,5 +74,6 @@ final class BasicTest extends TestCase
         yield [new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), [2]];
         yield [new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), [5]];
         yield [new \DateTime('2015-12-27T00:00'), new \DateTime('2015-12-28T00:00'), []];
+        yield [new \DateTime('2025-12-01T00:00'), new \DateTime('2026-01-01T00:00'), []];
     }
 }

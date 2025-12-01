@@ -7,6 +7,6 @@
     },
     "mutators": {
         "@default": true,
-        "CloneRemoval": false
+        "CastInt": false,
     }
 }

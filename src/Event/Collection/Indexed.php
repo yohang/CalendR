@@ -17,7 +17,7 @@ use CalendR\Period\PeriodInterface;
 final class Indexed implements CollectionInterface, \IteratorAggregate
 {
     /**
-     * @var EventInterface[][]
+     * @var array<string, list<EventInterface>>
      */
     protected array $events = [];
 
@@ -42,8 +42,8 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
     protected $indexFunction;
 
     /**
+     * @param list<EventInterface> $events
      * @param callable(\DateTimeInterface):string|null $callable
-     * @param array<EventInterface>                    $events
      */
     public function __construct(array $events = [], ?callable $callable = null)
     {
@@ -103,7 +103,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
             $index = $this->computeIndex(\DateTimeImmutable::createFromInterface($index));
         }
 
-        return array_values($this->events[$index] ?? []);
+        return $this->events[$index] ?? [];
     }
 
     #[\Override]
@@ -115,7 +115,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
             $results = array_merge($results, $events);
         }
 
-        return array_values($results);
+        return $results;
     }
 
     private function computeIndex(EventInterface|\DateTimeImmutable $toCompute): string

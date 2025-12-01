@@ -11,6 +11,7 @@ use CalendR\DayOfWeek;
 use CalendR\Event\Manager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -55,6 +56,24 @@ final class CalendRExtensionTest extends TestCase
         $symfonyHasEnum = method_exists(EnumNodeDefinition::class, 'enumFqcn');
 
         $configs = ['calendr' => ['periods' => ['default_first_weekday' => $symfonyHasEnum ? DayOfWeek::FRIDAY : DayOfWeek::FRIDAY->value]]];
+
+        $extension = new CalendRExtension();
+        $extension->load($configs, $containerBuilder);
+    }
+
+    public function testItValidatesIfInvalidConfig(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $containerBuilder = $this->createMock(ContainerBuilder::class);
+
+        $containerBuilder
+            ->expects($this->once())
+            ->method('getReflectionClass')
+            ->with(Configuration::class)
+            ->willReturn(new \ReflectionClass(Configuration::class));
+
+        $configs = ['calendr' => ['periods' => ['default_first_weekday' => 34]]];
 
         $extension = new CalendRExtension();
         $extension->load($configs, $containerBuilder);

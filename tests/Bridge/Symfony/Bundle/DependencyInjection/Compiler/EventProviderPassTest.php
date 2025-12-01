@@ -11,6 +11,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 final class EventProviderPassTest extends TestCase
 {
@@ -32,12 +33,28 @@ final class EventProviderPassTest extends TestCase
                 ]
             );
 
-        $eventManagerDefinition->expects($this->exactly(2))
-                               ->method('addMethodCall');
+        $eventManagerDefinition
+            ->expects($invocationCount = $this->exactly(2))
+            ->method('addMethodCall')
+            ->with('addProvider', $this->callback(function (array $arguments) use ($invocationCount) {
+                if (1 === $invocationCount->numberOfInvocations()) {
+                    $this->assertSame('service1', $arguments[0]);
+                    $this->assertInstanceOf(Reference::class, $arguments[1]);
+
+                    return true;
+                }
+
+                $this->assertSame('service2_alias', $arguments[0]);
+                $this->assertInstanceOf(Reference::class, $arguments[1]);
+
+                return true;
+            }));
 
         $pass = new EventProviderPass();
         $pass->process($containerBuilder);
 
         $this->assertInstanceOf(CompilerPassInterface::class, $pass);
     }
+
+
 }

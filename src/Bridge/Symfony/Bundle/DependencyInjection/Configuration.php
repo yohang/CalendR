@@ -26,11 +26,7 @@ final class Configuration implements ConfigurationInterface
         if (method_exists($enumNode, 'enumFqcn')) {
             $enumNode
                 ->enumFqcn(DayOfWeek::class)
-                ->defaultValue(DayOfWeek::MONDAY)
-                ->validate()
-                    ->ifNotInArray(DayOfWeek::cases())
-                    ->thenInvalid('Day must be a case of '.DayOfWeek::class)
-                ->end();
+                ->defaultValue(DayOfWeek::MONDAY);
         } else {
             $enumNode
                 ->values(array_map(fn (DayOfWeek $dayOfWeek) => $dayOfWeek->value, DayOfWeek::cases()))

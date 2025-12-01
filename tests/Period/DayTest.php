@@ -172,6 +172,7 @@ final class DayTest extends TestCase
         yield [new \DateTime('2013-09-01'), new Range(new \DateTime('2013-08-01'), new \DateTime('2013-10-01')), null, false];
         yield [new \DateTime('2013-09-01'), new Range(new \DateTime('2013-08-01'), new \DateTime('2013-10-01')), true, false];
         yield [new \DateTime('2013-09-01'), new Range(new \DateTime('2013-08-01'), new \DateTime('2013-10-01')), false, true];
+        yield [new \DateTime('2013-10-01'), new Range(new \DateTime('2013-08-01'), new \DateTime('2013-10-01')), false, false];
     }
 
     public function testIteration(): void

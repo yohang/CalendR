@@ -7,6 +7,8 @@ namespace CalendR\Test\Event\Collection;
 use CalendR\Event\Collection\Basic;
 use CalendR\Event\Event;
 use CalendR\Period\Day;
+use CalendR\Period\PeriodInterface;
+use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -76,10 +78,11 @@ final class BasicTest extends TestCase
         yield [new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'];
         yield [new Day(new \DateTime('2012-05-09')), 1, 'event-a'];
         yield [new Day(new \DateTime('2011-05-09')), 0, null];
+        yield [new Year(new \DateTime('2012-01-01')), 5, 'event-a'];
     }
 
     #[DataProvider('findProvider')]
-    public function testFind(\DateTime|Day $index, int $count, ?string $eventUid): void
+    public function testFind(\DateTime|PeriodInterface $index, int $count, ?string $eventUid): void
     {
         $events = $this->collection->find($index);
         $this->assertCount($count, $events);
@@ -89,7 +92,7 @@ final class BasicTest extends TestCase
     }
 
     #[DataProvider('findProvider')]
-    public function testHas(\DateTime|Day $index, int $count): void
+    public function testHas(\DateTime|PeriodInterface $index, int $count): void
     {
         $this->assertSame($count > 0, $this->collection->has($index));
     }

@@ -28,8 +28,8 @@ final class Event extends AbstractEvent
             throw new InvalidEvent('Events usually start before they end');
         }
 
-        $this->begin = clone $start;
-        $this->end = clone $end;
+        $this->begin = \DateTimeImmutable::createFromInterface($start);
+        $this->end = \DateTimeImmutable::createFromInterface($end);
         $this->uid = $uid ?? uniqid('event_', true);
     }
 

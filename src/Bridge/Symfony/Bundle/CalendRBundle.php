@@ -18,8 +18,6 @@ final class CalendRBundle extends Bundle
             $container->registerForAutoconfiguration(ProviderInterface::class)->addTag(EventProviderPass::TAG);
         }
 
-        parent::build($container);
-
         $container->addCompilerPass(new EventProviderPass());
     }
 }

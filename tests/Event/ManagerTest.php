@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event;
 
+use CalendR\Event\Collection\CollectionInterface;
 use CalendR\Event\Event;
 use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Event\Manager;
 use CalendR\Event\Provider\Basic;
+use CalendR\Event\Provider\ProviderInterface;
 use CalendR\Period\Day;
 use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -64,5 +67,28 @@ final class ManagerTest extends TestCase
 
         $manager = new Manager();
         $manager->find(new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal()));
+    }
+
+    public function testCollectionInstantiator(): void
+    {
+        $provider = $this->createMock(ProviderInterface::class);
+        $provider->method('getEvents')->willReturn([]);
+
+        $collectionMock = $this->createMock(CollectionInterface::class);
+        $manager = new Manager(
+            ['provider' => $provider],
+            collectionInstantiator: function () use ($collectionMock): CollectionInterface {
+                return $collectionMock;
+            },
+        );
+
+        $period = $this->createMock(PeriodInterface::class);
+        $period->method('getBegin')->willReturn(new \DateTimeImmutable('2025-12-01'));
+        $period->method('getEnd')->willReturn(new \DateTimeImmutable('2025-12-02'));
+
+        $this->assertSame(
+            $collectionMock,
+            $manager->find($period),
+        );
     }
 }
