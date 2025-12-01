@@ -8,7 +8,7 @@ use CalendR\Event\Collection\CollectionInterface;
 use CalendR\Event\Event;
 use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Event\Manager;
-use CalendR\Event\Provider\Basic;
+use CalendR\Event\Provider\ArrayProvider;
 use CalendR\Event\Provider\ProviderInterface;
 use CalendR\Period\Day;
 use CalendR\Period\FactoryInterface;
@@ -25,9 +25,9 @@ final class ManagerTest extends TestCase
 
     protected function setUp(): void
     {
-        $basic1 = new Basic();
+        $basic1 = new ArrayProvider();
         $this->object = new Manager(['basic-1' => $basic1]);
-        $this->object->addProvider('basic-2', $basic2 = new Basic());
+        $this->object->addProvider('basic-2', $basic2 = new ArrayProvider());
 
         $basic1->add(new Event(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), 'event-1'));
         $basic2->add(new Event(new \DateTimeImmutable('2012-01-04'), new \DateTimeImmutable('2012-01-05'), 'event-2'));

@@ -6,7 +6,7 @@ namespace CalendR\Test;
 
 use CalendR\Calendar;
 use CalendR\DayOfWeek;
-use CalendR\Event\Collection\Basic;
+use CalendR\Event\Collection\ArrayCollection;
 use CalendR\Event\EventInterface;
 use CalendR\Event\Manager;
 use CalendR\Period\Day;
@@ -104,7 +104,7 @@ final class CalendarTest extends TestCase
     {
         $em = $this->createMock(Manager::class);
         $period = $this->createMock(PeriodInterface::class);
-        $events = new Basic([$this->createMock(EventInterface::class)]);
+        $events = new ArrayCollection([$this->createMock(EventInterface::class)]);
         $calendar = new Calendar(eventManager: $em);
         $em->expects($this->once())->method('find')->with($period, [])->willReturn($events);
 

@@ -14,7 +14,7 @@ use CalendR\Period\PeriodInterface;
  * @implements CollectionInterface<string>
  * @implements \IteratorAggregate<string, EventInterface[]>
  */
-final class Indexed implements CollectionInterface, \IteratorAggregate
+final class IndexedCollection implements CollectionInterface, \IteratorAggregate
 {
     /**
      * @var array<string, list<EventInterface>>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Collection;
 
-use CalendR\Event\Collection\Basic;
+use CalendR\Event\Collection\ArrayCollection;
 use CalendR\Event\Event;
 use CalendR\Period\Day;
 use CalendR\Period\PeriodInterface;
@@ -18,11 +18,11 @@ final class BasicTest extends TestCase
     use ProphecyTrait;
 
     private static array $events = [];
-    private Basic $collection;
+    private ArrayCollection $collection;
 
     protected function setUp(): void
     {
-        $this->collection = new Basic(self::$events);
+        $this->collection = new ArrayCollection(self::$events);
     }
 
     public static function setUpBeforeClass(): void
