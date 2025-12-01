@@ -34,7 +34,7 @@ final class Basic implements CollectionInterface, \IteratorAggregate
     public function remove(EventInterface $event): void
     {
         foreach ($this->events as $key => $internalEvent) {
-            if ($event->isEqualTo($internalEvent)) {
+            if ($event === $internalEvent) {
                 unset($this->events[$key]);
             }
         }

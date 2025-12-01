@@ -75,19 +75,19 @@ final class BasicTest extends TestCase
 
     public static function findProvider(): \Iterator
     {
-        yield [new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'];
-        yield [new Day(new \DateTime('2012-05-09')), 1, 'event-a'];
+        yield [new \DateTime('2012-05-09T11:56:00'), 1, 0];
+        yield [new Day(new \DateTime('2012-05-09')), 1, 0];
         yield [new Day(new \DateTime('2011-05-09')), 0, null];
-        yield [new Year(new \DateTime('2012-01-01')), 5, 'event-a'];
+        yield [new Year(new \DateTime('2012-01-01')), 5, 0];
     }
 
     #[DataProvider('findProvider')]
-    public function testFind(\DateTime|PeriodInterface $index, int $count, ?string $eventUid): void
+    public function testFind(\DateTime|PeriodInterface $index, int $count, ?int $eventIndex): void
     {
         $events = $this->collection->find($index);
         $this->assertCount($count, $events);
         if ($count > 0) {
-            $this->assertSame($eventUid, $events[0]->getUid());
+            $this->assertSame(self::$events[$eventIndex], $events[0]);
         }
     }
 
@@ -99,9 +99,8 @@ final class BasicTest extends TestCase
 
     public function testAll(): void
     {
-        $index = \ord('a');
-        foreach ($this->collection->all() as $event) {
-            $this->assertSame('event-'.\chr($index++), $event->getUid());
+        foreach ($this->collection->all() as $index => $event) {
+            $this->assertSame(self::$events[$index], $event);
         }
         $this->assertCount(\count($this->collection), $this->collection->all());
     }

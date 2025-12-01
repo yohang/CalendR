@@ -79,7 +79,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
         $index = $this->computeIndex($event);
         if (isset($this->events[$index])) {
             foreach ($this->events[$index] as $key => $internalEvent) {
-                if ($event->isEqualTo($internalEvent)) {
+                if ($event === $internalEvent) {
                     unset($this->events[$index][$key]);
                     --$this->count;
                 }

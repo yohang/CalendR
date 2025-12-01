@@ -26,6 +26,4 @@ interface EventInterface
      * Check if the event is during the given period.
      */
     public function isDuring(PeriodInterface $period): bool;
-
-    public function isEqualTo(self $event): bool;
 }
