@@ -85,7 +85,7 @@ abstract class PeriodAbstract implements PeriodInterface
     /**
      * @psalm-suppress UnsafeInstantiation
      *
-     * @throws Exception|\DateInvalidOperationException
+     * @throws Exception
      */
     #[\Override]
     public function getPrevious(): PeriodInterface
