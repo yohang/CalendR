@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+4.0.0
+-----
+
+ * 
+ * Dropped support for PHP < 8.2
+ * Dropped support for Twig < 3
+ 
+
 2.2.0
 -----
 

@@ -42,7 +42,7 @@ final class Indexed implements CollectionInterface, \IteratorAggregate
     protected $indexFunction;
 
     /**
-     * @param list<EventInterface> $events
+     * @param list<EventInterface>                     $events
      * @param callable(\DateTimeInterface):string|null $callable
      */
     public function __construct(array $events = [], ?callable $callable = null)

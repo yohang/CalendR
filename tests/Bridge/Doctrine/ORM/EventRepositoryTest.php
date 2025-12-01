@@ -78,8 +78,14 @@ final class EventRepositoryTest extends TestCase
         $this->qb->expects($this->exactly(3))->method('select')->willReturn($this->qb);
         $this->qb->expects($this->exactly(3))->method('from')->willReturn($this->qb);
         $this->qb->expects($this->exactly(2))->method('andWhere')->willReturn($this->qb);
+        $this->qb->expects($this->exactly(4))->method('setParameter')->willReturn($this->qb);
         $this->qb->expects($this->atLeastOnce())->method('expr')->willReturn($expr);
-        $expr->expects($this->exactly(2))->method('andX');
+
+        if ((new \ReflectionClass(Query::class))->isFinal()) {
+            $this->qb->expects($this->exactly(1))->method('getQuery')->willReturn($this->createMock(AbstractQuery::class));
+        } else {
+            $this->qb->expects($this->exactly(1))->method('getQuery')->willReturn($this->createMock(Query::class));
+        }
 
         $this->repo->createQueryBuilderForGetEvent([]);
         $this->repo->getEventsQueryBuilder(new \DateTimeImmutable($begin), new \DateTimeImmutable($end));

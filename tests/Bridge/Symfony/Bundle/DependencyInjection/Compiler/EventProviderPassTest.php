@@ -55,6 +55,4 @@ final class EventProviderPassTest extends TestCase
 
         $this->assertInstanceOf(CompilerPassInterface::class, $pass);
     }
-
-
 }

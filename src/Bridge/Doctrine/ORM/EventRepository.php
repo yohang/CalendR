@@ -19,8 +19,8 @@ trait EventRepository
         return $qb
             ->andWhere(
                 $qb->expr()->andX(
-                    $qb->expr()->lt($begin, ":end"),
-                    $qb->expr()->gt($end, ":begin"),
+                    $qb->expr()->lt($begin, ':end'),
+                    $qb->expr()->gt($end, ':begin'),
                 )
             )
             ->setParameter(':begin', $begin)
