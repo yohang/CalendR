@@ -1,113 +1,108 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Event\Collection;
 
-use CalendR\Event\Collection;
+use CalendR\Event\Collection\Basic;
 use CalendR\Event\Event;
-use CalendR\Period;
+use CalendR\Period\Day;
+use CalendR\Period\PeriodInterface;
+use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class BasicTest extends TestCase
+final class BasicTest extends TestCase
 {
     use ProphecyTrait;
 
-    private static $events = array();
-    /**
-     * @var \CalendR\Event\Collection\Basic
-     */
-    private $collection;
+    private static array $events = [];
+    private Basic $collection;
 
     protected function setUp(): void
     {
-        $this->collection = new Collection\Basic(self::$events);
+        $this->collection = new Basic(self::$events);
     }
 
     public static function setUpBeforeClass(): void
     {
-        self::$events = array(
-            new Event('event-a', new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00')),
-            new Event('event-b', new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00')),
-            new Event('event-c', new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00')),
-            new Event('event-d', new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00')),
-            new Event('event-e', new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00')),
-        );
+        self::$events = [
+            new Event(new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00'), 'event-a'),
+            new Event(new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00'), 'event-b'),
+            new Event(new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00'), 'event-c'),
+            new Event(new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00'), 'event-d'),
+            new Event(new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00'), 'event-e'),
+        ];
     }
 
-    public function testConstruct()
+    public function testConstruct(): void
     {
-        $this->assertSame(5, count($this->collection));
+        $this->assertCount(5, $this->collection);
     }
 
-    public function getAddData()
+    public function getAddData(): array
     {
-        return array(
-            array(new Event('event-1',new \DateTime('2012-05-03T10:00:00'),new \DateTime('2012-05-03T18:00:00')), 6),
-            array(new Event('event-2',new \DateTime('2012-05-03T13:00:00'),new \DateTime('2012-05-03T16:00:00')), 7),
-            array(new Event('event-3',new \DateTime('2012-05-05T13:00:00'),new \DateTime('2012-05-05T16:00:00')), 8),
-        );
+        return [
+            [new Event(new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00'), 'event-1'), 6],
+            [new Event(new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00'), 'event-2'), 7],
+            [new Event(new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00'), 'event-3'), 8],
+        ];
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         foreach ($this->getAddData() as $data) {
             $this->collection->add($data[0]);
-            $this->assertSame($data[1], count($this->collection));
+            $this->assertCount($data[1], $this->collection);
         }
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         // Remove an event
         $this->collection->remove(self::$events[2]);
-        $this->assertSame(4, count($this->collection));
+        $this->assertCount(4, $this->collection);
 
         // Remove the same event, nothing should happen
         $this->collection->remove(self::$events[2]);
-        $this->assertSame(4, count($this->collection));
+        $this->assertCount(4, $this->collection);
 
         // Remove an other event
         $this->collection->remove(self::$events[4]);
-        $this->assertSame(3, count($this->collection));
+        $this->assertCount(3, $this->collection);
     }
 
-    public function findProvider()
+    public static function findProvider(): \Iterator
     {
-        $factory = $this->prophesize(Period\FactoryInterface::class)->reveal();
-
-        return array(
-            array(new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'),
-            array(new Period\Day(new \DateTime('2012-05-09'), $factory), 1, 'event-a'),
-            array(new Period\Day(new \DateTime('2011-05-09'), $factory), 0, null),
-        );
+        yield [new \DateTime('2012-05-09T11:56:00'), 1, 'event-a'];
+        yield [new Day(new \DateTime('2012-05-09')), 1, 'event-a'];
+        yield [new Day(new \DateTime('2011-05-09')), 0, null];
+        yield [new Year(new \DateTime('2012-01-01')), 5, 'event-a'];
     }
 
-    /**
-     * @dataProvider findProvider
-     */
-    public function testFind($index, $count, $eventUid)
+    #[DataProvider('findProvider')]
+    public function testFind(\DateTime|PeriodInterface $index, int $count, ?string $eventUid): void
     {
         $events = $this->collection->find($index);
-        $this->assertSame($count, count($events));
+        $this->assertCount($count, $events);
         if ($count > 0) {
             $this->assertSame($eventUid, $events[0]->getUid());
         }
     }
 
-    /**
-     * @dataProvider findProvider
-     */
-    public function testHas($index, $count)
+    #[DataProvider('findProvider')]
+    public function testHas(\DateTime|PeriodInterface $index, int $count): void
     {
         $this->assertSame($count > 0, $this->collection->has($index));
     }
 
-    public function testAll()
+    public function testAll(): void
     {
-        $index = ord('a');
+        $index = \ord('a');
         foreach ($this->collection->all() as $event) {
-            $this->assertSame('event-'.chr($index++), $event->getUid());
+            $this->assertSame('event-'.\chr($index++), $event->getUid());
         }
-        $this->assertSame(count($this->collection), count($this->collection->all()));
+        $this->assertCount(\count($this->collection), $this->collection->all());
     }
 }

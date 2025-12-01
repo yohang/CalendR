@@ -1,59 +1,47 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Event\Collection;
 
 use CalendR\Event\EventInterface;
+use CalendR\Period\PeriodInterface;
 
 /**
  * Represents an event collection.
+ *
+ * @template TKey
+ *
+ * @extends \Traversable<TKey, EventInterface>
  */
-interface CollectionInterface extends \Countable
+interface CollectionInterface extends \Countable, \Traversable
 {
     /**
      * Adds an event to the collection.
-     *
-     * @param EventInterface $event
      */
-    public function add(EventInterface $event);
+    public function add(EventInterface $event): void;
 
     /**
      * Removes an event from the collection.
-     *
-     * @param EventInterface $event
      */
-    public function remove(EventInterface $event);
+    public function remove(EventInterface $event): void;
 
     /**
      * Return all events;.
      *
-     * @return EventInterface[]
+     * @return list<EventInterface>
      */
-    public function all();
+    public function all(): array;
 
     /**
      * Returns if there is events corresponding to $index period.
-     *
-     * @param mixed $index
-     *
-     * @return bool
      */
-    public function has($index);
+    public function has(PeriodInterface|\DateTimeInterface|string $index): bool;
 
     /**
      * Find events in the collection.
      *
-     * @param mixed $index
-     *
-     * @return EventInterface[]
+     * @return list<EventInterface>
      */
-    public function find($index);
+    public function find(PeriodInterface|\DateTimeInterface|string $index): array;
 }

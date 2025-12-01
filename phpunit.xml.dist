@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./vendor/autoload.php" colors="true"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd">
-    <coverage>
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
+    <source>
         <include>
-            <directory suffix=".php">./src/CalendR/</directory>
+            <directory>src</directory>
         </include>
-    </coverage>
+    </source>
     <testsuites>
         <testsuite name="CalendR Test Suite">
             <directory suffix="Test.php">./tests</directory>

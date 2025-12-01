@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
 /**
- * Represents a Month.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
+ * @implements \IteratorAggregate<int, Week>
+ * @implements IterablePeriod<int, Week>
  */
-class Month extends PeriodAbstract implements \Iterator
+final class Month extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
-    private ?PeriodInterface $current = null;
-
+    #[\Override]
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
@@ -33,9 +33,9 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the first day of the first week of month.
-     * First day of week is configurable via {@link Factory:setOption()}.
+     * First day of week is configurable via {@link Factory}.
      */
-    public function getFirstDayOfFirstWeek(): \DateTimeInterface
+    public function getFirstDayOfFirstWeek(): \DateTimeImmutable
     {
         return $this->getFactory()->findFirstDayOfWeek($this->begin);
     }
@@ -51,62 +51,39 @@ class Month extends PeriodAbstract implements \Iterator
 
     /**
      * Returns the last day of last week of month
-     * First day of week is configurable via {@link Factory::setOption()}.
+     * First day of week is configurable via {@link Factory}.
      */
-    public function getLastDayOfLastWeek(): \DateTimeInterface
+    public function getLastDayOfLastWeek(): \DateTimeImmutable
     {
-        $lastDay = (clone $this->end)->sub(new \DateInterval('P1D'));
+        $lastDay = $this->end->sub(new \DateInterval('P1D'));
 
         return $this->getFactory()->findFirstDayOfWeek($lastDay)->add(new \DateInterval('P6D'));
     }
 
-    public function current(): ?PeriodInterface
+    #[\Override]
+    public function getIterator(): \Generator
     {
-        return $this->current;
-    }
+        $current = $this->getFactory()->createWeek($this->getFirstDayOfFirstWeek());
+        while ($this->getExtendedMonth()->contains($current->getBegin())) {
+            yield (int) $current->getBegin()->format('W') => $current;
 
-    public function next(): void
-    {
-        if (!$this->valid()) {
-            $this->current = $this->getFactory()->createWeek($this->getFirstDayOfFirstWeek());
-        } else {
-            $this->current = $this->current->getNext();
-
-            if ($this->current->getBegin()->format('m') !== $this->begin->format('m')) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
     }
 
-    public function key(): int
-    {
-        return $this->current->getBegin()->format('W');
-    }
-
-    public function valid(): bool
-    {
-        return null !== $this->current();
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
-    }
-
-    /**
-     * Returns the month name (probably in english).
-     */
+    #[\Override]
     public function __toString(): string
     {
         return $this->format('F');
     }
 
+    #[\Override]
     public static function isValid(\DateTimeInterface $start): bool
     {
-        return $start->format('d H:i:s') === '01 00:00:00';
+        return '01 00:00:00' === $start->format('d H:i:s');
     }
 
+    #[\Override]
     public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('P1M');

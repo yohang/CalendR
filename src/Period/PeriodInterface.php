@@ -1,13 +1,6 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Period;
 
@@ -15,8 +8,6 @@ use CalendR\Event\EventInterface;
 
 /**
  * Interface that all Periods must implement.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
  */
 interface PeriodInterface
 {
@@ -38,12 +29,12 @@ interface PeriodInterface
     /**
      * Gets the next period of the same type.
      */
-    public function getNext(): PeriodInterface;
+    public function getNext(): self;
 
     /**
      * Gets the previous period of the same type.
      */
-    public function getPrevious(): PeriodInterface;
+    public function getPrevious(): self;
 
     /**
      * Returns the period as a DatePeriod.
@@ -51,19 +42,19 @@ interface PeriodInterface
     public function getDatePeriod(): \DatePeriod;
 
     /**
-     * Checks if a period is equals to an other.
+     * Checks if a period is equals to another.
      */
-    public function equals(PeriodInterface $period): bool;
+    public function equals(self $period): bool;
 
     /**
      * Returns true if the period include the other period
      * given as argument.
      */
-    public function includes(PeriodInterface $period, bool $strict = true): bool;
+    public function includes(self $period, bool $strict = true): bool;
 
     /**
      * Returns if $event is during this period.
-     * Non strict. Must return true if :
+     * Non-strict. Must return true if :
      *  * Event is during period
      *  * Period is during event
      *  * Event begin is during Period

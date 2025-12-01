@@ -1,13 +1,6 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Period;
 
@@ -16,110 +9,105 @@ use CalendR\Exception;
 
 /**
  * An abstract class that represent a date period and provide some base helpers.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
  */
 abstract class PeriodAbstract implements PeriodInterface
 {
-    protected \DateTimeInterface $begin;
+    protected \DateTimeImmutable $begin;
 
-    protected \DateTimeInterface $end;
-
-    protected ?FactoryInterface $factory;
+    protected \DateTimeImmutable $end;
 
     /**
      * @throws Exception
      */
-    public function __construct(\DateTimeInterface $begin, ?FactoryInterface $factory = null)
+    public function __construct(\DateTimeInterface $begin, protected ?FactoryInterface $factory = null)
     {
-        $this->factory = $factory;
         if (!static::isValid($begin)) {
             throw $this->createInvalidException();
         }
 
-        $this->begin = clone $begin;
-        $this->end   = (clone $begin)->add($this->getDateInterval());
+        $this->begin = \DateTimeImmutable::createFromInterface($begin);
+        $this->end = $this->begin->add($this->getDateInterval());
     }
 
+    #[\Override]
     public function contains(\DateTimeInterface $date): bool
     {
         return $this->begin <= $date && $date < $this->end;
     }
 
+    #[\Override]
     public function equals(PeriodInterface $period): bool
     {
         return
-            $period instanceof static &&
-            $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s');
+            $period instanceof static
+            && $this->begin->format('Y-m-d-H-i-s') === $period->getBegin()->format('Y-m-d-H-i-s');
     }
 
+    #[\Override]
     public function includes(PeriodInterface $period, bool $strict = true): bool
     {
-        if (true === $strict) {
+        if ($strict) {
             return $this->getBegin() <= $period->getBegin() && $this->getEnd() >= $period->getEnd();
         }
 
-        return
-            $this->includes($period, true) ||
-            $period->includes($this, true) ||
-            $this->contains($period->getBegin()) ||
-            $this->contains($period->getEnd())
-        ;
+        return $this->getBegin() < $period->getEnd() && $this->getEnd() > $period->getBegin();
     }
 
+    #[\Override]
     public function containsEvent(EventInterface $event): bool
     {
-        return
-            $event->containsPeriod($this) ||
-            $event->isDuring($this) ||
-            $this->contains($event->getBegin()) ||
-            ($event->getEnd() && $this->contains($event->getEnd())  && $event->getEnd()->format('c') !== $this->begin->format('c'))
-        ;
+        return $this->getBegin() <= $event->getEnd() && $this->getEnd() > $event->getBegin();
     }
 
+    #[\Override]
     public function format(string $format): string
     {
         return $this->begin->format($format);
     }
 
+    #[\Override]
     public function isCurrent(): bool
     {
-        return $this->contains(new \DateTimeImmutable);
+        return $this->contains(new \DateTimeImmutable());
     }
 
     /**
-     * {@inheritdoc}
+     * @psalm-suppress UnsafeInstantiation
      *
      * @throws Exception
      */
+    #[\Override]
     public function getNext(): PeriodInterface
     {
         return new static($this->end, $this->factory);
     }
 
     /**
-     * {@inheritdoc}
+     * @psalm-suppress UnsafeInstantiation
      *
      * @throws Exception
      */
+    #[\Override]
     public function getPrevious(): PeriodInterface
     {
-        $start = (clone $this->begin)->sub(static::getDateInterval());
+        $start = $this->begin->sub(static::getDateInterval());
 
         return new static($start, $this->factory);
     }
 
-    public function getBegin(): \DateTimeInterface
+    #[\Override]
+    public function getBegin(): \DateTimeImmutable
     {
-        return clone $this->begin;
+        return $this->begin;
     }
 
-    public function getEnd(): \DateTimeInterface
+    #[\Override]
+    public function getEnd(): \DateTimeImmutable
     {
-        return clone $this->end;
+        return $this->end;
     }
 
-    public function getFactory(): FactoryInterface
+    protected function getFactory(): FactoryInterface
     {
         if (null === $this->factory) {
             $this->factory = new Factory();
@@ -128,10 +116,15 @@ abstract class PeriodAbstract implements PeriodInterface
         return $this->factory;
     }
 
+    /**
+     * @psalm-suppress InvalidStringClass
+     */
     protected function createInvalidException(): Exception
     {
-        $class = 'CalendR\Period\Exception\NotA' . (new \ReflectionClass($this))->getShortName();
+        $class = 'CalendR\Period\Exception\NotA'.(new \ReflectionClass($this))->getShortName();
+        $exception = new $class();
+        \assert($exception instanceof Exception);
 
-        return new $class;
+        return $exception;
     }
 }

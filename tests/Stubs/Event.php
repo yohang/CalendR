@@ -1,46 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test\Stubs;
 
 use CalendR\Event\AbstractEvent;
+use CalendR\Event\EventInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="CalendR\Test\Stubs\EventRepository")
- */
+#[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event extends AbstractEvent
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=31)
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'datetime_immutable')]
     protected ?string $id = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
+    #[ORM\Column(type: 'datetime_immutable')]
     protected ?\DateTimeImmutable $begin = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
+    #[ORM\Column(type: 'datetime_immutable')]
     protected ?\DateTimeImmutable $end = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * Returns an unique identifier for the Event.
-     * Could be any string, but MUST to be unique.
-     *   ex : 'event-8', 'meeting-43'
-     *
-     * @return string an unique event identifier
-     */
-    public function getUid(): string
-    {
-        return $this->getId();
     }
 
     public function setBegin(\DateTimeImmutable $begin): void
@@ -63,8 +46,17 @@ class Event extends AbstractEvent
         return $this->end;
     }
 
-    public function setId(int $id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
+    }
+
+    public function isEqualTo(EventInterface $event): bool
+    {
+        if (!$event instanceof self) {
+            return false;
+        }
+
+        return $this->id === $event->id;
     }
 }

@@ -1,65 +1,58 @@
 <?php
 
-/*
- * This file has been added to CalendR, a Fréquence web project.
- *
- * (c) 2012 Ingewikkeld/Stefan Koopmanschap
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Period;
 
-/**
- * Represents a Range.
- *
- * @author Stefan Koopmanschap <left@leftontheweb.com>
- */
-class Range extends PeriodAbstract
+use CalendR\Period\Exception\NotImplemented;
+
+final class Range extends PeriodAbstract
 {
     public function __construct(\DateTimeInterface $begin, \DateTimeInterface $end, ?FactoryInterface $factory = null)
     {
         $this->factory = $factory;
-        $this->begin   = clone $begin;
-        $this->end     = clone $end;
+        $this->begin = \DateTimeImmutable::createFromInterface($begin);
+        $this->end = \DateTimeImmutable::createFromInterface($end);
     }
 
+    #[\Override]
     public static function isValid(\DateTimeInterface $start): bool
     {
         return true;
     }
 
-    public function getNext(): Range
+    #[\Override]
+    public function getNext(): self
     {
-        $diff  = $this->begin->diff($this->end);
-        $begin = (clone $this->begin)->add($diff);
-        $end   = (clone $this->end)->add($diff);
+        $diff = $this->begin->diff($this->end);
+        $begin = $this->begin->add($diff);
+        $end = $this->end->add($diff);
 
         return new self($begin, $end, $this->factory);
     }
 
-    public function getPrevious(): Range
+    #[\Override]
+    public function getPrevious(): self
     {
-        $diff  = $this->begin->diff($this->end);
-        $begin = (clone $this->begin)->sub($diff);
-        $end   = (clone $this->end)->sub($diff);
+        $diff = $this->begin->diff($this->end);
+        $begin = $this->begin->sub($diff);
+        $end = $this->end->sub($diff);
 
         return new self($begin, $end, $this->factory);
     }
 
+    #[\Override]
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, $this->begin->diff($this->end), $this->end);
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @throws Exception\NotImplemented
+     * @throws NotImplemented
      */
+    #[\Override]
     public static function getDateInterval(): \DateInterval
     {
-        throw new Exception\NotImplemented('Range period doesn\'t support getDateInterval().');
+        throw new NotImplemented('Range period doesn\'t support getDateInterval().');
     }
 }

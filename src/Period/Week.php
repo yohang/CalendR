@@ -1,73 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
 /**
- * Represents a week.
- *
- * @author Yohan Giarelli <yohan@giarel.li>
+ * @implements \IteratorAggregate<string, Day>
+ * @implements IterablePeriod<string, Day>
  */
-class Week extends PeriodAbstract implements \Iterator
+final class Week extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
-    private ?PeriodInterface $current = null;
-
     public function getNumber(): int
     {
-        return $this->begin->format('W');
+        return (int) $this->begin->format('W');
     }
 
+    #[\Override]
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('P1D'), $this->end);
     }
 
-    public static function isValid(\DateTimeInterface $start): bool
+    #[\Override]
+    public function getIterator(): \Generator
     {
-        if ($start->format('H:i:s') !== '00:00:00') {
-            return false;
-        }
+        $current = $this->getFactory()->createDay($this->begin);
+        while ($this->contains($current->getBegin())) {
+            yield $current->getBegin()->format('d-m-Y') => $current;
 
-        return true;
-    }
-
-    public function current(): PeriodInterface
-    {
-        return $this->current;
-    }
-
-    public function next(): void
-    {
-        if (!$this->valid()) {
-            $this->current = $this->getFactory()->createDay($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
     }
 
-    public function key(): string
-    {
-        return $this->current->getBegin()->format('d-m-Y');
-    }
-
-    public function valid(): bool
-    {
-        return null !== $this->current;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
-    }
-
+    #[\Override]
     public function __toString(): string
     {
         return $this->format('W');
     }
 
+    #[\Override]
+    public static function isValid(\DateTimeInterface $start): bool
+    {
+        return '00:00:00' === $start->format('H:i:s');
+    }
+
+    #[\Override]
     public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('P1W');

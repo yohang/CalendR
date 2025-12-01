@@ -1,73 +1,56 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
+
 use CalendR\Period\Exception\NotAnHour;
 
 /**
- * Represents an hour.
- *
- * @author Zander Baldwin <mynameis@zande.rs>
- * @author Yohan Giarelli <yohan@giarel.li>
+ * @implements \IteratorAggregate<int, Minute>
+ * @implements IterablePeriod<int, Minute>
  */
-class Hour extends PeriodAbstract implements \Iterator
+final class Hour extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
-    private ?PeriodInterface $current = null;
-
+    #[\Override]
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('PT1M'), $this->end);
     }
 
+    #[\Override]
     public static function isValid(\DateTimeInterface $start): bool
     {
-        return $start->format('i:s') === '00:00';
+        return '00:00' === $start->format('i:s');
     }
 
-    public function current(): ?PeriodInterface
+    #[\Override]
+    public function getIterator(): \Generator
     {
-        return $this->current;
-    }
+        $current = $this->getFactory()->createMinute($this->begin);
+        while ($this->contains($current->getBegin())) {
+            /* No need to explicit key as whe start to 0 */
+            yield $current;
 
-    public function next(): void
-    {
-        if (null === $this->current) {
-            $this->current = $this->getFactory()->createMinute($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+            $current = $current->getNext();
         }
     }
 
-    public function key(): int
-    {
-        return (int) $this->current->getBegin()->format('G');
-    }
-
-    public function valid(): bool
-    {
-        return null !== $this->current;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
-    }
-
+    #[\Override]
     public function __toString(): string
     {
         return $this->format('G');
     }
 
+    #[\Override]
     public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('PT1H');
     }
 
+    #[\Override]
     protected function createInvalidException(): NotAnHour
     {
-        return new NotAnHour;
+        return new NotAnHour();
     }
 }

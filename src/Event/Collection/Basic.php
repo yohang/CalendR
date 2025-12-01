@@ -1,13 +1,6 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Event\Collection;
 
@@ -16,83 +9,53 @@ use CalendR\Period\PeriodInterface;
 
 /**
  * Basic event collection.
- * Juste stores event as an array, and iterate over the array for retrieving.
+ * Juste stores an event as an array and iterates over the array for retrieving.
  *
- * @author Yohan Giarelli <yohan@giarel.li>
+ * @implements \IteratorAggregate<int, EventInterface>
+ * @implements CollectionInterface<int>
  */
-class Basic implements CollectionInterface
+final class Basic implements CollectionInterface, \IteratorAggregate
 {
     /**
-     * The events.
-     *
-     * @var EventInterface[]
+     * @param list<EventInterface> $events
      */
-    protected $events;
-
-    /**
-     * @param EventInterface[] $events
-     */
-    public function __construct(array $events = array())
-    {
-        $this->events = $events;
+    public function __construct(
+        protected array $events = [],
+    ) {
     }
 
-    /**
-     * Adds an event to the collection.
-     *
-     * @param EventInterface $event
-     */
-    public function add(EventInterface $event)
+    #[\Override]
+    public function add(EventInterface $event): void
     {
         $this->events[] = $event;
     }
 
-    /**
-     * Removes an event from the collection.
-     *
-     * @param EventInterface $event
-     */
-    public function remove(EventInterface $event)
+    #[\Override]
+    public function remove(EventInterface $event): void
     {
         foreach ($this->events as $key => $internalEvent) {
-            if ($event->getUid() === $internalEvent->getUid()) {
+            if ($event->isEqualTo($internalEvent)) {
                 unset($this->events[$key]);
             }
         }
     }
 
-    /**
-     * Return all events;.
-     *
-     * @return EventInterface[]
-     */
-    public function all()
+    #[\Override]
+    public function all(): array
     {
         return $this->events;
     }
 
-    /**
-     * Returns if there is events corresponding to $index period.
-     *
-     * @param mixed $index
-     *
-     * @return bool
-     */
-    public function has($index)
+    #[\Override]
+    public function has(PeriodInterface|\DateTimeInterface|string $index): bool
     {
-        return count($this->find($index)) > 0;
+        return \count($this->find($index)) > 0;
     }
 
-    /**
-     * Find events in the collection.
-     *
-     * @param mixed $index
-     *
-     * @return EventInterface[]
-     */
-    public function find($index)
+    #[\Override]
+    public function find(PeriodInterface|\DateTimeInterface|string $index): array
     {
-        $result = array();
+        $result = [];
         foreach ($this->events as $event) {
             if ($index instanceof PeriodInterface && $index->containsEvent($event)) {
                 $result[] = $event;
@@ -104,11 +67,15 @@ class Basic implements CollectionInterface
         return $result;
     }
 
-    /**
-     * @return int
-     */
-    public function count()
+    #[\Override]
+    public function count(): int
     {
-        return count($this->events);
+        return \count($this->events);
+    }
+
+    #[\Override]
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->events);
     }
 }

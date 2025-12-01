@@ -1,65 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Period;
 
 /**
- * Represents a minute.
- *
- * @author Zander Baldwin <mynameis@zande.rs>
- * @author Yohan Giarelli <yohan@giarel.li>
+ * @implements \IteratorAggregate<int, Second>
+ * @implements IterablePeriod<int, Second>
  */
-class Minute extends PeriodAbstract implements \Iterator
+final class Minute extends PeriodAbstract implements \IteratorAggregate, \Stringable, IterablePeriod
 {
-    private ?PeriodInterface $current = null;
-
+    #[\Override]
     public function getDatePeriod(): \DatePeriod
     {
         return new \DatePeriod($this->begin, new \DateInterval('PT1S'), $this->end);
     }
 
-    public static function isValid(\DateTimeInterface $start): bool
+    #[\Override]
+    public function getIterator(): \Traversable
     {
-        return '00' === $start->format('s');
-    }
+        $current = $this->getFactory()->createSecond($this->begin);
+        while ($this->contains($current->getBegin())) {
+            /* No need to explicit key as whe start to 0 */
+            yield $current;
 
-    public function current(): ?PeriodInterface
-    {
-        return $this->current;
-    }
-
-    public function next(): void
-    {
-        if (null === $this->current) {
-            $this->current = $this->getFactory()->createSecond($this->begin);
-        } else {
-            $this->current = $this->current->getNext();
-            if (!$this->contains($this->current->getBegin())) {
-                $this->current = null;
-            }
+            $current = $this->getFactory()->createSecond($current->getBegin()->modify('+1 second'));
         }
     }
 
-    public function key(): int
-    {
-        return (int) $this->current->getBegin()->format('i');
-    }
-
-    public function valid(): bool
-    {
-        return null !== $this->current;
-    }
-
-    public function rewind(): void
-    {
-        $this->current = null;
-        $this->next();
-    }
-
+    #[\Override]
     public function __toString(): string
     {
         return $this->format('i');
     }
 
+    #[\Override]
+    public static function isValid(\DateTimeInterface $start): bool
+    {
+        return '00' === $start->format('s');
+    }
+
+    #[\Override]
     public static function getDateInterval(): \DateInterval
     {
         return new \DateInterval('PT1M');

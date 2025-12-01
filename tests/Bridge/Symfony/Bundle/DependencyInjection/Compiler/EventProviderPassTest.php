@@ -1,13 +1,6 @@
 <?php
 
-/*
- * This file is part of CalendR, a Fréquence web project.
- *
- * (c) 2012 Fréquence web
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace CalendR\Test\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
@@ -20,14 +13,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EventProviderPassTest extends TestCase
+final class EventProviderPassTest extends TestCase
 {
     use ProphecyTrait;
 
     public function testProcess(): void
     {
-        $eventManagerDefinition = $this->getMockBuilder(Definition::class)->getMock();
-        $containerBuilder       = $this->getMockBuilder(ContainerBuilder::class)->onlyMethods(['findTaggedServiceIds', 'getDefinition'])->getMock();
+        $eventManagerDefinition = $this->createMock(Definition::class);
+        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)->onlyMethods(['findTaggedServiceIds', 'getDefinition'])->getMock();
         $containerBuilder->expects($this->once())->method('getDefinition')->with(Manager::class)->willReturn($eventManagerDefinition);
         $containerBuilder
             ->expects($this->once())
@@ -40,10 +33,24 @@ class EventProviderPassTest extends TestCase
                 ]
             );
 
-        $eventManagerDefinition->expects($this->exactly(2))
-                               ->method('addMethodCall');
+        $eventManagerDefinition
+            ->expects($invocationCount = $this->exactly(2))
+            ->method('addMethodCall')
+            ->with('addProvider', $this->callback(function (array $arguments) use ($invocationCount) {
+                if (1 === $invocationCount->numberOfInvocations()) {
+                    $this->assertSame('service1', $arguments[0]);
+                    $this->assertInstanceOf(Reference::class, $arguments[1]);
 
-        $pass = new EventProviderPass;
+                    return true;
+                }
+
+                $this->assertSame('service2_alias', $arguments[0]);
+                $this->assertInstanceOf(Reference::class, $arguments[1]);
+
+                return true;
+            }));
+
+        $pass = new EventProviderPass();
         $pass->process($containerBuilder);
 
         $this->assertInstanceOf(CompilerPassInterface::class, $pass);

@@ -1,34 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Bridge\Symfony\Bundle\DependencyInjection;
 
-use CalendR\Period\Day;
+use CalendR\DayOfWeek;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
+    #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
-
         $treeBuilder = new TreeBuilder('calendr');
 
-        $treeBuilder
+        $enumNode = $treeBuilder
             ->getRootNode()
             ->children()
                 ->arrayNode('periods')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('default_first_weekday')
-                            ->defaultValue(Day::MONDAY)
-                            ->validate()
-                                ->ifNotInArray(range(DAY::SUNDAY, DAY::SATURDAY))
-                                ->thenInvalid('Day must be be between 0 (Sunday) and 6 (Saturday)')
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
+                        ->enumNode('default_first_weekday');
+
+        if (method_exists($enumNode, 'enumFqcn')) {
+            $enumNode
+                ->enumFqcn(DayOfWeek::class)
+                ->defaultValue(DayOfWeek::MONDAY);
+        } else {
+            $enumNode
+                ->values(array_map(fn (DayOfWeek $dayOfWeek) => $dayOfWeek->value, DayOfWeek::cases()))
+                ->defaultValue(DayOfWeek::MONDAY->value)
+                ->validate()
+                    ->ifNotInArray(array_map(static fn (DayOfWeek $d) => $d->value, DayOfWeek::cases()))
+                    ->thenInvalid('Day must be be between 0 (Sunday) and 6 (Saturday)')
+                ->end();
+        }
 
         return $treeBuilder;
     }

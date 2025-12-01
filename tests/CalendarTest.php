@@ -1,27 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendR\Test;
 
 use CalendR\Calendar;
+use CalendR\DayOfWeek;
 use CalendR\Event\Collection\Basic;
-use CalendR\Period\Day;
-use PHPUnit\Framework\TestCase;
 use CalendR\Event\EventInterface;
-use CalendR\Period\PeriodInterface;
 use CalendR\Event\Manager;
+use CalendR\Period\Day;
 use CalendR\Period\FactoryInterface;
-use CalendR\Period\Second;
-use CalendR\Period\Minute;
 use CalendR\Period\Hour;
-use CalendR\Period\Week;
+use CalendR\Period\Minute;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodInterface;
+use CalendR\Period\Second;
+use CalendR\Period\Week;
 use CalendR\Period\Year;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-class CalendarTest extends TestCase
+final class CalendarTest extends TestCase
 {
     public function testGetYear(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
 
         $year = $calendar->getYear(new \DateTime('2012-01'));
         $this->assertInstanceOf(Year::class, $year);
@@ -32,7 +36,7 @@ class CalendarTest extends TestCase
 
     public function testGetMonth(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
 
         $month = $calendar->getMonth(new \DateTime('2012-01-01'));
         $this->assertInstanceOf(Month::class, $month);
@@ -43,7 +47,7 @@ class CalendarTest extends TestCase
 
     public function testGetWeek(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
 
         $week = $calendar->getWeek(new \DateTime('2012-W01'));
         $this->assertInstanceOf(Week::class, $week);
@@ -54,7 +58,7 @@ class CalendarTest extends TestCase
 
     public function testGetDay(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
 
         $day = $calendar->getDay(new \DateTime('2012-01-01'));
         $this->assertInstanceOf(Day::class, $day);
@@ -65,7 +69,7 @@ class CalendarTest extends TestCase
 
     public function testGetHour(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
 
         $hour = $calendar->getHour(new \DateTime('2012-01-01 17:00'));
         $this->assertInstanceOf(Hour::class, $hour);
@@ -76,7 +80,7 @@ class CalendarTest extends TestCase
 
     public function testGetMinute(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
 
         $minute = $calendar->getMinute(new \DateTime('2012-01-01 17:23'));
         $this->assertInstanceOf(Minute::class, $minute);
@@ -87,7 +91,7 @@ class CalendarTest extends TestCase
 
     public function testGetSecond(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
 
         $second = $calendar->getSecond(new \DateTime('2012-01-01 17:23:49'));
         $this->assertInstanceOf(Second::class, $second);
@@ -98,11 +102,10 @@ class CalendarTest extends TestCase
 
     public function testGetEvents(): void
     {
-        $em       = $this->getMockBuilder(Manager::class)->getMock();
-        $period   = $this->getMockBuilder(PeriodInterface::class)->getMock();
-        $events   = new Basic([$this->getMockBuilder(EventInterface::class)->getMock()]);
-        $calendar = new Calendar;
-        $calendar->setEventManager($em);
+        $em = $this->createMock(Manager::class);
+        $period = $this->createMock(PeriodInterface::class);
+        $events = new Basic([$this->createMock(EventInterface::class)]);
+        $calendar = new Calendar(eventManager: $em);
         $em->expects($this->once())->method('find')->with($period, [])->willReturn($events);
 
         $this->assertSame($events, $calendar->getEvents($period, []));
@@ -110,51 +113,45 @@ class CalendarTest extends TestCase
 
     public function testGetFirstWeekday(): void
     {
-        $calendar = new Calendar;
-        $factory  = $this->getMockBuilder(FactoryInterface::class)->getMock();
-        $calendar->setFactory($factory);
-        $factory->expects($this->once())->method('getFirstWeekday')->willReturn(Day::SUNDAY);
+        $factory = $this->createMock(FactoryInterface::class);
+        $calendar = new Calendar(factory: $factory);
+        $factory->expects($this->once())->method('getFirstWeekday')->willReturn(DayOfWeek::SUNDAY);
 
-        $this->assertSame(Day::SUNDAY, $calendar->getFirstWeekday());
+        $this->assertSame(DayOfWeek::SUNDAY, $calendar->getFirstWeekday());
     }
 
-    /**
-     * @dataProvider weekAndWeekdayProvider
-     */
-    public function testGetWeekWithWeekdayConfiguration($year, $week, $weekday, $day): void
+    #[DataProvider('weekAndWeekdayProvider')]
+    public function testGetWeekWithWeekdayConfiguration(int $year, int $week, DayOfWeek $weekday, string $day): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
         $calendar->getFactory()->setFirstWeekday($weekday);
         $week = $calendar->getWeek($year, $week);
 
-        $this->assertEquals($weekday, $week->format('w'));
+        $this->assertEquals($weekday->value, $week->format('w'));
         $this->assertSame($day, $week->format('Y-m-d'));
     }
 
     public function testGetEventManager(): void
     {
-        $calendar = new Calendar;
+        $calendar = new Calendar();
         $this->assertInstanceOf(Manager::class, $calendar->getEventManager());
     }
 
-    public static function weekAndWeekdayProvider(): array
+    public static function weekAndWeekdayProvider(): \Iterator
     {
-        return [
-            [2013, 1, Day::MONDAY, '2012-12-31'],
-            [2013, 1, Day::TUESDAY, '2012-12-25'],
-            [2013, 1, Day::WEDNESDAY, '2012-12-26'],
-            [2013, 1, Day::THURSDAY, '2012-12-27'],
-            [2013, 1, Day::FRIDAY, '2012-12-28'],
-            [2013, 1, Day::SATURDAY, '2012-12-29'],
-            [2013, 1, Day::SUNDAY, '2012-12-30'],
-
-            [2013, 8, Day::MONDAY, '2013-02-18'],
-            [2013, 8, Day::TUESDAY, '2013-02-12'],
-            [2013, 8, Day::WEDNESDAY, '2013-02-13'],
-            [2013, 8, Day::THURSDAY, '2013-02-14'],
-            [2013, 8, Day::FRIDAY, '2013-02-15'],
-            [2013, 8, Day::SATURDAY, '2013-02-16'],
-            [2013, 8, Day::SUNDAY, '2013-02-17'],
-        ];
+        yield [2013, 1, DayOfWeek::MONDAY, '2012-12-31'];
+        yield [2013, 1, DayOfWeek::TUESDAY, '2012-12-25'];
+        yield [2013, 1, DayOfWeek::WEDNESDAY, '2012-12-26'];
+        yield [2013, 1, DayOfWeek::THURSDAY, '2012-12-27'];
+        yield [2013, 1, DayOfWeek::FRIDAY, '2012-12-28'];
+        yield [2013, 1, DayOfWeek::SATURDAY, '2012-12-29'];
+        yield [2013, 1, DayOfWeek::SUNDAY, '2012-12-30'];
+        yield [2013, 8, DayOfWeek::MONDAY, '2013-02-18'];
+        yield [2013, 8, DayOfWeek::TUESDAY, '2013-02-12'];
+        yield [2013, 8, DayOfWeek::WEDNESDAY, '2013-02-13'];
+        yield [2013, 8, DayOfWeek::THURSDAY, '2013-02-14'];
+        yield [2013, 8, DayOfWeek::FRIDAY, '2013-02-15'];
+        yield [2013, 8, DayOfWeek::SATURDAY, '2013-02-16'];
+        yield [2013, 8, DayOfWeek::SUNDAY, '2013-02-17'];
     }
 }
