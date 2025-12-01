@@ -8,7 +8,7 @@ use CalendR\Bridge\Symfony\Bundle\DependencyInjection\CalendRExtension;
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\Configuration;
 use CalendR\Calendar;
 use CalendR\DayOfWeek;
-use CalendR\Event\Manager;
+use CalendR\Event\EventManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -24,7 +24,7 @@ final class CalendRExtensionTest extends TestCase
         (new CalendRExtension())->load($config, $container);
 
         $this->assertTrue($container->hasDefinition(Calendar::class));
-        $this->assertTrue($container->hasDefinition(Manager::class));
+        $this->assertTrue($container->hasDefinition(EventManager::class));
 
         $this->assertTrue($container->hasAlias('calendr'));
         $this->assertTrue($container->hasAlias('calendr.factory'));

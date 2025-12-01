@@ -8,7 +8,7 @@ use CalendR\Period\Exception\NotImplemented;
 
 final class Range extends PeriodAbstract
 {
-    public function __construct(\DateTimeInterface $begin, \DateTimeInterface $end, ?FactoryInterface $factory = null)
+    public function __construct(\DateTimeInterface $begin, \DateTimeInterface $end, ?PeriodFactoryInterface $factory = null)
     {
         $this->factory = $factory;
         $this->begin = \DateTimeImmutable::createFromInterface($begin);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
-use CalendR\Event\Manager;
+use CalendR\Event\EventManager;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -16,7 +16,7 @@ final class EventProviderPass implements CompilerPassInterface
     #[\Override]
     public function process(ContainerBuilder $container): void
     {
-        $eventManager = $container->getDefinition(Manager::class);
+        $eventManager = $container->getDefinition(EventManager::class);
 
         foreach ($container->findTaggedServiceIds(self::TAG) as $id => $attributes) {
             /** @var string $providerAlias */

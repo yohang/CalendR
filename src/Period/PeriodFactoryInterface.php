@@ -6,7 +6,7 @@ namespace CalendR\Period;
 
 use CalendR\DayOfWeek;
 
-interface FactoryInterface
+interface PeriodFactoryInterface
 {
     public function createSecond(\DateTimeInterface $begin): Second;
 

@@ -8,12 +8,12 @@ use CalendR\Calendar;
 use CalendR\DayOfWeek;
 use CalendR\Event\Collection\ArrayCollection;
 use CalendR\Event\EventInterface;
-use CalendR\Event\Manager;
+use CalendR\Event\EventManager;
 use CalendR\Period\Day;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Second;
 use CalendR\Period\Week;
@@ -102,7 +102,7 @@ final class CalendarTest extends TestCase
 
     public function testGetEvents(): void
     {
-        $em = $this->createMock(Manager::class);
+        $em = $this->createMock(EventManager::class);
         $period = $this->createMock(PeriodInterface::class);
         $events = new ArrayCollection([$this->createMock(EventInterface::class)]);
         $calendar = new Calendar(eventManager: $em);
@@ -113,7 +113,7 @@ final class CalendarTest extends TestCase
 
     public function testGetFirstWeekday(): void
     {
-        $factory = $this->createMock(FactoryInterface::class);
+        $factory = $this->createMock(PeriodFactoryInterface::class);
         $calendar = new Calendar(factory: $factory);
         $factory->expects($this->once())->method('getFirstWeekday')->willReturn(DayOfWeek::SUNDAY);
 
@@ -134,7 +134,7 @@ final class CalendarTest extends TestCase
     public function testGetEventManager(): void
     {
         $calendar = new Calendar();
-        $this->assertInstanceOf(Manager::class, $calendar->getEventManager());
+        $this->assertInstanceOf(EventManager::class, $calendar->getEventManager());
     }
 
     public static function weekAndWeekdayProvider(): \Iterator

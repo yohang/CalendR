@@ -6,11 +6,11 @@ namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAMinute;
-use CalendR\Period\Factory;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Second;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -44,13 +44,13 @@ final class MinuteTest extends TestCase
     {
         $this->expectException(NotAMinute::class);
 
-        new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
+        new Minute($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
     }
 
     #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
-        $minute = new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertInstanceOf(Minute::class, $minute);
     }
@@ -92,7 +92,7 @@ final class MinuteTest extends TestCase
     #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $minute = new Minute($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($minute->contains($contain));
         $this->assertFalse($minute->contains($notContain));
@@ -100,31 +100,31 @@ final class MinuteTest extends TestCase
 
     public function testGetNext(): void
     {
-        $minute = new Minute(new \DateTimeImmutable('2012-01-01 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable('2012-01-01 05:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-01 05:01', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
 
-        $minute = new Minute(new \DateTimeImmutable('2012-01-31 14:59'), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable('2012-01-31 14:59'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 15:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
 
-        $minute = new Minute(new \DateTimeImmutable('2013-02-28 23:59'), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable('2013-02-28 23:59'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2013-03-01 00:00', $minute->getNext()->getBegin()->format('Y-m-d H:i'));
     }
 
     public function testGetPrevious(): void
     {
-        $minute = new Minute(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2011-12-31 23:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
 
-        $minute = new Minute(new \DateTimeImmutable('2012-01-31 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable('2012-01-31 05:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 04:59', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
 
-        $minute = new Minute(new \DateTimeImmutable('2012-01-31 05:25'), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable('2012-01-31 05:25'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 05:24', $minute->getPrevious()->getBegin()->format('Y-m-d H:i'));
     }
 
     public function testGetDatePeriod(): void
     {
-        $minute = new Minute(new \DateTimeImmutable('2012-01-31 13:12'), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable('2012-01-31 13:12'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $i = 0;
         foreach ($minute->getDatePeriod() as $DateTimeImmutable) {
             ++$i;
@@ -139,7 +139,7 @@ final class MinuteTest extends TestCase
         $currentDateTimeImmutable = new \DateTimeImmutable();
         $otherDateTimeImmutable = (clone $currentDateTimeImmutable)->add(new \DateInterval('PT5M'));
 
-        $currentMinute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentMinute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $otherMinute = $currentMinute->getNext();
 
         $this->assertTrue($currentMinute->contains($currentDateTimeImmutable));
@@ -149,7 +149,7 @@ final class MinuteTest extends TestCase
 
     public function testToString(): void
     {
-        $minute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame($minute->getBegin()->format('i'), (string) $minute);
     }
 
@@ -168,29 +168,29 @@ final class MinuteTest extends TestCase
     #[DataProvider('providerIncludes')]
     public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
-        $minute = new Minute($begin, $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute($begin, $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame($result, $minute->includes($period, $strict));
     }
 
     public function testFormat(): void
     {
-        $minute = new Minute(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame(date('Y-m-d H:00'), $minute->format('Y-m-d H:i'));
 
-        $minute = new Minute(new \DateTime(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
+        $minute = new Minute(new \DateTime(date('Y-m-d H:00')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame(date('Y-m-d H:00'), $minute->format('Y-m-d H:i'));
     }
 
     public function testIsCurrent(): void
     {
-        $currentMinute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherMinute = new Minute(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentMinute = new Minute(new \DateTimeImmutable(date('Y-m-d H:i')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
+        $otherMinute = new Minute(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($currentMinute->isCurrent());
         $this->assertFalse($otherMinute->isCurrent());
 
-        $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherMinute = new Minute(new \DateTime('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentMinute = new Minute(new \DateTime(date('Y-m-d H:i')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
+        $otherMinute = new Minute(new \DateTime('1988-11-12 16:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($currentMinute->isCurrent());
         $this->assertFalse($otherMinute->isCurrent());
@@ -229,7 +229,7 @@ final class MinuteTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15 15:47');
-        $minute = new Minute($start, new Factory());
+        $minute = new Minute($start, new PeriodPeriodFactory());
 
         $i = 0;
         foreach ($minute as $secondKey => $second) {

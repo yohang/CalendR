@@ -13,7 +13,7 @@ use CalendR\Period\PeriodInterface;
 /**
  * @api
  */
-class Manager
+class EventManager
 {
     /**
      * @var array<string, ProviderInterface>

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CalendR\Test\Period;
 
 use CalendR\Period\Exception\NotImplemented;
-use CalendR\Period\FactoryInterface;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\Range;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +30,7 @@ final class RangeTest extends TestCase
     #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $begin, \DateTimeInterface $end, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $range = new Range($begin, $end, $this->prophesize(FactoryInterface::class)->reveal());
+        $range = new Range($begin, $end, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($range->contains($contain));
         $this->assertFalse($range->contains($notContain));
@@ -38,20 +38,20 @@ final class RangeTest extends TestCase
 
     public function testGetNext(): void
     {
-        $range = new Range(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), $this->prophesize(FactoryInterface::class)->reveal());
+        $range = new Range(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-03', $range->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious(): void
     {
-        $range = new Range(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), $this->prophesize(FactoryInterface::class)->reveal());
+        $range = new Range(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2011-12-30', $range->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod(): void
     {
         $begin = new \DateTimeImmutable('2012-01-01');
-        $range = new Range($begin, new \DateTimeImmutable('2012-01-03'), $this->prophesize(FactoryInterface::class)->reveal());
+        $range = new Range($begin, new \DateTimeImmutable('2012-01-03'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         foreach ($range->getDatePeriod() as $DateTimeImmutable) {
             $this->assertSame($begin->format('Y-m-d'), $DateTimeImmutable->format('Y-m-d'));

@@ -6,13 +6,13 @@ namespace CalendR\Test\Event;
 
 use CalendR\Event\Collection\CollectionInterface;
 use CalendR\Event\Event;
+use CalendR\Event\EventManager;
 use CalendR\Event\Exception\NoProviderFound;
-use CalendR\Event\Manager;
 use CalendR\Event\Provider\ArrayProvider;
 use CalendR\Event\Provider\ProviderInterface;
 use CalendR\Period\Day;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,12 +21,12 @@ final class ManagerTest extends TestCase
 {
     use ProphecyTrait;
 
-    protected Manager $object;
+    protected EventManager $object;
 
     protected function setUp(): void
     {
         $basic1 = new ArrayProvider();
-        $this->object = new Manager(['basic-1' => $basic1]);
+        $this->object = new EventManager(['basic-1' => $basic1]);
         $this->object->addProvider('basic-2', $basic2 = new ArrayProvider());
 
         $basic1->add(new Event(new \DateTimeImmutable('2012-01-01'), new \DateTimeImmutable('2012-01-03'), 'event-1'));
@@ -35,7 +35,7 @@ final class ManagerTest extends TestCase
 
     public function testFind(): void
     {
-        $factory = $this->prophesize(FactoryInterface::class)->reveal();
+        $factory = $this->prophesize(PeriodFactoryInterface::class)->reveal();
 
         $this->assertCount(0, $this->object->find(new Day(new \DateTimeImmutable('00:00:00'), $factory)));
         $this->assertCount(1, $this->object->find(new Day(new \DateTimeImmutable('2012-01-01 00:00:00'), $factory)));
@@ -65,8 +65,8 @@ final class ManagerTest extends TestCase
     {
         $this->expectException(NoProviderFound::class);
 
-        $manager = new Manager();
-        $manager->find(new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal()));
+        $manager = new EventManager();
+        $manager->find(new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal()));
     }
 
     public function testCollectionInstantiator(): void
@@ -75,7 +75,7 @@ final class ManagerTest extends TestCase
         $provider->method('getEvents')->willReturn([]);
 
         $collectionMock = $this->createMock(CollectionInterface::class);
-        $manager = new Manager(
+        $manager = new EventManager(
             ['provider' => $provider],
             collectionInstantiator: function () use ($collectionMock): CollectionInterface {
                 return $collectionMock;

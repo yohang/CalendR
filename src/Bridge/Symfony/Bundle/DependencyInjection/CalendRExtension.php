@@ -9,7 +9,7 @@ use CalendR\DayOfWeek;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class CalendRExtension extends Extension
 {
@@ -22,8 +22,8 @@ final class CalendRExtension extends Extension
         /** @var array{periods: array{default_first_weekday: DayOfWeek|int}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yaml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.php');
 
         $defaultFirstWeekday = $config['periods']['default_first_weekday'];
         if (!($defaultFirstWeekday instanceof DayOfWeek)) {
