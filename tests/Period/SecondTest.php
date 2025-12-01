@@ -6,9 +6,9 @@ namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotASecond;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
 use CalendR\Period\Second;
 use CalendR\Period\Year;
@@ -38,7 +38,7 @@ final class SecondTest extends TestCase
     #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
-        $second = new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertInstanceOf(Second::class, $second);
     }
@@ -48,7 +48,7 @@ final class SecondTest extends TestCase
     {
         $this->expectException(NotASecond::class);
 
-        new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
+        new Second($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
     }
 
     public static function providerContains(): \Iterator
@@ -88,38 +88,38 @@ final class SecondTest extends TestCase
     #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $second = new Second($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertTrue($second->contains($contain));
         $this->assertFalse($second->contains($notContain));
     }
 
     public function testGetNext(): void
     {
-        $second = new Second(new \DateTime('2012-01-01 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTime('2012-01-01 05:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-01 05:00:01', $second->getNext()->getBegin()->format('Y-m-d H:i:s'));
 
-        $second = new Second(new \DateTime('2012-01-31 14:59:59'), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTime('2012-01-31 14:59:59'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 15:00:00', $second->getNext()->getBegin()->format('Y-m-d H:i:s'));
 
-        $second = new Second(new \DateTime('2013-02-28 23:59:59'), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTime('2013-02-28 23:59:59'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2013-03-01 00:00:00', $second->getNext()->getBegin()->format('Y-m-d H:i:s'));
     }
 
     public function testGetPrevious(): void
     {
-        $second = new Second(new \DateTime('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTime('2012-01-01 00:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2011-12-31 23:59:59', $second->getPrevious()->getBegin()->format('Y-m-d H:i:s'));
 
-        $second = new Second(new \DateTime('2012-01-31 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTime('2012-01-31 05:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 04:59:59', $second->getPrevious()->getBegin()->format('Y-m-d H:i:s'));
 
-        $second = new Second(new \DateTime('2012-01-31 05:25:41'), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTime('2012-01-31 05:25:41'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 05:25:40', $second->getPrevious()->getBegin()->format('Y-m-d H:i:s'));
     }
 
     public function testGetDatePeriod(): void
     {
-        $second = new Second(new \DateTime('2012-01-31 13:12:27'), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTime('2012-01-31 13:12:27'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $i = 0;
         foreach ($second->getDatePeriod() as $dateTime) {
@@ -135,7 +135,7 @@ final class SecondTest extends TestCase
         $currentDateTime = new \DateTimeImmutable();
         $otherDateTime = (clone $currentDateTime)->add(new \DateInterval('PT5S'));
 
-        $currentSecond = new Second(new \DateTimeImmutable($currentDateTime->format('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentSecond = new Second(new \DateTimeImmutable($currentDateTime->format('Y-m-d H:i:s')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $otherSecond = $currentSecond->getNext();
 
         $this->assertTrue($currentSecond->contains($currentDateTime));
@@ -145,7 +145,7 @@ final class SecondTest extends TestCase
 
     public function testToString(): void
     {
-        $second = new Second(new \DateTimeImmutable(date('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTimeImmutable(date('Y-m-d H:i:s')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame($second->getBegin()->format('s'), (string) $second);
     }
 
@@ -165,7 +165,7 @@ final class SecondTest extends TestCase
     #[DataProvider('providerIncludes')]
     public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, ?bool $strict, bool $result): void
     {
-        $second = new Second($begin, $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second($begin, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         if (null === $strict) {
             $this->assertSame($result, $second->includes($period));
@@ -178,14 +178,14 @@ final class SecondTest extends TestCase
 
     public function testFormat(): void
     {
-        $second = new Second(new \DateTimeImmutable(date('Y-m-d 15:00:27')), $this->prophesize(FactoryInterface::class)->reveal());
+        $second = new Second(new \DateTimeImmutable(date('Y-m-d 15:00:27')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame(date('Y-m-d 15:00:27'), $second->format('Y-m-d H:i:s'));
     }
 
     public function testIsCurrent(): void
     {
-        $currentSecond = new Second(new \DateTime(date('Y-m-d H:i:s')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherSecond = new Second(new \DateTime('1988-11-12 16:00:50'), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentSecond = new Second(new \DateTime(date('Y-m-d H:i:s')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
+        $otherSecond = new Second(new \DateTime('1988-11-12 16:00:50'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($currentSecond->isCurrent());
         $this->assertFalse($otherSecond->isCurrent());

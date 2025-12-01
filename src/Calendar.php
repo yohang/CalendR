@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace CalendR;
 
 use CalendR\Event\Collection\CollectionInterface;
+use CalendR\Event\EventManager;
 use CalendR\Event\Exception\NoProviderFound;
-use CalendR\Event\Manager;
 use CalendR\Period\Day;
-use CalendR\Period\Factory;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Second;
 use CalendR\Period\Week;
 use CalendR\Period\Year;
@@ -26,8 +26,8 @@ use CalendR\Period\Year;
 readonly class Calendar
 {
     public function __construct(
-        protected FactoryInterface $factory = new Factory(),
-        private Manager $eventManager = new Manager(),
+        protected PeriodFactoryInterface $factory = new PeriodPeriodFactory(),
+        private EventManager $eventManager = new EventManager(),
     ) {
     }
 
@@ -108,12 +108,12 @@ readonly class Calendar
         return $this->getEventManager()->find($period, $options);
     }
 
-    public function getFactory(): FactoryInterface
+    public function getFactory(): PeriodFactoryInterface
     {
         return $this->factory;
     }
 
-    public function getEventManager(): Manager
+    public function getEventManager(): EventManager
     {
         return $this->eventManager;
     }

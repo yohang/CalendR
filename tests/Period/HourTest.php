@@ -6,11 +6,11 @@ namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAnHour;
-use CalendR\Period\Factory;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Second;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -44,13 +44,13 @@ final class HourTest extends TestCase
     {
         $this->expectException(NotAnHour::class);
 
-        new Hour($start, $this->prophesize(FactoryInterface::class)->reveal());
+        new Hour($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
     }
 
     #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
-        $hour = new Hour($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertInstanceOf(Hour::class, $hour);
     }
@@ -92,7 +92,7 @@ final class HourTest extends TestCase
     #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $hour = new Hour($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($hour->contains($contain));
         $this->assertFalse($hour->contains($notContain));
@@ -100,31 +100,31 @@ final class HourTest extends TestCase
 
     public function testGetNext(): void
     {
-        $hour = new Hour(new \DateTimeImmutable('2012-01-01 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable('2012-01-01 05:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-01 06:00', $hour->getNext()->getBegin()->format('Y-m-d H:i'));
 
-        $hour = new Hour(new \DateTimeImmutable('2012-01-31 14:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable('2012-01-31 14:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 15:00', $hour->getNext()->getBegin()->format('Y-m-d H:i'));
 
-        $hour = new Hour(new \DateTimeImmutable('2013-02-28 23:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable('2013-02-28 23:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2013-03-01 00:00', $hour->getNext()->getBegin()->format('Y-m-d H:i'));
     }
 
     public function testGetPrevious(): void
     {
-        $hour = new Hour(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable('2012-01-01 00:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2011-12-31 23:00', $hour->getPrevious()->getBegin()->format('Y-m-d H:i'));
 
-        $hour = new Hour(new \DateTimeImmutable('2012-01-31 05:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable('2012-01-31 05:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 04:00', $hour->getPrevious()->getBegin()->format('Y-m-d H:i'));
 
-        $hour = new Hour(new \DateTimeImmutable('2012-01-31 06:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable('2012-01-31 06:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-31 05:00', $hour->getPrevious()->getBegin()->format('Y-m-d H:i'));
     }
 
     public function testGetDatePeriod(): void
     {
-        $hour = new Hour(new \DateTimeImmutable('2012-01-31 13:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable('2012-01-31 13:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $i = 0;
         foreach ($hour->getDatePeriod() as $DateTimeImmutable) {
@@ -140,7 +140,7 @@ final class HourTest extends TestCase
         $currentDateTimeImmutable = new \DateTimeImmutable();
         $otherDateTimeImmutable = (clone $currentDateTimeImmutable)->add(new \DateInterval('PT5H'));
 
-        $currentHour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentHour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $otherHour = $currentHour->getNext();
 
         $this->assertTrue($currentHour->contains($currentDateTimeImmutable));
@@ -150,7 +150,7 @@ final class HourTest extends TestCase
 
     public function testToString(): void
     {
-        $hour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame($hour->getBegin()->format('G'), (string) $hour);
     }
 
@@ -165,20 +165,20 @@ final class HourTest extends TestCase
     #[DataProvider('includesDataProvider')]
     public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, bool $strict, bool $result): void
     {
-        $hour = new Hour($begin, $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour($begin, $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame($result, $hour->includes($period, $strict));
     }
 
     public function testFormat(): void
     {
-        $hour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
+        $hour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame(date('Y-m-d H:00'), $hour->format('Y-m-d H:i'));
     }
 
     public function testIsCurrent(): void
     {
-        $currentHour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherHour = new Hour(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentHour = new Hour(new \DateTimeImmutable(date('Y-m-d H:00')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
+        $otherHour = new Hour(new \DateTimeImmutable('1988-11-12 16:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($currentHour->isCurrent());
         $this->assertFalse($otherHour->isCurrent());
@@ -214,7 +214,7 @@ final class HourTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15 13:00');
-        $hour = new Hour($start, new Factory());
+        $hour = new Hour($start, new PeriodPeriodFactory());
 
         $i = 0;
         foreach ($hour as $minuteKey => $minute) {

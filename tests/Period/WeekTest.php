@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use CalendR\Period\Factory;
-use CalendR\Period\FactoryInterface;
+use CalendR\Period\PeriodFactoryInterface;
+use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Week;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +50,7 @@ final class WeekTest extends TestCase
     #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $week = new Week($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($week->contains($contain));
         $this->assertFalse($week->contains($notContain));
@@ -59,7 +59,7 @@ final class WeekTest extends TestCase
     #[DataProvider('providerNumber')]
     public function testNumber(\DateTimeInterface $start, int $number): void
     {
-        $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $week = new Week($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertSame($week->getNumber(), $number);
     }
@@ -67,7 +67,7 @@ final class WeekTest extends TestCase
     #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
-        $week = new Week($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $week = new Week($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertInstanceOf(Week::class, $week);
     }
@@ -75,7 +75,7 @@ final class WeekTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-W01');
-        $week = new Week($start, new Factory());
+        $week = new Week($start, new PeriodPeriodFactory());
 
         $i = 0;
         foreach ($week as $dayKey => $day) {
@@ -93,7 +93,7 @@ final class WeekTest extends TestCase
     public function testGetDatePeriod(): void
     {
         $date = new \DateTimeImmutable('2012-01-01');
-        $week = new Week($date, $this->prophesize(FactoryInterface::class)->reveal());
+        $week = new Week($date, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         foreach ($week->getDatePeriod() as $dateTime) {
             $this->assertSame($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
@@ -104,7 +104,7 @@ final class WeekTest extends TestCase
     public function testToString(): void
     {
         $date = new \DateTimeImmutable(date('Y-\\WW'));
-        $week = new Week($date, $this->prophesize(FactoryInterface::class)->reveal());
+        $week = new Week($date, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertSame($date->format('W'), (string) $week);
     }

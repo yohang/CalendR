@@ -6,10 +6,10 @@ namespace CalendR\Test\Period;
 
 use CalendR\Calendar;
 use CalendR\Period\Day;
-use CalendR\Period\Factory;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Range;
 use CalendR\Period\Second;
 use CalendR\Period\Week;
@@ -103,8 +103,8 @@ final class FactoryTest extends TestCase
         yield [$factory->getMonth(2012, 12), '2012-11-26'];
     }
 
-    protected function getDefaultOptionsFactory(): Factory
+    protected function getDefaultOptionsFactory(): PeriodPeriodFactory
     {
-        return new Factory();
+        return new PeriodPeriodFactory();
     }
 }

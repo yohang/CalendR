@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CalendR\Test\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
 use CalendR\Bridge\Symfony\Bundle\DependencyInjection\Compiler\EventProviderPass;
-use CalendR\Event\Manager;
+use CalendR\Event\EventManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,7 +21,7 @@ final class EventProviderPassTest extends TestCase
     {
         $eventManagerDefinition = $this->createMock(Definition::class);
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)->onlyMethods(['findTaggedServiceIds', 'getDefinition'])->getMock();
-        $containerBuilder->expects($this->once())->method('getDefinition')->with(Manager::class)->willReturn($eventManagerDefinition);
+        $containerBuilder->expects($this->once())->method('getDefinition')->with(EventManager::class)->willReturn($eventManagerDefinition);
         $containerBuilder
             ->expects($this->once())
             ->method('findTaggedServiceIds')

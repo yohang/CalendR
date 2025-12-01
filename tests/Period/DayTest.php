@@ -6,10 +6,10 @@ namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotADay;
-use CalendR\Period\Factory;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Hour;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
+use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Range;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -43,13 +43,13 @@ final class DayTest extends TestCase
     {
         $this->expectException(NotADay::class);
 
-        new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
+        new Day($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
     }
 
     #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
-        $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertInstanceOf(Day::class, $day);
     }
@@ -69,7 +69,7 @@ final class DayTest extends TestCase
     #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $day = new Day($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($day->contains($contain));
         $this->assertFalse($day->contains($notContain));
@@ -77,25 +77,25 @@ final class DayTest extends TestCase
 
     public function testGetNext(): void
     {
-        $day = new Day(new \DateTimeImmutable('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day(new \DateTimeImmutable('2012-01-01'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-02', $day->getNext()->getBegin()->format('Y-m-d'));
 
-        $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-02-01', $day->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious(): void
     {
-        $day = new Day(new \DateTimeImmutable('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day(new \DateTimeImmutable('2012-01-01'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2011-12-31', $day->getPrevious()->getBegin()->format('Y-m-d'));
 
-        $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2012-01-30', $day->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod(): void
     {
-        $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day(new \DateTimeImmutable('2012-01-31'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         foreach ($day->getDatePeriod() as $dateTime) {
             $this->assertSame('2012-01-31', $dateTime->format('Y-m-d'));
@@ -107,7 +107,7 @@ final class DayTest extends TestCase
         $currentDate = new \DateTimeImmutable();
         $otherDate = (clone $currentDate)->add(new \DateInterval('P5D'));
 
-        $currentDay = new Day(new \DateTimeImmutable(date('Y-m-d')), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentDay = new Day(new \DateTimeImmutable(date('Y-m-d')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $otherDay = $currentDay->getNext();
 
         $this->assertTrue($currentDay->contains($currentDate));
@@ -117,7 +117,7 @@ final class DayTest extends TestCase
 
     public function testToString(): void
     {
-        $day = new Day(new \DateTimeImmutable(date('Y-m-d')), $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day(new \DateTimeImmutable(date('Y-m-d')), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame($day->getBegin()->format('l'), (string) $day);
     }
 
@@ -134,7 +134,7 @@ final class DayTest extends TestCase
     #[DataProvider('includesDataProvider')]
     public function testIncludes(\DateTimeInterface $begin, PeriodInterface $period, ?bool $strict, bool $result): void
     {
-        $day = new Day($begin, $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day($begin, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         if (null === $strict) {
             $this->assertSame($result, $day->includes($period));
@@ -147,15 +147,15 @@ final class DayTest extends TestCase
 
     public function testFormat(): void
     {
-        $day = new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal());
+        $day = new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertSame(date('Y-m-d'), $day->format('Y-m-d'));
     }
 
     public function testIsCurrent(): void
     {
-        $currentDay = new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(FactoryInterface::class)->reveal());
-        $otherDay = new Day(new \DateTimeImmutable('1988-11-12'), $this->prophesize(FactoryInterface::class)->reveal());
+        $currentDay = new Day(new \DateTimeImmutable('00:00:00'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
+        $otherDay = new Day(new \DateTimeImmutable('1988-11-12'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($currentDay->isCurrent());
         $this->assertFalse($otherDay->isCurrent());
@@ -178,7 +178,7 @@ final class DayTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15');
-        $day = new Day($start, new Factory());
+        $day = new Day($start, new PeriodPeriodFactory());
 
         $i = 0;
 

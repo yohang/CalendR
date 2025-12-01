@@ -6,9 +6,9 @@ namespace CalendR\Test\Period;
 
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAYear;
-use CalendR\Period\Factory;
-use CalendR\Period\FactoryInterface;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodFactoryInterface;
+use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -59,7 +59,7 @@ final class YearTest extends TestCase
     #[DataProvider('providerContains')]
     public function testContains(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $year = new Year($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertTrue($year->contains($contain));
         $this->assertFalse($year->contains($notContain));
@@ -68,10 +68,10 @@ final class YearTest extends TestCase
     #[DataProvider('providerContains')]
     public function testIncludes(\DateTimeInterface $start, \DateTimeInterface $contain, \DateTimeInterface $notContain): void
     {
-        $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $year = new Year($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
-        $this->assertTrue($year->includes(new Day($contain, $this->prophesize(FactoryInterface::class)->reveal())));
-        $this->assertFalse($year->includes(new Day($notContain, $this->prophesize(FactoryInterface::class)->reveal())));
+        $this->assertTrue($year->includes(new Day($contain, $this->prophesize(PeriodFactoryInterface::class)->reveal())));
+        $this->assertFalse($year->includes(new Day($notContain, $this->prophesize(PeriodFactoryInterface::class)->reveal())));
     }
 
     #[DataProvider('providerConstructInvalid')]
@@ -79,27 +79,27 @@ final class YearTest extends TestCase
     {
         $this->expectException(NotAYear::class);
 
-        new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
+        new Year($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
     }
 
     #[DataProvider('providerConstructValid')]
     public function testConstructValid(\DateTimeInterface $start): void
     {
-        $year = new Year($start, $this->prophesize(FactoryInterface::class)->reveal());
+        $year = new Year($start, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         $this->assertInstanceOf(Year::class, $year);
     }
 
     public function testToString(): void
     {
-        $year = new Year(new \DateTime('2014-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
+        $year = new Year(new \DateTime('2014-01-01'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2014', (string) $year);
     }
 
     public function testIteration(): void
     {
         $start = new \DateTime('2012-01');
-        $year = new Year($start, new Factory());
+        $year = new Year($start, new PeriodPeriodFactory());
 
         $i = 0;
 
@@ -117,20 +117,20 @@ final class YearTest extends TestCase
 
     public function testGetNext(): void
     {
-        $year = new Year(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
+        $year = new Year(new \DateTime('2012-01-01'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2013-01-01', $year->getNext()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetPrevious(): void
     {
-        $year = new Year(new \DateTime('2012-01-01'), $this->prophesize(FactoryInterface::class)->reveal());
+        $year = new Year(new \DateTime('2012-01-01'), $this->prophesize(PeriodFactoryInterface::class)->reveal());
         $this->assertSame('2011-01-01', $year->getPrevious()->getBegin()->format('Y-m-d'));
     }
 
     public function testGetDatePeriod(): void
     {
         $date = new \DateTime('2012-01-01');
-        $year = new Year($date, $this->prophesize(FactoryInterface::class)->reveal());
+        $year = new Year($date, $this->prophesize(PeriodFactoryInterface::class)->reveal());
 
         foreach ($year->getDatePeriod() as $dateTime) {
             $this->assertSame($date->format('Y-m-d'), $dateTime->format('Y-m-d'));
