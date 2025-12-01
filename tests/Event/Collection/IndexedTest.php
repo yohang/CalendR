@@ -26,11 +26,11 @@ final class IndexedTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$events = [
-            new Event(new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00'), 'event-a'),
-            new Event(new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00'), 'event-b'),
-            new Event(new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00'), 'event-c'),
-            new Event(new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00'), 'event-d'),
-            new Event(new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00'), 'event-e'),
+            new Event(new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00')),
+            new Event(new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00')),
+            new Event(new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00')),
+            new Event(new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00')),
+            new Event(new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00')),
         ];
     }
 
@@ -42,9 +42,9 @@ final class IndexedTest extends TestCase
     public function getAddData(): array
     {
         return [
-            [new Event(new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00'), 'event-1'), 6],
-            [new Event(new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00'), 'event-2'), 7],
-            [new Event(new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00'), 'event-3'), 8],
+            [new Event(new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00')), 6],
+            [new Event(new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00')), 7],
+            [new Event(new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00')), 8],
         ];
     }
 
@@ -73,19 +73,19 @@ final class IndexedTest extends TestCase
 
     public static function findProvider(): \Iterator
     {
-        yield ['2012-05-09', 1, 'event-a'];
-        yield [new \DateTime('2012-05-09T05:56:00'), 1, 'event-a'];
-        yield [new Day(new \DateTime('2012-05-09')), 1, 'event-a'];
+        yield ['2012-05-09', 1, 0];
+        yield [new \DateTime('2012-05-09T05:56:00'), 1, 0];
+        yield [new Day(new \DateTime('2012-05-09')), 1, 0];
         yield [new Day(new \DateTime('2011-05-09')), 0, null];
     }
 
     #[DataProvider('findProvider')]
-    public function testFind(string|\DateTime|Day $index, int $count, ?string $eventUid): void
+    public function testFind(string|\DateTime|Day $index, int $count, ?int $eventIndex): void
     {
         $events = $this->collection->find($index);
         $this->assertCount($count, $events);
         if ($count > 0) {
-            $this->assertSame($eventUid, $events[0]->getUid());
+            $this->assertSame(self::$events[$eventIndex], $events[0]);
         }
     }
 
@@ -97,10 +97,10 @@ final class IndexedTest extends TestCase
 
     public function testAll(): void
     {
-        $index = \ord('a');
-        foreach ($this->collection->all() as $event) {
-            $this->assertSame('event-'.\chr($index++), $event->getUid());
-        }
         $this->assertCount(\count($this->collection), $this->collection->all());
+
+        foreach ($this->collection->all() as $index => $event) {
+            $this->assertSame(self::$events[$index], $event);
+        }
     }
 }

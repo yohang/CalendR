@@ -13,20 +13,22 @@ final class BasicTest extends TestCase
 {
     protected Basic $object;
 
+    protected static array $events;
+
     protected function setUp(): void
     {
         $this->object = new Basic();
     }
 
-    public function getSomeEvents(): array
+    public static function getSomeEvents(): array
     {
-        return [
-            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-01T21:30'), 'event-1'),
-            new Event(new \DateTime('2011-01-01T20:30'), new \DateTime('2012-01-01T01:30'), 'event-2'),
-            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T21:30'), 'event-3'),
-            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T00:00'), 'event-4'),
-            new Event(new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-29T00:00'), 'event-5'),
-            new Event(new \DateTime('2025-11-01T00:00'), new \DateTime('2025-12-01T00:00'), 'event-6'),
+        return self::$events ?? self::$events = [
+            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-01T21:30')),
+            new Event(new \DateTime('2011-01-01T20:30'), new \DateTime('2012-01-01T01:30')),
+            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T21:30')),
+            new Event(new \DateTime('2012-01-01T20:30'), new \DateTime('2012-01-02T00:00')),
+            new Event(new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-29T00:00')),
+            new Event(new \DateTime('2025-11-01T00:00'), new \DateTime('2025-12-01T00:00')),
         ];
     }
 
@@ -47,14 +49,15 @@ final class BasicTest extends TestCase
     #[DataProvider('getEventsProvider')]
     public function testGetEvents(\DateTime $begin, \DateTime $end, array $expectedEvents): void
     {
-        foreach ($this->getSomeEvents() as $event) {
+        $someEvents = self::getSomeEvents();
+        foreach ($someEvents as $event) {
             $this->object->add($event);
         }
 
         $events = $this->object->getEvents($begin, $end);
         $this->assertCount(\count($expectedEvents), $events);
-        foreach (array_keys($events) as $i) {
-            $this->assertSame('event-'.$expectedEvents[$i], $events[$i]->getUid());
+        foreach ($events as $index => $event) {
+            $this->assertSame($event, $someEvents[$expectedEvents[$index]]);
         }
     }
 
@@ -70,9 +73,9 @@ final class BasicTest extends TestCase
 
     public static function getEventsProvider(): \Iterator
     {
-        yield [new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), [1, 3, 4]];
-        yield [new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), [2]];
-        yield [new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), [5]];
+        yield [new \DateTime('2012-01-01T03:00'), new \DateTime('2012-01-01T23:59'), [0, 2, 3]];
+        yield [new \DateTime('2011-11-01T20:30'), new \DateTime('2012-01-01T01:30'), [1]];
+        yield [new \DateTime('2015-12-28T00:00'), new \DateTime('2015-12-28T12:00'), [4]];
         yield [new \DateTime('2015-12-27T00:00'), new \DateTime('2015-12-28T00:00'), []];
         yield [new \DateTime('2025-12-01T00:00'), new \DateTime('2026-01-01T00:00'), []];
     }
