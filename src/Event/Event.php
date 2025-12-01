@@ -19,7 +19,8 @@ final class Event implements EventInterface
 
     protected \DateTimeInterface $end;
 
-    public function __construct(\DateTimeInterface $start, \DateTimeInterface $end) {
+    public function __construct(\DateTimeInterface $start, \DateTimeInterface $end)
+    {
         if (1 === $start->diff($end)->invert) {
             throw new InvalidEvent('Events usually start before they end');
         }
