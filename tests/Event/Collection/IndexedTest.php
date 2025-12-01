@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Collection;
 
-use CalendR\Event\Collection\Indexed;
+use CalendR\Event\Collection\IndexedCollection;
 use CalendR\Event\Event;
 use CalendR\Period\Day;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -16,11 +16,11 @@ final class IndexedTest extends TestCase
     use ProphecyTrait;
 
     private static array $events = [];
-    private Indexed $collection;
+    private IndexedCollection $collection;
 
     protected function setUp(): void
     {
-        $this->collection = new Indexed(self::$events);
+        $this->collection = new IndexedCollection(self::$events);
     }
 
     public static function setUpBeforeClass(): void

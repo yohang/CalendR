@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Event\Provider;
 
-final class Aggregate implements ProviderInterface
+final class AggregateProvider implements ProviderInterface
 {
     /**
      * @var list<ProviderInterface>

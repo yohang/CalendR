@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CalendR\Event;
 
-use CalendR\Event\Collection\Basic;
+use CalendR\Event\Collection\ArrayCollection;
 use CalendR\Event\Collection\CollectionInterface;
 use CalendR\Event\Exception\NoProviderFound;
 use CalendR\Event\Provider\ProviderInterface;
@@ -35,7 +35,7 @@ class Manager
         iterable $providers = [],
         ?callable $collectionInstantiator = null,
     ) {
-        $this->collectionInstantiator = $collectionInstantiator ?? static fn (): Basic => new Basic();
+        $this->collectionInstantiator = $collectionInstantiator ?? static fn (): ArrayCollection => new ArrayCollection();
 
         foreach ($providers as $name => $provider) {
             $this->addProvider($name, $provider);

@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace CalendR\Test\Event\Provider;
 
 use CalendR\Event\Event;
-use CalendR\Event\Provider\Basic;
+use CalendR\Event\Provider\ArrayProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class BasicTest extends TestCase
 {
-    protected Basic $object;
+    protected ArrayProvider $object;
 
     protected static array $events;
 
     protected function setUp(): void
     {
-        $this->object = new Basic();
+        $this->object = new ArrayProvider();
     }
 
     public static function getSomeEvents(): array

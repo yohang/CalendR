@@ -6,7 +6,7 @@ namespace CalendR\Test\Bridge\Twig;
 
 use CalendR\Bridge\Twig\CalendRExtension;
 use CalendR\Calendar;
-use CalendR\Event\Collection\Basic;
+use CalendR\Event\Collection\ArrayCollection;
 use CalendR\Event\EventInterface;
 use CalendR\Period\Day;
 use CalendR\Period\Month;
@@ -84,7 +84,7 @@ final class CalendRExtensionTest extends TestCase
 
         $this->assertSame($period, $this->object->getDay(1988, 11, 12));
 
-        $events = new Basic([$this->createMock(EventInterface::class)]);
+        $events = new ArrayCollection([$this->createMock(EventInterface::class)]);
         $period = $this->createMock(PeriodInterface::class);
         $this->calendar
             ->expects($this->once())
