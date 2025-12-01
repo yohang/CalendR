@@ -4,7 +4,15 @@ CHANGELOG
 4.0.0
 -----
 
- * 
+ * Simplified date comparisons
+ * Removed all internal usage of \DateTime in favor of \DateTimeImmutable
+ * Added enum DayOfWeek
+ * Renamed Indexed and Basic classes
+ * Renamed Cache provider and made it use PSR-16 instead of doctrine/cache
+ * Added full type and generic types (psalm based)
+ * Made Factory optional again, non-week based period does not need it at all.
+ * Simplified iterators via \IteratorAggregate
+ * Moved CI to GitHub Actions & Dagger
  * Dropped support for PHP < 8.2
  * Dropped support for Twig < 3
  
