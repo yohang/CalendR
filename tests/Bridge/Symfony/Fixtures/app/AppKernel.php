@@ -6,12 +6,14 @@ use App\Controller\ShowCalendar;
 use App\Repository\EventRepository;
 use CalendR\Bridge\Symfony\Bundle\CalendRBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\Log\Logger;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 final class AppKernel extends Kernel
@@ -56,6 +58,12 @@ final class AppKernel extends Kernel
         ]);
 
         $container
+            ->setDefinition(LoggerInterface::class, new Definition(Logger::class))
+            ->setArgument('$output', $this->getLogDir().'.log');
+
+        $container->setAlias('logger', LoggerInterface::class);
+
+        $container
             ->setDefinition(EventRepository::class, new Definition(EventRepository::class))
             ->setPublic(true)
             ->setAutoconfigured(true)
@@ -70,7 +78,10 @@ final class AppKernel extends Kernel
 
     private function configureRoutes(RoutingConfigurator $routes): void
     {
-        $routes->import(['path' => __DIR__.'/../Controller', 'namespace' => 'App\\Controller'], 'attribute');
+        $routes
+            ->add('show_calendar', '/calendar/{year}/{month}')
+            ->controller(ShowCalendar::class)
+            ->requirements(['year' => '\d{4}', 'month' => '\d{1,2}']);
     }
 
     public function getProjectDir(): string

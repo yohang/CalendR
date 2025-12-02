@@ -5,30 +5,32 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use CalendR\Calendar;
-use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
-#[AsController]
-#[Template('calendar.html.twig')]
-#[Route('/calendar/{year}/{month}', name: 'show_calendar', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
 final readonly class ShowCalendar
 {
     public function __construct(
         private Calendar $calendar,
+        private Environment $twig,
     ) {
     }
 
-    public function __invoke(int $year, int $month): array
+    public function __invoke(int $year, int $month): Response
     {
         $month = $this->calendar->getMonth($year, $month);
         $previousMonth = $month->getPrevious();
         $nextMonth = $month->getNext();
 
-        return [
-            'month' => $month,
-            'previousMonth' => $previousMonth,
-            'nextMonth' => $nextMonth,
-        ];
+        return new Response(
+            $this->twig->render(
+                'calendar.html.twig',
+                [
+                    'month' => $month,
+                    'previousMonth' => $previousMonth,
+                    'nextMonth' => $nextMonth,
+                ],
+            ),
+        );
     }
 }
