@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Calendar</title>
+    </head>
+    <body>
+        <h1>
+            <a class="go-to-previous" href="{{ path('show_calendar', {year: previousMonth.format('Y'), month: previousMonth.format('m')}) }}">&laquo;</a>
+            {{ month.format('F') }} {{ month.format('Y') }}
+            <a class="go-to-next" href="{{ path('show_calendar', {year: nextMonth.format('Y'), month: nextMonth.format('m')}) }}">&raquo;</a>
+        </h1>
+
+        {% set month_events = calendr_events(month) %}
+        <table>
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    {% for day in calendr_week(month.format('Y'), 1) %}
+                        <th>{{ day.format('l') }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for week_number, week in month %}
+                    <tr>
+                        <th>{{ week_number }}</th>
+                        {% for day in week %}
+                            <td class="{{ month.includes(day) ? 'inside' : 'outside' }}">
+                                {{ day.format('d') }}
+                                {% if month_events.has(day) %}
+                                    <ul>
+                                        {% for event in month_events.find(day) %}
+                                            <li class="event">{{ event.id }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Controller\ShowCalendar;
 use App\Repository\EventRepository;
 use CalendR\Bridge\Symfony\Bundle\CalendRBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -11,6 +12,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 final class AppKernel extends Kernel
 {
@@ -37,7 +39,7 @@ final class AppKernel extends Kernel
             'dbal' => [
                 'connections' => [
                     'default' => [
-                        'url' => 'sqlite:///:memory:',
+                        'url' => 'sqlite:///'.__DIR__.'/var/db.sqlite',
                     ],
                 ],
             ],
@@ -58,6 +60,17 @@ final class AppKernel extends Kernel
             ->setPublic(true)
             ->setAutoconfigured(true)
             ->setAutowired(true);
+
+        $container
+            ->setDefinition(ShowCalendar::class, new Definition(ShowCalendar::class))
+            ->setPublic(true)
+            ->setAutoconfigured(true)
+            ->setAutowired(true);
+    }
+
+    private function configureRoutes(RoutingConfigurator $routes): void
+    {
+        $routes->import(['path' => __DIR__.'/../Controller', 'namespace' => 'App\\Controller'], 'attribute');
     }
 
     public function getProjectDir(): string
