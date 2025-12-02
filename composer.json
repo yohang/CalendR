@@ -20,24 +20,24 @@
         "php": ">=8.2"
     },
     "require-dev": {
+        "doctrine/doctrine-bundle": ">=2.7.2,<4.0",
         "doctrine/orm": "^2.9.3|^3.0.0",
+        "friendsofphp/php-cs-fixer": "^3.90",
+        "infection/infection": "^0.31.9",
+        "phpspec/prophecy-phpunit": "^2.3.0",
         "phpunit/phpunit": "^11.5.44",
         "psr/simple-cache": ">=0.2.0,<4",
-        "symfony/dependency-injection": ">=4.4,<9.0",
+        "rector/rector": "^2.2",
+        "symfony/browser-kit": ">=4.4,<9.0",
         "symfony/config": ">=4.4,<9.0",
+        "symfony/css-selector": ">=4.4,<9.0",
+        "symfony/dependency-injection": ">=4.4,<9.0",
+        "symfony/framework-bundle": ">=4.4,<9.0",
+        "symfony/http-kernel": ">=5.3,<9.0",
+        "symfony/twig-bundle": ">=4.4,<9.0",
         "symfony/var-dumper": ">=4.4,<9.0",
         "twig/twig": "^3.3.2",
-        "phpspec/prophecy-phpunit": "^2.3.0",
-        "symfony/http-kernel": ">=5.3,<9.0",
-        "rector/rector": "^2.2",
-        "friendsofphp/php-cs-fixer": "^3.90",
-        "vimeo/psalm": "^6.13@dev",
-        "infection/infection": "^0.31.9",
-        "symfony/framework-bundle": ">=4.4,<9.0",
-        "symfony/twig-bundle": ">=4.4,<9.0",
-        "doctrine/doctrine-bundle": ">=2.7.2,<4.0",
-        "symfony/browser-kit": ">=4.4,<9.0",
-        "symfony/css-selector": ">=4.4,<9.0"
+        "vimeo/psalm": "^6.13@dev"
     },
     "autoload": {
         "psr-4": {
@@ -58,6 +58,7 @@
     "config": {
         "allow-plugins": {
             "infection/extension-installer": true
-        }
+        },
+        "sort-packages": true
     }
 }
