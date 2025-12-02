@@ -58,10 +58,11 @@ final class AppKernel extends Kernel
         ]);
 
         $container
-            ->setDefinition(LoggerInterface::class, new Definition(Logger::class))
+            ->setDefinition('logger', new Definition(Logger::class))
             ->setArgument('$output', $this->getLogDir().'.log');
 
-        $container->setAlias('logger', LoggerInterface::class);
+        $container->setAlias(Logger::class, LoggerInterface::class);
+        $container->setAlias(LoggerInterface::class, 'logger');
 
         $container
             ->setDefinition(EventRepository::class, new Definition(EventRepository::class))
