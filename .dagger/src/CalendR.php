@@ -66,10 +66,39 @@ class CalendR
         #[DefaultPath('.')] Directory $source,
         string $phpVersion = '8.4',
         string $dependencyVersion = 'highest',
-    ): string {
-        return $this
+        ?string $coverallsRepoToken = null,
+        ?string $ciName = null,
+        ?string $ciJobId = null,
+        ?string $ciBranch = null,
+    ): string
+    {
+        $container = $this
             ->build($source, $phpVersion, $dependencyVersion)
-            ->withExec(['php', './vendor/bin/phpunit', '--coverage-text'])
+            ->withFile('/tmp/coveralls-linux.tar.gz', dag()->http('https://coveralls.io/coveralls-linux.tar.gz'))
+            ->withExec(['tar', '-xvzf', '/tmp/coveralls-linux.tar.gz', '-C', '/usr/local/bin']);
+
+
+        $exec = ['php', './vendor/bin/phpunit', '--coverage-text'];
+        if ($coverallsRepoToken) {
+            $exec[] = '--coverage-clover=build/logs/clover.xml';
+
+            $container = $container->withEnvVariable('COVERALLS_REPO_TOKEN', $coverallsRepoToken);
+        }
+
+        if ($ciName && $ciJobId && $ciBranch) {
+            $container = $container
+                ->withEnvVariable('CI_NAME', $ciName)
+                ->withEnvVariable('CI_JOB_ID', $ciJobId)
+                ->withEnvVariable('CI_BRANCH', $ciBranch);
+        }
+
+        $container = $container->withExec($exec);
+
+        if ($coverallsRepoToken) {
+            $container = $container->withExec(['coveralls', 'report']);
+        }
+
+        return $container
             ->stdout();
     }
 

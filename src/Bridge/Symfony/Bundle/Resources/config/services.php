@@ -5,7 +5,7 @@ declare(strict_types=1);
 use CalendR\Bridge\Twig\CalendRExtension;
 use CalendR\Calendar;
 use CalendR\Event\EventManager;
-use CalendR\Period\PeriodPeriodFactory;
+use CalendR\Period\PeriodFactory;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -16,12 +16,12 @@ return static function (ContainerConfigurator $container) {
             ->public();
 
     $container->services()
-        ->set(PeriodPeriodFactory::class)
+        ->set(PeriodFactory::class)
             ->public();
 
     $container->services()
         ->set(Calendar::class)
-            ->arg('$factory', service(PeriodPeriodFactory::class))
+            ->arg('$factory', service(PeriodFactory::class))
             ->arg('$eventManager', service(EventManager::class))
             ->public();
 
@@ -35,7 +35,7 @@ return static function (ContainerConfigurator $container) {
             ->public();
 
     $container->services()
-        ->alias('calendr.factory', PeriodPeriodFactory::class)
+        ->alias('calendr.factory', PeriodFactory::class)
             ->public();
 
     $container->services()

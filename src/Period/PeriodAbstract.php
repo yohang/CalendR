@@ -110,7 +110,7 @@ abstract class PeriodAbstract implements PeriodInterface
     protected function getFactory(): PeriodFactoryInterface
     {
         if (null === $this->factory) {
-            $this->factory = new PeriodPeriodFactory();
+            $this->factory = new PeriodFactory();
         }
 
         return $this->factory;

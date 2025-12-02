@@ -33,7 +33,7 @@ final class Month extends PeriodAbstract implements \IteratorAggregate, \Stringa
 
     /**
      * Returns the first day of the first week of month.
-     * First day of week is configurable via {@link PeriodPeriodFactory}.
+     * First day of week is configurable via {@link PeriodFactory}.
      */
     public function getFirstDayOfFirstWeek(): \DateTimeImmutable
     {
@@ -51,7 +51,7 @@ final class Month extends PeriodAbstract implements \IteratorAggregate, \Stringa
 
     /**
      * Returns the last day of last week of month
-     * First day of week is configurable via {@link PeriodPeriodFactory}.
+     * First day of week is configurable via {@link PeriodFactory}.
      */
     public function getLastDayOfLastWeek(): \DateTimeImmutable
     {

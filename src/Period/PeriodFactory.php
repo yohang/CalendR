@@ -6,7 +6,7 @@ namespace CalendR\Period;
 
 use CalendR\DayOfWeek;
 
-final class PeriodPeriodFactory implements PeriodFactoryInterface
+final class PeriodFactory implements PeriodFactoryInterface
 {
     public function __construct(
         private DayOfWeek $firstWeekday = DayOfWeek::MONDAY,

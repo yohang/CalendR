@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace CalendR\Test\Event;
 
 use CalendR\Event\Event;
+use CalendR\Event\EventInterface;
 use CalendR\Event\Exception\InvalidEvent;
 use CalendR\Period\Day;
+use CalendR\Period\Month;
 use CalendR\Period\PeriodInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -68,5 +70,20 @@ final class EventTest extends TestCase
         yield ['begin' => '2025-11-28 09:00:00', 'end' => '2025-11-30 11:00:00', 'date' => new \DateTimeImmutable('2025-11-29 00:00:00'), 'expected' => true];
         yield ['begin' => '2025-11-29 00:00:00', 'end' => '2025-11-30 00:00:00', 'date' => new \DateTimeImmutable('2025-11-29 00:00:00'), 'expected' => true];
         yield ['begin' => '2025-11-29 00:00:00', 'end' => '2025-11-30 00:00:00', 'date' => new \DateTimeImmutable('2025-11-30 00:00:00'), 'expected' => false];
+    }
+
+    #[DataProvider('providerForDuring')]
+    public function testIsDuring(EventInterface $event, PeriodInterface $period, bool $result): void
+    {
+        $this->assertSame($result, $event->isDuring($period));
+    }
+
+    public static function providerForDuring(): iterable
+    {
+        yield [new Event(new \DateTimeImmutable('2025-12-02 08:00'), new \DateTimeImmutable('2025-12-02 12:00')), new Day(new \DateTimeImmutable('2025-12-02')), true];
+        yield [new Event(new \DateTimeImmutable('2025-12-03'), new \DateTimeImmutable('2025-12-04')), new Month(new \DateTimeImmutable('2025-12-01')), true];
+        yield [new Event(new \DateTimeImmutable('2025-12-03'), new \DateTimeImmutable('2025-12-04')), new Month(new \DateTimeImmutable('2025-11-01')), false];
+        yield [new Event(new \DateTimeImmutable('2025-11-02'), new \DateTimeImmutable('2025-11-03')), new Day(new \DateTimeImmutable('2025-11-02')), false];
+        yield [new Event(new \DateTimeImmutable('2025-11-01'), new \DateTimeImmutable('2025-11-03')), new Month(new \DateTimeImmutable('2025-11-01')), true];
     }
 }

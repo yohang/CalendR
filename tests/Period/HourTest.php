@@ -8,9 +8,9 @@ use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAnHour;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
+use CalendR\Period\PeriodFactory;
 use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
-use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Second;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -214,7 +214,7 @@ final class HourTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15 13:00');
-        $hour = new Hour($start, new PeriodPeriodFactory());
+        $hour = new Hour($start, new PeriodFactory());
 
         $i = 0;
         foreach ($hour as $minuteKey => $minute) {

@@ -4,35 +4,33 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Event\Collection;
 
-use CalendR\Event\Collection\ArrayCollection;
+use CalendR\Event\Collection\IndexedCollection;
 use CalendR\Event\Event;
 use CalendR\Period\Day;
-use CalendR\Period\PeriodInterface;
-use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-final class BasicTest extends TestCase
+final class IndexedCollectionTest extends TestCase
 {
     use ProphecyTrait;
 
     private static array $events = [];
-    private ArrayCollection $collection;
+    private IndexedCollection $collection;
 
     protected function setUp(): void
     {
-        $this->collection = new ArrayCollection(self::$events);
+        $this->collection = new IndexedCollection(self::$events);
     }
 
     public static function setUpBeforeClass(): void
     {
         self::$events = [
-            new Event(new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00'), 'event-a'),
-            new Event(new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00'), 'event-b'),
-            new Event(new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00'), 'event-c'),
-            new Event(new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00'), 'event-d'),
-            new Event(new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00'), 'event-e'),
+            new Event(new \DateTime('2012-05-09T10:00:00'), new \DateTime('2012-05-09T17:00:00')),
+            new Event(new \DateTime('2012-05-10T10:00:00'), new \DateTime('2012-05-10T17:00:00')),
+            new Event(new \DateTime('2012-05-11T10:00:00'), new \DateTime('2012-05-11T17:00:00')),
+            new Event(new \DateTime('2012-05-12T10:00:00'), new \DateTime('2012-05-12T17:00:00')),
+            new Event(new \DateTime('2012-05-13T10:00:00'), new \DateTime('2012-05-13T17:00:00')),
         ];
     }
 
@@ -44,9 +42,9 @@ final class BasicTest extends TestCase
     public function getAddData(): array
     {
         return [
-            [new Event(new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00'), 'event-1'), 6],
-            [new Event(new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00'), 'event-2'), 7],
-            [new Event(new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00'), 'event-3'), 8],
+            [new Event(new \DateTime('2012-05-03T10:00:00'), new \DateTime('2012-05-03T18:00:00')), 6],
+            [new Event(new \DateTime('2012-05-03T13:00:00'), new \DateTime('2012-05-03T16:00:00')), 7],
+            [new Event(new \DateTime('2012-05-05T13:00:00'), new \DateTime('2012-05-05T16:00:00')), 8],
         ];
     }
 
@@ -75,14 +73,14 @@ final class BasicTest extends TestCase
 
     public static function findProvider(): \Iterator
     {
-        yield [new \DateTime('2012-05-09T11:56:00'), 1, 0];
+        yield ['2012-05-09', 1, 0];
+        yield [new \DateTime('2012-05-09T05:56:00'), 1, 0];
         yield [new Day(new \DateTime('2012-05-09')), 1, 0];
         yield [new Day(new \DateTime('2011-05-09')), 0, null];
-        yield [new Year(new \DateTime('2012-01-01')), 5, 0];
     }
 
     #[DataProvider('findProvider')]
-    public function testFind(\DateTime|PeriodInterface $index, int $count, ?int $eventIndex): void
+    public function testFind(string|\DateTime|Day $index, int $count, ?int $eventIndex): void
     {
         $events = $this->collection->find($index);
         $this->assertCount($count, $events);
@@ -92,16 +90,29 @@ final class BasicTest extends TestCase
     }
 
     #[DataProvider('findProvider')]
-    public function testHas(\DateTime|PeriodInterface $index, int $count): void
+    public function testHas(string|\DateTime|Day $index, int $count): void
     {
         $this->assertSame($count > 0, $this->collection->has($index));
     }
 
     public function testAll(): void
     {
+        $this->assertCount(\count($this->collection), $this->collection->all());
+
         foreach ($this->collection->all() as $index => $event) {
             $this->assertSame(self::$events[$index], $event);
         }
-        $this->assertCount(\count($this->collection), $this->collection->all());
+    }
+
+    public function testIterationIsIndexed(): void
+    {
+        $indexFunction = function (\DateTimeInterface $dateTime): string {
+            return 'i-'.$dateTime->format('W');
+        };
+
+        $collection = new IndexedCollection(self::$events, $indexFunction);
+        foreach ($collection as $index => $events) {
+            $this->assertSame('i-19', $index);
+        }
     }
 }

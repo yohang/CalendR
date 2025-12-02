@@ -7,9 +7,9 @@ namespace CalendR\Test\Period;
 use CalendR\Period\Day;
 use CalendR\Period\Exception\NotADay;
 use CalendR\Period\Hour;
+use CalendR\Period\PeriodFactory;
 use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
-use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Range;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -178,7 +178,7 @@ final class DayTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15');
-        $day = new Day($start, new PeriodPeriodFactory());
+        $day = new Day($start, new PeriodFactory());
 
         $i = 0;
 

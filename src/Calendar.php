@@ -11,9 +11,9 @@ use CalendR\Period\Day;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
 use CalendR\Period\Month;
+use CalendR\Period\PeriodFactory;
 use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
-use CalendR\Period\PeriodPeriodFactory;
 use CalendR\Period\Second;
 use CalendR\Period\Week;
 use CalendR\Period\Year;
@@ -26,7 +26,7 @@ use CalendR\Period\Year;
 readonly class Calendar
 {
     public function __construct(
-        protected PeriodFactoryInterface $factory = new PeriodPeriodFactory(),
+        protected PeriodFactoryInterface $factory = new PeriodFactory(),
         private EventManager $eventManager = new EventManager(),
     ) {
     }

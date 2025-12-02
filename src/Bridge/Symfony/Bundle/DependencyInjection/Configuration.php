@@ -28,6 +28,7 @@ final class Configuration implements ConfigurationInterface
                 ->enumFqcn(DayOfWeek::class)
                 ->defaultValue(DayOfWeek::MONDAY);
         } else {
+            // @codeCoverageIgnoreStart
             $enumNode
                 ->values(array_map(fn (DayOfWeek $dayOfWeek) => $dayOfWeek->value, DayOfWeek::cases()))
                 ->defaultValue(DayOfWeek::MONDAY->value)
@@ -35,6 +36,7 @@ final class Configuration implements ConfigurationInterface
                     ->ifNotInArray(array_map(static fn (DayOfWeek $d) => $d->value, DayOfWeek::cases()))
                     ->thenInvalid('Day must be be between 0 (Sunday) and 6 (Saturday)')
                 ->end();
+            // @codeCoverageIgnoreEnd
         }
 
         return $treeBuilder;
