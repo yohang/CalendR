@@ -10,7 +10,7 @@ use CalendR\Period\Hour;
 use CalendR\Period\Minute;
 use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\PeriodInterface;
-use CalendR\Period\PeriodPeriodFactory;
+use CalendR\Period\PeriodFactory;
 use CalendR\Period\Second;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -229,7 +229,7 @@ final class MinuteTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-01-15 15:47');
-        $minute = new Minute($start, new PeriodPeriodFactory());
+        $minute = new Minute($start, new PeriodFactory());
 
         $i = 0;
         foreach ($minute as $secondKey => $second) {

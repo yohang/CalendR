@@ -9,7 +9,7 @@ use CalendR\Period\Day;
 use CalendR\Period\Hour;
 use CalendR\Period\Minute;
 use CalendR\Period\Month;
-use CalendR\Period\PeriodPeriodFactory;
+use CalendR\Period\PeriodFactory;
 use CalendR\Period\Range;
 use CalendR\Period\Second;
 use CalendR\Period\Week;
@@ -103,8 +103,8 @@ final class FactoryTest extends TestCase
         yield [$factory->getMonth(2012, 12), '2012-11-26'];
     }
 
-    protected function getDefaultOptionsFactory(): PeriodPeriodFactory
+    protected function getDefaultOptionsFactory(): PeriodFactory
     {
-        return new PeriodPeriodFactory();
+        return new PeriodFactory();
     }
 }

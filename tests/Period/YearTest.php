@@ -8,7 +8,7 @@ use CalendR\Period\Day;
 use CalendR\Period\Exception\NotAYear;
 use CalendR\Period\Month;
 use CalendR\Period\PeriodFactoryInterface;
-use CalendR\Period\PeriodPeriodFactory;
+use CalendR\Period\PeriodFactory;
 use CalendR\Period\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -99,7 +99,7 @@ final class YearTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTime('2012-01');
-        $year = new Year($start, new PeriodPeriodFactory());
+        $year = new Year($start, new PeriodFactory());
 
         $i = 0;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CalendR\Test\Period;
 
 use CalendR\Period\PeriodFactoryInterface;
-use CalendR\Period\PeriodPeriodFactory;
+use CalendR\Period\PeriodFactory;
 use CalendR\Period\Week;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -75,7 +75,7 @@ final class WeekTest extends TestCase
     public function testIteration(): void
     {
         $start = new \DateTimeImmutable('2012-W01');
-        $week = new Week($start, new PeriodPeriodFactory());
+        $week = new Week($start, new PeriodFactory());
 
         $i = 0;
         foreach ($week as $dayKey => $day) {
