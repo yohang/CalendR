@@ -6,10 +6,11 @@ namespace App\Repository;
 
 use App\Entity\Event;
 use CalendR\Bridge\Doctrine\ORM\EventRepository as EventRepositoryTrait;
+use CalendR\Event\Provider\ProviderInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class EventRepository extends ServiceEntityRepository
+final class EventRepository extends ServiceEntityRepository implements ProviderInterface
 {
     use EventRepositoryTrait;
 
