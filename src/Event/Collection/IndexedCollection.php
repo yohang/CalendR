@@ -47,10 +47,7 @@ final class IndexedCollection implements CollectionInterface, \IteratorAggregate
      */
     public function __construct(array $events = [], ?callable $callable = null)
     {
-        $this->indexFunction = (static fn (\DateTimeInterface $dateTime): string => $dateTime->format('Y-m-d'));
-        if (\is_callable($callable)) {
-            $this->indexFunction = $callable;
-        }
+        $this->indexFunction = $callable ?? static fn (\DateTimeInterface $dateTime): string => $dateTime->format('Y-m-d');
 
         foreach ($events as $event) {
             $this->add($event);

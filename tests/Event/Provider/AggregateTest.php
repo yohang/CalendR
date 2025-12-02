@@ -49,4 +49,12 @@ final class AggregateTest extends TestCase
 
         $this->assertSame([$event1, $event2], $this->object->getEvents($begin, $end));
     }
+
+    public function testConstructorThrowsIfInvalidProvider(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Providers must implement CalendR\\Event\\ProviderInterface');
+
+        new AggregateProvider([new \stdClass()]);
+    }
 }

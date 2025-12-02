@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CalendR\Test\Period;
 
-use CalendR\Period\PeriodFactoryInterface;
+use CalendR\Period\Day;
 use CalendR\Period\PeriodFactory;
+use CalendR\Period\PeriodFactoryInterface;
 use CalendR\Period\Week;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -88,6 +89,16 @@ final class WeekTest extends TestCase
         }
 
         $this->assertSame(7, $i);
+    }
+
+    public function testIterationWithoutFactory(): void
+    {
+        $start = new \DateTimeImmutable('2012-W01');
+        $week = new Week($start);
+
+        foreach ($week as $day) {
+            $this->assertInstanceOf(Day::class, $day);
+        }
     }
 
     public function testGetDatePeriod(): void

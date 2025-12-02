@@ -27,7 +27,7 @@ final class CalendRExtension extends Extension
 
         $defaultFirstWeekday = $config['periods']['default_first_weekday'];
         if (!($defaultFirstWeekday instanceof DayOfWeek)) {
-            $defaultFirstWeekday = DayOfWeek::from($defaultFirstWeekday);
+            $defaultFirstWeekday = DayOfWeek::from($defaultFirstWeekday); // @codeCoverageIgnore
         }
 
         $container

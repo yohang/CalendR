@@ -18,7 +18,7 @@ final class Range extends PeriodAbstract
     #[\Override]
     public static function isValid(\DateTimeInterface $start): bool
     {
-        return true;
+        throw new NotImplemented('Range period doesn\'t support isValid().');
     }
 
     #[\Override]

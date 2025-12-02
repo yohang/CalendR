@@ -56,7 +56,7 @@ jobs:
           with:
             version: "latest"
             verb: call
-            args: test --source=. --php-version=${{ matrix.php-versions }} --dependency-version=${{ matrix.dependencies-versions }}
+            args: test --source=. --php-version=${{ matrix.php-versions }} --dependency-version=${{ matrix.dependencies-versions }} --coveralls-repo-token=${{ secrets.COVERALLS_REPO_TOKEN }} --ci-name=gha --ci-job-id=${{ github.run_id }} --ci-branch=${{ github.ref }}
             cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
 
   mutation:

@@ -65,4 +65,12 @@ final class RangeTest extends TestCase
 
         Range::getDateInterval();
     }
+
+    public function testIsValidThrows(): void
+    {
+        $this->expectException(NotImplemented::class);
+        $this->expectExceptionMessage("Range period doesn't support isValid().");
+
+        Range::isValid(new \DateTimeImmutable());
+    }
 }
